@@ -8,10 +8,8 @@ export default function Layout({ children }: PropsWithChildren) {
 			<nav>
 				<Link to="/">Home</Link>
 			</nav>
-			<article>
-				{children}
-			</article>
-			<Footer/>
+			<article>{children}</article>
+			<Footer />
 		</>
-	)
+	);
 }

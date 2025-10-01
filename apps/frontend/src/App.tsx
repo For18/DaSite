@@ -13,10 +13,10 @@ export default function App() {
 			<BrowserRouter>
 				<Layout>
 					<Routes>
-						<Route index element={<Home/>}/>
+						<Route index element={<Home />} />
 					</Routes>
 				</Layout>
 			</BrowserRouter>
 		</ThemeProvider>
-	)
+	);
 }

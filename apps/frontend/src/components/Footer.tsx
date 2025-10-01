@@ -4,5 +4,5 @@ export default function Footer() {
 			<p>© For18 2025</p>
 			<p>weeeeeeee</p>
 		</div>
-	)
+	);
 }
