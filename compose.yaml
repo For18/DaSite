@@ -1,0 +1,31 @@
+services:
+  frontend:
+    build: ./apps/frontend
+    ports:
+      - "80:80"
+    networks:
+      - outside
+    develop:
+      watch:
+        - action: sync
+          path: ./apps/frontend/src
+          target: /app/src
+  db:
+    image: mysql:lts
+    environment:
+      MYSQL_ROOT_PASSWORD: tGZzoc6JLAPh8PDx
+      MYSQL_DATABASE: for18
+      MYSQL_USER: for18
+      MYSQL_PASSWORD: bVSFogXKSd1q3pVc
+    networks:
+      - outside
+    ports:
+      - "3306:3306"
+
+volumes:
+  db_data:
+
+networks:
+  outside:
+  default:
+    internal: true
