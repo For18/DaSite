@@ -12,12 +12,14 @@ export default function Home() {
 	return (
 		<>
 			<h1>{text}</h1>
+			<h2>test</h2>
 			<Button
 				variant="contained"
 				onClick={() => {
 					setText(text + randomCharacter());
 				}}
-				disabled={text.length >= 50}>
+				disabled={text.length >= 50}
+			>
 				Update title
 			</Button>
 		</>

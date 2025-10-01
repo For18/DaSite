@@ -3,7 +3,7 @@ const RANDOM_CHARACTER_SET =
 
 export function randomCharacter(): string {
 	return RANDOM_CHARACTER_SET.charAt(
-		Math.floor(Math.random() * RANDOM_CHARACTER_SET.length)
+		Math.floor(Math.random() * RANDOM_CHARACTER_SET.length),
 	);
 }
 

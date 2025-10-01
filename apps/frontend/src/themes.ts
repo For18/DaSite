@@ -6,5 +6,5 @@ export const DARK = createTheme({});
 
 export default {
 	LIGHT,
-	DARK
+	DARK,
 };
