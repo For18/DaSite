@@ -12,7 +12,7 @@ export const SetThemeContext = createContext<(theme: Theme) => void>(() => {});
 
 export default function App() {
 	const [theme, setThemeState] = useState<Theme>(
-		getThemeById(window.localStorage.getItem("theme")) ?? Themes.LIGHT
+		getThemeById(window.localStorage.getItem("theme")) ?? Themes.LIGHT,
 	);
 
 	function setTheme(theme: Theme) {
@@ -43,10 +43,7 @@ export default function App() {
 								}
 							/>
 
-							<Route
-								path="*"
-								element={<NotFound />}
-							/>
+							<Route path="*" element={<NotFound />} />
 						</Routes>
 					</Layout>
 				</BrowserRouter>

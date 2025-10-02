@@ -25,13 +25,13 @@ export const LIGHT: Theme = createTheme(baseTheme, {
 		mode: "light",
 		background: {
 			default: grey[100],
-			paper: grey[100]
+			paper: grey[100],
 		},
 		text: {
 			primary: "#181818",
 			secondary: "#4f4f4f",
-			disabled: "#a1a1a1"
-		}
+			disabled: "#a1a1a1",
+		},
 	},
 });
 
@@ -42,13 +42,13 @@ export const DARK: Theme = createTheme(baseTheme, {
 		mode: "dark",
 		background: {
 			default: grey[900],
-			paper: grey[900]
+			paper: grey[900],
 		},
 		text: {
 			primary: "#f5f5f5",
 			secondary: "#cacaca",
-			disabled: "#555555"
-		}
+			disabled: "#555555",
+		},
 	},
 });
 
