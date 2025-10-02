@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import { randomCharacter } from "../util";
+import Typography from "@mui/material/Typography";
+import Header from "../components/Header";
 
 export default function Home() {
 	const [text, setText] = useState("Hello world");
@@ -11,8 +13,10 @@ export default function Home() {
 
 	return (
 		<>
-			<h1>{text}</h1>
-			<h2>test</h2>
+			<Header level={1} color="textPrimary">
+				{text}
+			</Header>
+			<Typography color="textPrimary">wooooooooooooooooooow</Typography>
 			<Button
 				variant="contained"
 				onClick={() => {
