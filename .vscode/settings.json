@@ -23,5 +23,6 @@
 	"[toml]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
-	"editor.formatOnSave": true
+	"editor.formatOnSave": true,
+	"dotnet.defaultSolution": "apps/backend/backend.sln"
 }
