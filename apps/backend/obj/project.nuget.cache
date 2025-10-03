@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "RbztPJSnAxU=",
+  "dgSpecHash": "GaQOrE40mc4=",
   "success": true,
   "projectFilePath": "C:\\Users\\thoma\\Projects\\School\\For18\\apps\\backend\\backend.csproj",
   "expectedPackageFiles": [
@@ -26,7 +26,7 @@
     "C:\\Users\\thoma\\.nuget\\packages\\microsoft.extensions.primitives\\9.0.9\\microsoft.extensions.primitives.9.0.9.nupkg.sha512",
     "C:\\Users\\thoma\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "C:\\Users\\thoma\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
-    "C:\\Users\\thoma\\.nuget\\packages\\microsoft.openapi\\1.4.3\\microsoft.openapi.1.4.3.nupkg.sha512",
+    "C:\\Users\\thoma\\.nuget\\packages\\microsoft.openapi\\1.6.0\\microsoft.openapi.1.6.0.nupkg.sha512",
     "C:\\Users\\thoma\\.nuget\\packages\\mysql.data\\9.4.0\\mysql.data.9.4.0.nupkg.sha512",
     "C:\\Users\\thoma\\.nuget\\packages\\mysql.entityframeworkcore\\9.0.6\\mysql.entityframeworkcore.9.0.6.nupkg.sha512",
     "C:\\Users\\thoma\\.nuget\\packages\\swashbuckle.aspnetcore\\6.4.0\\swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
