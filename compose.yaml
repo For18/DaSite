@@ -2,7 +2,7 @@ services:
   frontend:
     build: ./apps/frontend
     ports:
-      - "80:80"
+      - "5170:5170"
     networks:
       - outside
     develop:

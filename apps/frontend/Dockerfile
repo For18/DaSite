@@ -5,5 +5,5 @@ WORKDIR /app
 COPY . .
 RUN npm install
 
-CMD npx vite --port 80 --host 0.0.0.0
-EXPOSE 80
+CMD npx vite --host 0.0.0.0
+EXPOSE 5170
