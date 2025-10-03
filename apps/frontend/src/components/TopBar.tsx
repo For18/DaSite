@@ -27,6 +27,7 @@ export default function TopBar({
 					const [name, path] = entry;
 					return (
 						<Button
+							key={name}
 							onClick={(e) => {
 								navigate(path);
 							}}
