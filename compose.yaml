@@ -1,10 +1,6 @@
 services:
   frontend:
     build: ./apps/frontend
-    ports:
-      - "5170:5170"
-    networks:
-      - outside
     develop:
       watch:
         - action: sync
@@ -12,10 +8,6 @@ services:
           target: /app/src
   backend:
     build: ./apps/backend
-    ports:
-      - "5152:8080"
-    networks:
-      - outside
   db:
     image: mysql:lts
     environment:
@@ -23,18 +15,17 @@ services:
       MYSQL_DATABASE: for18
       MYSQL_USER: for18
       MYSQL_PASSWORD: bVSFogXKSd1q3pVc
-    networks:
-      - outside
     volumes:
       - db_data:/var/lib/mysql
+  proxy:
+    build: ./apps/proxy
     ports:
-      - "3306:3306"
+      - 80:80
+    develop:
+      watch:
+        - action: sync
+          path: ./apps/proxy/nginx.conf
+          target: /etc/nginx/nginx.conf
 
 volumes:
   db_data:
-
-networks:
-  outside:
-  default:
-    driver: bridge
-    internal: true
