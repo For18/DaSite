@@ -10,6 +10,12 @@ services:
         - action: sync
           path: ./apps/frontend/src
           target: /app/src
+  backend:
+    build: ./apps/backend
+    ports:
+      - "5152:8080"
+    networks:
+      - outside
   db:
     image: mysql:lts
     environment:
