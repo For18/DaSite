@@ -11,5 +11,5 @@ WORKDIR /app
 
 COPY --from=build /app/out .
 
-CMD dotnet backend.dll
+CMD ["dotnet", "backend.dll"]
 EXPOSE 8080

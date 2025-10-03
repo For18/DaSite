@@ -5,5 +5,5 @@ WORKDIR /app
 COPY . .
 RUN npm install
 
-CMD npx vite --host 0.0.0.0
+CMD ["npx", "vite", "--host", "0.0.0.0"]
 EXPOSE 5170
