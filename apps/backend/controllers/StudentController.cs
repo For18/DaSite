@@ -1,31 +1,32 @@
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-
-public class Student
-{
-	public long Studentnummer { get; set; }
-	public string Naam { get; set; }
-}
 
 [Route("/student")]
 [ApiController]
 public class StudentController : ControllerBase
 {
-	[HttpGet]
-	public Student GetStudent()
+	[HttpGet("{nr}")]
+	public ActionResult<Student> GetStudent(long nr)
 	{
-		return new Student { Studentnummer = 25012345, Naam = "Jelle" };
+		using (var db = new DatabaseContext())
+		{
+			Student? student = db.Students.Where(s => s.Studentnummer == nr).FirstOrDefault();
+
+			if (student == null) return NotFound();
+
+			return student;
+		}
 	}
 
-	[HttpGet("status")]
-	public ActionResult<Student> GetStudentWithStatus()
+	[HttpPost]
+	public ActionResult PostStudent(Student student)
 	{
-		Student student = new Student { Studentnummer = 25012345, Naam = "Jelle" };
-
-		if (student.Naam == "Jelle")
+		using (var db = new DatabaseContext())
 		{
-			return NotFound();
-		}
+			db.Students.Add(student);
+			db.SaveChanges();
 
-		return student;
+			return Ok();
+		}
 	}
 }
