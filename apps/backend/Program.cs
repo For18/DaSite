@@ -30,7 +30,7 @@ if (app.Environment.IsDevelopment())
 	app.UseSwagger();
 	app.UseSwaggerUI(c =>
 	{
-		c.SwaggerEndpoint("/swagger/" + apiVersionString + "/swagger.json", apiVersionString);
+		c.SwaggerEndpoint("./" + apiVersionString + "/swagger.json", apiVersionString);
 	});
 }
 
