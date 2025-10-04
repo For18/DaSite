@@ -1,5 +1,6 @@
-using System;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
@@ -27,11 +28,23 @@ app.MapControllers();
 
 if (app.Environment.IsDevelopment())
 {
-	app.UseSwagger();
+	app.UseSwagger(c =>
+	{
+		c.RouteTemplate = "docs/{documentname}.json";
+	});
 	app.UseSwaggerUI(c =>
 	{
-		c.SwaggerEndpoint("./" + apiVersionString + "/swagger.json", apiVersionString);
+		c.SwaggerEndpoint(apiVersionString + ".json", apiVersionString);
+		c.RoutePrefix = "docs";
 	});
 }
+
+using (var context = new DatabaseContext())
+{
+	RelationalDatabaseCreator databaseCreator = (RelationalDatabaseCreator)context.Database.GetService<IDatabaseCreator>();
+	databaseCreator.EnsureCreated();
+}
+
+app.MapGet("/health", () => "Healthy");
 
 app.Run();
