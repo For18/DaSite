@@ -16,7 +16,7 @@ builder.Services.AddRouting();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-	c.SwaggerDoc(apiVersionString, new OpenApiInfo { Title = apiName, Version = apiVersionString });
+	c.SwaggerDoc(apiVersionString, new OpenApiInfo { Version = apiVersionString });
 });
 
 var app = builder.Build();
@@ -31,7 +31,7 @@ if (app.Environment.IsDevelopment())
 	app.UseSwagger();
 	app.UseSwaggerUI(c =>
 	{
-		c.SwaggerEndpoint("/swagger.json", apiName + " " + apiVersionString);
+		c.SwaggerEndpoint("/swagger/" + apiVersionString + "/swagger.json", apiVersionString);
 	});
 }
 
