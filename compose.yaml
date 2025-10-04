@@ -9,16 +9,26 @@ services:
   backend:
     build: ./apps/backend
     environment:
-      - DOTNET_ENVIRONMENT=Development
+      DOTNET_ENVIRONMENT: Development
+      MYSQL_CONNECTION_STRING: server=db;database=for18;user=for18;password=bVSFogXKSd1q3pVc
+    depends_on:
+      db:
+        condition: service_healthy
   db:
     image: mysql:lts
     environment:
-      MYSQL_ROOT_PASSWORD: tGZzoc6JLAPh8PDx
+      MYSQL_RANDOM_ROOT_PASSWORD: yes
       MYSQL_DATABASE: for18
       MYSQL_USER: for18
       MYSQL_PASSWORD: bVSFogXKSd1q3pVc
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping"]
+      interval: 10s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
   proxy:
     build: ./apps/proxy
     ports:
@@ -28,6 +38,11 @@ services:
         - action: sync
           path: ./apps/proxy/nginx.conf
           target: /etc/nginx/nginx.conf
+    depends_on:
+      frontend:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
 
 volumes:
   db_data:
