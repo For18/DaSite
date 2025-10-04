@@ -6,7 +6,6 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-string apiName = "API";
 string apiVersionString = "v1";
 
 // Add services to the container.
