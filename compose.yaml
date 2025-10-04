@@ -8,6 +8,8 @@ services:
           target: /app/src
   backend:
     build: ./apps/backend
+    environment:
+      - DOTNET_ENVIRONMENT=Development
   db:
     image: mysql:lts
     environment:
