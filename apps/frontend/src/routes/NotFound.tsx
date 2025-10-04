@@ -1,4 +1,3 @@
-import Typography from "@mui/material/Typography";
 import Header from "../components/Header";
 
 export default function NotFound() {
