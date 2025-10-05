@@ -5,11 +5,11 @@ public class ProductImage
 {
 	[Key]
 	[Required]
-	public required long Id { get; set; }
+	public required ulong Id { get; set; }
 
 	[Required]
 	[ForeignKey(nameof(Product))]
-	public required long ProductId { get; set; }
+	public required Product Parent { get; set; }
 
 	[Required]
 	public required string Url { get; set; }
@@ -19,7 +19,7 @@ public class Product
 {
 	[Key]
 	[Required]
-	public required long Id { get; set; }
+	public required ulong Id { get; set; }
 
 	[Required]
 	[StringLength(50)]
@@ -28,5 +28,8 @@ public class Product
 	public string? Description { get; set; }
 
 	[ForeignKey(nameof(ProductImage))]
-	public long? ThumbnailImageId { get; set; }
+	public ProductImage? ThumbnailImage { get; set; }
+
+	[Required]
+	public required long Owner { get; set; }
 }

@@ -1,0 +1,28 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+public class Auction
+{
+	[Key]
+	[Required]
+	public required ulong Id { get; set; }
+
+	[Required]
+	public required ushort Count { get; set; }
+	[Required]
+	public required uint BatchSize { get; set; }
+
+	[Required]
+	public required uint StartingPrice { get; set; }
+
+	[Required]
+	public required uint MinimumPrice { get; set; }
+
+	[Required]
+	public required ulong StartingTime { get; set; }
+
+	[ForeignKey(nameof(User))]
+	[DeleteBehavior(DeleteBehavior.SetNull)]
+	public User? Planner { get; set; }
+}

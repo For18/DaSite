@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 public class ProductController : ControllerBase
 {
 	[HttpGet("/product/{id}")]
-	public ActionResult<Product> GetProduct(long id)
+	public ActionResult<Product> GetProduct(ulong id)
 	{
 		using (var db = new DatabaseContext())
 		{
