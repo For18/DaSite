@@ -48,9 +48,9 @@ if (app.Environment.IsDevelopment())
 	});
 }
 
-using (var context = new DatabaseContext())
+using (var db = new DatabaseContext())
 {
-	RelationalDatabaseCreator databaseCreator = (RelationalDatabaseCreator)context.Database.GetService<IDatabaseCreator>();
+	RelationalDatabaseCreator databaseCreator = (RelationalDatabaseCreator) db.Database.GetService<IDatabaseCreator>();
 	databaseCreator.EnsureCreated();
 }
 
