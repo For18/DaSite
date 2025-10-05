@@ -1,5 +1,4 @@
 using System.Linq;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -10,7 +9,7 @@ public class ProductController : ControllerBase
 	{
 		using (var db = new DatabaseContext())
 		{
-			Product? product = db.Products.Where(p => p.Id == id).First();
+			Product? product = db.Products.Where(product => product.Id == id).FirstOrDefault();
 
 			if (product == null) return NotFound();
 
