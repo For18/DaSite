@@ -56,4 +56,4 @@ using (var context = new DatabaseContext())
 
 app.MapGet("/health", () => "Healthy");
 
-app.Run("0.0.0.0:" + (Environment.GetEnvironmentVariable("PORT") ?? "8080"));
+app.Run("http://+:" + (Environment.GetEnvironmentVariable("PORT") ?? "8080"));
