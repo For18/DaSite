@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-[Route("/account")]
-public class AccountController : ControllerBase
+[Route("/user")]
+public class UserController : ControllerBase
 {
 	[HttpGet("login")]
 	public async Task Login(string returnUrl = "/")
