@@ -1,3 +1,5 @@
+using System;
+using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -18,12 +20,19 @@ builder.Services.AddSwaggerGen(c =>
 {
 	c.SwaggerDoc(apiVersionString, new OpenApiInfo { Version = apiVersionString });
 });
+builder.Services.AddAuth0WebAppAuthentication(options =>
+{
+	options.Domain = Environment.GetEnvironmentVariable("AUTH0_DOMAIN") ?? throw new Exception("Missing environment variable \"AUTH0_DOMAIN\"");
+	options.ClientId = Environment.GetEnvironmentVariable("AUTH0_CLIENTID") ?? throw new Exception("Missing environment variable \"AUTH0_CLIENTID\"");
+});
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 
 if (app.Environment.IsDevelopment())
