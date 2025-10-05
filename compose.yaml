@@ -13,6 +13,7 @@ services:
       MYSQL_CONNECTION_STRING: server=db;database=for18;user=for18;password=bVSFogXKSd1q3pVc
       AUTH0_DOMAIN: dev-sgosh6ob4ol3bdpq.us.auth0.com
       AUTH0_CLIENTID: BTpnrucZXi23g7Pur3gIa0Umo4XNXay3
+      PORT: 8080
     depends_on:
       db:
         condition: service_healthy
