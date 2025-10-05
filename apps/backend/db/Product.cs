@@ -1,4 +1,19 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+public class ProductImage
+{
+	[Key]
+	[Required]
+	public required long Id { get; set; }
+
+	[Required]
+	[ForeignKey(nameof(Product))]
+	public required long ProductId { get; set; }
+
+	[Required]
+	public required string Url { get; set; }
+}
 
 public class Product
 {
@@ -12,7 +27,6 @@ public class Product
 
 	public string? Description { get; set; }
 
-	public string? ThumbnailImageUrl { get; set; }
-
-	public required string[] ImageUrls;
+	[ForeignKey(nameof(ProductImage))]
+	public long? ThumbnailImageId { get; set; }
 }
