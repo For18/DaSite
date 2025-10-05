@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
-import { randomCharacter } from "../util";
+import { randomCharacter } from "../lib/util";
 import Typography from "@mui/material/Typography";
 import Header from "../components/Header";
 
