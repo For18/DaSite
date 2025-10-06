@@ -1,22 +1,74 @@
 {
-  "$schema": "https://dprint.dev/schemas/v0.json",
-  "newLineKind": "lf",
-  "plugins": [
-    "https://plugins.dprint.dev/typescript-0.91.4.wasm",
-    "https://plugins.dprint.dev/json-0.19.2.wasm",
-    "https://plugins.dprint.dev/yaml-0.6.1.wasm"
-  ],
-    "indentWidth": 4,
-    "useTabs": true,
-    "quoteStyle": "preferDouble",
-    "trailingCommas": "never",
-    "insertFinalNewline": false,
+	"$schema": "https://dprint.dev/schemas/v0.json",
+	"newLineKind": "lf",
+	"plugins": [
+		"https://plugins.dprint.dev/typescript-0.91.4.wasm",
+		"https://plugins.dprint.dev/json-0.20.0.wasm",
+		"https://plugins.dprint.dev/g-plane/pretty_yaml-v0.5.1.wasm"
+	],
+	"indentWidth": 4,
+	"useTabs": true,
 
-  "typescript": {
-    "semiColons": "always",
-    "jsxBracketSameLine": true,
-    "spaceSurroundingProperties": true,
+	"typescript": {
+		"semiColons": "always",
+		"jsx.quoteStyle": "preferDouble",
+		"quoteStyle": "preferDouble",
+		"quoteProps": "consistent",
+		"useBraces": "whenNotSingleLine",
+		"bracePosition": "sameLine",
+		"singleBodyPosition": "sameLine",
+		"nextControlFlowPosition": "sameLine",
+		"trailingCommas": "never",
+		"preferHanging": true,
+		"operatorPosition": "sameLine",
+		"arrowFunction.useParentheses": "preferNone",
+		"jsx.bracketPosition": "nextLine",
+		"jsx.multiLineParens": "prefer",
+		"typeLiteral.separatorKind.multiLine": "semiColon",
+		"typeLiteral.separatorKind.singleLine": "comma",
+		"enumDeclaration.memberSpacing": "newLine",
+		"spaceAround": false,
+		"spaceSurroundingProperties": true,
+		"commentLine.forceSpaceAfterSlashes": true,
+		"constructor.spaceBeforeParentheses": false,
+		"constructorType.spaceAfterNewKeyword": false,
+		"constructSignature.spaceAfterNewKeyword": false,
+		"doWhileStatement.spaceAfterWhileKeyword": true,
+		"exportDeclaration.spaceSurroundingNamedExports": true,
+		"forInStatement.spaceAfterForKeyword": true,
+		"forOfStatement.spaceAfterForKeyword": true,
+		"forStatement.spaceAfterForKeyword": true,
+		"forStatement.spaceAfterSemiColons": true,
+		"functionDeclaration.spaceBeforeParentheses": false,
+		"functionExpression.spaceBeforeParentheses": false,
+		"functionExpression.spaceAfterFunctionKeyword": false,
+		"getAccessor.spaceBeforeParentheses": false,
+		"ifStatement.spaceAfterIfKeyword": true,
+		"importDeclaration.spaceSurroundingNamedImports": true,
+		"jsxSelfClosingElement.spaceBeforeSlash": false,
+		"jsxExpressionContainer.spaceSurroundingExpression": false,
+		"method.spaceBeforeParentheses": false,
+		"setAccessor.spaceBeforeParentheses": true,
+		"taggedTemplate.spaceBeforeLiteral": false,
+		"typeAnnotation.spaceBeforeColon": false,
+		"typeAssertion.spaceBeforeExpression": true,
+		"whileStatement.spaceAfterWhileKeyword": true,
+		"module.sortImportDeclarations": "caseInsensitive",
+		"module.sortExportDeclarations": "maintain",
+		"exportDeclaration.sortNamedExports": "caseInsensitive",
+		"importDeclaration.sortNamedImports": "caseInsensitive"
+	},
 
-    "objectCurlySpacing": true
-  }
+	"json": {
+		"commentLine.forceSpaceAfterSlashes": true,
+		"trailingCommas": "never"
+	},
+
+	"yaml": {
+		"indentWidth": 2,
+		"quotes": "preferDouble",
+		"trailingComma": false,
+		"formatComments": false,
+		"dashSpacing": "oneSpace"
+	}
 }
