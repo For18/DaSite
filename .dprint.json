@@ -1,0 +1,22 @@
+{
+  "$schema": "https://dprint.dev/schemas/v0.json",
+  "newLineKind": "lf",
+  "plugins": [
+    "https://plugins.dprint.dev/typescript-0.91.4.wasm",
+    "https://plugins.dprint.dev/json-0.19.2.wasm",
+    "https://plugins.dprint.dev/yaml-0.6.1.wasm"
+  ],
+    "indentWidth": 4,
+    "useTabs": true,
+    "quoteStyle": "preferDouble",
+    "trailingCommas": "never",
+    "insertFinalNewline": false,
+
+  "typescript": {
+    "semiColons": "always",
+    "jsxBracketSameLine": true,
+    "spaceSurroundingProperties": true,
+
+    "objectCurlySpacing": true
+  }
+}
