@@ -1,5 +1,5 @@
-import { range, useTime } from "../util";
-import { Color, useTheme } from "@mui/material/styles";
+import { range, useTime } from "../lib/util";
+import { useTheme } from "@mui/material/styles";
 
 function animation(t: number): number {
 	t = t % 1;
