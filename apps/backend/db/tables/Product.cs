@@ -9,7 +9,7 @@ public class ProductImage
 
 	[Required]
 	[ForeignKey(nameof(Product))]
-	public required Product Parent { get; set; }
+	public required ulong Parent { get; set; }
 
 	[Required]
 	public required string Url { get; set; }
