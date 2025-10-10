@@ -17,6 +17,7 @@ string apiVersionString = "v1";
 builder.Services.AddControllers();
 builder.Services.AddRouting();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddSwaggerGen(c =>
 {
 	c.SwaggerDoc(apiVersionString, new OpenApiInfo { Version = apiVersionString });
