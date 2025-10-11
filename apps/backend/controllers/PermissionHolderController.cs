@@ -58,7 +58,7 @@ public class PermissionHolderController: ControllerBase
     }
   }
 
-  [HttpPatch]
+  [HttpPatch("{id}")]
   public ActionResult Update(ulong id, [FromBody] JsonPatchDocument<PermissionHolder> patchdoc)
   {
     using (var db = new DatabaseContext())

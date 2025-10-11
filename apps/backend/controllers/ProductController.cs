@@ -59,7 +59,7 @@ public class ProductController : ControllerBase
     }
   }
 
-  [HttpPatch]
+  [HttpPatch("{id}")]
   public ActionResult Patch(ulong id, [FromBody] JsonPatchDocument<Product> patchdoc)
   {
     using (var db = new DatabaseContext())

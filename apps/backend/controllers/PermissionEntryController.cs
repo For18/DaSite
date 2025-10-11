@@ -58,7 +58,7 @@ public class PermissionEntryController: ControllerBase
     }
   }
 
-  [HttpPatch]
+  [HttpPatch("{key}")]
   public ActionResult Update(ulong key, [FromBody] JsonPatchDocument<PermissionEntry> patchdoc)
   {
     using (var db = new DatabaseContext())

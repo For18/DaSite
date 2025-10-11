@@ -58,7 +58,7 @@ public class SaleController: ControllerBase
     }
   }
 
-  [HttpPatch]
+  [HttpPatch("{id}")]
   public ActionResult Update(ulong id, [FromBody] JsonPatchDocument<Sale> patchdoc)
   {
     using (var db = new DatabaseContext())

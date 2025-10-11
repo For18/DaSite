@@ -58,7 +58,7 @@ public class PermissionGroupController: ControllerBase
     }
   }
 
-  [HttpPatch]
+  [HttpPatch("{id}")]
   public ActionResult Update(ulong id, [FromBody] JsonPatchDocument<PermissionGroup> patchdoc)
   {
     using (var db = new DatabaseContext())
