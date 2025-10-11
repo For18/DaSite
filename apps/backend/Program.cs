@@ -14,7 +14,6 @@ string apiVersionString = "v1";
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddControllers();
 builder.Services.AddRouting();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers().AddNewtonsoftJson();
