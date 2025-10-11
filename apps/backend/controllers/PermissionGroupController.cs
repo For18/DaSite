@@ -34,7 +34,7 @@ public class PermissionGroupController: ControllerBase
 	{
 		using (var db = new DatabaseContext())
 		{
-			if (db.PermissionGroups.Any(pgroup=> pgroup.Id == permissionGroup.Id)) return Conflict("Already exists");
+			if (db.PermissionGroups.Any(pgroup => pgroup.Id == permissionGroup.Id)) return Conflict("Already exists");
 
 			db.PermissionGroups.Add(permissionGroup);
 			db.SaveChanges();

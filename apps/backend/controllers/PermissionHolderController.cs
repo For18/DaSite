@@ -34,7 +34,7 @@ public class PermissionHolderController: ControllerBase
 	{
 		using (var db = new DatabaseContext())
 		{
-			if (db.PermissionHolders.Any(pholder=> pholder.Id == permissionHolder.Id)) return Conflict("Already exists");
+			if (db.PermissionHolders.Any(pholder => pholder.Id == permissionHolder.Id)) return Conflict("Already exists");
 
 			db.PermissionHolders.Add(permissionHolder);
 			db.SaveChanges();
