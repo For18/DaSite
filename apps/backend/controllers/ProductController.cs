@@ -1,11 +1,13 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.JsonPatch;
 
 [ApiController]
+[Route("product")]
 public class ProductController : ControllerBase
 {
-	[HttpGet("/product/{id}")]
-	public ActionResult<Product> GetProduct(ulong id)
+	[HttpGet("{id}")]
+	public ActionResult<Product> Get(ulong id)
 	{
 		using (var db = new DatabaseContext())
 		{
@@ -18,7 +20,7 @@ public class ProductController : ControllerBase
 	}
 
 	[HttpGet("/products")]
-	public ActionResult<Product[]> GetProducts()
+	public ActionResult<Product[]> GetAll()
 	{
 		using (var db = new DatabaseContext())
 		{
@@ -28,12 +30,12 @@ public class ProductController : ControllerBase
 		}
 	}
 
-	[HttpPost("/product")]
-	public ActionResult PostProduct(Product product)
+	[HttpPost]
+	public ActionResult Post(Product product)
 	{
 		using (var db = new DatabaseContext())
 		{
-			if (db.Products.Any(p => p.Id == product.Id)) return Conflict("Already exists");
+			if (db.Products.Any(prod => prod.Id == product.Id)) return Conflict("Already exists");
 
 			db.Products.Add(product);
 			db.SaveChanges();
@@ -41,4 +43,39 @@ public class ProductController : ControllerBase
 			return Ok();
 		}
 	}
+
+  [HttpDelete]
+  public ActionResult Delete(ulong id)
+  {
+    using (var db = new DatabaseContext())
+    {
+      Product? product = db.Products.Find(id);
+      if (product == null) return NotFound();
+
+      db.Products.Remove(product);
+      db.SaveChanges();
+
+      return NoContent();
+    }
+  }
+
+  [HttpPatch("{id}")]
+  public ActionResult Patch(ulong id, [FromBody] JsonPatchDocument<Product> patchdoc)
+  {
+    using (var db = new DatabaseContext())
+    {
+      Product? product = db.Products.Find(id);
+      if (product == null) return NotFound();
+
+      patchdoc.ApplyTo(product, ModelState);
+
+      if (!ModelState.IsValid)
+      {
+        return BadRequest(ModelState);
+      }
+
+      db.SaveChanges();
+      return Ok(product);
+    }
+  }
 }
