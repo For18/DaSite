@@ -2,6 +2,7 @@ import TopBar from "./TopBar";
 import Footer from "./Footer";
 import { PropsWithChildren } from "react";
 import { useTheme } from "@mui/material/styles";
+import Auction from "../routes/Auction";
 
 export default function Layout({ children }: PropsWithChildren) {
 	const theme = useTheme();
@@ -19,6 +20,7 @@ export default function Layout({ children }: PropsWithChildren) {
 			<TopBar
 				links={{
 					Home: "/",
+					Auction: "/auction",
 				}}
 			/>
 			<article
