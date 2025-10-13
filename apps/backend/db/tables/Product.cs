@@ -31,5 +31,5 @@ public class Product
 	public ProductImage? ThumbnailImage { get; set; }
 
 	[Required]
-	public required long Owner { get; set; }
+	public required ulong Owner { get; set; }
 }
