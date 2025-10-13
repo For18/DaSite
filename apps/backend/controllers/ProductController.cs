@@ -44,7 +44,7 @@ public class ProductController : ControllerBase
 		}
 	}
 
-  [HttpDelete]
+  [HttpDelete("{Id}")]
   public ActionResult Delete(ulong id)
   {
     using (var db = new DatabaseContext())
