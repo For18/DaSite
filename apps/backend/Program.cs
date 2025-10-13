@@ -31,11 +31,7 @@ builder.Services.AddAuth0WebAppAuthentication(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-// Don't use HTTPS redirection in development/Docker environment
-if (!app.Environment.IsDevelopment())
-{
-	app.UseHttpsRedirection();
-}
+app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
@@ -56,7 +52,7 @@ if (app.Environment.IsDevelopment())
 
 using (var db = new DatabaseContext())
 {
-	RelationalDatabaseCreator databaseCreator = (RelationalDatabaseCreator)db.Database.GetService<IDatabaseCreator>();
+	RelationalDatabaseCreator databaseCreator = (RelationalDatabaseCreator) db.Database.GetService<IDatabaseCreator>();
 	databaseCreator.EnsureCreated();
 }
 
