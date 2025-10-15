@@ -1,9 +1,9 @@
 import { alpha } from "@mui/material/styles";
-import ProductView from "../components/ProductView";
-import { useParams } from "react-router";
 import { useEffect, useState } from "react";
-import { API_URL, Auction } from "../lib/api";
+import { useParams } from "react-router";
+import ProductView from "../components/ProductView";
 import Throbber from "../components/Throbber";
+import { API_URL, Auction } from "../lib/api";
 
 export default function Clock() {
 	const { auctionId } = useParams();
@@ -11,7 +11,7 @@ export default function Clock() {
 
 	useEffect(() => {
 		fetch(API_URL + "/auction/" + auctionId).then(response => response.json()).then(setAuction);
-	}, [auctionId])
+	}, [auctionId]);
 
 	return (
 		<div

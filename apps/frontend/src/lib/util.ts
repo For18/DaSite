@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 
-const RANDOM_CHARACTER_SET =
-	"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+const RANDOM_CHARACTER_SET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
 export function randomCharacter(): string {
 	return RANDOM_CHARACTER_SET.charAt(
-		Math.floor(Math.random() * RANDOM_CHARACTER_SET.length),
+		Math.floor(Math.random() * RANDOM_CHARACTER_SET.length)
 	);
 }
 

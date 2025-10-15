@@ -1,11 +1,11 @@
-import { useNavigate } from "react-router";
-import ThemeSelector from "./ThemeSelector";
-import Themes from "../Themes";
-import { alpha } from "@mui/material/styles";
 import Button from "@mui/material/Button";
+import { alpha } from "@mui/material/styles";
+import { useNavigate } from "react-router";
+import Themes from "../Themes";
+import ThemeSelector from "./ThemeSelector";
 
 export default function TopBar({
-	links,
+	links
 }: {
 	links: { [name: string]: string };
 }) {
@@ -19,16 +19,16 @@ export default function TopBar({
 				flexDirection: "row",
 				justifyContent: "space-evenly",
 				alignItems: "center",
-				backgroundColor: alpha("#888888", 0.05),
+				backgroundColor: alpha("#888888", 0.05)
 			}}
 		>
 			<nav>
-				{Object.entries(links).map((entry) => {
+				{Object.entries(links).map(entry => {
 					const [name, path] = entry;
 					return (
 						<Button
 							key={name}
-							onClick={(e) => {
+							onClick={e => {
 								navigate(path);
 							}}
 						>
@@ -39,7 +39,7 @@ export default function TopBar({
 			</nav>
 			<ThemeSelector
 				style={{
-					justifySelf: "end",
+					justifySelf: "end"
 				}}
 				themes={[Themes.LIGHT, Themes.DARK]}
 			/>
