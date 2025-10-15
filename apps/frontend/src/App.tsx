@@ -35,7 +35,7 @@ export default function App() {
 								}
 							/>
 							<Route
-								path="/clock"
+								path="/clock/:auctionId"
 								element={
 									<Suspense fallback={<Throbber />}>
 										<Clock />
