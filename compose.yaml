@@ -6,6 +6,8 @@ services:
         - action: sync
           path: ./apps/frontend/src
           target: /app/src
+    environment:
+      VITE_API_URL: "/api/v1"
   backend:
     build: ./apps/backend
     environment:
