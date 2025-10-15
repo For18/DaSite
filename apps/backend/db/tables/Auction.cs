@@ -22,6 +22,11 @@ public class Auction
 	[Required]
 	public required ulong StartingTime { get; set; }
 
+	[Required]
+	[ForeignKey(nameof(Product))]
+	[DeleteBehavior(DeleteBehavior.Cascade)]
+	public required Product Product { get; set; }
+
 	[ForeignKey(nameof(User))]
 	[DeleteBehavior(DeleteBehavior.NoAction)]
 	public User? Planner { get; set; }
