@@ -23,6 +23,6 @@ public class Auction
 	public required ulong StartingTime { get; set; }
 
 	[ForeignKey(nameof(User))]
-	[DeleteBehavior(DeleteBehavior.SetNull)]
+	[DeleteBehavior(DeleteBehavior.NoAction)]
 	public User? Planner { get; set; }
 }
