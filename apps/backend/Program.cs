@@ -50,10 +50,37 @@ if (app.Environment.IsDevelopment())
 	});
 }
 
-using (var db = new DatabaseContext())
+// Retry logic for database connection
+int maxRetries = 30;
+int retryCount = 0;
+bool connected = false;
+
+while (!connected && retryCount < maxRetries)
 {
-	RelationalDatabaseCreator databaseCreator = (RelationalDatabaseCreator) db.Database.GetService<IDatabaseCreator>();
-	databaseCreator.EnsureCreated();
+	try
+	{
+		using (var db = new DatabaseContext())
+		{
+			RelationalDatabaseCreator databaseCreator = (RelationalDatabaseCreator)db.Database.GetService<IDatabaseCreator>();
+			databaseCreator.EnsureCreated();
+			connected = true;
+			Console.WriteLine("Successfully connected to database");
+		}
+	}
+	catch (Exception ex)
+	{
+		retryCount++;
+		Console.WriteLine($"Database connection attempt {retryCount}/{maxRetries} failed: {ex.Message}");
+		if (retryCount < maxRetries)
+		{
+			System.Threading.Thread.Sleep(2000); // Wait 2 seconds before retrying
+		}
+		else
+		{
+			Console.WriteLine("Failed to connect to database after maximum retries");
+			throw;
+		}
+	}
 }
 
 app.MapGet("/health", () => "Healthy");
