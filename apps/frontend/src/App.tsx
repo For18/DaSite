@@ -7,8 +7,9 @@ import Throbber from "./components/Throbber";
 import NotFound from "./routes/NotFound";
 const Home = lazy(() => import("./routes/Home"));
 const Clock = lazy(() => import("./routes/Clock"));
+const Auctions = lazy(() => import("./routes/Auctions"));
 
-export const SetThemeContext = createContext<(theme: Theme) => void>(() => {});
+export const SetThemeContext = createContext<(theme: Theme) => void>(() => { });
 
 export default function App() {
 	const [theme, setThemeState] = useState<Theme>(
@@ -41,8 +42,16 @@ export default function App() {
 										<Clock />
 									</Suspense>
 								}
-							/>
 
+							/>
+							<Route
+								path="/Auctions"
+								element={
+									<Suspense fallback={<Throbber />}>
+										<Auctions />
+									</Suspense>
+								}
+							/>
 							<Route path="*" element={<NotFound />} />
 						</Routes>
 					</Layout>

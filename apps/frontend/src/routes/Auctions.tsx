@@ -4,7 +4,7 @@ import { randomCharacter } from "../lib/util";
 import Typography from "@mui/material/Typography";
 import Header from "../components/Header";
 
-export default function Auction() {
+export default function Auctions() {
     const [text, setText] = useState("Live Auctions");
 
     useEffect(() => {
