@@ -10,8 +10,6 @@ export default function NotFound() {
 			}}
 		>
 			<img src="https://http.cat/404.png"/>
-			<Header level={-3}>404</Header>
-			<Header level={1}>Not found</Header>
 		</div>
 	);
 }
