@@ -23,6 +23,9 @@ public class Auction
 	public required ulong StartingTime { get; set; }
 
 	[Required]
+	public required uint Length { get; set; }
+
+	[Required]
 	[ForeignKey("ProductId")]
 	[DeleteBehavior(DeleteBehavior.Cascade)]
 	public virtual required Product Product { get; set; }
