@@ -7,13 +7,13 @@ using MySql.Data.MySqlClient;
 
 public class DatabaseConnector
 {
-	private readonly int retryDelayMillis;
-	private readonly int maxRetryCount;
+	private readonly int RetryDelayMillis;
+	private readonly int MaxRetryCount;
 
 	public DatabaseConnector(int retryDelayMillis, int maxRetryCount)
 	{
-		this.retryDelayMillis = retryDelayMillis;
-		this.maxRetryCount = maxRetryCount;
+		RetryDelayMillis = retryDelayMillis;
+		MaxRetryCount = maxRetryCount;
 	}
 	public async Task<DatabaseContext> Connect()
 	{
@@ -34,10 +34,10 @@ public class DatabaseConnector
 
 			retryCount++;
 
-			if (retryCount >= maxRetryCount) throw new Exception("Reached maximum retry count", lastException);
+			if (retryCount >= MaxRetryCount) throw new Exception("Reached maximum retry count", lastException);
 
 			Console.WriteLine(@"Warning: Failed to connect to database, retrying...");
-			if (retryDelayMillis > 0) Thread.Sleep(retryDelayMillis);
+			if (RetryDelayMillis > 0) Thread.Sleep(RetryDelayMillis);
 		}
 	}
 }
