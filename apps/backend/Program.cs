@@ -1,14 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Task<DatabaseContext> dbTask = new DatabaseConnector(
+	Convert.ToInt32(Environment.GetEnvironmentVariable("DB_RETRY_DELAY")),
+	Convert.ToInt32(Environment.GetEnvironmentVariable("DB_RETRY_COUNT"))
+).Connect();
 
 string apiVersionString = "v1";
 
@@ -50,11 +54,7 @@ if (app.Environment.IsDevelopment())
 	});
 }
 
-using (var db = new DatabaseContext())
-{
-	RelationalDatabaseCreator databaseCreator = (RelationalDatabaseCreator) db.Database.GetService<IDatabaseCreator>();
-	databaseCreator.EnsureCreated();
-}
+DatabaseContext db = await dbTask;
 
 app.MapGet("/health", () => "Healthy");
 
