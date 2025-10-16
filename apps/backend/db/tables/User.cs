@@ -10,6 +10,14 @@ public class User
     public required double AuctionDebt { get; set; }
 
     [Required]
+    [StringLength(32)]
+    public required string DisplayName {get; set;}
+
+    [Required]
+    [StringLength(128)]
+    public required string ImageUrl {get; set;}
+
+    [Required]
     [StringLength(254)]
     public required string Email { get; set; }
 
