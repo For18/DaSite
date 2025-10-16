@@ -1,5 +1,7 @@
 /// <reference types="vite/client" />
 
+import { useEffect, useState } from "react";
+
 export const API_URL: string = import.meta.env.VITE_API_URL;
 
 export type Product = {
@@ -18,6 +20,20 @@ export type Auction = {
 	startingPrice: number;
 	minimumPrice: number;
 	startingTime: number;
-	product: number;
-	planner: number;
+	productId: number;
+	plannerId: number;
 };
+
+export function useAPI<T>(route: string): T | null | undefined {
+	const [value, setValue] = useState<T | null | undefined>(null);
+
+	useEffect(() => {
+		setValue(null);
+		fetch(API_URL + route).then(response => {
+			if (response.status == 404) return setValue(undefined);
+			return response.json();
+		}).then(setValue);
+	}, [route]);
+
+	return value;
+}
