@@ -27,7 +27,7 @@ services:
       MYSQL_USER: for18
       MYSQL_PASSWORD: bVSFogXKSd1q3pVc
     volumes:
-      - db_data:/var/lib/mysql
+      - db:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping"]
       interval: 10s
@@ -50,4 +50,4 @@ services:
         condition: service_healthy
 
 volumes:
-  db_data:
+  db:
