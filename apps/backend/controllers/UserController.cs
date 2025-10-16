@@ -18,9 +18,10 @@ public class PublicUser
 }
 
 [ApiController]
+[Route("user")]
 public class UserController : ControllerBase
 {
-  [HttpGet("public-user/{id}")]
+  [HttpGet("{id}")]
   public ActionResult<PublicUser> GetPublic(ulong id)
   {
     using var db = new DatabaseContext();
@@ -37,7 +38,7 @@ public class UserController : ControllerBase
     }
   }
 
-  [HttpGet("user/{id}")]
+  [HttpGet("/private-user/{id}")]
   public ActionResult<User> GetPrivate(ulong id)
   {
     using var db = new DatabaseContext();
@@ -49,7 +50,7 @@ public class UserController : ControllerBase
     }
   }
 
-  [HttpGet("users")]
+  [HttpGet("/private-users")]
   public ActionResult<User[]> GetAllPrivate()
   {
     using (var db = new DatabaseContext())
