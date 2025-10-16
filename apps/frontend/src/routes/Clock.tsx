@@ -8,9 +8,9 @@ import NotFound from "./NotFound";
 export default function Clock() {
 	const { auctionId } = useParams();
 	const auction = useAPI<Auction>("/auction/" + auctionId);
-	if (auction == undefined) return <NotFound/>
+	if (auction == undefined) return <NotFound/>;
 
-	const product = useAPI<Product>("/product" + auction.productId)
+	const product = useAPI<Product>("/product" + auction.productId);
 
 	return (
 		<div
