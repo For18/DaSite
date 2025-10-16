@@ -29,7 +29,7 @@ public class UserController : ControllerBase
       User? user = db.Users.Find(id);
       if (user == null) return NotFound();
 
-      return new PublicUser{
+      return new PublicUser {
         DisplayName = user.DisplayName,
         ImageUrl = user.ImageUrl,
         Email = user.Email,
@@ -61,27 +61,19 @@ public class UserController : ControllerBase
     }
   }
 
-  [HttpGet("public-users")]
+  [HttpGet("/users")]
   public ActionResult<PublicUser[]> GetAllPublic()
   {
     using (var db = new DatabaseContext())
     {
       User[] users = db.Users.ToArray();
-      PublicUser[] publicUsers = new PublicUser[users.Length];
 
-      foreach (User user in users)
-      {
-        publicUsers.Append(
-              new PublicUser{
-                DisplayName = user.DisplayName,
-                ImageUrl = user.ImageUrl,
-                Email = user.Email,
-                TelephoneNumber = user.TelephoneNumber
-              }
-            );
-      }
-      
-      return publicUsers;
+      return users.Select(user => new PublicUser {
+        DisplayName = user.DisplayName,
+        ImageUrl = user.ImageUrl,
+        Email = user.Email,
+        TelephoneNumber = user.TelephoneNumber
+      }).ToArray();
     }
   }
 
