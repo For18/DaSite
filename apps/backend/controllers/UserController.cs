@@ -6,11 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("/user")]
-public class UserController : ControllerBase
-{
+public class UserController : ControllerBase {
 	[HttpGet("login")]
-	public async Task Login(string returnUrl = "/")
-	{
+	public async Task Login(string returnUrl = "/") {
 		var authenticationProperties = new LoginAuthenticationPropertiesBuilder()
 			.WithRedirectUri("./")
 		.Build();
@@ -20,8 +18,7 @@ public class UserController : ControllerBase
 
 	[HttpGet("logout")]
 	[Authorize]
-	public async Task Logout()
-	{
+	public async Task Logout() {
 		var authenticationProperties = new LoginAuthenticationPropertiesBuilder()
 			.WithRedirectUri("/")
 		.Build();

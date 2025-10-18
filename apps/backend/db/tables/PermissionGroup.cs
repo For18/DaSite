@@ -1,16 +1,15 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-public class PermissionGroup
-{
-    [Key]
-    [Required]
-    public required ulong Id { get; set; }
+public class PermissionGroup {
+	[Key]
+	[Required]
+	public required ulong Id { get; set; }
 
-    [Required]
+	[Required]
 	[ForeignKey("HolderId")]
 	public required PermissionHolder Holder { get; set; }
 
-    [Required]
-    public required string DisplayName { get; set; }
+	[Required]
+	public required string DisplayName { get; set; }
 }

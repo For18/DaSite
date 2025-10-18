@@ -4,10 +4,8 @@ using Microsoft.AspNetCore.JsonPatch;
 using System.ComponentModel;
 
 [DisplayName(nameof(Auction))]
-public class AuctionExternal
-{
-	public AuctionExternal(Auction auction)
-	{
+public class AuctionExternal {
+	public AuctionExternal(Auction auction) {
 		Id = auction.Id;
 		Count = auction.Count;
 		BatchSize = auction.BatchSize;
@@ -18,10 +16,8 @@ public class AuctionExternal
 		ProductId = auction.Product.Id;
 		PlannerId = auction.Planner?.Id;
 	}
-	public Auction ToAuction(DatabaseContext db)
-	{
-		return new Auction
-		{
+	public Auction ToAuction(DatabaseContext db) {
+		return new Auction {
 			Id = Id,
 			Count = Count,
 			BatchSize = BatchSize,
@@ -46,78 +42,67 @@ public class AuctionExternal
 
 [ApiController]
 [Route("auction")]
-public class AuctionController : ControllerBase
-{
-  [HttpGet("{id}")]
-  public ActionResult<AuctionExternal> Get(ulong id)
-  {
-    using var db = new DatabaseContext();
-    {
-
-      Auction? auction = db.Auctions.Find(id);
-      if (auction == null) return NotFound();
-
-      return new AuctionExternal(auction);
-    }
-  }
-
-  [HttpGet("/auctions")]
-  public ActionResult<AuctionExternal[]> GetAll()
-  {
-    using (var db = new DatabaseContext())
-    {
-      return db.Auctions.Select(auction => new AuctionExternal(auction)).ToArray();
-    }
-  }
-
-  [HttpPost]
-  public ActionResult Post(AuctionExternal auctionData)
-  {
-    using (var db = new DatabaseContext())
+public class AuctionController : ControllerBase {
+	[HttpGet("{id}")]
+	public ActionResult<AuctionExternal> Get(ulong id) {
+		using var db = new DatabaseContext();
 		{
 
-      if (db.Auctions.Any(auc => auc.Id == auctionData.Id)) return Conflict("Already exists");
+			Auction? auction = db.Auctions.Find(id);
+			if (auction == null) return NotFound();
+
+			return new AuctionExternal(auction);
+		}
+	}
+
+	[HttpGet("/auctions")]
+	public ActionResult<AuctionExternal[]> GetAll() {
+		using (var db = new DatabaseContext()) {
+			return db.Auctions.Select(auction => new AuctionExternal(auction)).ToArray();
+		}
+	}
+
+	[HttpPost]
+	public ActionResult Post(AuctionExternal auctionData) {
+		using (var db = new DatabaseContext()) {
+
+			if (db.Auctions.Any(auc => auc.Id == auctionData.Id)) return Conflict("Already exists");
 			Auction auction = auctionData.ToAuction(db);
 
-      db.Auctions.Add(auction);
-      db.SaveChanges();
+			db.Auctions.Add(auction);
+			db.SaveChanges();
 
-      return Ok(new IdReference(auction.Id));
-    }
-  }
+			return Ok(new IdReference(auction.Id));
+		}
+	}
 
-  [HttpDelete("{id}")]
-  public  ActionResult Delete(ulong id)
-  {
-    using (var db = new DatabaseContext())
-    {
-      Auction? auction = db.Auctions.Find(id);
-      if (auction == null) return NotFound();
+	[HttpDelete("{id}")]
+	public ActionResult Delete(ulong id) {
+		using (var db = new DatabaseContext()) {
+			Auction? auction = db.Auctions.Find(id);
+			if (auction == null) return NotFound();
 
-      db.Auctions.Remove(auction);
-      db.SaveChanges();
+			db.Auctions.Remove(auction);
+			db.SaveChanges();
 
-      return NoContent();
-    }
-  }
+			return NoContent();
+		}
+	}
 
-  [HttpPatch("{id}")]
-  public  ActionResult Update(ulong id, [FromBody] JsonPatchDocument<Auction> patchdoc)
-  {
-    using (var db = new DatabaseContext())
-    {
-      Auction? auction = db.Auctions.Find(id);
-      if (auction == null) return NotFound();
+	[HttpPatch("{id}")]
+	public ActionResult Update(ulong id, [FromBody] JsonPatchDocument<Auction> patchdoc) {
+		using (var db = new DatabaseContext()) {
+			Auction? auction = db.Auctions.Find(id);
+			if (auction == null) return NotFound();
 
-      patchdoc.ApplyTo(auction, ModelState);
+			patchdoc.ApplyTo(auction, ModelState);
 
-      if (!ModelState.IsValid)
-      {
-        return BadRequest(ModelState);
-      }
+			if (!ModelState.IsValid) {
+				return BadRequest(ModelState);
+			}
 
-      db.SaveChanges();
-      return Ok(auction);
-    }
-  }
+			db.SaveChanges();
+			return Ok(auction);
+		}
+	}
 }

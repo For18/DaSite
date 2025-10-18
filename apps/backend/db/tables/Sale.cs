@@ -3,26 +3,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
-public class Sale
-{
-    [Key]
-    [Required]
-    public required ulong Id { get; set; }
+public class Sale {
+	[Key]
+	[Required]
+	public required ulong Id { get; set; }
 
-    [ForeignKey("PurchaserId")]
+	[ForeignKey("PurchaserId")]
 	[Required]
 	public required User Purchaser { get; set; }
 
-    [ForeignKey("PurchasedAuctionId")]
+	[ForeignKey("PurchasedAuctionId")]
 	[Required]
 	public required Auction PurchasedAuction { get; set; }
 
-    [Required]
-    public required int Amount { get; set; }
+	[Required]
+	public required int Amount { get; set; }
 
-    [Required]
-    public required int Price { get; set; }
+	[Required]
+	public required int Price { get; set; }
 
-    [Required]
-    public required bool IsPaid { get; set; }
+	[Required]
+	public required bool IsPaid { get; set; }
 }

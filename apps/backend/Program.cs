@@ -21,13 +21,11 @@ string apiVersionString = "v1";
 builder.Services.AddRouting();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers().AddNewtonsoftJson();
-builder.Services.AddSwaggerGen(c =>
-{
+builder.Services.AddSwaggerGen(c => {
 	c.SwaggerDoc(apiVersionString, new OpenApiInfo { Version = apiVersionString });
 	c.SwaggerGeneratorOptions.Servers = new List<OpenApiServer> { new OpenApiServer { Url = Environment.GetEnvironmentVariable("API_SERVER_URL") ?? throw new Exception("Missing API_SERVER_URL environment variable") } };
 });
-builder.Services.AddAuth0WebAppAuthentication(options =>
-{
+builder.Services.AddAuth0WebAppAuthentication(options => {
 	options.Domain = Environment.GetEnvironmentVariable("AUTH0_DOMAIN") ?? throw new Exception("Missing environment variable \"AUTH0_DOMAIN\"");
 	options.ClientId = Environment.GetEnvironmentVariable("AUTH0_CLIENTID") ?? throw new Exception("Missing environment variable \"AUTH0_CLIENTID\"");
 });
@@ -41,14 +39,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-if (app.Environment.IsDevelopment())
-{
-	app.UseSwagger(c =>
-	{
+if (app.Environment.IsDevelopment()) {
+	app.UseSwagger(c => {
 		c.RouteTemplate = "docs/{documentname}.json";
 	});
-	app.UseSwaggerUI(c =>
-	{
+	app.UseSwaggerUI(c => {
 		c.SwaggerEndpoint(apiVersionString + ".json", apiVersionString);
 		c.RoutePrefix = "docs";
 	});

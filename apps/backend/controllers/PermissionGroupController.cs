@@ -4,36 +4,30 @@ using Microsoft.AspNetCore.JsonPatch;
 
 [ApiController]
 [Route("permission-group")]
-public class PermissionGroupController: ControllerBase
-{
+public class PermissionGroupController : ControllerBase {
 	[HttpGet("{id}")]
-	public ActionResult<PermissionGroup> Get(ulong id)
-	{
-    using var db = new DatabaseContext();
-    {
-      PermissionGroup? permissionGroup = db.PermissionGroups.Find(id);
-      if (permissionGroup == null) return NotFound();
+	public ActionResult<PermissionGroup> Get(ulong id) {
+		using var db = new DatabaseContext();
+		{
+			PermissionGroup? permissionGroup = db.PermissionGroups.Find(id);
+			if (permissionGroup == null) return NotFound();
 
-      return permissionGroup;
-    }
+			return permissionGroup;
+		}
 	}
 
 	[HttpGet("/permission-groups")]
-	public ActionResult<PermissionGroup[]> GetAll()
-	{
-    using (var db = new DatabaseContext())
-    {
-      PermissionGroup[] permissionGroups = db.PermissionGroups.ToArray();
+	public ActionResult<PermissionGroup[]> GetAll() {
+		using (var db = new DatabaseContext()) {
+			PermissionGroup[] permissionGroups = db.PermissionGroups.ToArray();
 
-      return permissionGroups;
-    }
+			return permissionGroups;
+		}
 	}
 
 	[HttpPost]
-	public ActionResult Post(PermissionGroup permissionGroup)
-	{
-		using (var db = new DatabaseContext())
-		{
+	public ActionResult Post(PermissionGroup permissionGroup) {
+		using (var db = new DatabaseContext()) {
 			if (db.PermissionGroups.Any(pgroup => pgroup.Id == permissionGroup.Id)) return Conflict("Already exists");
 
 			db.PermissionGroups.Add(permissionGroup);
@@ -43,38 +37,33 @@ public class PermissionGroupController: ControllerBase
 		}
 	}
 
-  [HttpDelete("{id}")]
-  public ActionResult Delete(ulong id)
-  {
-    using (var db = new DatabaseContext())
-    {
-      PermissionGroup? permissionGroup = db.PermissionGroups.Find(id);
-      if (permissionGroup == null) return NoContent();
+	[HttpDelete("{id}")]
+	public ActionResult Delete(ulong id) {
+		using (var db = new DatabaseContext()) {
+			PermissionGroup? permissionGroup = db.PermissionGroups.Find(id);
+			if (permissionGroup == null) return NoContent();
 
-      db.PermissionGroups.Remove(permissionGroup);
-      db.SaveChanges();
+			db.PermissionGroups.Remove(permissionGroup);
+			db.SaveChanges();
 
-      return NotFound();
-    }
-  }
+			return NotFound();
+		}
+	}
 
-  [HttpPatch("{id}")]
-  public ActionResult Update(ulong id, [FromBody] JsonPatchDocument<PermissionGroup> patchdoc)
-  {
-    using (var db = new DatabaseContext())
-    {
-      PermissionGroup? permissionGroup = db.PermissionGroups.Find(id);
-      if (permissionGroup == null) return NotFound();
+	[HttpPatch("{id}")]
+	public ActionResult Update(ulong id, [FromBody] JsonPatchDocument<PermissionGroup> patchdoc) {
+		using (var db = new DatabaseContext()) {
+			PermissionGroup? permissionGroup = db.PermissionGroups.Find(id);
+			if (permissionGroup == null) return NotFound();
 
-      patchdoc.ApplyTo(permissionGroup, ModelState);
+			patchdoc.ApplyTo(permissionGroup, ModelState);
 
-      if (!ModelState.IsValid)
-      {
-        return BadRequest(ModelState);
-      }
+			if (!ModelState.IsValid) {
+				return BadRequest(ModelState);
+			}
 
-      db.SaveChanges();
-      return Ok(permissionGroup);
-    }
-  }
+			db.SaveChanges();
+			return Ok(permissionGroup);
+		}
+	}
 }

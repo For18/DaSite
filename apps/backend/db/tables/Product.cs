@@ -2,8 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-public class ProductImage
-{
+public class ProductImage {
 	[Key]
 	[Required]
 	public required ulong Id { get; set; }
@@ -16,8 +15,7 @@ public class ProductImage
 	public required string Url { get; set; }
 }
 
-public class Product
-{
+public class Product {
 	[Key]
 	[JsonIgnore]
 	[Required]
