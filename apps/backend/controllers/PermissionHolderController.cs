@@ -39,7 +39,7 @@ public class PermissionHolderController: ControllerBase
 			db.PermissionHolders.Add(permissionHolder);
 			db.SaveChanges();
 
-			return Ok();
+			return Ok(new IdReference(permissionHolder.Id));
 		}
 	}
 

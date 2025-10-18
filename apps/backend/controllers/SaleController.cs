@@ -39,7 +39,7 @@ public class SaleController: ControllerBase
 			db.Sales.Add(sale);
 			db.SaveChanges();
 
-			return Ok();
+			return Ok(new IdReference(sale.Id));
 		}
 	}
 

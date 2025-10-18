@@ -40,7 +40,7 @@ public class AuctionController : ControllerBase
       db.Auctions.Add(auction);
       db.SaveChanges();
 
-      return Ok();
+      return Ok(new IdReference(auction.Id));
     }
   }
 

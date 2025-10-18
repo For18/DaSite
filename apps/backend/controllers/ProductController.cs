@@ -40,7 +40,7 @@ public class ProductController : ControllerBase
 			db.Products.Add(product);
 			db.SaveChanges();
 
-			return Ok();
+			return Ok(new IdReference(product.Id));
 		}
 	}
 

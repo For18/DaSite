@@ -39,7 +39,7 @@ public class PermissionGroupController: ControllerBase
 			db.PermissionGroups.Add(permissionGroup);
 			db.SaveChanges();
 
-			return Ok();
+			return Ok(new IdReference(permissionGroup.Id));
 		}
 	}
 
