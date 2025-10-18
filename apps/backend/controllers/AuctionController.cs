@@ -1,13 +1,55 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
+using System.ComponentModel;
+
+[DisplayName(nameof(Auction))]
+public class AuctionExternal
+{
+	public AuctionExternal(Auction auction)
+	{
+		Id = auction.Id;
+		Count = auction.Count;
+		BatchSize = auction.BatchSize;
+		StartingPrice = auction.StartingPrice;
+		MinimumPrice = auction.MinimumPrice;
+		StartingTime = auction.StartingTime;
+		Length = auction.Length;
+		ProductId = auction.Product.Id;
+		PlannerId = auction.Planner?.Id;
+	}
+	public Auction ToAuction(DatabaseContext db)
+	{
+		return new Auction
+		{
+			Id = Id,
+			Count = Count,
+			BatchSize = BatchSize,
+			StartingPrice = StartingPrice,
+			MinimumPrice = MinimumPrice,
+			StartingTime = StartingTime,
+			Length = Length,
+			Product = db.Products.Where(p => p.Id == ProductId).First(),
+			Planner = db.Users.Where(u => u.Id == PlannerId).FirstOrDefault(),
+		};
+	}
+	public ulong Id { get; init; }
+	public ushort Count { get; init; }
+	public uint BatchSize { get; init; }
+	public uint StartingPrice { get; init; }
+	public uint MinimumPrice { get; init; }
+	public ulong StartingTime { get; init; }
+	public uint Length { get; init; }
+	public ulong ProductId { get; init; }
+	public ulong? PlannerId { get; init; }
+}
 
 [ApiController]
 [Route("auction")]
 public class AuctionController : ControllerBase
 {
   [HttpGet("{id}")]
-  public ActionResult<Auction> Get(ulong id)
+  public ActionResult<AuctionExternal> Get(ulong id)
   {
     using var db = new DatabaseContext();
     {
@@ -15,27 +57,27 @@ public class AuctionController : ControllerBase
       Auction? auction = db.Auctions.Find(id);
       if (auction == null) return NotFound();
 
-      return auction;
+      return new AuctionExternal(auction);
     }
   }
 
   [HttpGet("/auctions")]
-  public ActionResult<Auction[]> GetAll()
+  public ActionResult<AuctionExternal[]> GetAll()
   {
     using (var db = new DatabaseContext())
     {
-      Auction[] auctions = db.Auctions.ToArray();
-
-      return auctions;
+      return db.Auctions.Select(auction => new AuctionExternal(auction)).ToArray();
     }
   }
 
   [HttpPost]
-  public ActionResult Post(Auction auction)
+  public ActionResult Post(AuctionExternal auctionData)
   {
     using (var db = new DatabaseContext())
-    {
-      if (db.Auctions.Any(auc => auc.Id == auction.Id)) return Conflict("Already exists");
+		{
+
+      if (db.Auctions.Any(auc => auc.Id == auctionData.Id)) return Conflict("Already exists");
+			Auction auction = auctionData.ToAuction(db);
 
       db.Auctions.Add(auction);
       db.SaveChanges();
