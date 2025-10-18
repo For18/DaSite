@@ -29,10 +29,8 @@ public class Auction
 	[ForeignKey("ProductId")]
 	[DeleteBehavior(DeleteBehavior.Cascade)]
 	public virtual required Product Product { get; set; }
-	public ulong ProductId { get; set; }
 
 	[ForeignKey("PlannerId")]
 	[DeleteBehavior(DeleteBehavior.NoAction)]
 	public virtual User? Planner { get; set; }
-	public ulong? PlannerId { get; set; }
 }

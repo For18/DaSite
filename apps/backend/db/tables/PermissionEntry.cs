@@ -8,9 +8,9 @@ public class PermissionEntry
     public required ulong Key { get; set; }
 
     [Key]
-    [Required]
-    [ForeignKey(nameof(PermissionHolder))]
-    public required PermissionHolder Holder { get; set; }
+	[Required]
+	[ForeignKey("HolderId")]
+	public required PermissionHolder Holder { get; set; }
 
     [Required]
     public required bool Value { get; set; }
