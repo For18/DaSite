@@ -7,9 +7,6 @@ public class DatabaseContext : DbContext {
 	public DbSet<User> Users { get; set; }
 	public DbSet<Auction> Auctions { get; set; }
 	public DbSet<Sale> Sales { get; set; }
-	public DbSet<PermissionEntry> PermissionEntries { get; set; }
-	public DbSet<PermissionHolder> PermissionHolders { get; set; }
-	public DbSet<PermissionGroup> PermissionGroups { get; set; }
 
 	protected override void OnConfiguring(DbContextOptionsBuilder contextBuilder) {
 		contextBuilder.UseMySQL(Environment.GetEnvironmentVariable("MYSQL_CONNECTION_STRING") ?? "");
