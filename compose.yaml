@@ -6,17 +6,18 @@ services:
         - action: sync
           path: ./apps/frontend/src
           target: /app/src
+    environment:
+      VITE_API_URL: "/api/v1"
   backend:
     build: ./apps/backend
     environment:
       DOTNET_ENVIRONMENT: Development
       MYSQL_CONNECTION_STRING: server=db;database=for18;user=for18;password=bVSFogXKSd1q3pVc
+      DB_RETRY_DELAY: 3000
+      DB_RETRY_COUNT: 10
       AUTH0_DOMAIN: dev-sgosh6ob4ol3bdpq.us.auth0.com
       AUTH0_CLIENTID: BTpnrucZXi23g7Pur3gIa0Umo4XNXay3
       API_SERVER_URL: /api/v1
-    depends_on:
-      db:
-        condition: service_healthy
   db:
     image: mysql:lts
     environment:
@@ -25,9 +26,9 @@ services:
       MYSQL_USER: for18
       MYSQL_PASSWORD: bVSFogXKSd1q3pVc
     volumes:
-      - db_data:/var/lib/mysql
+      - db:/var/lib/mysql
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -48,4 +49,4 @@ services:
         condition: service_healthy
 
 volumes:
-  db_data:
+  db:

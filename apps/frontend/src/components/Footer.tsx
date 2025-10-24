@@ -8,7 +8,7 @@ export default function Footer() {
 				borderTop: "2px solid",
 				borderColor: alpha("#888888", 0.1),
 				padding: "1em",
-				backgroundColor: alpha("#888888", 0.05),
+				backgroundColor: alpha("#888888", 0.05)
 			}}
 		>
 			<Typography variant="body2" color="textSecondary" align="center">

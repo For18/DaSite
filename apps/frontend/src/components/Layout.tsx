@@ -1,8 +1,7 @@
-import TopBar from "./TopBar";
-import Footer from "./Footer";
-import { PropsWithChildren } from "react";
 import { useTheme } from "@mui/material/styles";
-import Auctions from "../routes/Auctions";
+import { PropsWithChildren } from "react";
+import Footer from "./Footer";
+import TopBar from "./TopBar";
 
 export default function Layout({ children }: PropsWithChildren) {
 	const theme = useTheme();
@@ -14,23 +13,24 @@ export default function Layout({ children }: PropsWithChildren) {
 				minHeight: "100vh",
 				display: "flex",
 				flexDirection: "column",
-				justifyContent: "space-between",
+				justifyContent: "space-between"
 			}}
 		>
 			<TopBar
 				links={{
 					Home: "/",
-					Auctions: "/auctions",
+					Auctions: "/auctions"
 				}}
 			/>
 			<article
 				style={{
 					alignSelf: "center",
+					width: "100vw"
 				}}
 			>
 				{children}
 			</article>
-			<Footer />
+			<Footer/>
 		</div>
 	);
 }

@@ -1,14 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Task<DatabaseContext> dbTask = new DatabaseConnector(
+	Convert.ToInt32(Environment.GetEnvironmentVariable("DB_RETRY_DELAY")),
+	Convert.ToInt32(Environment.GetEnvironmentVariable("DB_RETRY_COUNT"))
+).Connect();
 
 string apiVersionString = "v1";
 
@@ -17,13 +21,11 @@ string apiVersionString = "v1";
 builder.Services.AddRouting();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers().AddNewtonsoftJson();
-builder.Services.AddSwaggerGen(c =>
-{
+builder.Services.AddSwaggerGen(c => {
 	c.SwaggerDoc(apiVersionString, new OpenApiInfo { Version = apiVersionString });
 	c.SwaggerGeneratorOptions.Servers = new List<OpenApiServer> { new OpenApiServer { Url = Environment.GetEnvironmentVariable("API_SERVER_URL") ?? throw new Exception("Missing API_SERVER_URL environment variable") } };
 });
-builder.Services.AddAuth0WebAppAuthentication(options =>
-{
+builder.Services.AddAuth0WebAppAuthentication(options => {
 	options.Domain = Environment.GetEnvironmentVariable("AUTH0_DOMAIN") ?? throw new Exception("Missing environment variable \"AUTH0_DOMAIN\"");
 	options.ClientId = Environment.GetEnvironmentVariable("AUTH0_CLIENTID") ?? throw new Exception("Missing environment variable \"AUTH0_CLIENTID\"");
 });
@@ -37,51 +39,17 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-if (app.Environment.IsDevelopment())
-{
-	app.UseSwagger(c =>
-	{
+if (app.Environment.IsDevelopment()) {
+	app.UseSwagger(c => {
 		c.RouteTemplate = "docs/{documentname}.json";
 	});
-	app.UseSwaggerUI(c =>
-	{
+	app.UseSwaggerUI(c => {
 		c.SwaggerEndpoint(apiVersionString + ".json", apiVersionString);
 		c.RoutePrefix = "docs";
 	});
 }
 
-// Retry logic for database connection
-int maxRetries = 30;
-int retryCount = 0;
-bool connected = false;
-
-while (!connected && retryCount < maxRetries)
-{
-	try
-	{
-		using (var db = new DatabaseContext())
-		{
-			RelationalDatabaseCreator databaseCreator = (RelationalDatabaseCreator)db.Database.GetService<IDatabaseCreator>();
-			databaseCreator.EnsureCreated();
-			connected = true;
-			Console.WriteLine("Successfully connected to database");
-		}
-	}
-	catch (Exception ex)
-	{
-		retryCount++;
-		Console.WriteLine($"Database connection attempt {retryCount}/{maxRetries} failed: {ex.Message}");
-		if (retryCount < maxRetries)
-		{
-			System.Threading.Thread.Sleep(2000); // Wait 2 seconds before retrying
-		}
-		else
-		{
-			Console.WriteLine("Failed to connect to database after maximum retries");
-			throw;
-		}
-	}
-}
+DatabaseContext db = await dbTask;
 
 app.MapGet("/health", () => "Healthy");
 

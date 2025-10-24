@@ -2,8 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-public class Auction
-{
+public class Auction {
 	[Key]
 	[Required]
 	public required ulong Id { get; set; }
@@ -22,7 +21,15 @@ public class Auction
 	[Required]
 	public required ulong StartingTime { get; set; }
 
-	[ForeignKey(nameof(User))]
-	[DeleteBehavior(DeleteBehavior.SetNull)]
-	public User? Planner { get; set; }
+	[Required]
+	public required uint Length { get; set; }
+
+	[Required]
+	[ForeignKey("ProductId")]
+	[DeleteBehavior(DeleteBehavior.Cascade)]
+	public virtual required Product Product { get; set; }
+
+	[ForeignKey("PlannerId")]
+	[DeleteBehavior(DeleteBehavior.NoAction)]
+	public virtual User? Planner { get; set; }
 }
