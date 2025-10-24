@@ -5,7 +5,7 @@ import Header from "../components/Header";
 import { randomCharacter } from "../lib/util";
 
 export default function Auctions() {
-    const [text, setText] = useState("Live Auctions");
+	const [text, setText] = useState("Live Auctions");
 
 	useEffect(() => {
 		document.title = "For18 - auction";
