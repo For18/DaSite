@@ -1,8 +1,7 @@
 # NX
-.nx/installation
-.nx/cache
-.nx/workspace-data
+/.nx/
+!/.nx/nxw.js
 
 # NPM
-node_modules
-package-lock.json
+/node_modules/
+/package-lock.json
