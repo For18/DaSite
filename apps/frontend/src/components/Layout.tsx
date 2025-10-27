@@ -24,8 +24,7 @@ export default function Layout({ children }: PropsWithChildren) {
 			/>
 			<article
 				style={{
-					alignSelf: "center",
-					width: "100vw"
+					alignSelf: "center"
 				}}
 			>
 				{children}
