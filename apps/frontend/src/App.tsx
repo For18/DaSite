@@ -8,8 +8,9 @@ import Themes, { getThemeById } from "./Themes";
 const Home = lazy(() => import("./routes/Home"));
 const Clock = lazy(() => import("./routes/Clock"));
 const Auctions = lazy(() => import("./routes/Auctions"));
+const PendingAuction = lazy(() => import("./routes/PendingAuction"));
 
-export const SetThemeContext = createContext<(theme: Theme) => void>(() => {});
+export const SetThemeContext = createContext<(theme: Theme) => void>(() => { });
 
 export default function App() {
 	const [theme, setThemeState] = useState<Theme>(
@@ -30,29 +31,37 @@ export default function App() {
 							<Route
 								index
 								element={
-									<Suspense fallback={<Throbber/>}>
-										<Home/>
+									<Suspense fallback={<Throbber />}>
+										<Home />
 									</Suspense>
 								}
 							/>
 							<Route
 								path="/clock/:auctionId"
 								element={
-									<Suspense fallback={<Throbber/>}>
-										<Clock/>
+									<Suspense fallback={<Throbber />}>
+										<Clock />
 									</Suspense>
 								}
 							/>
 							<Route
 								path="/Auctions"
 								element={
-									<Suspense fallback={<Throbber/>}>
-										<Auctions/>
+									<Suspense fallback={<Throbber />}>
+										<Auctions />
+									</Suspense>
+								}
+							/>
+							<Route
+								path="/auctions/pending"
+								element={
+									<Suspense fallback={<Throbber />}>
+										<PendingAuction />
 									</Suspense>
 								}
 							/>
 
-							<Route path="*" element={<NotFound/>}/>
+							<Route path="*" element={<NotFound />} />
 						</Routes>
 					</Layout>
 				</BrowserRouter>
