@@ -1,7 +1,6 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 
 [DisplayName(nameof(Auction))]
@@ -17,11 +16,6 @@ public class AuctionExternal {
 		ProductId = productId;
 		PlannerId = plannerId;
 	}
-
-	public static AuctionExternal ToExternal(Auction auction) {
-		return new AuctionExternal(auction.Id, auction.Count, auction.BatchSize, auction.StartingPrice, auction.MinimumPrice, auction.StartingTime, auction.Length, auction.Product.Id, auction.Planner?.Id);
-	}
-
 	public Auction ToAuction(DatabaseContext db) {
 		return new Auction {
 			Id = Id,
@@ -32,7 +26,7 @@ public class AuctionExternal {
 			StartingTime = StartingTime,
 			Length = Length,
 			Product = db.Products.Where(p => p.Id == ProductId).First(),
-			Planner = db.Users.Where(u => u.Id == PlannerId).FirstOrDefault()
+			Planner = db.Users.Where(u => u.Id == PlannerId).FirstOrDefault(),
 		};
 	}
 	public ulong Id { get; init; }
@@ -54,22 +48,25 @@ public class AuctionController : ControllerBase {
 		using var db = new DatabaseContext();
 		{
 
-			Auction? auction = db.Auctions.Include(auc => auc.Planner).Include(auc => auc.Product).Where(auc => auc.Id == id).FirstOrDefault();
+			Auction? auction = db.Auctions.Find(id);
 			if (auction == null) return NotFound();
 
-			return AuctionExternal.ToExternal(auction);
+			return new AuctionExternal(auction);
 		}
 	}
 
 	[HttpGet("/auctions")]
-	public ActionResult<AuctionExternal[]> GetNormal() {
+	public ActionResult<AuctionExternal[]> GetAll()
+	{
+		using (var db = new DatabaseContext())
+		{
+			return db.Auctions.Select(auction => new AuctionExternal(auction)).ToArray();
+		}
+	}
+	[HttpGet("/auctions/pending")]
+	public ActionResult<AuctionExternal[]> GetPending() {
 		using (var db = new DatabaseContext()) {
-			return db.Auctions
-				.Include(auc => auc.Planner)
-				.Include(auc => auc.Product)
-				.Where(auc => auc.StartingTime != null && auc.Length != null)
-				.Select(auction => AuctionExternal.ToExternal(auction))
-			.ToArray();
+			return db.Auctions.Where(a => a.StartingTime == null).Select(auction => new AuctionExternal(auction)).ToArray();
 		}
 	}
 	[HttpGet("/auctions/pending")]
