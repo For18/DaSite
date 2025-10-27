@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using MySql.Data.MySqlClient;
+using Microsoft.EntityFrameworkCore;
 
 public class DatabaseConnector {
 	private readonly int RetryDelayMillis;
@@ -13,12 +14,12 @@ public class DatabaseConnector {
 		RetryDelayMillis = retryDelayMillis;
 		MaxRetryCount = maxRetryCount;
 	}
-	public async Task<DatabaseContext> Connect() {
+	public async Task<DatabaseContext> Connect(DbContextOptions<DatabaseContext> options) {
 		int retryCount = 0;
 		while (true) {
 			Exception lastException;
 			try {
-				DatabaseContext db = new DatabaseContext();
+				DatabaseContext db = new DatabaseContext(options);
 
 				RelationalDatabaseCreator databaseCreator = (RelationalDatabaseCreator)db.Database.GetService<IDatabaseCreator>();
 				databaseCreator.EnsureCreated();

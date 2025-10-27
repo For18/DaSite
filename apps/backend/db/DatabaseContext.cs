@@ -8,9 +8,7 @@ public class DatabaseContext : DbContext {
 	public DbSet<Auction> Auctions { get; set; }
 	public DbSet<Sale> Sales { get; set; }
 
-	protected override void OnConfiguring(DbContextOptionsBuilder contextBuilder) {
-		contextBuilder.UseMySQL(Environment.GetEnvironmentVariable("MYSQL_CONNECTION_STRING") ?? "");
-	}
+	public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) {}
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder) {
 		modelBuilder.Entity<User>()

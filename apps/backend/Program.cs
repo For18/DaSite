@@ -6,13 +6,16 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 Task<DatabaseContext> dbTask = new DatabaseConnector(
 	Convert.ToInt32(Environment.GetEnvironmentVariable("DB_RETRY_DELAY")),
 	Convert.ToInt32(Environment.GetEnvironmentVariable("DB_RETRY_COUNT"))
-).Connect();
+).Connect(new DbContextOptionsBuilder<DatabaseContext>()
+	.UseMySQL(Environment.GetEnvironmentVariable("MYSQL_CONNECTION_STRING") ?? "")
+.Options);
 
 string apiVersionString = "v1";
 
