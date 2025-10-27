@@ -4,20 +4,11 @@ import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import { Auction, useAPI } from "../lib/api";
-import { randomCharacter } from "../lib/util";
+import { randomCharacter, range, useScreenSize } from "../lib/util";
 
 export default function PendingAuction() {
 	const auctions = useAPI<Auction[]>("/auctions/pending");
-	const items = [];
-	for(let i = 0; i < 6; i++){
-		items.push(
-			<div grid-area={"item"+1}>
-				<Typography>
-					Pending Auction {i+1}
-				</Typography>
-			</div>
-		);
-	}
+	const [x, y] = useScreenSize();
 
 	return (
 		<Paper sx={{
@@ -25,28 +16,17 @@ export default function PendingAuction() {
 			maxWidth: "80%",
 			minHeight: "300px",
 			display: "grid",
-			gridTemplateColumns: "auto auto",
+			gridTemplateColumns: x > 1000 ? "auto auto" : "auto",
 			gap: "16px",
 			padding: "16px"
 
 		}}>
 			
-			{items}
-			<div grid-area="menu" color="red">
-				<Typography color="textPrimary">
-					Pending Auctions (under construction)
-				</Typography>
-			</div>
-			<div grid-area="content" color="blue">
-				<Typography color="textPrimary">
-					Ik wil kaas
-				</Typography>
-			</div>
-			<div grid-area="shit" color="green">
-				<Typography color="textPrimary">
-					En nog meer kaas
-				</Typography>
-			</div>
+			{range(6).map(i => <div style={{
+				backgroundColor: "red",
+				width: "100%",
+				aspectRatio: "4/1"
+			}}/>)}
 		</Paper>
 		
 	);
