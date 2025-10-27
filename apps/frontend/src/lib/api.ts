@@ -30,7 +30,7 @@ export function useAPI<T>(route: string): T | null | undefined {
 	useEffect(() => {
 		setValue(null);
 		fetch(API_URL + route).then(response => {
-			if (response.status == 404) return setValue(undefined);
+			if (response.status == 404) return undefined;
 			return response.json();
 		}).then(setValue);
 	}, [route]);
