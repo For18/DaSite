@@ -1,33 +1,38 @@
-import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { useEffect, useState } from "react";
-import Header from "../components/Header";
+import Throbber from "../components/Throbber";
 import { Auction, useAPI } from "../lib/api";
-import { randomCharacter, range, useScreenSize } from "../lib/util";
+import { useScreenSize } from "../lib/util";
 
 export default function PendingAuction() {
 	const auctions = useAPI<Auction[]>("/auctions/pending");
-	const [x, y] = useScreenSize();
+	const [screenWidth, screenHeight] = useScreenSize();
+
+	const minPaperHeight = 300;
 
 	return (
 		<Paper sx={{
 			width: "800px",
 			maxWidth: "80%",
-			minHeight: "300px",
-			display: "grid",
-			gridTemplateColumns: x > 1000 ? "auto auto" : "auto",
+			minHeight: `${minPaperHeight}px`,
+			display: auctions != null && auctions.length > 0 ? "grid" : "flex",
+			gridTemplateColumns: screenWidth > 1000 ? "1fr 1fr" : "1fr",
+			justifyContent: "center",
+			alignItems: "center",
 			gap: "16px",
 			padding: "16px"
-
 		}}>
-			
-			{range(6).map(i => <div style={{
-				backgroundColor: "red",
-				width: "100%",
-				aspectRatio: "4/1"
-			}}/>)}
+			{auctions == null ?
+				<Throbber/> :
+				auctions.length == 0 ?
+				<Typography color="textPrimary">No pending auctions</Typography> :
+				auctions.map(auction => (
+					<div style={{
+						backgroundColor: "red",
+						width: "100%",
+						aspectRatio: "4/1"
+					}}/>
+				))}
 		</Paper>
-		
 	);
 }
