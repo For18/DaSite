@@ -1,8 +1,7 @@
 import { Product } from "../lib/api";
-import { API_URL, Auction, User, useAPI } from "../lib/api";
+import { API_URL, Auction, useAPI, User } from "../lib/api";
 
 export default function ProductView({ product }: { product: Product }) {
-
 	const owner = useAPI<User>("/user/" + product.owner) ?? null;
 
 	return (
