@@ -56,13 +56,12 @@ public class AuctionController : ControllerBase {
 	}
 
 	[HttpGet("/auctions")]
-	public ActionResult<AuctionExternal[]> GetAll()
-	{
-		using (var db = new DatabaseContext())
-		{
+	public ActionResult<AuctionExternal[]> GetAll() {
+		using (var db = new DatabaseContext()) {
 			return db.Auctions.Select(auction => new AuctionExternal(auction)).ToArray();
 		}
 	}
+
 	[HttpGet("/auctions/pending")]
 	public ActionResult<AuctionExternal[]> GetPending() {
 		using (var db = new DatabaseContext()) {

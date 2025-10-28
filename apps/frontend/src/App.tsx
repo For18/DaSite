@@ -8,7 +8,7 @@ import Themes, { getThemeById } from "./Themes";
 
 import routes from "./routes/Routes";
 
-export const SetThemeContext = createContext<(theme: Theme) => void>(() => { });
+export const SetThemeContext = createContext<(theme: Theme) => void>(() => {});
 
 export default function App() {
 	const [theme, setThemeState] = useState<Theme>(
@@ -34,7 +34,7 @@ export default function App() {
 								}/>
 							))}
 
-							<Route path="*" element={<NotFound />} />
+							<Route path="*" element={<NotFound/>}/>
 						</Routes>
 					</Layout>
 				</BrowserRouter>
