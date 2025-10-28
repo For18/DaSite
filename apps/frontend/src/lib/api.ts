@@ -24,6 +24,13 @@ export type Auction = {
 	plannerId: number;
 };
 
+export type User = {
+  id: number;
+  displayName: string;
+  email: string;
+  telephonenumber: number;
+}
+
 export function useAPI<T>(route: string): T | null | undefined {
 	const [value, setValue] = useState<T | null | undefined>(null);
 
