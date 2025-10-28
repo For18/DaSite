@@ -1,5 +1,6 @@
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
+import PendingAuctionBox from "../components/PendingAuctionBox";
 import Throbber from "../components/Throbber";
 import { Auction, useAPI } from "../lib/api";
 import { useScreenSize } from "../lib/util";
@@ -26,13 +27,7 @@ export default function PendingAuction() {
 				<Throbber/> :
 				auctions.length == 0 ?
 				<Typography color="textPrimary">No pending auctions</Typography> :
-				auctions.map(auction => (
-					<div style={{
-						backgroundColor: "red",
-						width: "100%",
-						aspectRatio: "4/1"
-					}}/>
-				))}
+				auctions.map(auction => <PendingAuctionBox auction={auction}/>)}
 		</Paper>
 	);
 }
