@@ -8,15 +8,16 @@ export default function AuctionClock({
 	size = 400,
 	totalTime = 10
 }) {
-	const [timeRemaining, setTimeRemaining] = useState(totalTime);
+	const [timeRemaining, setTimeRemaining] = useState(totalTime * 1000);
 	const [colorStyle, setColorStyle] = useState(color);
 	const [currentPrice, setCurrentPrice] = useState(auction.startingPrice);
 	const [isAuctionOver, setIsAuctionOver] = useState(false);
 	const [buttonText, setButtonText] = useState("DO NOT CLICK ME!!!");
 
-	const timePercentage = timeRemaining / totalTime;
+	const timePercentage = timeRemaining / (totalTime * 1000);
 	const newPrice = (auction.minimumPrice +
-		(auction.startingPrice - auction.minimumPrice) * (1 - Math.exp(-timeRemaining / totalTime))).toFixed(2);
+		(auction.startingPrice - auction.minimumPrice) * (1 - Math.exp(-timeRemaining / (totalTime * 1000)))).toFixed(2);
+
 	const getColor = (percentage: number) => {
 		if (percentage > 0.5) return "#00bfff";
 		if (percentage > 0.25) return "#ffa500";
@@ -35,8 +36,8 @@ export default function AuctionClock({
 		if (timeRemaining <= 0 || isAuctionOver) return;
 
 		const timer = setInterval(() => {
-			setTimeRemaining(prev => Math.max(prev - 1, 0));
-		}, 1000);
+			setTimeRemaining(prev => Math.max(prev - 100, 0));
+		}, 100);
 
 		return () => clearInterval(timer);
 	}, [timeRemaining, isAuctionOver]);
@@ -46,6 +47,13 @@ export default function AuctionClock({
 			setColorStyle(getColor(timePercentage));
 		}
 	}, [timeRemaining, isAuctionOver]);
+
+  const formatTime = (timeInMs: number) => {
+    const seconds = Math.floor(timeInMs / 1000);
+    const milliseconds = timeInMs % 1000;
+    const millisecondsInDecimal = Math.floor(milliseconds / 100);
+    return `${seconds}.${millisecondsInDecimal} s`;
+  };
 
 	const handleButtonClick = () => {
 		setIsAuctionOver(true);
@@ -78,7 +86,7 @@ export default function AuctionClock({
 					transition: "background-color 0.5s ease"
 				}}
 			>
-				{timeRemaining} s
+				{formatTime(timeRemaining)}
 			</div>
 
 			<Typography
