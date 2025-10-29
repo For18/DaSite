@@ -12,9 +12,8 @@ public class ProductExternal {
 		ThumbnailImageId = thumbnailImageId;
 		OwnerId = ownerId;
 	}
-  public ProductExternal(Product product)
-      : this(product.Id, product.Name, product.Description, product.ThumbnailImage?.Id, product.Owner.Id)
-      {}
+	public ProductExternal(Product product)
+		: this(product.Id, product.Name, product.Description, product.ThumbnailImage?.Id, product.Owner.Id) { }
 
 	public Product ToProduct(DatabaseContext db) {
 		return new Product {
@@ -49,7 +48,8 @@ public class ProductController : ControllerBase {
 	[HttpGet("/products")]
 	public ActionResult<ProductExternal[]> GetAll() {
 		using (var db = new DatabaseContext()) {
-			return db.Products.Select(product => new ProductExternal(product)).ToArray(); }
+			return db.Products.Select(product => new ProductExternal(product)).ToArray();
+		}
 	}
 
 	[HttpPost]
@@ -57,7 +57,7 @@ public class ProductController : ControllerBase {
 		using (var db = new DatabaseContext()) {
 			if (db.Products.Any(prod => prod.Id == productData.Id)) return Conflict("Already exists");
 
-      if (productData == null) return BadRequest();
+			if (productData == null) return BadRequest();
 			Product product = productData.ToProduct(db);
 
 			db.Products.Add(product);
