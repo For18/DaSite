@@ -84,7 +84,6 @@ public class ProductController : ControllerBase
 		{
 			if (db.Products.Any(prod => prod.Id == productData.Id)) return Conflict("Already exists");
 
-			if (productData == null) return BadRequest();
 			Product product = productData.ToProduct(db);
 
 			db.Products.Add(product);
