@@ -64,7 +64,7 @@ public class AuctionController : ControllerBase {
 	[HttpGet("/auctions")]
 	public ActionResult<AuctionExternal[]> GetAll() {
 		using (var db = new DatabaseContext()) {
-			return db.Auctions.Select(auction => AuctionExternal.ToExternal(auction)).ToArray();
+			return db.Auctions.Include(auc => auc.Planner).Include(auc => auc.Product).Select(auction => AuctionExternal.ToExternal(auction)).ToArray();
 		}
 	}
 
