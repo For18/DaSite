@@ -6,32 +6,33 @@ export default function PendingAuctionCard({ auction }: {
 }) {
 	return (
 		<div style={{
-			backgroundColor: "red",
+			display: "flex",
 			width: "100%",
-			aspectRatio: "4/1"
+			height: "142px",
+			backgroundColor: "green",
+			maxWidth: "100%"
 		}}>
 			<div style={{
 				float: "left",
-				width: "21%",
-				height: "9vw",
+				width: "32%",
+				height: "100%",
 				backgroundColor: "blue",
-				paddingLeft: "2%",
-				paddingRight: "2%",
 				alignContent: "center",
 				display: "flex",
 				justifyContent: "center",
-				alignItems: "center"
+				alignItems: "center",
+				objectFit: "contain"
 			}}>
-				<img src="https://i.ibb.co/7xnxXSC6/matt.webp" width={80} height={80}></img>
+				<img src="https://i.ibb.co/7xnxXSC6/matt.webp" width={"90%"} height={"90%"}></img>
 				{/* Insert product image here */}
 			</div>
 			<div style={{
 				float: "right", 
-				width: "70%",
-				height: "9vw",
-				paddingLeft: "5%",
+				width: "65%",
+				height: "100%",
+				backgroundColor: "red",
+				paddingLeft: "3%",
 				
-
 			}}>
 				<Typography color="textPrimary">Seller: </Typography>
 				<Typography color="textPrimary">Asking price: {auction.startingPrice}</Typography>
