@@ -18,7 +18,7 @@ public class AuctionExternal {
 	}
 	public AuctionExternal(Auction auction)
 	  : this(auction.Id, auction.Count, auction.BatchSize, auction.StartingPrice, auction.MinimumPrice, auction.StartingTime, auction.Length, auction.Product.Id, auction.Planner?.Id) { }
-
+  
 	public Auction ToAuction(DatabaseContext db) {
 		return new Auction {
 			Id = Id,
@@ -29,7 +29,7 @@ public class AuctionExternal {
 			StartingTime = StartingTime,
 			Length = Length,
 			Product = db.Products.Where(p => p.Id == ProductId).First(),
-			Planner = (PlannerId == null ? null : db.Users.Where(u => u.Id == PlannerId).FirstOrDefault()),
+			Planner = db.Users.Where(u => u.Id == PlannerId).FirstOrDefault()
 		};
 	}
 	public ulong Id { get; init; }
