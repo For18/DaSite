@@ -8,8 +8,12 @@ import { useScreenSize } from "../lib/util";
 
 export default function PendingAuction() {
 	{/*const auctions = useAPI<Auction[]>("/auctions/pending");*/}
-
+	
 	const [screenWidth, screenHeight] = useScreenSize();
+	const auctions = [
+		{id: 1, count: 10, batchSize: 5, startingPrice: 100, minimumPrice: 20, startingTime: 50, productId: 1, plannerId: 1}, 
+		{id: 2, count: 9, batchSize: 5, startingPrice: 500, minimumPrice: 20, startingTime: 50, productId: 2, plannerId: 2},
+		{id: 3, count: 8, batchSize: 5, startingPrice: 300, minimumPrice: 20, startingTime: 50, productId: 3, plannerId: 3}];
 
 	const auctions = [
 		{ id: 1, count: 10, batchSize: 5, startingPrice: 100, minimumPrice: 20, startingTime: 50, productId: 1,
