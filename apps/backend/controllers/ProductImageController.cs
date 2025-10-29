@@ -41,14 +41,14 @@ public class ProductImageController : ControllerBase {
 		using (var db = new DatabaseContext()) {
 			if (db.ProductImages.Include(img => img.Parent).Any(image => image.Id == productImageData.Id)) return Conflict("Already exists");
 
-      Product? parent = db.Products.Include(product => product.Owner).Where(product => product.Id == (productImageData.Parent)).FirstOrDefault();
-      if (parent == null) return NotFound();
+			Product? parent = db.Products.Include(product => product.Owner).Where(product => product.Id == (productImageData.Parent)).FirstOrDefault();
+			if (parent == null) return NotFound();
 
-      ProductImage prodImage = new ProductImage {
-        Id = productImageData.Id, 
-        Parent = parent, 
-        Url = productImageData.Url
-      };
+			ProductImage prodImage = new ProductImage {
+				Id = productImageData.Id,
+				Parent = parent,
+				Url = productImageData.Url
+			};
 
 			db.ProductImages.Add(prodImage);
 			db.SaveChanges();
