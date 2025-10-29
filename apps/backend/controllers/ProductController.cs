@@ -1,17 +1,23 @@
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
 using System.ComponentModel;
 
 [DisplayName(nameof(Product))]
 public class ProductExternal {
-	public ProductExternal(Product product) {
-		Id = product.Id;
-		Name = product.Name;
-		Description = product.Description;
-		ThumbnailImageId = product.ThumbnailImage?.Id;
-		OwnerId = product.Owner.Id;
+	public ProductExternal(ulong id, string name, string? description, ulong? thumbnailImageId, ulong ownerId) {
+		Id = id;
+		Name = name;
+		Description = description;
+		ThumbnailImageId = thumbnailImageId;
+		OwnerId = ownerId;
 	}
+
+	public static ProductExternal ToExternal(Product product) {
+		return new ProductExternal(product.Id, product.Name, product.Description, product.ThumbnailImage?.Id, product.Owner.Id);
+	}
+
 	public Product ToProduct(DatabaseContext db) {
 		return new Product {
 			Id = Id,
@@ -34,18 +40,18 @@ public class ProductController : ControllerBase {
 	[HttpGet("{id}")]
 	public ActionResult<ProductExternal> Get(ulong id) {
 		using (var db = new DatabaseContext()) {
-			Product? product = db.Products.Where(product => product.Id == id).FirstOrDefault();
+			Product? product = db.Products.Include(product => product.Owner).Where(product => product.Id == id).FirstOrDefault();
 
 			if (product == null) return NotFound();
 
-			return new ProductExternal(product);
+			return ProductExternal.ToExternal(product);
 		}
 	}
 
 	[HttpGet("/products")]
 	public ActionResult<ProductExternal[]> GetAll() {
 		using (var db = new DatabaseContext()) {
-			return db.Products.Select(product => new ProductExternal(product)).ToArray();
+			return db.Products.Include(product => product.Owner).Select(product => ProductExternal.ToExternal(product)).ToArray();
 		}
 	}
 
@@ -93,3 +99,4 @@ public class ProductController : ControllerBase {
 		}
 	}
 }
+
