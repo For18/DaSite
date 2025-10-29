@@ -1,6 +1,6 @@
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import PendingAuctionBox from "../components/PendingAuctionBox";
+import PendingAuctionCard from "../components/PendingAuctionCard";
 import Throbber from "../components/Throbber";
 import { Auction, useAPI } from "../lib/api";
 import { useScreenSize } from "../lib/util";
@@ -14,7 +14,7 @@ export default function PendingAuction() {
 	return (
 		<Paper sx={{
 			width: "800px",
-			maxWidth: "80%",
+			maxWidth: "80vw",
 			minHeight: `${minPaperHeight}px`,
 			display: auctions != null && auctions.length > 0 ? "grid" : "flex",
 			gridTemplateColumns: screenWidth > 1000 ? "1fr 1fr" : "1fr",
@@ -27,7 +27,7 @@ export default function PendingAuction() {
 				<Throbber/> :
 				auctions.length == 0 ?
 				<Typography color="textPrimary">No pending auctions</Typography> :
-				auctions.map(auction => <PendingAuctionBox auction={auction}/>)}
+				auctions.map(auction => <PendingAuctionCard auction={auction}/>)}
 		</Paper>
 	);
 }
