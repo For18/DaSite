@@ -16,13 +16,6 @@ public class ProductImageExternal {
 		return new ProductImageExternal(prodImage.Id, prodImage.Parent.Id, prodImage.Url);
 	}
 
-	public ProductImage ToProductImage(DatabaseContext db) {
-		return new ProductImage {
-			Id = Id,
-			Parent = db.Products.Where(parent => parent.Id == Id).First(),
-			Url = Url
-		};
-	}
 	public ulong Id { get; init; }
 	public ulong Parent { get; init; }
 	public string Url { get; init; }
@@ -46,9 +39,16 @@ public class ProductImageController : ControllerBase {
 	[HttpPost]
 	public ActionResult Post(ProductImageExternal productImageData) {
 		using (var db = new DatabaseContext()) {
-			if (db.ProductImages.Any(image => image.Id == productImageData.Id)) return Conflict("Already exists");
+			if (db.ProductImages.Include(img => img.Parent).Any(image => image.Id == productImageData.Id)) return Conflict("Already exists");
 
-			ProductImage prodImage = productImageData.ToProductImage(db);
+      Product? parent = db.Products.Include(product => product.Owner).Where(product => product.Id == (productImageData.Parent)).FirstOrDefault();
+      if (parent == null) return NotFound();
+
+      ProductImage prodImage = new ProductImage {
+        Id = productImageData.Id, 
+        Parent = parent, 
+        Url = productImageData.Url
+      };
 
 			db.ProductImages.Add(prodImage);
 			db.SaveChanges();
