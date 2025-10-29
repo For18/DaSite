@@ -2,6 +2,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
 using System.ComponentModel;
+using Microsoft.EntityFrameworkCore;
 
 [DisplayName(nameof(Sale))]
 public class SaleExternal {
@@ -13,8 +14,11 @@ public class SaleExternal {
 		Price = price;
 		IsPaid = isPaid;
 	}
-	public SaleExternal(Sale sale)
-			: this(sale.Id, sale.Purchaser.Id, sale.PurchasedAuction.Id, sale.Amount, sale.Price, sale.IsPaid) { }
+
+  public static SaleExternal ToExternal(Sale sale) {
+    return new SaleExternal(sale.Id, sale.Purchaser.Id, sale.PurchasedAuction.Id, sale.Amount, sale.Price, sale.IsPaid);
+  }
+
 	public Sale ToSale(DatabaseContext db) {
 		return new Sale {
 			Id = Id,
@@ -36,21 +40,22 @@ public class SaleExternal {
 [ApiController]
 [Route("sale")]
 public class SaleController : ControllerBase {
+
 	[HttpGet("{id}")]
 	public ActionResult<SaleExternal> Get(ulong id) {
 		using var db = new DatabaseContext();
 		{
-			Sale? sale = db.Sales.Find(id);
+			Sale? sale = db.Sales.Include(sale => sale.PurchasedAuction).Include(sale => sale.Purchaser).Where(sale => sale.Id == id).FirstOrDefault();
 			if (sale == null) return NotFound();
 
-			return new SaleExternal(sale);
+			return SaleExternal.ToExternal(sale);
 		}
 	}
 
 	[HttpGet("/sales")]
 	public ActionResult<SaleExternal[]> GetAll() {
 		using (var db = new DatabaseContext()) {
-			return db.Sales.Select(sale => new SaleExternal(sale)).ToArray();
+			return db.Sales.Select(sale => SaleExternal.ToExternal(sale)).ToArray();
 		}
 	}
 
