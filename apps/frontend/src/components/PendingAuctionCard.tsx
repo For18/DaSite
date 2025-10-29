@@ -32,7 +32,9 @@ export default function PendingAuctionCard({ auction }: {
 				height: "100%",
 				backgroundColor: "red",
 				paddingLeft: "3%",
-				
+				justifyContent: "center",
+				flexDirection: "column",
+				display: "flex"
 			}}>
 				<Typography color="textPrimary">Seller: </Typography>
 				<Typography color="textPrimary">Asking price: {auction.startingPrice}</Typography>
