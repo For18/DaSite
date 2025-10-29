@@ -1,6 +1,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 
 [DisplayName(nameof(Auction))]
@@ -16,8 +17,10 @@ public class AuctionExternal {
 		ProductId = productId;
 		PlannerId = plannerId;
 	}
-	public AuctionExternal(Auction auction)
-	  : this(auction.Id, auction.Count, auction.BatchSize, auction.StartingPrice, auction.MinimumPrice, auction.StartingTime, auction.Length, auction.Product.Id, auction.Planner?.Id) { }
+
+  public static AuctionExternal ToExternal(Auction auction) {
+    return new AuctionExternal(auction.Id, auction.Count, auction.BatchSize, auction.StartingPrice, auction.MinimumPrice, auction.StartingTime, auction.Length, auction.Product.Id, auction.Planner?.Id);
+  }
   
 	public Auction ToAuction(DatabaseContext db) {
 		return new Auction {
@@ -51,17 +54,17 @@ public class AuctionController : ControllerBase {
 		using var db = new DatabaseContext();
 		{
 
-			Auction? auction = db.Auctions.Find(id);
+			Auction? auction = db.Auctions.Include(auc => auc.Planner).Include(auc => auc.Product).Where(auc => auc.Id == id).FirstOrDefault();
 			if (auction == null) return NotFound();
 
-			return new AuctionExternal(auction);
+			return AuctionExternal.ToExternal(auction);
 		}
 	}
 
 	[HttpGet("/auctions")]
 	public ActionResult<AuctionExternal[]> GetAll() {
 		using (var db = new DatabaseContext()) {
-			return db.Auctions.Select(auction => new AuctionExternal(auction)).ToArray();
+			return db.Auctions.Select(auction => AuctionExternal.ToExternal(auction)).ToArray();
 		}
 	}
 
