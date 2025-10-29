@@ -23,14 +23,21 @@ export default function PendingAuction() {
 			display: auctions != null && auctions.length > 0 ? "grid" : "flex",
 			gridTemplateColumns: screenWidth > 1000 ? "1fr 1fr" : "1fr",
 			justifyContent: "center",
-			alignItems: "center",
+			alignItems: "flex-start",
 			gap: "16px",
 			padding: "16px"
 		}}>
 			{auctions == null ?
 				<Throbber/> :
 				auctions.length == 0 ?
-				<Typography color="textPrimary">No pending auctions</Typography> :
+				<div style={{
+					alignItems: "center",
+					display: "flex",
+					justifyContent: "center",
+					minHeight: `${minPaperHeight}px`
+				}}>
+				<Typography color="textPrimary">No pending auctions</Typography>
+				</div> :
 				auctions.map(auction => <PendingAuctionCard auction={auction}/>)}
 			{/*
 			{test == null ?
