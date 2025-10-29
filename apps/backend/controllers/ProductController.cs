@@ -15,8 +15,8 @@ public class ProductExternal {
 	}
 
 	public static ProductExternal ToExternal(Product product) {
-    return new ProductExternal(product.Id, product.Name, product.Description, product.ThumbnailImage?.Id, product.Owner.Id);
-  }
+		return new ProductExternal(product.Id, product.Name, product.Description, product.ThumbnailImage?.Id, product.Owner.Id);
+	}
 
 	public Product ToProduct(DatabaseContext db) {
 		return new Product {

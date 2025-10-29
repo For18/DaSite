@@ -12,9 +12,9 @@ public class ProductImageExternal {
 		Url = url;
 	}
 
-  public static ProductImageExternal ToExternal(ProductImage prodImage) {
-    return new ProductImageExternal(prodImage.Id, prodImage.Parent.Id, prodImage.Url);
-  }
+	public static ProductImageExternal ToExternal(ProductImage prodImage) {
+		return new ProductImageExternal(prodImage.Id, prodImage.Parent.Id, prodImage.Url);
+	}
 
 	public ProductImage ToProductImage(DatabaseContext db) {
 		return new ProductImage {
