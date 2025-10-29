@@ -5,13 +5,17 @@ using System.ComponentModel;
 
 [DisplayName(nameof(Product))]
 public class ProductExternal {
-	public ProductExternal(Product product) {
-		Id = product.Id;
-		Name = product.Name;
-		Description = product.Description;
-		ThumbnailImageId = product.ThumbnailImage?.Id;
-		OwnerId = product.Owner.Id;
+	public ProductExternal(ulong id, string name, string? description, ulong? thumbnailImageId, ulong ownerId) {
+		Id = id;
+		Name = name;
+		Description = description;
+		ThumbnailImageId = thumbnailImageId;
+		OwnerId = ownerId;
 	}
+  public ProductExternal(Product product)
+      : this(product.Id, product.Name, product.Description, product.ThumbnailImage?.Id, product.Owner.Id)
+      {}
+
 	public Product ToProduct(DatabaseContext db) {
 		return new Product {
 			Id = Id,
@@ -45,8 +49,7 @@ public class ProductController : ControllerBase {
 	[HttpGet("/products")]
 	public ActionResult<ProductExternal[]> GetAll() {
 		using (var db = new DatabaseContext()) {
-			return db.Products.Select(product => new ProductExternal(product)).ToArray();
-		}
+			return db.Products.Select(product => new ProductExternal(product)).ToArray(); }
 	}
 
 	[HttpPost]
@@ -54,6 +57,7 @@ public class ProductController : ControllerBase {
 		using (var db = new DatabaseContext()) {
 			if (db.Products.Any(prod => prod.Id == productData.Id)) return Conflict("Already exists");
 
+      if (productData == null) return BadRequest();
 			Product product = productData.ToProduct(db);
 
 			db.Products.Add(product);
@@ -90,6 +94,85 @@ public class ProductController : ControllerBase {
 
 			db.SaveChanges();
 			return Ok(product);
+		}
+	}
+}
+
+[DisplayName(nameof(ProductImage))]
+public class ProductImageExternal {
+	public ProductImageExternal(ProductImage prodImage) {
+		Id = prodImage.Id;
+		Parent = prodImage.Parent.Id;
+		Url = prodImage.Url;
+	}
+	public ProductImage ToProductImage(DatabaseContext db) {
+		return new ProductImage {
+			Id = Id,
+			Parent = db.Products.Where(parent => parent.Id == Id).First(),
+			Url = Url
+		};
+	}
+	public ulong Id { get; init; }
+	public ulong Parent { get; init; }
+	public string Url { get; init; }
+}
+
+
+[ApiController]
+[Route("product-image")]
+public class ProductImageController : ControllerBase {
+	[HttpGet("{id}")]
+	public ActionResult<ProductImageExternal> Get(ulong id) {
+		using (var db = new DatabaseContext()) {
+			ProductImage? prodImage = db.ProductImages.Where(image => image.Id == id).FirstOrDefault();
+
+			if (prodImage == null) return NotFound();
+
+			return new ProductImageExternal(prodImage);
+		}
+	}
+
+	[HttpPost]
+	public ActionResult Post(ProductImageExternal productImageData) {
+		using (var db = new DatabaseContext()) {
+			if (db.ProductImages.Any(image => image.Id == productImageData.Id)) return Conflict("Already exists");
+
+			ProductImage prodImage = productImageData.ToProductImage(db);
+
+			db.ProductImages.Add(prodImage);
+			db.SaveChanges();
+
+			return Ok(new IdReference(prodImage.Id));
+		}
+	}
+
+	[HttpDelete("{id}")]
+	public ActionResult Delete(ulong id) {
+		using (var db = new DatabaseContext()) {
+			ProductImage? prodImage = db.ProductImages.Find(id);
+			if (prodImage == null) return NotFound();
+
+			db.ProductImages.Remove(prodImage);
+			db.SaveChanges();
+
+			return NoContent();
+		}
+	}
+
+	[HttpPatch("{id}")]
+	public ActionResult Patch(ulong id, [FromBody] JsonPatchDocument<ProductImage> patchdoc) {
+		using (var db = new DatabaseContext()) {
+			ProductImage? prodImage = db.ProductImages.Find(id);
+			if (prodImage == null) return NotFound();
+
+			patchdoc.ApplyTo(prodImage, ModelState);
+
+			if (!ModelState.IsValid) {
+				return BadRequest(ModelState);
+			}
+
+			db.SaveChanges();
+			return Ok(prodImage);
 		}
 	}
 }
