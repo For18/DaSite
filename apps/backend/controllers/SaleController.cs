@@ -5,17 +5,16 @@ using System.ComponentModel;
 
 [DisplayName(nameof(Sale))]
 public class SaleExternal {
-  public SaleExternal(ulong id, ulong purchaserId, ulong purchasedAuctionId, uint amount, uint price, bool isPaid) {
-     Id = id;
-     PurchaserId = purchaserId;
-     PurchasedAuctionId = purchasedAuctionId;
-     Amount = amount;
-     Price = price;
-     IsPaid = isPaid;
-  }
-  public SaleExternal(Sale sale)
-          : this(sale.Id, sale.Purchaser.Id, sale.PurchasedAuction.Id, sale.Amount, sale.Price, sale.IsPaid)
-      {}
+	public SaleExternal(ulong id, ulong purchaserId, ulong purchasedAuctionId, uint amount, uint price, bool isPaid) {
+		Id = id;
+		PurchaserId = purchaserId;
+		PurchasedAuctionId = purchasedAuctionId;
+		Amount = amount;
+		Price = price;
+		IsPaid = isPaid;
+	}
+	public SaleExternal(Sale sale)
+			: this(sale.Id, sale.Purchaser.Id, sale.PurchasedAuction.Id, sale.Amount, sale.Price, sale.IsPaid) { }
 	public Sale ToSale(DatabaseContext db) {
 		return new Sale {
 			Id = Id,

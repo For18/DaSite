@@ -5,20 +5,19 @@ using System.ComponentModel;
 
 [DisplayName(nameof(Auction))]
 public class AuctionExternal {
-  public AuctionExternal(ulong id, ushort count, uint batchSize, uint startPrice, uint minPrice, ulong startTime, uint length, ulong productId, ulong? plannerId) {
-    Id = id;
-    Count = count;
-    BatchSize = batchSize;
-    StartingPrice = startPrice;
-    MinimumPrice = minPrice;
-    StartingTime = startTime;
-    Length = length;
-    ProductId = productId;
-    PlannerId = plannerId;
-  }
-  public AuctionExternal(Auction auction)
-    : this(auction.Id, auction.Count, auction.BatchSize, auction.StartingPrice, auction.MinimumPrice, auction.StartingTime, auction.Length, auction.Product.Id, auction.Planner?.Id)
-  {}
+	public AuctionExternal(ulong id, ushort count, uint batchSize, uint startPrice, uint minPrice, ulong startTime, uint length, ulong productId, ulong? plannerId) {
+		Id = id;
+		Count = count;
+		BatchSize = batchSize;
+		StartingPrice = startPrice;
+		MinimumPrice = minPrice;
+		StartingTime = startTime;
+		Length = length;
+		ProductId = productId;
+		PlannerId = plannerId;
+	}
+	public AuctionExternal(Auction auction)
+	  : this(auction.Id, auction.Count, auction.BatchSize, auction.StartingPrice, auction.MinimumPrice, auction.StartingTime, auction.Length, auction.Product.Id, auction.Planner?.Id) { }
 
 	public Auction ToAuction(DatabaseContext db) {
 		return new Auction {
