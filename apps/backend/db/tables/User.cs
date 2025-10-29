@@ -16,7 +16,6 @@ public class User {
 	public required string DisplayName { get; set; }
 
 	[Required]
-	[StringLength(128)]
 	public required string ImageUrl { get; set; }
 
 	[Required]
