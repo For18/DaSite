@@ -15,9 +15,9 @@ public class SaleExternal {
 		IsPaid = isPaid;
 	}
 
-  public static SaleExternal ToExternal(Sale sale) {
-    return new SaleExternal(sale.Id, sale.Purchaser.Id, sale.PurchasedAuction.Id, sale.Amount, sale.Price, sale.IsPaid);
-  }
+	public static SaleExternal ToExternal(Sale sale) {
+		return new SaleExternal(sale.Id, sale.Purchaser.Id, sale.PurchasedAuction.Id, sale.Amount, sale.Price, sale.IsPaid);
+	}
 
 	public Sale ToSale(DatabaseContext db) {
 		return new Sale {

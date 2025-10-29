@@ -18,10 +18,10 @@ public class AuctionExternal {
 		PlannerId = plannerId;
 	}
 
-  public static AuctionExternal ToExternal(Auction auction) {
-    return new AuctionExternal(auction.Id, auction.Count, auction.BatchSize, auction.StartingPrice, auction.MinimumPrice, auction.StartingTime, auction.Length, auction.Product.Id, auction.Planner?.Id);
-  }
-  
+	public static AuctionExternal ToExternal(Auction auction) {
+		return new AuctionExternal(auction.Id, auction.Count, auction.BatchSize, auction.StartingPrice, auction.MinimumPrice, auction.StartingTime, auction.Length, auction.Product.Id, auction.Planner?.Id);
+	}
+
 	public Auction ToAuction(DatabaseContext db) {
 		return new Auction {
 			Id = Id,
