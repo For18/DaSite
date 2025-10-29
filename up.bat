@@ -1,1 +1,1 @@
-down && docker-compose up %*
+down && docker compose up %*
