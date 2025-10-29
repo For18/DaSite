@@ -1,3 +1,3 @@
 #!/bin/bash
 ./down.sh
-docker-compose up $@
+docker compose up $@
