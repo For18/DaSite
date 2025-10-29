@@ -14,7 +14,7 @@ export default function PendingAuctionCard({ auction }: {
 		}}>
 			<div style={{
 				float: "left",
-				width: "32%",
+				width: "36%",
 				height: "100%",
 				backgroundColor: "blue",
 				alignContent: "center",
@@ -27,8 +27,8 @@ export default function PendingAuctionCard({ auction }: {
 				{/* Insert product image here */}
 			</div>
 			<div style={{
-				float: "right", 
-				width: "65%",
+				float: "right",
+				width: "61%",
 				height: "100%",
 				backgroundColor: "red",
 				paddingLeft: "3%",
@@ -36,7 +36,7 @@ export default function PendingAuctionCard({ auction }: {
 				flexDirection: "column",
 				display: "flex"
 			}}>
-				<Typography color="textPrimary">Seller: </Typography>
+				<Typography color="textPrimary">Seller:</Typography>
 				<Typography color="textPrimary">Asking price: {auction.startingPrice}</Typography>
 				<Typography color="textPrimary">Amount: {auction.batchSize * auction.count}</Typography>
 			</div>
