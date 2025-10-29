@@ -17,10 +17,10 @@ public class Sale {
 	public required Auction PurchasedAuction { get; set; }
 
 	[Required]
-	public required int Amount { get; set; }
+	public required uint Amount { get; set; }
 
 	[Required]
-	public required int Price { get; set; }
+	public required uint Price { get; set; }
 
 	[Required]
 	public required bool IsPaid { get; set; }
