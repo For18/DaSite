@@ -8,6 +8,7 @@ import Themes, { getThemeById } from "./Themes";
 const Home = lazy(() => import("./routes/Home"));
 const Clock = lazy(() => import("./routes/Clock"));
 const Auctions = lazy(() => import("./routes/Auctions"));
+const Profile = lazy(() => import("./routes/Profile"));
 
 export const SetThemeContext = createContext<(theme: Theme) => void>(() => {});
 
@@ -48,6 +49,14 @@ export default function App() {
 								element={
 									<Suspense fallback={<Throbber/>}>
 										<Auctions/>
+									</Suspense>
+								}
+							/>
+							<Route
+								path="/profile/:userId"
+								element={
+									<Suspense fallback={<Throbber/>}>
+										<Profile/>
 									</Suspense>
 								}
 							/>
