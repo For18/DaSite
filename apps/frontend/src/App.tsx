@@ -1,13 +1,12 @@
 import { Theme, ThemeProvider } from "@mui/material/styles";
-import { createContext, lazy, Suspense, useState } from "react";
+import React, { createContext, lazy, Suspense, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router";
 import Layout from "./components/Layout";
 import Throbber from "./components/Throbber";
 import NotFound from "./routes/NotFound";
 import Themes, { getThemeById } from "./Themes";
-const Home = lazy(() => import("./routes/Home"));
-const Clock = lazy(() => import("./routes/Clock"));
-const Auctions = lazy(() => import("./routes/Auctions"));
+
+import routes from "./routes/Routes";
 
 export const SetThemeContext = createContext<(theme: Theme) => void>(() => {});
 
@@ -27,30 +26,13 @@ export default function App() {
 				<BrowserRouter>
 					<Layout>
 						<Routes>
-							<Route
-								index
-								element={
+							{Object.entries(routes).map(([path, component]) => (
+								<Route key={path} path={path} element={
 									<Suspense fallback={<Throbber/>}>
-										<Home/>
+										{React.createElement(component)}
 									</Suspense>
-								}
-							/>
-							<Route
-								path="/clock/:auctionId"
-								element={
-									<Suspense fallback={<Throbber/>}>
-										<Clock/>
-									</Suspense>
-								}
-							/>
-							<Route
-								path="/Auctions"
-								element={
-									<Suspense fallback={<Throbber/>}>
-										<Auctions/>
-									</Suspense>
-								}
-							/>
+								}/>
+							))}
 
 							<Route path="*" element={<NotFound/>}/>
 						</Routes>
