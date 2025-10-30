@@ -32,8 +32,7 @@ public class Auction {
 	[DeleteBehavior(DeleteBehavior.NoAction)]
 	public virtual User? Planner { get; set; }
 
-	public bool IsPending()
-	{
+	public bool IsPending() {
 		return StartingTime == null || Length == null;
 	}
 }

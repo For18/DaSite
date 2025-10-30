@@ -62,10 +62,8 @@ public class AuctionController : ControllerBase {
 	}
 
 	[HttpGet("/auctions")]
-	public ActionResult<AuctionExternal[]> GetNormal()
-	{
-		using (var db = new DatabaseContext())
-		{
+	public ActionResult<AuctionExternal[]> GetNormal() {
+		using (var db = new DatabaseContext()) {
 			return db.Auctions
 				.Include(auc => auc.Planner)
 				.Include(auc => auc.Product)
@@ -75,10 +73,8 @@ public class AuctionController : ControllerBase {
 		}
 	}
 	[HttpGet("/auctions/pending")]
-	public ActionResult<AuctionExternal[]> GetPending()
-	{
-		using (var db = new DatabaseContext())
-		{
+	public ActionResult<AuctionExternal[]> GetPending() {
+		using (var db = new DatabaseContext()) {
 			return db.Auctions
 				.Include(auc => auc.Planner)
 				.Include(auc => auc.Product)
@@ -87,7 +83,7 @@ public class AuctionController : ControllerBase {
 			.ToArray();
 		}
 	}
-	
+
 
 	[HttpPost]
 	public ActionResult Post(AuctionExternal auctionData) {
