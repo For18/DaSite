@@ -70,7 +70,7 @@ public class UserController : ControllerBase {
 	}
 
 	[HttpPost]
-	public ActionResult<IdReference> Post(User user) {
+	public ActionResult Post(User user) {
 		using (var db = new DatabaseContext()) {
 			if (db.Users.Any(auc => auc.Id == user.Id)) return Conflict("Already exists");
 
