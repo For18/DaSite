@@ -77,7 +77,7 @@ public class UserController : ControllerBase {
 			db.Users.Add(user);
 			db.SaveChanges();
 
-			return Ok();
+			return Ok(new IdReference(user.Id));
 		}
 	}
 

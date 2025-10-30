@@ -6,7 +6,7 @@ using System.ComponentModel;
 
 [DisplayName(nameof(Auction))]
 public class AuctionExternal {
-	public AuctionExternal(ulong id, ushort count, uint batchSize, uint startPrice, uint minPrice, ulong startTime, uint length, ulong productId, ulong? plannerId) {
+	public AuctionExternal(ulong id, ushort count, uint batchSize, uint startPrice, uint minPrice, ulong? startTime, uint? length, ulong productId, ulong? plannerId) {
 		Id = id;
 		Count = count;
 		BatchSize = batchSize;
@@ -40,8 +40,8 @@ public class AuctionExternal {
 	public uint BatchSize { get; init; }
 	public uint StartingPrice { get; init; }
 	public uint MinimumPrice { get; init; }
-	public ulong StartingTime { get; init; }
-	public uint Length { get; init; }
+	public ulong? StartingTime { get; init; }
+	public uint? Length { get; init; }
 	public ulong ProductId { get; init; }
 	public ulong? PlannerId { get; init; }
 }
@@ -62,11 +62,28 @@ public class AuctionController : ControllerBase {
 	}
 
 	[HttpGet("/auctions")]
-	public ActionResult<AuctionExternal[]> GetAll() {
+	public ActionResult<AuctionExternal[]> GetNormal() {
 		using (var db = new DatabaseContext()) {
-			return db.Auctions.Include(auc => auc.Planner).Include(auc => auc.Product).Select(auction => AuctionExternal.ToExternal(auction)).ToArray();
+			return db.Auctions
+				.Include(auc => auc.Planner)
+				.Include(auc => auc.Product)
+				.Where(auc => auc.StartingTime != null && auc.Length != null)
+				.Select(auction => AuctionExternal.ToExternal(auction))
+			.ToArray();
 		}
 	}
+	[HttpGet("/auctions/pending")]
+	public ActionResult<AuctionExternal[]> GetPending() {
+		using (var db = new DatabaseContext()) {
+			return db.Auctions
+				.Include(auc => auc.Planner)
+				.Include(auc => auc.Product)
+				.Where(auc => auc.StartingTime == null || auc.Length == null)
+				.Select(auction => AuctionExternal.ToExternal(auction))
+			.ToArray();
+		}
+	}
+
 
 	[HttpPost]
 	public ActionResult Post(AuctionExternal auctionData) {

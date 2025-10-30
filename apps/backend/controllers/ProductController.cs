@@ -54,6 +54,16 @@ public class ProductController : ControllerBase {
 			return db.Products.Include(product => product.Owner).Select(product => ProductExternal.ToExternal(product)).ToArray();
 		}
 	}
+	[HttpGet("/products/user/{userId}")]
+	public ActionResult<ProductExternal[]> GetOfUser(ulong userId) {
+		using (var db = new DatabaseContext()) {
+			return db.Products
+				.Include(product => product.Owner)
+				.Where(product => product.Owner.Id == userId)
+				.Select(product => ProductExternal.ToExternal(product))
+			.ToArray();
+		}
+	}
 
 	[HttpPost]
 	public ActionResult Post(ProductExternal productData) {

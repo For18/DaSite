@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
@@ -18,11 +19,9 @@ public class Auction {
 	[Required]
 	public required uint MinimumPrice { get; set; }
 
-	[Required]
-	public required ulong StartingTime { get; set; }
+	public ulong? StartingTime { get; set; }
 
-	[Required]
-	public required uint Length { get; set; }
+	public uint? Length { get; set; }
 
 	[Required]
 	[ForeignKey("ProductId")]
@@ -32,4 +31,8 @@ public class Auction {
 	[ForeignKey("PlannerId")]
 	[DeleteBehavior(DeleteBehavior.NoAction)]
 	public virtual User? Planner { get; set; }
+
+	public bool IsPending() {
+		return StartingTime == null || Length == null;
+	}
 }
