@@ -16,8 +16,10 @@ public class AuctionExternal {
 		ProductId = productId;
 		PlannerId = plannerId;
 	}
-	public Auction ToAuction(DatabaseContext db) {
-		return new Auction {
+	public Auction ToAuction(DatabaseContext db)
+	{
+		return new Auction
+		{
 			Id = Id,
 			Count = Count,
 			BatchSize = BatchSize,
@@ -29,6 +31,21 @@ public class AuctionExternal {
 			Planner = db.Users.Where(u => u.Id == PlannerId).FirstOrDefault(),
 		};
 	}
+	public static AuctionExternal ToExternal(Auction auction)
+	{
+		return new AuctionExternal(
+			auction.Id,
+			auction.Count,
+			auction.BatchSize,
+			auction.StartingPrice,
+			auction.MinimumPrice,
+			auction.StartingTime,
+			auction.Length,
+			auction.Product.Id,
+			auction.Planner?.Id
+		);
+	}
+
 	public ulong Id { get; init; }
 	public ushort Count { get; init; }
 	public uint BatchSize { get; init; }
@@ -51,30 +68,17 @@ public class AuctionController : ControllerBase {
 			Auction? auction = db.Auctions.Find(id);
 			if (auction == null) return NotFound();
 
-			return new AuctionExternal(auction);
+			return AuctionExternal.ToExternal(auction);
 		}
 	}
 
 	[HttpGet("/auctions")]
 	public ActionResult<AuctionExternal[]> GetAll() {
 		using (var db = new DatabaseContext()) {
-			return db.Auctions.Select(auction => new AuctionExternal(auction)).ToArray();
+			return db.Auctions.Select(auction => AuctionExternal.ToExternal(auction)).ToArray();
 		}
 	}
 
-	[HttpGet("/auctions/pending")]
-	public ActionResult<AuctionExternal[]> GetPending() {
-		using (var db = new DatabaseContext()) {
-			return db.Auctions.Where(a => a.StartingTime == null).Select(auction => new AuctionExternal(auction)).ToArray();
-		}
-	}
-
-	[HttpGet("/auctions/pending")]
-	public ActionResult<AuctionExternal[]> GetPending() {
-		using (var db = new DatabaseContext()) {
-			return db.Auctions.Where(a => a.StartingTime == null).Select(auction => new AuctionExternal(auction)).ToArray();
-		}
-	}
 	[HttpGet("/auctions/pending")]
 	public ActionResult<AuctionExternal[]> GetPending() {
 		using (var db = new DatabaseContext()) {
