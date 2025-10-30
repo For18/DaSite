@@ -2,12 +2,15 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import PendingAuctionCard from "../components/PendingAuctionCard";
 import Throbber from "../components/Throbber";
-import { Auction, useAPI } from "../lib/api";
+import { Auction, useAPI, User, Product } from "../lib/api";
 import { useScreenSize } from "../lib/util";
+import Header from "../components/Header";
 
 export default function PendingAuction() {
 	{/*const auctions = useAPI<Auction[]>("/auctions/pending");*/}
+
 	const [screenWidth, screenHeight] = useScreenSize();
+
 	const auctions = [
 		{ id: 1, count: 10, batchSize: 5, startingPrice: 100, minimumPrice: 20, startingTime: 50, productId: 1,
 			plannerId: 1 },
@@ -37,7 +40,13 @@ export default function PendingAuction() {
 			flexDirection: "column",
 			alignItems: "center"
 		}}>
-			<h1>Pending products</h1>
+			<div style={{
+				marginTop: "24px",
+				marginBottom: "24px"
+			}}>
+				<Header>Pending products</Header>
+			</div>
+			
 			<Paper sx={{
 				width: "800px",
 				maxWidth: "80vw",
