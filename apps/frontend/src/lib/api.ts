@@ -29,7 +29,7 @@ export type User = {
 	imageUrl: string;
 	email: string;
 	telephoneNumber: number;
-}
+};
 
 export function useAPI<T>(route: string): T | null | undefined {
 	const [value, setValue] = useState<T | null | undefined>(null);
