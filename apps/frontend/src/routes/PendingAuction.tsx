@@ -1,10 +1,10 @@
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
+import Header from "../components/Header";
 import PendingAuctionCard from "../components/PendingAuctionCard";
 import Throbber from "../components/Throbber";
-import { Auction, useAPI, User, Product } from "../lib/api";
+import { Auction, Product, useAPI, User } from "../lib/api";
 import { useScreenSize } from "../lib/util";
-import Header from "../components/Header";
 
 export default function PendingAuction() {
 	{/*const auctions = useAPI<Auction[]>("/auctions/pending");*/}
@@ -46,7 +46,7 @@ export default function PendingAuction() {
 			}}>
 				<Header>Pending products</Header>
 			</div>
-			
+
 			<Paper sx={{
 				width: "800px",
 				maxWidth: "80vw",
