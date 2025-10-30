@@ -6,7 +6,7 @@ using System.ComponentModel;
 
 [DisplayName(nameof(Auction))]
 public class AuctionExternal {
-	public AuctionExternal(ulong id, ushort count, uint batchSize, uint startPrice, uint minPrice, ulong startTime, uint length, ulong productId, ulong? plannerId) {
+	public AuctionExternal(ulong id, ushort count, uint batchSize, uint startPrice, uint minPrice, ulong? startTime, uint? length, ulong productId, ulong? plannerId) {
 		Id = id;
 		Count = count;
 		BatchSize = batchSize;
@@ -40,8 +40,8 @@ public class AuctionExternal {
 	public uint BatchSize { get; init; }
 	public uint StartingPrice { get; init; }
 	public uint MinimumPrice { get; init; }
-	public ulong StartingTime { get; init; }
-	public uint Length { get; init; }
+	public ulong? StartingTime { get; init; }
+	public uint? Length { get; init; }
 	public ulong ProductId { get; init; }
 	public ulong? PlannerId { get; init; }
 }
