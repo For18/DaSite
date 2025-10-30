@@ -14,41 +14,47 @@ export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 		ownerId: 3 };
 	const user = { displayName: "John Doe", imageUrl: "", email: "blablabla", telephoneNumber: 123456789 };
 
+	const cardAspectRatio = 4 / 1;
+
 	return (
 		<Card sx={{
 			display: "flex",
-			backgroundColor: "green",
-			maxWidth: "100%",
-			aspectRatio: 4 / 1
+			width: "100%",
+			backgroundColor: "#88888811",
+			aspectRatio: cardAspectRatio
 		}}>
 			<div style={{
 				position: "relative",
 				float: "left",
-				width: "25%",
+				width: "fit-content",
 				height: "100%",
-				backgroundColor: "blue",
 				alignContent: "center",
 				display: "flex",
 				justifyContent: "center",
 				alignItems: "center",
 				objectFit: "contain"
 			}}>
-				<div
-					style={{ justifyContent: "center", alignContent: "center", display: "flex", position: "absolute",
-						width: "100%", alignItems: "center" }}
-				>
+				<div style={{
+					justifyContent: "center",
+					alignContent: "center",
+					display: "flex",
+					position: "absolute",
+					width: "100%",
+					alignItems: "center"
+				}}>
 					<Typography color="textPrimary" style={{ position: "absolute" }}>{product?.name}</Typography>
 				</div>
-				<img src="https://i.ibb.co/7xnxXSC6/matt.webp"
-					style={{ width: "100%", aspectRatio: "1 / 1", objectFit: "cover", display: "block" }}
-				>
-				</img>
+				<img src="https://i.ibb.co/7xnxXSC6/matt.webp" style={{
+					height: "100%",
+					aspectRatio: "1 / 1",
+					objectFit: "cover",
+					display: "block"
+				}}/>
 			</div>
 			<div style={{
 				float: "right",
-				width: "72%",
+				width: `${(cardAspectRatio - 1) / cardAspectRatio * 100}%`,
 				height: "100%",
-				backgroundColor: "red",
 				paddingLeft: "3%",
 				justifyContent: "center",
 				flexDirection: "column",

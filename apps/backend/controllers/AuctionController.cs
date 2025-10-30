@@ -16,10 +16,8 @@ public class AuctionExternal {
 		ProductId = productId;
 		PlannerId = plannerId;
 	}
-	public Auction ToAuction(DatabaseContext db)
-	{
-		return new Auction
-		{
+	public Auction ToAuction(DatabaseContext db) {
+		return new Auction {
 			Id = Id,
 			Count = Count,
 			BatchSize = BatchSize,
@@ -31,8 +29,7 @@ public class AuctionExternal {
 			Planner = db.Users.Where(u => u.Id == PlannerId).FirstOrDefault(),
 		};
 	}
-	public static AuctionExternal ToExternal(Auction auction)
-	{
+	public static AuctionExternal ToExternal(Auction auction) {
 		return new AuctionExternal(
 			auction.Id,
 			auction.Count,
