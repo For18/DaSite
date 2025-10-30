@@ -26,11 +26,13 @@ export default function App() {
 				<BrowserRouter>
 					<Layout>
 						<Routes>
-							{Object.entries(routes).map(([path, component]) => <Route key={path} path={path} element={
-								<Suspense fallback={<Throbber/>}>
-									{React.createElement(component)}
-								</Suspense>
-							}/>)}
+							{Object.entries(routes).map(([path, component]) => (
+								<Route key={path} path={path} element={
+									<Suspense fallback={<Throbber/>}>
+										{React.createElement(component)}
+									</Suspense>
+								}/>
+							))}
 
 							<Route path="*" element={<NotFound/>}/>
 						</Routes>
