@@ -13,6 +13,12 @@ export type Product = {
 	owner: number;
 };
 
+export type ProductImage = {
+  id: number;
+  parent: number;
+  url: string;
+}
+
 export type Auction = {
 	id: number;
 	count: number;
@@ -20,6 +26,7 @@ export type Auction = {
 	startingPrice: number;
 	minimumPrice: number;
 	startingTime: number;
+  length: number;
 	productId: number;
 	plannerId: number;
 };
@@ -31,7 +38,7 @@ export type User = {
 	telephonenumber: number;
 };
 
-export function useAPI<T>(route: string): T | null | undefined {
+export function useAPI<T>(route: string | null): T | null | undefined {
 	const [value, setValue] = useState<T | null | undefined>(null);
 
 	useEffect(() => {
