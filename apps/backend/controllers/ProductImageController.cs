@@ -21,10 +21,10 @@ public class ProductImageExternal {
 	public string Url { get; init; }
 }
 
-
 [ApiController]
 [Route("product-image")]
 public class ProductImageController : ControllerBase {
+
 	[HttpGet("{id}")]
 	public ActionResult<ProductImageExternal> Get(ulong id) {
 		using (var db = new DatabaseContext()) {
@@ -35,6 +35,15 @@ public class ProductImageController : ControllerBase {
 			return ProductImageExternal.ToExternal(prodImage);
 		}
 	}
+
+  [HttpGet("from/{id}")]
+  public ActionResult<ProductImageExternal[]> GetByParent(ulong id) {
+    using (var db = new DatabaseContext()) {
+      return db.ProductImages.Include(prodImage => prodImage.Parent)
+        .Where(prodImage => prodImage.Parent.Id == id)
+        .Select(prodImage => ProductImageExternal.ToExternal(prodImage)).ToArray();
+    }
+  }
 
 	[HttpPost]
 	public ActionResult Post(ProductImageExternal productImageData) {
