@@ -19,7 +19,8 @@ export default function Layout({ children }: PropsWithChildren) {
 			<TopBar
 				links={{
 					Home: "/",
-					Auctions: "/auctions"
+					Auctions: "/auctions",
+          Clock: "/clock/"
 				}}
 			/>
 			<article
