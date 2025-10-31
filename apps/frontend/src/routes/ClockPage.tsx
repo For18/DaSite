@@ -7,10 +7,6 @@ import { Auction, Product, useAPI } from "../lib/api";
 import { useTime } from "../lib/util";
 import NotFound from "./NotFound";
 
-function formatTime(timeMillis: number) {
-  return Math.floor((timeMillis / 1000) * 100) / 100;
-}
-
 export default function ClockPage() {
   const { auctionId } = useParams();
   const auction = useAPI<Auction>("/auction/" + auctionId);
@@ -33,18 +29,21 @@ export default function ClockPage() {
   }, [remainingTime, auction]);
 
   const currentPrice = useMemo(() => {
-      if (!auction || !startingTime) return 0;
+      if (!auction || !startingTime) return "";
       const price = Math.floor
         ((auction.minimumPrice + (auction.startingPrice - auction.minimumPrice) * (remainingTime / (auction.length * 1000))) * 100) / 100;
 
-      return parseFloat(price.toFixed(2));
+      return price.toFixed(2);
   }, [auctionProgress]);
 
   if (auction === undefined) return <NotFound />;
   if (auction === null) return <Throbber />;
   if (product === null) return <Throbber />;
 
-  const formattedRemainingTime = formatTime(remainingTime);
+  const remainingSeconds = Math.floor(remainingTime / 1000);
+  const remainingMilliSec = remainingTime % 1000;
+  const formattedSeconds = remainingSeconds < 10 ? `0${remainingSeconds}` : `${remainingSeconds}`;
+  const formattedMilliseconds = remainingMilliSec < 100 ? `0${remainingMilliSec}`.padStart(3, '0') : `${remainingMilliSec}`;
 
   return (
     <div
@@ -67,7 +66,7 @@ export default function ClockPage() {
           paddingTop: "200px"
         }}
       >
-        <Clock time={formattedRemainingTime} price={currentPrice} progress={auctionProgress} size={400} />
+        <Clock price={currentPrice} seconds={formattedSeconds} milliseconds={formattedMilliseconds} progress={auctionProgress} />
       </div>
 
       <div
@@ -85,3 +84,4 @@ export default function ClockPage() {
     </div>
   );
 }
+
