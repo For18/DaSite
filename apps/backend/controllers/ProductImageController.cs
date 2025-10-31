@@ -36,14 +36,14 @@ public class ProductImageController : ControllerBase {
 		}
 	}
 
-  [HttpGet("from/{id}")]
-  public ActionResult<ProductImageExternal[]> GetByParent(ulong id) {
-    using (var db = new DatabaseContext()) {
-      return db.ProductImages.Include(prodImage => prodImage.Parent)
-        .Where(prodImage => prodImage.Parent.Id == id)
-        .Select(prodImage => ProductImageExternal.ToExternal(prodImage)).ToArray();
-    }
-  }
+	[HttpGet("from/{id}")]
+	public ActionResult<ProductImageExternal[]> GetByParent(ulong id) {
+		using (var db = new DatabaseContext()) {
+			return db.ProductImages.Include(prodImage => prodImage.Parent)
+			  .Where(prodImage => prodImage.Parent.Id == id)
+			  .Select(prodImage => ProductImageExternal.ToExternal(prodImage)).ToArray();
+		}
+	}
 
 	[HttpPost]
 	public ActionResult Post(ProductImageExternal productImageData) {

@@ -1,21 +1,21 @@
-import { Product } from "../lib/api";
-import { useAPI, User, ProductImage } from "../lib/api";
 import Throbber from "../components/Throbber";
+import { Product } from "../lib/api";
+import { ProductImage, useAPI, User } from "../lib/api";
 import NotFound from "../routes/NotFound";
-import "./styles/ProductView.css"
+import "./styles/ProductView.css";
 
 export default function ProductView({ product }: { product: Product }) {
 	const owner = useAPI<User>("/user/" + product.owner) ?? null;
-  const prodImages = useAPI<ProductImage[]>("/product-image/from/" + product.id);
-  product.imageUrls = [];
+	const prodImages = useAPI<ProductImage[]>("/product-image/from/" + product.id);
+	product.imageUrls = [];
 
-  if (owner === null) return <Throbber/>;
-  if (owner === undefined) return <NotFound/>;
+	if (owner === null) return <Throbber/>;
+	if (owner === undefined) return <NotFound/>;
 
-  if (prodImages === null) return <Throbber/>;
-  if (prodImages === undefined) return <NotFound/>;
-  
-  prodImages.forEach((prodImage) => product.imageUrls.push(prodImage.url));
+	if (prodImages === null) return <Throbber/>;
+	if (prodImages === undefined) return <NotFound/>;
+
+	prodImages.forEach(prodImage => product.imageUrls.push(prodImage.url));
 
 	return (
 		<div className={"product-view"}>
@@ -36,7 +36,7 @@ export default function ProductView({ product }: { product: Product }) {
 
 			<div>
 				<img
-          className={"thumbnail-image"}
+					className={"thumbnail-image"}
 					src={product.thumbnailImageUrl}
 					alt={product.name}
 				/>
@@ -46,7 +46,7 @@ export default function ProductView({ product }: { product: Product }) {
 				{product.imageUrls.map((url, index) => (
 					<div key={index} style={{ cursor: "pointer" }}>
 						<img
-              className={"extra-image"}
+							className={"extra-image"}
 							src={url}
 							alt={`Product Image ${index + 1}`}
 							onClick={() => window.open(url, "_blank")}

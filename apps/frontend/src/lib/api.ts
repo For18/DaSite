@@ -14,10 +14,10 @@ export type Product = {
 };
 
 export type ProductImage = {
-  id: number;
-  parent: number;
-  url: string;
-}
+	id: number;
+	parent: number;
+	url: string;
+};
 
 export type Auction = {
 	id: number;
@@ -26,7 +26,7 @@ export type Auction = {
 	startingPrice: number;
 	minimumPrice: number;
 	startingTime: number;
-  length: number;
+	length: number;
 	productId: number;
 	plannerId: number;
 };
