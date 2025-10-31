@@ -6,7 +6,7 @@ import Throbber from "./components/Throbber";
 import NotFound from "./routes/NotFound";
 import Themes, { getThemeById } from "./Themes";
 const Home = lazy(() => import("./routes/Home"));
-const Clock = lazy(() => import("./routes/Clock"));
+const Clock = lazy(() => import("./routes/ClockPage"));
 const Auctions = lazy(() => import("./routes/Auctions"));
 
 export const SetThemeContext = createContext<(theme: Theme) => void>(() => {});
