@@ -28,7 +28,7 @@ export default function TopBar({
 					return (
 						<Button
 							key={name}
-							onClick={e => {
+							onClick={() => {
 								navigate(path);
 							}}
 						>
@@ -38,9 +38,6 @@ export default function TopBar({
 				})}
 			</nav>
 			<ThemeSelector
-				style={{
-					justifySelf: "end"
-				}}
 				themes={[Themes.LIGHT, Themes.DARK]}
 			/>
 		</header>
