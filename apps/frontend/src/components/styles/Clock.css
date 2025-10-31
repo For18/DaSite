@@ -1,0 +1,35 @@
+.container {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.clock {
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background-color: #008000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  font-size: 1.5em;
+  user-select: none;
+  transition: background-color 0.5s ease;
+}
+
+.clock.halfway {
+  background-color: #ff5000;
+}
+
+.clock.three-quarter {
+  background-color: #ff0000;
+}
+
+.typography {
+  margin-top: 20px;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+}

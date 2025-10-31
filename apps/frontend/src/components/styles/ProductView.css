@@ -1,0 +1,37 @@
+.product-view {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+}
+
+.seller {
+  fontSize: 1.1em;
+  color: #555;
+}
+
+.horizontal-rule {
+  border: 1px solid #ccc; 
+  margin: 20px 0;
+}
+
+.thumbnail-image {
+	width: 100%;
+	height: auto;
+	borderRadius: 8px;
+}
+
+
+.extra-image-container {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+	gap: 10px;
+	margin-top: 20px
+}
+
+.extra-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}

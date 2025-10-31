@@ -6,6 +6,7 @@ import Throbber from "../components/Throbber";
 import { Auction, Product, useAPI } from "../lib/api";
 import { useTime } from "../lib/util";
 import NotFound from "./NotFound";
+import "./styles/ClockPage.css"
 
 export default function ClockPage() {
   const { auctionId } = useParams();
@@ -46,42 +47,14 @@ export default function ClockPage() {
   const formattedMilliseconds = remainingMilliSec < 100 ? `0${remainingMilliSec}`.padStart(3, '0') : `${remainingMilliSec}`;
 
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        gridGap: "20px",
-        marginBottom: "100px",
-        alignItems: "start"
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          paddingLeft: "20px",
-          paddingTop: "200px"
-        }}
-      >
+    <div className={"base-container"}>
+      <div className={"clock-container"}>
         <Clock price={currentPrice} seconds={formattedSeconds} milliseconds={formattedMilliseconds} progress={auctionProgress} />
       </div>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-start",
-          alignItems: "flex-start",
-          padding: "20px",
-          maxHeight: "calc(100vh - 100px)",
-          overflowY: "auto"
-        }}
-      >
+      <div className={"product-container"}>
         {product == null ? <Throbber /> : <ProductView product={product} />}
       </div>
     </div>
   );
 }
-
