@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import ProductView from "../components/ProductView";
 import Throbber from "../components/Throbber";
 import { Auction, Product, useAPI } from "../lib/api";
+import { useTime } from "../lib/util";
 
 export default function Auctions() {
 	useEffect(() => {
@@ -49,7 +50,7 @@ export default function Auctions() {
 							sx={{
 								minWidth: 220,
 								flex: "1 1 220px",
-								backgroundColor: "#262626",
+								backgroundColor: "#88888822",
 								p: 2,
 								borderRadius: 1
 							}}
@@ -58,7 +59,10 @@ export default function Auctions() {
 								<ProductView product={product}/> :
 								<Typography color="textPrimary">Product #{auction.productId}</Typography>}
 							<Typography color="textSecondary" variant="caption">
-								Start: {auction.startingPrice} • Min: {auction.minimumPrice} • Count: {auction.count}
+								StartTime: {new Date(auction.startingTime).toLocaleDateString()} {new Date(auction.startingTime).toLocaleTimeString()} | 
+								Start: {auction.startingPrice} | 
+								Min: {auction.minimumPrice} | 
+								Count: {auction.count}
 							</Typography>
 						</Box>
 					);
