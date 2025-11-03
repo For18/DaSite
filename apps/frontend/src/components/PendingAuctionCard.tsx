@@ -31,9 +31,9 @@ export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 				<img className="product-image" src="https://i.ibb.co/7xnxXSC6/matt.webp"/>
 			</div>
 			<div className="info-card">
-				<Typography color="textPrimary">Seller: {user?.displayName}</Typography>
-				<Typography color="textPrimary">Asking price: €{auction.startingPrice},-</Typography>
-				<Typography color="textPrimary">Amount: {auction.batchSize * auction.count}</Typography>
+				<Typography color="textPrimary" className="info-text">Seller: {user?.displayName}</Typography>
+				<Typography color="textPrimary" className="info-text">Asking price: €{auction.startingPrice},-</Typography>
+				<Typography color="textPrimary" className="info-text">Amount: {auction.batchSize * auction.count}</Typography>
 			</div>
 		</Card>
 	);

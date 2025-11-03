@@ -39,3 +39,7 @@
 .image-text {
     position: absolute;
 }
+
+.info-text {
+    line-height: calc(100% / 0.5);
+}
