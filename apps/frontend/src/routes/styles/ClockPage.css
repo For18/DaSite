@@ -14,7 +14,7 @@
   align-items: center;
 }
 
-.da-div {
+.container-separator {
   grid-column: 2;
   background-color: grey;
 }
