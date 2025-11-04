@@ -4,21 +4,45 @@
   justify-content: center;
 }
 
+.clock-overlay {
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  background-color: skyblue;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
 .clock {
   width: 400px;
   height: 400px;
   border-radius: 50%;
-  background-color: #008000;
+  background-color: royalblue;
+  background-image: conic-gradient(from 0deg, darkblue, calc(360deg * var(--progress)), transparent 0deg);
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
   font-weight: bold;
-  font-family: 'Courier New', monospace;
-  font-size: 1.5em;
-  user-select: none;
-  transition: background-color 0.5s ease;
+  font-family: 'Courier New', monospace; font-size: 1.5em;
 }
+
+.clock-box {
+  width: 100px;
+  height: 50px;
+  display: row;
+  background-color: black;
+  align-items: center;
+  text-align: center;
+  border-style: solid;
+  font-family: 'Courier New', monospace; font-size: 1.5em;
+}
+
+.clock-box.currency { margin-bottom: 20px; }
+.clock-box.price { margin-bottom: 20px; }
+.clock-box.count {}
 
 .clock.halfway {
   background-color: #ff5000;
