@@ -26,7 +26,7 @@ export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 		}}>
 			<div className="card">
 				<div className="image-card">
-					<Typography color="white" className="image-text" sx={{WebkitTextStroke:"1px black"}}>{product?.name}</Typography>
+					<Typography color="white" className="image-text" sx={{WebkitTextStroke:"0.6px black", fontSize: 20}}>{product?.name}</Typography>
 				</div>
 				<img className="product-image" src="https://i.ibb.co/7xnxXSC6/matt.webp"/>
 			</div>

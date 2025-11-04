@@ -38,7 +38,7 @@ export default function PendingAuction() {
 	return (
 		<div className="main-div">
 			<div className="header-div">
-				<Header>Pending products</Header>
+				<Header>pending auctions</Header>
 			</div>
 
 			<Paper sx={{
