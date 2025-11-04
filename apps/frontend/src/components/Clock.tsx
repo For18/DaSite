@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 import React from "react";
 import { useMemo } from "react";
 import { AuctionState } from "../routes/ClockPage";
@@ -8,6 +8,11 @@ export default function Clock(
 	{ auctionState, setIsAuctionOver }: { auctionState: AuctionState, setIsAuctionOver: (value :boolean) => void }
 ) {
 	const currencyType = "100 cent";
+
+  const buttonText = useMemo(() => {
+      if (auctionState.isOver) return "Auction Bought!";
+      return "BUY";
+  }, [auctionState.isOver]);
 
 	return (
 		<div className={"container"}>
@@ -37,6 +42,10 @@ export default function Clock(
 			<Typography className={"typography"}>
 				{auctionState.fmtedRemainingTime}
 			</Typography>
+
+      <Button className={"bid-button"} onClick={() => {setIsAuctionOver(true);}}>
+        {buttonText}
+      </Button>
 		</div>
 	);
 }
