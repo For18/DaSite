@@ -2,6 +2,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
 using System.ComponentModel;
+using Microsoft.EntityFrameworkCore;
 
 [DisplayName(nameof(Auction))]
 public class AuctionExternal {
