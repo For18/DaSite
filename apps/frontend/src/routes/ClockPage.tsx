@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo} from "react";
 import { useParams } from "react-router";
 import Clock from "../components/Clock";
 import ProductView from "../components/ProductView";
 import Throbber from "../components/Throbber";
-import { Auction, Product, useAPI } from "../lib/api";
+import { Auction, Product, useAPI, API_URL } from "../lib/api";
 import { useTime } from "../lib/util";
 import NotFound from "./NotFound";
 import "./styles/ClockPage.css";
@@ -58,9 +58,10 @@ export default function ClockPage() {
 	return (
 		<div className={"base-container"}>
 			<div className={"clock-container"}>
-				<Clock price={currentPrice} seconds={formattedSeconds} milliseconds={formattedMilliseconds}
-					progress={auctionProgress}/>
+				<Clock price={currentPrice} duration={formattedTime} progress={auctionProgress}/>
 			</div>
+
+      <div className={"container-separator"}/>
 
 			<div className={"product-container"}>
 				{product == null ? <Throbber/> : <ProductView product={product}/>}
