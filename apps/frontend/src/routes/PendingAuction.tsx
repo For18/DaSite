@@ -62,15 +62,6 @@ export default function PendingAuction() {
 						</div>
 					) :
 					auctions.map(auction => <PendingAuctionCard auction={auction}/>)}
-				{
-					/*
-				{test == null ?
-					<Throbber/> :
-					test.length == 0 ?
-					<Typography color="textPrimary">No pending auctions</Typography> :
-					test?.map(testing => <PendingAuctionCard testing={testing}/>)}
-				*/
-				}
 			</Paper>
 		</div>
 	);
