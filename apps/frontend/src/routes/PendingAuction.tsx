@@ -5,7 +5,7 @@ import PendingAuctionCard from "../components/PendingAuctionCard";
 import Throbber from "../components/Throbber";
 import { Auction, Product, useAPI, User } from "../lib/api";
 import { useScreenSize } from "../lib/util";
-import './PendingAuction.css'
+import "./PendingAuction.css";
 
 export default function PendingAuction() {
 	{/*const auctions = useAPI<Auction[]>("/auctions/pending");*/}
