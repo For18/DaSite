@@ -1,4 +1,5 @@
 .container {
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -34,6 +35,7 @@
   height: 50px;
   display: row;
   background-color: black;
+  justify-content: center;
   align-items: center;
   text-align: center;
   border-style: solid;
@@ -44,16 +46,15 @@
 .clock-box.price { margin-bottom: 20px; }
 .clock-box.count {}
 
-.clock.halfway {
-  background-color: #ff5000;
-}
-
-.clock.three-quarter {
-  background-color: #ff0000;
-}
-
 .typography {
   margin-top: 20px;
   text-align: center;
   font-family: 'Courier New', monospace;
+}
+
+.bid-button {
+  font-family: 'Courier New', monospace;
+  border-style: solid;
+  border-color: darkblue;
+  background-color: skyblue;
 }
