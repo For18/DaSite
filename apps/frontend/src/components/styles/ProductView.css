@@ -1,5 +1,5 @@
 .product-view {
-  padding: 20px;
+  margin-left: 20px;
   font-family: Arial, sans-serif;
   line-height: 1.6;
 }
@@ -17,9 +17,8 @@
 .thumbnail-image {
 	width: 100%;
 	height: auto;
-	borderRadius: 8px;
+	border-radius: 8px;
 }
-
 
 .extra-image-container {
 	display: grid;
@@ -33,5 +32,4 @@
   height: auto;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
 }
