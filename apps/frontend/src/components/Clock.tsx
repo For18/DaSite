@@ -43,7 +43,7 @@ export default function Clock(
 				{auctionState.fmtedRemainingTime}
 			</Typography>
 
-      <Button className={"bid-button"} onClick={() => {setIsAuctionOver(true);}}>
+      <Button className={"bid-button"} onClick={() => {setIsAuctionOver(true); alert(`Auction bought for € ${auctionState.price}`)}}>
         {buttonText}
       </Button>
 		</div>
