@@ -1,0 +1,17 @@
+.main-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header-div {
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+.no-pending-auctions {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    min-height: var(--min-paper-height)px;
+}

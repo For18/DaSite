@@ -5,6 +5,7 @@ import PendingAuctionCard from "../components/PendingAuctionCard";
 import Throbber from "../components/Throbber";
 import { Auction, Product, useAPI, User } from "../lib/api";
 import { useScreenSize } from "../lib/util";
+import './PendingAuction.css'
 
 export default function PendingAuction() {
 	{/*const auctions = useAPI<Auction[]>("/auctions/pending");*/}
@@ -35,15 +36,8 @@ export default function PendingAuction() {
 	const minPaperHeight = 300;
 
 	return (
-		<div style={{
-			display: "flex",
-			flexDirection: "column",
-			alignItems: "center"
-		}}>
-			<div style={{
-				marginTop: "24px",
-				marginBottom: "24px"
-			}}>
+		<div className="main-div">
+			<div className="header-div">
 				<Header>Pending products</Header>
 			</div>
 
@@ -63,12 +57,7 @@ export default function PendingAuction() {
 					<Throbber/> :
 					auctions.length == 0 ?
 					(
-						<div style={{
-							alignItems: "center",
-							display: "flex",
-							justifyContent: "center",
-							minHeight: `${minPaperHeight}px`
-						}}>
+						<div className="no-pending-auctions">
 							<Typography color="textPrimary">No pending auctions</Typography>
 						</div>
 					) :
