@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
 import Clock from "../components/Clock";
 import ProductView from "../components/ProductView";
@@ -23,10 +23,21 @@ function formatDuration(duration: number): string {
 	}`;
 }
 
+export class AuctionState {
+  price: string;
+  remainingTime: number;
+  fmtedRemainingTime: string;
+  progress: number;
+  isOver: boolean;
+};
+
 export default function ClockPage() {
 	const { auctionId } = useParams();
 	const auction = useAPI<Auction>("/auction/" + auctionId);
 	const product = useAPI<Product>(auction ? "/product/" + auction.productId : null);
+
+  const [isAuctionOver, setIsAuctionOver] = useState<boolean>(false);
+  const auctionState = useMemo(() => { return new AuctionState(); }, [])
 
 	useEffect(() => {
 		fetch(API_URL + "/auction/" + auction?.id, {
@@ -53,17 +64,21 @@ export default function ClockPage() {
 	if (auction === null) return <Throbber/>;
 	if (product === null) return <Throbber/>;
 
-	const currentPrice = Math.min(
-		Math.max(lerp(auction.startingPrice, auction.minimumPrice, auctionProgress), auction.minimumPrice),
-		auction.startingPrice
-	).toFixed(2);
-	const remainingTime = auctionLenMillis - elapsedTime;
-	const formattedTime = remainingTime > auctionLenMillis ? formatDuration(0) : formatDuration(remainingTime);
+  if (!isAuctionOver) {
+    auctionState.progress = auctionProgress;
+    auctionState.price = Math.min(
+        Math.max(lerp(auction.startingPrice, auction.minimumPrice, auctionState.progress), auction.minimumPrice),
+        auction.startingPrice
+        ).toFixed(2);
+
+    auctionState.remainingTime = auctionLenMillis - elapsedTime;
+    auctionState.fmtedRemainingTime = auctionState.remainingTime > auctionLenMillis ? formatDuration(0) : formatDuration(auctionState.remainingTime);
+  } else if (!auctionState.isOver) auctionState.isOver = true;
 
 	return (
 		<div className={"base-container"}>
 			<div className={"clock-container"}>
-				<Clock price={currentPrice} duration={formattedTime} progress={auctionProgress}/>
+				<Clock auctionState={auctionState} setIsAuctionOver={setIsAuctionOver}/>
 			</div>
 
 			<div className={"container-separator"}/>
