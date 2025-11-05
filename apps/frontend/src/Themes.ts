@@ -15,7 +15,8 @@ declare module "@mui/material/styles" {
 
 const baseTheme = createTheme({
 	id: "base",
-	name: "Base"
+	name: "Base",
+	cssVariables: true
 });
 
 export const LIGHT: Theme = createTheme(baseTheme, {
