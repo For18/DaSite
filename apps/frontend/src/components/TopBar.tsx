@@ -23,19 +23,16 @@ export default function TopBar({
 			}}
 		>
 			<nav>
-				{Object.entries(links).map(entry => {
-					const [name, path] = entry;
-					return (
-						<Button
-							key={name}
-							onClick={e => {
-								navigate(path);
-							}}
-						>
-							{name}
-						</Button>
-					);
-				})}
+				{Object.entries(links).map(([name, path]) => (
+					<Button
+						key={name}
+						onClick={e => {
+							navigate(path);
+						}}
+					>
+						{name}
+					</Button>
+				))}
 			</nav>
 			<ThemeSelector
 				style={{
