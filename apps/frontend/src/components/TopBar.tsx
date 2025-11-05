@@ -34,7 +34,7 @@ export default function TopBar({
 					</Button>
 				))}
 			</nav>
-			<ThemeSelector themes={[Themes.LIGHT, Themes.DARK]}/>
+			<ThemeSelector themes={Object.values(Themes)}/>
 		</header>
 	);
 }
