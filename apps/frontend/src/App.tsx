@@ -1,5 +1,5 @@
 import { Theme, ThemeProvider } from "@mui/material/styles";
-import React, { createContext, lazy, Suspense, useState } from "react";
+import React, { createContext, Suspense, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router";
 import Layout from "./components/Layout";
 import Throbber from "./components/Throbber";
