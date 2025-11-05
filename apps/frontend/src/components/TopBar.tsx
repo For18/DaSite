@@ -34,12 +34,7 @@ export default function TopBar({
 					</Button>
 				))}
 			</nav>
-			<ThemeSelector
-				style={{
-					justifySelf: "end"
-				}}
-				themes={[Themes.LIGHT, Themes.DARK]}
-			/>
+			<ThemeSelector themes={[Themes.LIGHT, Themes.DARK]}/>
 		</header>
 	);
 }
