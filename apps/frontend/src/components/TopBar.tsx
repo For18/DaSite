@@ -3,6 +3,7 @@ import { alpha } from "@mui/material/styles";
 import { useNavigate } from "react-router";
 import Themes from "../Themes";
 import ThemeSelector from "./ThemeSelector";
+import styles from "./TopBar.module.scss";
 
 export default function TopBar({
 	links
@@ -12,16 +13,7 @@ export default function TopBar({
 	const navigate = useNavigate();
 
 	return (
-		<header
-			style={{
-				padding: "1em",
-				display: "flex",
-				flexDirection: "row",
-				justifyContent: "space-evenly",
-				alignItems: "center",
-				backgroundColor: alpha("#888888", 0.05)
-			}}
-		>
+		<header className={styles.header}>
 			<nav>
 				{Object.entries(links).map(([name, path]) => (
 					<Button

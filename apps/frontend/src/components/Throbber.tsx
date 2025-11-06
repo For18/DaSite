@@ -1,5 +1,5 @@
-import { useTheme } from "@mui/material/styles";
 import { range, useTime } from "../lib/util";
+import styles from "./Throbber.module.scss";
 
 function animation(t: number): number {
 	t = t % 1;
@@ -16,26 +16,14 @@ function animation(t: number): number {
 
 export default function Throbber({ dots = 4 }: { dots?: number }) {
 	const time = useTime();
-	const theme = useTheme();
 
 	return (
-		<div
-			style={{
-				display: "flex",
-				flexDirection: "row",
-				alignItems: "center",
-				justifyContent: "center"
-			}}
-		>
+		<div className={styles.container}>
 			{range(dots).map(dotIndex => (
 				<div
 					key={dotIndex}
+					className={styles.dot}
 					style={{
-						width: "5px",
-						height: "5px",
-						borderRadius: "50%",
-						marginLeft: dotIndex === 0 ? 0 : "4px",
-						backgroundColor: theme.palette.text.primary,
 						transform: `translate(0, -${animation((time + dotIndex * 130) / 1_300) * 7}px)`
 					}}
 				/>

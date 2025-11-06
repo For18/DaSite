@@ -8,26 +8,22 @@ import { SetThemeContext } from "../App";
 import { getThemeById } from "../Themes";
 
 export default function ThemeSelector({
-	themes,
-	style
+	themes
 }: {
 	themes: Theme[];
-	style?: React.CSSProperties;
 }) {
 	const setTheme = useContext(SetThemeContext);
 	const currentTheme = useTheme();
 
 	return (
-		<FormControl style={style}>
+		<FormControl>
 			<InputLabel id="theme-selector-label">Theme</InputLabel>
 			<Select
 				labelId="theme-selector-label"
 				id="theme-selector"
 				value={currentTheme.id}
 				label="Theme"
-				style={{
-					width: "7em"
-				}}
+				autoWidth={true}
 				onChange={event => {
 					setTheme(getThemeById(event.target.value) ?? themes[0]);
 				}}

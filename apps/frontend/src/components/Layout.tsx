@@ -2,31 +2,20 @@ import { useTheme } from "@mui/material/styles";
 import { PropsWithChildren } from "react";
 import Footer from "./Footer";
 import TopBar from "./TopBar";
+import styles from "./Layout.module.scss";
 
 export default function Layout({ children }: PropsWithChildren) {
 	const theme = useTheme();
 
 	return (
-		<div
-			style={{
-				backgroundColor: theme.palette.background.default,
-				minHeight: "100vh",
-				display: "flex",
-				flexDirection: "column",
-				justifyContent: "space-between"
-			}}
-		>
+		<div className={styles.container}>
 			<TopBar
 				links={{
 					Home: "/",
 					Auctions: "/auctions"
 				}}
 			/>
-			<article
-				style={{
-					alignSelf: "center"
-				}}
-			>
+			<article>
 				{children}
 			</article>
 			<Footer/>

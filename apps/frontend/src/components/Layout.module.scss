@@ -1,0 +1,11 @@
+.container {
+	background-color: var(--mui-palette-background-default);
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.article {
+	align-self: center;
+}
