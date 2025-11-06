@@ -1,7 +1,7 @@
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import { Auction, Product, useAPI, User } from "../lib/api";
-import "./PendingAuctionCard.css";
+import "./PendingAuctionCard.scss";
 
 export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 	{
@@ -25,16 +25,10 @@ export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 			aspectRatio: cardAspectRatio
 		}}>
 			<div className="card">
-				<div className="image-card">
-					<Typography color="white" className="image-text"
-						sx={{ WebkitTextStroke: "0.6px black", fontSize: 20 }}
-					>
-						{product?.name}
-					</Typography>
-				</div>
 				<img className="product-image" src="https://i.ibb.co/7xnxXSC6/matt.webp"/>
 			</div>
 			<div className="info-card">
+				<Typography color="textPrimary" className="product-name">{product?.name}</Typography>
 				<Typography color="textPrimary" className="info-text">Seller: {user?.displayName}</Typography>
 				<Typography color="textPrimary" className="info-text">
 					Asking price: €{auction.startingPrice},-

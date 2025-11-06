@@ -1,8 +1,5 @@
 {
 	"dependencies": {
 		"dprint": "^0.50.2"
-	},
-	"devDependencies": {
-		"sass-embedded": "^1.93.3"
 	}
 }
