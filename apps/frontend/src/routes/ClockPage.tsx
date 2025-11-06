@@ -65,6 +65,11 @@ export default function ClockPage() {
 	if (product === null) return <Throbber/>;
 
   if (!isAuctionOver) {
+    if (auctionProgress > 1) {
+      setIsAuctionOver(true);
+      auctionState.isOver = true;
+    }
+
     auctionState.progress = auctionProgress;
     auctionState.price = Math.min(
         Math.max(lerp(auction.startingPrice, auction.minimumPrice, auctionState.progress), auction.minimumPrice),
@@ -73,7 +78,7 @@ export default function ClockPage() {
 
     auctionState.remainingTime = auctionLenMillis - elapsedTime;
     auctionState.fmtedRemainingTime = auctionState.remainingTime > auctionLenMillis ? formatDuration(0) : formatDuration(auctionState.remainingTime);
-  } else if (!auctionState.isOver) auctionState.isOver = true;
+  }
 
 	return (
 		<div className={"base-container"}>
