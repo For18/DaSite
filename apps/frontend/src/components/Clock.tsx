@@ -1,12 +1,12 @@
 import { Typography, Button } from "@mui/material";
 import React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AuctionState } from "../routes/ClockPage";
 import "./styles/Clock.css";
 
 function auctionPending({auctionState}: {auctionState: AuctionState}) {
   return (
-      <div className={"auction-overlay pending"} />
+      <div className={"clock-overlay pending"} />
   );
 }
 
@@ -39,7 +39,7 @@ function auctionRunning({auctionState}: {auctionState: AuctionState}) {
 
 function auctionOver({auctionState}: {auctionState: AuctionState}) {
   return (
-      <div className={"auction-overlay ended"} />
+      <div className={"clock-overlay ended"} />
   );
 }
 
