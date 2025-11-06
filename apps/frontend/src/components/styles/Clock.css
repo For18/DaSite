@@ -16,6 +16,18 @@
   flex-direction: column;
 }
 
+.clock-overlay.pending {
+  background-color: red;
+}
+
+.clock-overlay.running {
+  background-color: green;
+}
+
+.clock-overlay.ended {
+  background-color: orange;
+}
+
 .clock {
   width: 400px;
   height: 400px;
