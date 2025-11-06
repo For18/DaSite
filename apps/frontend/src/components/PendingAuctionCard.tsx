@@ -4,16 +4,9 @@ import { Auction, Product, useAPI, User } from "../lib/api";
 import styles from "./PendingAuctionCard.module.scss";
 
 export default function PendingAuctionCard({ auction }: { auction: Auction }) {
-	{
-		/*
-		const product = useAPI<Product>("/product/" + auction.productId);
-		const user = useAPI<User>("/users/" + auction.plannerId);
-		*/
-	}
 
-	const product = { id: 1, name: "Roses", description: "This is a sample product.", thumbnailImageId: "",
-		ownerId: 3 };
-	const user = { displayName: "John Pork Jr.", imageUrl: "", email: "blablabla", telephoneNumber: 123456789 };
+	const product = useAPI<Product>("/product/" + auction.productId);
+	const user = useAPI<User>("/user/" + auction.plannerId);
 
 	const cardAspectRatio = 5 / 1;
 
@@ -26,7 +19,7 @@ export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 			aspectRatio: cardAspectRatio
 		}}>
 			<div className={styles.card}>
-				<img className={styles.productImage} src="https://i.ibb.co/7xnxXSC6/matt.webp"/>
+				<img className={styles.productImage} src={product?.thumbnailImageUrl}/>
 			</div>
 			<div className={styles.infoCard}>
 				<div className={styles.productNameContainer}>
