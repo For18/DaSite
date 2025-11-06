@@ -6,14 +6,14 @@ import Throbber from "../components/Throbber";
 import { API_URL, Auction, Product, useAPI } from "../lib/api";
 import { useTime } from "../lib/util";
 import NotFound from "./NotFound";
-import Pending from "./Pending"
+import Pending from "./Pending";
 import "./styles/ClockPage.css";
 import EndedAuction from "../components/EndedAuction";
 
 function formatStartCountDown(startingTime: number, currentTime: number) {
-  if (startingTime <= 0 || currentTime <= 0) return "0.00";
-  const remainingTime = startingTime - currentTime;
-  return (remainingTime / 1000).toFixed(2);
+	if (startingTime <= 0 || currentTime <= 0) return "0.00";
+	const remainingTime = startingTime - currentTime;
+	return (remainingTime / 1000).toFixed(2);
 }
 
 function lerp(from: number, to: number, t: number): number {
@@ -32,20 +32,22 @@ function formatDuration(duration: number): string {
 }
 
 export class AuctionState {
-  price: string;
-  remainingTime: number;
-  fmtedRemainingTime: string;
-  progress: number;
-  isOver: boolean;
-};
+	price: string;
+	remainingTime: number;
+	fmtedRemainingTime: string;
+	progress: number;
+	isOver: boolean;
+}
 
 export default function ClockPage() {
 	const { auctionId } = useParams();
 	const auction = useAPI<Auction>("/auction/" + auctionId);
 	const product = useAPI<Product>(auction ? "/product/" + auction.productId : null);
 
-  const [isAuctionOver, setIsAuctionOver] = useState<boolean>(false);
-  const auctionState = useMemo(() => { return new AuctionState(); }, [])
+	const [isAuctionOver, setIsAuctionOver] = useState<boolean>(false);
+	const auctionState = useMemo(() => {
+		return new AuctionState();
+	}, []);
 
 	useEffect(() => {
 		fetch(API_URL + "/auction/" + auction?.id, {
@@ -72,46 +74,47 @@ export default function ClockPage() {
 	if (auction === null) return <Throbber/>;
 	if (product === null) return <Throbber/>;
 
-  if (!isAuctionOver) {
-    if (auctionProgress > 1) {
-      setIsAuctionOver(true);
-      auctionState.isOver = true;
-    }
+	if (!isAuctionOver) {
+		if (auctionProgress > 1) {
+			setIsAuctionOver(true);
+			auctionState.isOver = true;
+		}
 
-    auctionState.progress = auctionProgress;
-    auctionState.price = Math.min(
-        Math.max(lerp(auction.startingPrice, auction.minimumPrice, auctionState.progress), auction.minimumPrice),
-        auction.startingPrice
-        ).toFixed(2);
+		auctionState.progress = auctionProgress;
+		auctionState.price = Math.min(
+			Math.max(lerp(auction.startingPrice, auction.minimumPrice, auctionState.progress), auction.minimumPrice),
+			auction.startingPrice
+		).toFixed(2);
 
-    auctionState.remainingTime = auctionLenMillis - elapsedTime;
-    auctionState.fmtedRemainingTime = auctionState.remainingTime > auctionLenMillis ? formatDuration(0) : formatDuration(auctionState.remainingTime);
-  }
+		auctionState.remainingTime = auctionLenMillis - elapsedTime;
+		auctionState.fmtedRemainingTime = auctionState.remainingTime > auctionLenMillis ?
+			formatDuration(0) :
+			formatDuration(auctionState.remainingTime);
+	}
 
 	return (
-		<div className={"base-container"}> 
-      {
-        isAuctionOver 
-          ? <EndedAuction id={auction.id}/>
-          : (
-              <div className={"live-auction-container"}>
-                <div className={"clock-container"}>
-                  {
-                    auctionState.progress < 0 
-                      ? <Pending description={"This auction has yet to start."} startingPoint={formatStartCountDown(startingTime ? startingTime : 0, currentTime)}/>
-                      : <Clock auctionState={auctionState} setIsAuctionOver={setIsAuctionOver}/>
-                  }
-			          </div>
+		<div className={"base-container"}>
+			{isAuctionOver ?
+				<EndedAuction id={auction.id}/> :
+				(
+					<div className={"live-auction-container"}>
+						<div className={"clock-container"}>
+							{auctionState.progress < 0 ?
+								(
+									<Pending description={"This auction has yet to start."}
+										startingPoint={formatStartCountDown(startingTime ? startingTime : 0,
+											currentTime)}/>
+								) :
+								<Clock auctionState={auctionState} setIsAuctionOver={setIsAuctionOver}/>}
+						</div>
 
-			          <div className={"container-separator"}/>
+						<div className={"container-separator"}/>
 
-			          <div className={"product-container"}>
-				          {product == null ? <Throbber/> : <ProductView product={product}/>}
-			          </div>
-
-              </div>
-            )
-      }
+						<div className={"product-container"}>
+							{product == null ? <Throbber/> : <ProductView product={product}/>}
+						</div>
+					</div>
+				)}
 		</div>
 	);
 }

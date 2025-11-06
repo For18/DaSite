@@ -52,16 +52,16 @@ public class SaleController : ControllerBase {
 		}
 	}
 
-  [HttpGet("by-auction/{id}")]
-  public ActionResult<SaleExternal> GetByAuction(ulong id) {
-    using var db = new DatabaseContext();
-    {
-      Sale? sale = db.Sales.Include(sale => sale.PurchasedAuction).Include(sale => sale.Purchaser).Where(sale => sale.PurchasedAuction.Id == id).FirstOrDefault();
-      if (sale == null) return NotFound();
+	[HttpGet("by-auction/{id}")]
+	public ActionResult<SaleExternal> GetByAuction(ulong id) {
+		using var db = new DatabaseContext();
+		{
+			Sale? sale = db.Sales.Include(sale => sale.PurchasedAuction).Include(sale => sale.Purchaser).Where(sale => sale.PurchasedAuction.Id == id).FirstOrDefault();
+			if (sale == null) return NotFound();
 
-      return SaleExternal.ToExternal(sale);
-    }
-  }
+			return SaleExternal.ToExternal(sale);
+		}
+	}
 
 	[HttpGet("/sales")]
 	public ActionResult<SaleExternal[]> GetAll() {
