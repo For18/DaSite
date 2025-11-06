@@ -13,9 +13,9 @@ export default function PendingAuction() {
 	const [screenWidth, screenHeight] = useScreenSize();
 
 	const auctions = [
-		{ id: 1, count: 1000000000, batchSize: 500000000, startingPrice: 10000000000, minimumPrice: 20, startingTime: 50, productId: 1,
+		{ id: 1, count: 1000000000, batchSize: 500000000, startingPrice: 10000000000000000, minimumPrice: 20, startingTime: 50, productId: 1,
 			plannerId: 1 },
-		{ id: 2, count: 9, batchSize: 5, startingPrice: 500, minimumPrice: 20, startingTime: 50, productId: 2,
+		{ id: 2, count: 9, batchSize: 5, startingPrice: 5, minimumPrice: 20, startingTime: 50, productId: 2,
 			plannerId: 2 },
 		{ id: 3, count: 8, batchSize: 5, startingPrice: 300, minimumPrice: 20, startingTime: 50, productId: 3,
 			plannerId: 3 },
@@ -42,7 +42,7 @@ export default function PendingAuction() {
 			</div>
 
 			<Paper sx={{
-				width: "800px",
+				width: "1000px",
 				maxWidth: "80vw",
 				minHeight: `${minPaperHeight}px`,
 				display: auctions != null && auctions.length > 0 ? "grid" : "flex",
