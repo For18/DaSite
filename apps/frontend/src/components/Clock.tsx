@@ -1,6 +1,6 @@
 import { Typography, Button } from "@mui/material";
 import React from "react";
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import { AuctionState } from "../routes/ClockPage";
 import "./styles/Clock.css";
 
@@ -9,11 +9,13 @@ export default function Clock(
 ) {
 	const currencyType = "100 cent";
 
-  const buttonText = useMemo(() => {
-      if (auctionState.isOver) return "Auction Bought!";
-      return "BUY";
-  }, [auctionState.isOver]);
+  const runningTxt = "BUY";
+  const boughtTxt = "Auction Bought!";
+  const overTxt = "Auction Over!";
 
+  const [buttonText, setButtonText] = useState<string>("BUY");
+  if (auctionState.isOver && buttonText != runningTxt && buttonText != boughtTxt) setButtonText(overTxt);
+  
 	return (
 		<div className={"container"}>
 			<div className={"clock"} style={{ "--progress": auctionState.progress } as React.CSSProperties}>
@@ -43,7 +45,15 @@ export default function Clock(
 				{auctionState.fmtedRemainingTime}
 			</Typography>
 
-      <Button className={"bid-button"} onClick={() => {setIsAuctionOver(true); alert(`Auction bought for € ${auctionState.price}`)}}>
+      <Button 
+        className={"bid-button"} 
+        onClick={() =>
+          {
+            setIsAuctionOver(true);
+            setButtonText(boughtTxt);
+            alert(`Auction bought for € ${auctionState.price}`);
+          }}
+          >
         {buttonText}
       </Button>
 		</div>
