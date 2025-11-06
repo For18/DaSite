@@ -1,0 +1,39 @@
+.base-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.header { 
+  font-size: 1.5rem; 
+  margin-bottom: 1rem;
+}
+
+.paragraph {
+  margin-bottom: 1.5rem; 
+  color: #555
+}
+
+.link-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.link {
+  text-decoration: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+}
+
+.link.next-auction {
+  background: #0ea5e9;
+}
+
+.link.pending-auctions {
+  background:#10b981;
+}
