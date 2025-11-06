@@ -1,4 +1,10 @@
 .base-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.live-auction-container {
   width: 100%;
   height: 100vh;
   display: grid;
@@ -25,4 +31,5 @@
   justify-content: flex-start;
   align-items: flex-start;
   overflow-y: auto;
+  text-align: left;
 }

@@ -8,6 +8,7 @@ import { useTime } from "../lib/util";
 import NotFound from "./NotFound";
 import Pending from "./Pending"
 import "./styles/ClockPage.css";
+import EndedAuction from "../components/EndedAuction";
 
 function formatStartCountDown(startingTime: number, currentTime: number) {
   if (startingTime <= 0 || currentTime <= 0) return "0.00";
@@ -88,20 +89,29 @@ export default function ClockPage() {
   }
 
 	return (
-		<div className={"base-container"}>
-			<div className={"clock-container"}>
-        {
-          auctionState.progress < 0 
-            ? <Pending description={"This auction has yet to start."} startingPoint={formatStartCountDown(startingTime ? startingTime : 0, currentTime)}/>
-            : <Clock auctionState={auctionState} setIsAuctionOver={setIsAuctionOver}/>
-        }
-			</div>
+		<div className={"base-container"}> 
+      {
+        isAuctionOver 
+          ? <EndedAuction id={auction.id}/>
+          : (
+              <div className={"live-auction-container"}>
+                <div className={"clock-container"}>
+                  {
+                    auctionState.progress < 0 
+                      ? <Pending description={"This auction has yet to start."} startingPoint={formatStartCountDown(startingTime ? startingTime : 0, currentTime)}/>
+                      : <Clock auctionState={auctionState} setIsAuctionOver={setIsAuctionOver}/>
+                  }
+			          </div>
 
-			<div className={"container-separator"}/>
+			          <div className={"container-separator"}/>
 
-			<div className={"product-container"}>
-				{product == null ? <Throbber/> : <ProductView product={product}/>}
-			</div>
+			          <div className={"product-container"}>
+				          {product == null ? <Throbber/> : <ProductView product={product}/>}
+			          </div>
+
+              </div>
+            )
+      }
 		</div>
 	);
 }
