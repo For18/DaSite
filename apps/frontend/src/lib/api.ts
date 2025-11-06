@@ -4,6 +4,15 @@ import { useEffect, useState } from "react";
 
 export const API_URL: string = import.meta.env.VITE_API_URL;
 
+export type Sale = {
+  id: number;
+  purchaserId: number;
+  purchasedAuctionId: number;
+  amount: number;
+  price: number;
+  isPaid: boolean;
+}
+
 export type Product = {
 	id: number;
 	name: string;
