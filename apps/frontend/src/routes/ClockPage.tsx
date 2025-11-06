@@ -6,7 +6,14 @@ import Throbber from "../components/Throbber";
 import { API_URL, Auction, Product, useAPI } from "../lib/api";
 import { useTime } from "../lib/util";
 import NotFound from "./NotFound";
+import Pending from "./Pending"
 import "./styles/ClockPage.css";
+
+function formatStartCountDown(startingTime: number, currentTime: number) {
+  if (startingTime <= 0 || currentTime <= 0) return "0.00";
+  const remainingTime = startingTime - currentTime;
+  return (remainingTime / 1000).toFixed(2);
+}
 
 function lerp(from: number, to: number, t: number): number {
 	return from + t * (to - from);
@@ -83,7 +90,11 @@ export default function ClockPage() {
 	return (
 		<div className={"base-container"}>
 			<div className={"clock-container"}>
-				<Clock auctionState={auctionState} setIsAuctionOver={setIsAuctionOver}/>
+        {
+          auctionState.progress < 0 
+            ? <Pending description={"This auction has yet to start."} startingPoint={formatStartCountDown(startingTime ? startingTime : 0, currentTime)}/>
+            : <Clock auctionState={auctionState} setIsAuctionOver={setIsAuctionOver}/>
+        }
 			</div>
 
 			<div className={"container-separator"}/>
