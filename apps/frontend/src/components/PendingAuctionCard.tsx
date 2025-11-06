@@ -11,7 +11,7 @@ export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 		*/
 	}
 
-	const product = { id: 1, name: "Sample Product", description: "This is a sample product.", thumbnailImageId: "",
+	const product = { id: 1, name: "Roses", description: "This is a sample product.", thumbnailImageId: "",
 		ownerId: 3 };
 	const user = { displayName: "John Crow", imageUrl: "", email: "blablabla", telephoneNumber: 123456789 };
 
@@ -28,10 +28,10 @@ export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 				<img className={styles.productImage} src="https://i.ibb.co/7xnxXSC6/matt.webp"/>
 			</div>
 			<div className={styles.infoCard}>
-				<div>
-				<Typography color="textPrimary" className={styles.productName}>{product?.name}</Typography>
+				<div className={styles.productNameContainer}>
+					<Typography color="textPrimary" className={styles.productName}>{product?.name}</Typography>
 				</div>
-				<div>
+				<div className={styles.infoTextContainer}>
 				<Typography color="textPrimary" className={styles.infoText}>Seller: {user?.displayName}</Typography>
 				<Typography color="textPrimary" className={styles.infoText}>
 					Asking price: €{auction.startingPrice},-

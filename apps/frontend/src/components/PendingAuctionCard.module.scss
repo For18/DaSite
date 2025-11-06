@@ -17,7 +17,6 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     padding-left: 3%;
 }
 
@@ -28,10 +27,22 @@
 	display: block;
 }
 
-.imageText {
-    position: absolute;
+.infoText {
+    line-height: calc(100% / 1);
 }
 
-.info-text {
-    line-height: calc(100% / 0.5);
+.infoTextContainer {
+    display: flex;
+    height: 100%;
+    flex-wrap: wrap;
+    column-gap: 8px;
+    align-items: center;
+}
+
+.productNameContainer {
+    position: relative;
+}
+
+.productName {
+    font-size: 20px;
 }
