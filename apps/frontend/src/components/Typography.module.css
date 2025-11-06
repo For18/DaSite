@@ -1,0 +1,18 @@
+.typography {
+	&.primary {
+		color: var(--color-text-primary);
+	}
+	&.secondary {
+		color: var(--color-text-secondary);
+	}
+
+	&.bold {
+		font-weight: 220%;
+	}
+	&.italic {
+		font-style: italic;
+	}
+	&.underlined {
+		text-decoration: underline;
+	}
+}

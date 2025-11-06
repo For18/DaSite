@@ -1,7 +1,6 @@
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
-import Header from "../components/Header";
+import Button from "../components/Button";
+import Typography from "../components/Typography";
 import { randomCharacter } from "../lib/util";
 
 export default function Home() {
@@ -13,10 +12,10 @@ export default function Home() {
 
 	return (
 		<>
-			<Header level={1} color="textPrimary">
+			<Typography heading={1}>
 				{text}
-			</Header>
-			<Typography color="textPrimary">
+			</Typography>
+			<Typography>
 				"If Hypixel has taught me something, it's that if you have a problem, the answer is slavery" -
 				Technoblade (idk when) (bonjour)
 			</Typography>

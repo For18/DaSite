@@ -1,13 +1,27 @@
-import { createContext, PropsWithChildren, useContext } from "react";
+import { PropsWithChildren } from "react";
+import styles from "./Section.module.css";
 
-export const DepthContext = createContext<number>(0);
+export interface FlexConfig {
+	direction: "row" | "column" | "row-reverse" | "column-reverse";
+	justify?: "center" | "flex-start" | "flex-end" | "space-between" | "space-around" | "space-evenly";
+	align?: "center" | "flex-start" | "flex-end" | "stretch" | "baseline";
+	wrap?: "nowrap" | "wrap" | "wrap-reverse";
+	gap?: number;
+}
 
-export default function Section({ children }: PropsWithChildren) {
-	const parentDepth = useContext(DepthContext);
+export interface SectionProps extends PropsWithChildren {
+	flex?: FlexConfig;
+}
 
-	return (
-		<DepthContext.Provider value={parentDepth + 1}>
-			<section>{children}</section>
-		</DepthContext.Provider>
-	);
+export default function Section({ children, flex }: SectionProps) {
+	return <section className={styles.section} style={{
+		display: flex !== null ? "flex" : undefined,
+		flexDirection: flex?.direction,
+		justifyContent: flex?.justify,
+		alignItems: flex?.align,
+		flexWrap: flex?.wrap,
+		gap: flex?.gap
+	}}>
+		{children}
+	</section>
 }

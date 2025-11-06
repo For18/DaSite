@@ -1,9 +1,6 @@
-import Button from "@mui/material/Button";
-import { alpha } from "@mui/material/styles";
 import { useNavigate } from "react-router";
-import Themes from "../Themes";
-import ThemeSelector from "./ThemeSelector";
 import styles from "./TopBar.module.scss";
+import Button from "./Button";
 
 export default function TopBar({
 	links
@@ -26,7 +23,6 @@ export default function TopBar({
 					</Button>
 				))}
 			</nav>
-			<ThemeSelector themes={Object.values(Themes)}/>
 		</header>
 	);
 }
