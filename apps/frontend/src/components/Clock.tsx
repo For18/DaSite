@@ -19,7 +19,7 @@ export default function Clock(
 	return (
 		<div className={"container"}>
 			<div className={"clock"} style={{ "--progress": auctionState.progress } as React.CSSProperties}>
-		    <div className={"clock-overlay running"}>
+		    <div className={"clock-overlay"}>
 
 	        {/* Top Box*/}
 	        <div className={"clock-box currency"}>
