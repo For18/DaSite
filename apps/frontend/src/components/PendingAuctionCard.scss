@@ -10,15 +10,6 @@
 	object-fit: contain;
 }
 
-.image-card {
-    width: 100%;
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-}
-
 .info-card {
     --card-aspect-ratio: calc(4 / 1);
     float: right;
