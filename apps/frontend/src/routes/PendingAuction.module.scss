@@ -1,15 +1,15 @@
-.main-div {
+.main {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.header-div {
+.header {
     margin-top: 24px;
     margin-bottom: 24px;
 }
 
-.no-pending-auctions {
+.noPendingAuctions {
     --min-paper-height: 300;
     align-items: center;
     display: flex;

@@ -1,7 +1,7 @@
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import { Auction, Product, useAPI, User } from "../lib/api";
-import "./PendingAuctionCard.scss";
+import styles from "./PendingAuctionCard.module.scss";
 
 export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 	{
@@ -24,18 +24,22 @@ export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 			backgroundColor: "#88888811",
 			aspectRatio: cardAspectRatio
 		}}>
-			<div className="card">
-				<img className="product-image" src="https://i.ibb.co/7xnxXSC6/matt.webp"/>
+			<div className={styles.card}>
+				<img className={styles.productImage} src="https://i.ibb.co/7xnxXSC6/matt.webp"/>
 			</div>
-			<div className="info-card">
-				<Typography color="textPrimary" className="product-name">{product?.name}</Typography>
-				<Typography color="textPrimary" className="info-text">Seller: {user?.displayName}</Typography>
-				<Typography color="textPrimary" className="info-text">
+			<div className={styles.infoCard}>
+				<div>
+				<Typography color="textPrimary" className={styles.productName}>{product?.name}</Typography>
+				</div>
+				<div>
+				<Typography color="textPrimary" className={styles.infoText}>Seller: {user?.displayName}</Typography>
+				<Typography color="textPrimary" className={styles.infoText}>
 					Asking price: €{auction.startingPrice},-
 				</Typography>
-				<Typography color="textPrimary" className="info-text">
+				<Typography color="textPrimary" className={styles.infoText}>
 					Amount: {auction.batchSize * auction.count}
 				</Typography>
+				</div>
 			</div>
 		</Card>
 	);
