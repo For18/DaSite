@@ -38,8 +38,7 @@ export default function Profile() {
             <Paper sx={{
                 padding: "20px",
                 width: "1000px",
-                maxWidth: "80vw",
-                marginBottom: "20vw"
+                maxWidth: "80vw"
             }}>
                 <div style={{
                     display: "flex",
@@ -80,11 +79,9 @@ export default function Profile() {
 
             </Paper>
             <Paper sx={{
-                width: "750px",
                 padding: "10px",
-                maxWidth: "60vw",
                 height: "100px",
-                marginTop: "-160px"
+				marginTop: "20px"
             }}>
                 <Typography color="textPrimary" sx={{
                     fontSize: "16px"
