@@ -1,5 +1,5 @@
 import { createElement, type JSX, type PropsWithChildren } from "react";
-import styles from "./Typography.module.css";
+import styles from "./Typography.module.scss";
 
 export interface TypographyProps extends PropsWithChildren {
 	heading?: 1 | 2 | 3 | 4 | 5 | 6;

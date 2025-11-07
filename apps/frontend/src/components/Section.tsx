@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import styles from "./Section.module.css";
+import styles from "./Section.module.scss";
 
 export interface FlexConfig {
 	direction: "row" | "column" | "row-reverse" | "column-reverse";
