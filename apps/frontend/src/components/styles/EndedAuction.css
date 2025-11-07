@@ -1,33 +1,35 @@
-.base-container {
+.end-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 2rem;
+  padding: 2vw;
 }
 
-.header { 
-  font-size: 1.5rem; 
-  margin-bottom: 1rem;
+.header {
+  font-size: 1.5vw;
+  margin-bottom: 1vw;
 }
 
 .paragraph {
-  margin-bottom: 1.5rem; 
-  color: #555
+  margin-bottom: 1.5vw;
+  color: #555;
+  font-size: 1vw;
 }
 
 .link-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 1vw;
 }
 
 .link {
   text-decoration: none;
   color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
+  padding: 0.5vw 1vw;
+  border-radius: 0.3vw;
+  font-size: 1vw;
 }
 
 .link.next-auction {
@@ -35,5 +37,5 @@
 }
 
 .link.pending-auctions {
-  background:#10b981;
+  background: #10b981;
 }

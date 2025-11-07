@@ -1,35 +1,36 @@
 .product-view {
-  margin-left: 20px;
+  margin-left: 1vw;
   font-family: Arial, sans-serif;
   line-height: 1.6;
+  font-size: 1vw;
 }
 
 .seller {
-  fontSize: 1.1em;
+  font-size: 1.1vw;
   color: #555;
 }
 
 .horizontal-rule {
-  border: 1px solid #ccc; 
-  margin: 20px 0;
+  border: 0.05vw solid #ccc;
+  margin: 1vw 0;
 }
 
 .thumbnail-image {
-	width: 100%;
-	height: auto;
-	border-radius: 8px;
+  width: 100%;
+  height: auto;
+  border-radius: 0.4vw;
 }
 
 .extra-image-container {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-	gap: 10px;
-	margin-top: 20px
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(5.2vw, 1fr));
+  gap: 0.5vw;
+  margin-top: 1vw;
 }
 
 .extra-image {
   width: 100%;
   height: auto;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 0.4vw;
+  box-shadow: 0 0.1vw 0.26vw rgba(0, 0, 0, 0.1);
 }
