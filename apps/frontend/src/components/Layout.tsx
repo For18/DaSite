@@ -12,7 +12,7 @@ export default function Layout({ children }: PropsWithChildren) {
 					Auctions: "/auctions"
 				}}
 			/>
-			<article>
+			<article className={styles.article}>
 				{children}
 			</article>
 			<Footer/>
