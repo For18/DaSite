@@ -5,7 +5,8 @@
 		"https://plugins.dprint.dev/typescript-0.91.4.wasm",
 		"https://plugins.dprint.dev/json-0.20.0.wasm",
 		"https://plugins.dprint.dev/g-plane/pretty_yaml-v0.5.1.wasm",
-		"https://plugins.dprint.dev/roslyn-0.18.0.json@9586754a7e586ccda5dba4e694c0f225aabde63720c905dd85e02453b6f5e5de"
+		"https://plugins.dprint.dev/roslyn-0.18.0.json@9586754a7e586ccda5dba4e694c0f225aabde63720c905dd85e02453b6f5e5de",
+		"https://plugins.dprint.dev/g-plane/malva-v0.15.0.wasm"
 	],
 	"indentWidth": 4,
 	"useTabs": true,
@@ -118,5 +119,32 @@
 		"csharp.spacingAroundBinaryOperator": "single",
 		"csharp.wrappingKeepStatementsOnSingleLine": true,
 		"csharp.wrappingPreserveSingleLine": true
+	},
+
+	"malva": {
+		"hexCase": "lower",
+		"hexColorLength": "long",
+		"quotes": "preferDouble",
+		"omitNumberLeadingZero": false,
+		"trailingComma": false,
+		"formatComments": true,
+		"alignComments": true,
+		"linebreakInPseudoParens": false,
+		"declarationOrder": null,
+		"declarationOrderGroupBy": "nonDeclarationAndEmptyLine",
+		"singleLineBlockThreshold": null,
+		"keyframeSelectorNotation": "keyword",
+		"attrValueQuotes": "always",
+		"selectors.preferSingleLine": true,
+		"functionArgs.preferSingleLine": true,
+		"sassContentAtRule.preferSingleLine": false,
+		"sassIncludeAtRule.preferSingleLine": false,
+		"sassMap.preferSingleLine": false,
+		"sassModuleConfig.preferSingleLine": false,
+		"sassParams.preferSingleLine": false,
+		"lessImportOptions.preferSingleLine": false,
+		"lessMixinArgs.preferSingleLine": false,
+		"lessMixinParams.preferSingleLine": false,
+		"singleLineTopLevelDeclarations": false
 	}
 }
