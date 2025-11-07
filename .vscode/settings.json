@@ -1,27 +1,27 @@
 {
 	"[javascript]": {
-		"editor.defaultFormatter": "gplane.dprint2"
+		"editor.defaultFormatter": "dprint.dprint"
 	},
 	"[typescript]": {
-		"editor.defaultFormatter": "gplane.dprint2"
+		"editor.defaultFormatter": "dprint.dprint"
 	},
 	"[javascriptreact]": {
-		"editor.defaultFormatter": "gplane.dprint2"
+		"editor.defaultFormatter": "dprint.dprint"
 	},
 	"[typescriptreact]": {
-		"editor.defaultFormatter": "gplane.dprint2"
+		"editor.defaultFormatter": "dprint.dprint"
 	},
 	"[json]": {
-		"editor.defaultFormatter": "gplane.dprint2"
+		"editor.defaultFormatter": "dprint.dprint"
 	},
 	"[json5]": {
-		"editor.defaultFormatter": "gplane.dprint2"
+		"editor.defaultFormatter": "dprint.dprint"
 	},
 	"[yaml]": {
-		"editor.defaultFormatter": "gplane.dprint2"
+		"editor.defaultFormatter": "dprint.dprint"
 	},
 	"[toml]": {
-		"editor.defaultFormatter": "gplane.dprint2"
+		"editor.defaultFormatter": "dprint.dprint"
 	},
 	"editor.formatOnSave": true,
 	"dotnet.defaultSolution": "apps/backend/backend.sln"
