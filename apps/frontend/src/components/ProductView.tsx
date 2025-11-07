@@ -1,5 +1,5 @@
-import Typography from "./Typography";
 import { Product } from "../lib/api";
+import Typography from "./Typography";
 
 export default function ProductView({ product }: {
 	product: Product;

@@ -14,14 +14,16 @@ export interface SectionProps extends PropsWithChildren {
 }
 
 export default function Section({ children, flex }: SectionProps) {
-	return <section className={styles.section} style={{
-		display: flex !== null ? "flex" : undefined,
-		flexDirection: flex?.direction,
-		justifyContent: flex?.justify,
-		alignItems: flex?.align,
-		flexWrap: flex?.wrap,
-		gap: flex?.gap
-	}}>
-		{children}
-	</section>
+	return (
+		<section className={styles.section} style={{
+			display: flex !== null ? "flex" : undefined,
+			flexDirection: flex?.direction,
+			justifyContent: flex?.justify,
+			alignItems: flex?.align,
+			flexWrap: flex?.wrap,
+			gap: flex?.gap
+		}}>
+			{children}
+		</section>
+	);
 }

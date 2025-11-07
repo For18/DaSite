@@ -5,8 +5,8 @@ import Throbber from "./components/Throbber";
 import NotFound from "./routes/NotFound";
 
 import routes from "./routes/Routes";
-import ThemeCSSProvider from "./themes/ThemeProvider";
 import { DarkTheme } from "./themes/Dark";
+import ThemeCSSProvider from "./themes/ThemeProvider";
 
 export default function App() {
 	return (

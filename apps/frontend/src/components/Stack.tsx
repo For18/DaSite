@@ -6,13 +6,15 @@ export interface StackProps extends PropsWithChildren {
 }
 
 export default function Stack({ direction, gap = 0, children }: StackProps): JSX.Element {
-	return <div style={{
-		display: "flex",
-		flexDirection: direction,
-		gap: gap,
-		width: "fit-content",
-		height: "fit-content"
-	}}>
-		{children}
-	</div>
+	return (
+		<div style={{
+			display: "flex",
+			flexDirection: direction,
+			gap: gap,
+			width: "fit-content",
+			height: "fit-content"
+		}}>
+			{children}
+		</div>
+	);
 }

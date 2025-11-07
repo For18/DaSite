@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
-import styles from "./TopBar.module.scss";
 import Button from "./Button";
+import styles from "./TopBar.module.scss";
 
 export default function TopBar({
 	links

@@ -1,7 +1,7 @@
 import { PropsWithChildren } from "react";
 import Footer from "./Footer";
-import TopBar from "./TopBar";
 import styles from "./Layout.module.scss";
+import TopBar from "./TopBar";
 
 export default function Layout({ children }: PropsWithChildren) {
 	return (

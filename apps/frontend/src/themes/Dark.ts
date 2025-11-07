@@ -8,18 +8,18 @@ export const DarkTheme: Theme = {
 		background: {
 			primary: "#181818",
 			secondary: "#222222",
-			tertiary: "#3a3a3a",
+			tertiary: "#3a3a3a"
 		},
 
 		text: {
 			primary: "#FFFFFF",
-			secondary: "#B3B3B3",
+			secondary: "#B3B3B3"
 		},
 
 		status: {
 			success: "#4CAF50",
 			warning: "#FF9800",
-			error: "#F44336",
+			error: "#F44336"
 		},
 
 		brand: "#BB86FC",
@@ -32,10 +32,10 @@ export const DarkTheme: Theme = {
 	},
 
 	typography: {
-		fonts: ['Roboto', 'Helvetica', 'Arial'],
+		fonts: ["Roboto", "Helvetica", "Arial"],
 		fontType: FontType.Serif,
 		fontSize: 16,
 
 		fontWeight: 300
 	}
-}
+};
