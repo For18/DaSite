@@ -34,7 +34,7 @@ export const DarkTheme: Theme = {
 	typography: {
 		fonts: ['Roboto', 'Helvetica', 'Arial'],
 		fontType: FontType.Serif,
-		fontSize: 14,
+		fontSize: 16,
 
 		fontWeight: 300
 	}
