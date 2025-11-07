@@ -4,7 +4,6 @@ import { Auction, Product, useAPI, User } from "../lib/api";
 import styles from "./PendingAuctionCard.module.scss";
 
 export default function PendingAuctionCard({ auction }: { auction: Auction }) {
-
 	const product = useAPI<Product>("/product/" + auction.productId);
 	const user = useAPI<User>("/user/" + auction.plannerId);
 
