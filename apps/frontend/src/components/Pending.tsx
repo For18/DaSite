@@ -1,6 +1,6 @@
 import styles from "./styles/Pending.module.scss"
 
-export default function Pending({ description, startingPoint = "" }: { description: string, startingPoint?: string }) {
+export default function Pending({ description, startingPoint}: { description: string, startingPoint?: string }) {
 	return (
 		<div>
 			<h1>
@@ -11,9 +11,13 @@ export default function Pending({ description, startingPoint = "" }: { descripti
 				{description}
 			</p>
 
-			<p className={"starting-point" + (startingPoint == "" ? "" : "visible")}>
-				Starting point: {startingPoint}
-			</p>
+      {
+        startingPoint
+          ? <p className={styles['starting-point']}>
+              Starting point: {startingPoint}
+            </p>
+          : null
+      }
 		</div>
 	);
 }
