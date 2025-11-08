@@ -37,6 +37,7 @@ export default function Clock(
 				{fmtedTime}
 			</Typography>
 
+      {/* TODO: make seperate pop up?? */}
 			<Button
 				className={styles['bid-button']}
 				disabled={progress < 0 || progress > 1}
