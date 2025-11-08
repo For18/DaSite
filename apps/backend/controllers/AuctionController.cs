@@ -22,10 +22,8 @@ public class AuctionExternal {
 		return new AuctionExternal(auction.Id, auction.Count, auction.BatchSize, auction.StartingPrice, auction.MinimumPrice, auction.StartingTime, auction.Length, auction.Product.Id, auction.Planner?.Id);
 	}
 
-	public Auction ToAuction(DatabaseContext db)
-	{
-		return new Auction
-		{
+	public Auction ToAuction(DatabaseContext db) {
+		return new Auction {
 			Id = Id,
 			Count = Count,
 			BatchSize = BatchSize,
