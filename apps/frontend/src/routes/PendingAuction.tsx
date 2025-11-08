@@ -12,7 +12,7 @@ export default function PendingAuction() {
 
 	const [screenWidth, screenHeight] = useScreenSize();
 
-	const minPaperHeight = 300;
+	const minPaperHeight = 196;
 
 	return (
 		<div className={styles.main}>
@@ -40,7 +40,7 @@ export default function PendingAuction() {
 							<Typography color="textPrimary">No pending auctions</Typography>
 						</div>
 					) :
-					auctions.map(auction => <PendingAuctionCard auction={auction}/>)}
+					auctions.map(auction => <PendingAuctionCard auction={auction} key={auction.id}/>)}
 			</Paper>
 		</div>
 	);
