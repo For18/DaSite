@@ -3,12 +3,12 @@ import styles from "./styles/Pending.module.scss"
 
 export default function Pending({ description, startingPoint}: { description: string, startingPoint?: string }) {
 	return (
-		<div>
-			<Typography>
+		<div className={styles.container}>
+			<Typography className={styles.title}>
 				Pending...
 			</Typography>
 
-			<Typography>
+			<Typography className={styles.description}>
 				{description}
 			</Typography>
 

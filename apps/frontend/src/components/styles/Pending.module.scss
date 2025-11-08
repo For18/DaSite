@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.title {
+  @extend .container;
+  font-size: 1.5em;
+  color: purple;
+}
+
+.description {
+  @extend .container;
+  font-size: 1em;
+  color: skyblue;
+}
+
+.starting-point {
+  @extend .container;
+  color: red;
+}
