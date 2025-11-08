@@ -1,23 +1,23 @@
 import { Button, Typography } from "@mui/material";
 import React from "react";
 import { useState } from "react";
-import { AuctionState } from "../routes/ClockPage";
 import "./styles/Clock.css";
 
 export default function Clock(
-	{ auctionState, setIsAuctionOver }: { auctionState: AuctionState, setIsAuctionOver: (value: boolean) => void }
+	{ progress, price, fmtedTime, setIsAuctionOver }: { progress: number, price: string, fmtedTime: string , setIsAuctionOver: (value: boolean) => void }
 ) {
 	const runningTxt = "BUY";
 	const boughtTxt = "Auction Bought!";
 	const overTxt = "Auction Over!";
 	const currencyType = "100 cent";
 
+  const isAuctionOver = progress >= 1;
 	const [buttonText, setButtonText] = useState<string>("BUY");
-	if (auctionState.isOver && buttonText != runningTxt && buttonText != boughtTxt) setButtonText(overTxt);
+	if (isAuctionOver && buttonText != runningTxt && buttonText != boughtTxt) setButtonText(overTxt);
 
 	return (
 		<div className={"container"}>
-			<div className={"clock"} style={{ "--progress": auctionState.progress } as React.CSSProperties}>
+			<div className={"clock"} style={{ "--progress": progress } as React.CSSProperties}>
 				<div className={"clock-overlay"}>
 					{/* Top Box*/}
 					<div className={"clock-box currency"}>
@@ -28,7 +28,7 @@ export default function Clock(
 					{/* Middle Box*/}
 					<div className={"clock-box price"}>
 						<Typography>price</Typography>
-						<Typography>{auctionState.price}</Typography>
+						<Typography>{price}</Typography>
 					</div>
 
 					{/* Bottom Box*/}
@@ -40,16 +40,16 @@ export default function Clock(
 			</div>
 
 			<Typography className={"typography"}>
-				{auctionState.fmtedRemainingTime}
+				{fmtedTime}
 			</Typography>
 
 			<Button
 				className={"bid-button"}
-				disabled={auctionState.progress < 0 || auctionState.progress > 1}
+				disabled={progress < 0 || progress > 1}
 				onClick={() => {
 					setIsAuctionOver(true);
 					setButtonText(boughtTxt);
-					alert(`Auction bought for € ${auctionState.price}`);
+					alert(`Auction bought for € ${price}`);
 				}}
 			>
 				{buttonText}

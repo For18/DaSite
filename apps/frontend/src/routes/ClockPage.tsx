@@ -31,14 +31,6 @@ function formatDuration(duration: number): string {
 	}`;
 }
 
-export class AuctionState {
-	price: string;
-	remainingTime: number;
-	fmtedRemainingTime: string;
-	progress: number;
-	isOver: boolean;
-}
-
 export default function ClockPage() {
 	const { auctionId } = useParams();
 	const auction = useAPI<Auction>("/auction/" + auctionId);
@@ -47,7 +39,6 @@ export default function ClockPage() {
 	const mountTimeRef = useRef<number>(Date.now());
 
 	const [isAuctionOver, setIsAuctionOver] = useState<boolean>(false);
-	const auctionState = useMemo(() => new AuctionState(), []);
 
 	/* TODO: remove useEffect() after testing */
 	useEffect(() => {
@@ -58,54 +49,45 @@ export default function ClockPage() {
 		}).then(() => console.log("patched"));
 	}, [auction]);
 
-	const startingTime = useMemo(() => auction?.startingTime, [auction]);
+	const startingTime = auction?.startingTime ?? 0;
 	const currentTime = useTime();
 
-	const isOverOnLoad = useMemo(() => {
+	const wasOverOnLoad = useMemo(() => {
 		if (!auction || auction.startingTime == null) return false;
 		const auctionEndMillis = auction.startingTime + auction.length * 1000;
 		return mountTimeRef.current > auctionEndMillis;
 	}, [auction]);
 
-  useEffect(() => {
-      auctionState.isOver = true;
-      auctionState.progress = 1;
-  },[isAuctionOver]);
-
   if (auction === undefined) return <NotFound />;
   if (auction === null) return <Throbber />;
-	if (isOverOnLoad) return <EndedAuction id={auction.id} />;
+	if (wasOverOnLoad) return <EndedAuction id={auction.id} />;
 
 	const auctionLenMillis = auction.length * 1000;
 	const elapsedTime = startingTime != null ? currentTime - startingTime : 0;
 	const auctionProgress = elapsedTime / auctionLenMillis;
 
-	if (!isAuctionOver) {
-		if (auctionProgress > 1) setIsAuctionOver(true);
+  if (!isAuctionOver && auctionProgress >= 1) setIsAuctionOver(true);
 
-		auctionState.progress = auctionProgress;
+  const currentPrice = Math.min(
+      Math.max(lerp(auction.startingPrice, auction.minimumPrice, auctionProgress), auction.minimumPrice),
+      auction.startingPrice
+      ).toFixed(2);
 
-		auctionState.price = Math.min(
-			Math.max(lerp(auction.startingPrice, auction.minimumPrice, auctionState.progress), auction.minimumPrice),
-			auction.startingPrice
-		).toFixed(2);
-
-		auctionState.remainingTime = auctionLenMillis - elapsedTime;
-		auctionState.fmtedRemainingTime = auctionState.remainingTime > auctionLenMillis
-			? formatDuration(0)
-			: formatDuration(auctionState.remainingTime);
-	}
+  const remainingTime = auctionLenMillis - elapsedTime;
+  const fmtedRemainingTime = remainingTime > auctionLenMillis
+    ? formatDuration(0)
+    : formatDuration(remainingTime);
 
 	return (
 		<div className={"base-container"}>
 			<div className={"live-auction-container"}>
 				<div className={"clock-container"}>
 					{
-						auctionState.progress <= 0
+						auctionProgress <= 0
 							? <Pending description={"This auction has yet to start."} startingPoint={formatStartCountDown(startingTime ?? 0, currentTime)} />
-							: (auctionState.progress >= 1
+							: (auctionProgress >= 1
 								? <EndedAuction id={auction.id} />
-								: <Clock auctionState={auctionState} setIsAuctionOver={setIsAuctionOver} />
+								: <Clock progress={auctionProgress} price={currentPrice} fmtedTime={fmtedRemainingTime} setIsAuctionOver={setIsAuctionOver} />
 							)
 					}
 				</div>
