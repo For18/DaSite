@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import { Link } from "react-router";
 import styles from "./styles/EndedAuction.module.scss";
 
@@ -7,13 +8,13 @@ export default function EndedAuction({ id }: { id: number }) {
 
 	return (
 		<div className={styles['end-container']}>
-			<h2 className={styles.header}>
+			<Typography className={styles.header}>
 				This Auction is Over
-			</h2>
+			</Typography>
 
-			<p className={styles.paragraph}>
+			<Typography className={styles.paragraph}>
 				You can view the pending auction or the next one below.
-			</p>
+			</Typography>
 
 			<div className={styles['link-container']}>
 				<Link
