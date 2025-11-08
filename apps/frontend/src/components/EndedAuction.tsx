@@ -8,11 +8,11 @@ export default function EndedAuction({ id }: { id: number }) {
 
 	return (
 		<div className={styles["end-container"]}>
-			<Typography className={styles.header}>
+			<Typography className={styles.header} color="textPrimary">
 				This Auction is Over
 			</Typography>
 
-			<Typography className={styles.paragraph}>
+			<Typography className={styles.paragraph} color="textPrimary">
 				You can view the pending auction or the next one below.
 			</Typography>
 

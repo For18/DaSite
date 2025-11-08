@@ -15,25 +15,25 @@ export default function Clock(
 				<div className={styles["clock-overlay"]}>
 					{/* Top Box*/}
 					<div className={styles["clock-box currency"]}>
-						<Typography>currency</Typography>
-						<Typography>{currencyType}</Typography>
+						<Typography color="textPrimary">currency</Typography>
+						<Typography color="textPrimary">{currencyType}</Typography>
 					</div>
 
 					{/* Middle Box*/}
 					<div className={styles["clock-box price"]}>
-						<Typography>price</Typography>
-						<Typography>{price}</Typography>
+						<Typography color="textPrimary">price</Typography>
+						<Typography color="textPrimary">{price}</Typography>
 					</div>
 
 					{/* Bottom Box*/}
 					<div className={styles["clock-box count"]}>
-						<Typography>count</Typography>
-						<Typography>{6969}</Typography>
+						<Typography color="textPrimary">count</Typography>
+						<Typography color="textPrimary">{6969}</Typography>
 					</div>
 				</div>
 			</div>
 
-			<Typography className={styles.typography}>
+			<Typography className={styles.typography} color="textPrimary">
 				{fmtedTime}
 			</Typography>
 
