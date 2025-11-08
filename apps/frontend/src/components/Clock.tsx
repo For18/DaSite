@@ -3,6 +3,7 @@ import React from "react";
 import { useState } from "react";
 import "./styles/Clock.css";
 
+// TODO: add onBuy callback
 export default function Clock(
 	{ progress, price, fmtedTime, setIsAuctionOver }: { progress: number, price: string, fmtedTime: string , setIsAuctionOver: (value: boolean) => void }
 ) {
