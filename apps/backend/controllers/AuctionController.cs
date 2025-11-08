@@ -1,8 +1,8 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
-using System.ComponentModel;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 
 [DisplayName(nameof(Auction))]
 public class AuctionExternal {
@@ -17,8 +17,15 @@ public class AuctionExternal {
 		ProductId = productId;
 		PlannerId = plannerId;
 	}
-	public Auction ToAuction(DatabaseContext db) {
-		return new Auction {
+
+	public static AuctionExternal ToExternal(Auction auction) {
+		return new AuctionExternal(auction.Id, auction.Count, auction.BatchSize, auction.StartingPrice, auction.MinimumPrice, auction.StartingTime, auction.Length, auction.Product.Id, auction.Planner?.Id);
+	}
+
+	public Auction ToAuction(DatabaseContext db)
+	{
+		return new Auction
+		{
 			Id = Id,
 			Count = Count,
 			BatchSize = BatchSize,
@@ -27,23 +34,9 @@ public class AuctionExternal {
 			StartingTime = StartingTime,
 			Length = Length,
 			Product = db.Products.Where(p => p.Id == ProductId).First(),
-			Planner = db.Users.Where(u => u.Id == PlannerId).FirstOrDefault(),
+			Planner = db.Users.Where(u => u.Id == PlannerId).FirstOrDefault()
 		};
 	}
-	public static AuctionExternal ToExternal(Auction auction) {
-		return new AuctionExternal(
-			auction.Id,
-			auction.Count,
-			auction.BatchSize,
-			auction.StartingPrice,
-			auction.MinimumPrice,
-			auction.StartingTime,
-			auction.Length,
-			auction.Product.Id,
-			auction.Planner?.Id
-		);
-	}
-
 	public ulong Id { get; init; }
 	public ushort Count { get; init; }
 	public uint BatchSize { get; init; }
@@ -63,7 +56,7 @@ public class AuctionController : ControllerBase {
 		using var db = new DatabaseContext();
 		{
 
-			Auction? auction = db.Auctions.Find(id);
+			Auction? auction = db.Auctions.Include(auc => auc.Planner).Include(auc => auc.Product).Where(auc => auc.Id == id).FirstOrDefault();
 			if (auction == null) return NotFound();
 
 			return AuctionExternal.ToExternal(auction);
@@ -71,9 +64,14 @@ public class AuctionController : ControllerBase {
 	}
 
 	[HttpGet("/auctions")]
-	public ActionResult<AuctionExternal[]> GetAll() {
+	public ActionResult<AuctionExternal[]> GetNormal() {
 		using (var db = new DatabaseContext()) {
-			return db.Auctions.Select(auction => AuctionExternal.ToExternal(auction)).ToArray();
+			return db.Auctions
+				.Include(auc => auc.Planner)
+				.Include(auc => auc.Product)
+				.Where(auc => auc.StartingTime != null && auc.Length != null)
+				.Select(auction => AuctionExternal.ToExternal(auction))
+			.ToArray();
 		}
 	}
 
