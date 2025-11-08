@@ -1,13 +1,13 @@
-import { useEffect, useMemo, useRef} from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useParams } from "react-router";
 import Clock from "../components/Clock";
+import EndedAuction from "../components/EndedAuction";
+import Pending from "../components/Pending";
 import ProductView from "../components/ProductView";
 import Throbber from "../components/Throbber";
 import { API_URL, Auction, Product, useAPI } from "../lib/api";
 import { useTime } from "../lib/util";
 import NotFound from "./NotFound";
-import Pending from "../components/Pending";
-import EndedAuction from "../components/EndedAuction";
 import styles from "./styles/ClockPage.module.scss";
 
 function formatStartCountDown(startingTime: number, currentTime: number) {
@@ -37,7 +37,7 @@ export default function ClockPage() {
 	const product = useAPI<Product>(auction ? "/product/" + auction.productId : null);
 
 	const mountTimeRef = useRef<number>(Date.now());
-  const wasAuctionEndedByUser = useRef<boolean>(false);
+	const wasAuctionEndedByUser = useRef<boolean>(false);
 
 	/* TODO: remove useEffect() after testing */
 	useEffect(() => {
@@ -57,43 +57,46 @@ export default function ClockPage() {
 		return mountTimeRef.current > auctionEndMillis;
 	}, [auction]);
 
-  if (auction === undefined) return <NotFound />;
-  if (auction === null) return <Throbber />;
-	if (wasOverOnLoad) return <EndedAuction id={auction.id} />;
+	if (auction === undefined) return <NotFound/>;
+	if (auction === null) return <Throbber/>;
+	if (wasOverOnLoad) return <EndedAuction id={auction.id}/>;
 
 	const auctionLenMillis = auction.length * 1000;
 	const elapsedTime = startingTime != null ? currentTime - startingTime : 0;
 	const auctionProgress = elapsedTime / auctionLenMillis;
-  const isAuctionOver = wasAuctionEndedByUser || auctionProgress >= 1;
+	const isAuctionOver = wasAuctionEndedByUser || auctionProgress >= 1;
 
-  const currentPrice = Math.min(
-      Math.max(lerp(auction.startingPrice, auction.minimumPrice, auctionProgress), auction.minimumPrice),
-      auction.startingPrice
-      ).toFixed(2);
+	const currentPrice = Math.min(
+		Math.max(lerp(auction.startingPrice, auction.minimumPrice, auctionProgress), auction.minimumPrice),
+		auction.startingPrice
+	).toFixed(2);
 
-  const remainingTime = auctionLenMillis - elapsedTime;
-  const fmtedRemainingTime = remainingTime > auctionLenMillis
-    ? formatDuration(0)
-    : formatDuration(remainingTime);
+	const remainingTime = auctionLenMillis - elapsedTime;
+	const fmtedRemainingTime = remainingTime > auctionLenMillis ?
+		formatDuration(0) :
+		formatDuration(remainingTime);
 
 	return (
-		<div className={styles['base-container']}>
-			<div className={styles['live-auction-container']}>
-				<div className={styles['clock-container']}>
-					{
-						auctionProgress <= 0
-							? <Pending description={"This auction has yet to start."} startingPoint={formatStartCountDown(startingTime ?? 0, currentTime)} />
-							: (isAuctionOver
-								? <EndedAuction id={auction.id} />
-								: <Clock progress={auctionProgress} price={currentPrice} fmtedTime={fmtedRemainingTime} wasAuctionEndedByUserRef={wasAuctionEndedByUser} />
-							)
-					}
+		<div className={styles["base-container"]}>
+			<div className={styles["live-auction-container"]}>
+				<div className={styles["clock-container"]}>
+					{auctionProgress <= 0 ?
+						(
+							<Pending description={"This auction has yet to start."}
+								startingPoint={formatStartCountDown(startingTime ?? 0, currentTime)}/>
+						) :
+						(isAuctionOver ?
+							<EndedAuction id={auction.id}/> :
+							(
+								<Clock progress={auctionProgress} price={currentPrice} fmtedTime={fmtedRemainingTime}
+									wasAuctionEndedByUserRef={wasAuctionEndedByUser}/>
+							))}
 				</div>
 
-				<div className={styles['container-separator']} />
+				<div className={styles["container-separator"]}/>
 
-				<div className={styles['product-container']}>
-					{product == null ? <Throbber /> : <ProductView product={product} />}
+				<div className={styles["product-container"]}>
+					{product == null ? <Throbber/> : <ProductView product={product}/>}
 				</div>
 			</div>
 		</div>

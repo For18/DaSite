@@ -19,7 +19,7 @@ export default function ProductView({ product }: { product: Product }) {
 	prodImages.map(prodImage => product.imageUrls.push(prodImage.url));
 
 	return (
-		<div className={styles['product-view']}>
+		<div className={styles["product-view"]}>
 			<div>
 				<Typography>{product.name}</Typography>
 				<Typography className={styles.seller}>
@@ -27,27 +27,27 @@ export default function ProductView({ product }: { product: Product }) {
 				</Typography>
 			</div>
 
-			<hr className={styles['horizontal-rule']}/>
+			<hr className={styles["horizontal-rule"]}/>
 
 			<div>
 				<p>{product.description}</p>
 			</div>
 
-			<hr className={styles['horizontal-rule']}/>
+			<hr className={styles["horizontal-rule"]}/>
 
 			<div>
 				<img
-					className={styles['thumbnail-image']}
+					className={styles["thumbnail-image"]}
 					src={product.thumbnailImageUrl}
 					alt={product.name}
 				/>
 			</div>
 
-			<div className={styles['extra-image-container']}>
+			<div className={styles["extra-image-container"]}>
 				{product.imageUrls.map((url, index) => (
 					<div key={url} style={{ cursor: "pointer" }}>
 						<img
-							className={styles['extra-image']}
+							className={styles["extra-image"]}
 							src={url}
 							alt={`Product Image ${index + 1}`}
 							onClick={() => window.open(url, "_blank")}
