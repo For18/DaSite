@@ -37,8 +37,7 @@ export default function ClockPage() {
 	const product = useAPI<Product>(auction ? "/product/" + auction.productId : null);
 
 	const mountTimeRef = useRef<number>(Date.now());
-
-	const [isAuctionOver, setIsAuctionOver] = useState<boolean>(false);
+  const wasAuctionEndedByUser = useRef<boolean>(false);
 
 	/* TODO: remove useEffect() after testing */
 	useEffect(() => {
@@ -65,8 +64,7 @@ export default function ClockPage() {
 	const auctionLenMillis = auction.length * 1000;
 	const elapsedTime = startingTime != null ? currentTime - startingTime : 0;
 	const auctionProgress = elapsedTime / auctionLenMillis;
-
-  if (!isAuctionOver && auctionProgress >= 1) setIsAuctionOver(true);
+  const isAuctionOver = wasAuctionEndedByUser || auctionProgress >= 1;
 
   const currentPrice = Math.min(
       Math.max(lerp(auction.startingPrice, auction.minimumPrice, auctionProgress), auction.minimumPrice),
@@ -85,9 +83,9 @@ export default function ClockPage() {
 					{
 						auctionProgress <= 0
 							? <Pending description={"This auction has yet to start."} startingPoint={formatStartCountDown(startingTime ?? 0, currentTime)} />
-							: (auctionProgress >= 1
+							: (isAuctionOver
 								? <EndedAuction id={auction.id} />
-								: <Clock progress={auctionProgress} price={currentPrice} fmtedTime={fmtedRemainingTime} setIsAuctionOver={setIsAuctionOver} />
+								: <Clock progress={auctionProgress} price={currentPrice} fmtedTime={fmtedRemainingTime} wasAuctionEndedByUserRef={wasAuctionEndedByUser} />
 							)
 					}
 				</div>

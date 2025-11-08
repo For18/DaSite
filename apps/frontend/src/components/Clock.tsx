@@ -5,16 +5,9 @@ import styles from "./styles/Clock.module.scss";
 
 // TODO: add onBuy callback
 export default function Clock(
-	{ progress, price, fmtedTime, setIsAuctionOver }: { progress: number, price: string, fmtedTime: string , setIsAuctionOver: (value: boolean) => void }
+	{ progress, price, fmtedTime, wasAuctionEndedByUserRef }: { progress: number, price: string, fmtedTime: string , wasAuctionEndedByUserRef: React.RefObject<boolean> }
 ) {
-	const runningTxt = "BUY";
-	const boughtTxt = "Auction Bought!";
-	const overTxt = "Auction Over!";
 	const currencyType = "100 cent";
-
-  const isAuctionOver = progress >= 1;
-	const [buttonText, setButtonText] = useState<string>("BUY");
-	if (isAuctionOver && buttonText != runningTxt && buttonText != boughtTxt) setButtonText(overTxt);
 
 	return (
 		<div className={styles.container}>
@@ -48,12 +41,11 @@ export default function Clock(
 				className={styles['bid-button']}
 				disabled={progress < 0 || progress > 1}
 				onClick={() => {
-					setIsAuctionOver(true);
-					setButtonText(boughtTxt);
+          wasAuctionEndedByUserRef.current = true;
 					alert(`Auction bought for € ${price}`);
 				}}
 			>
-				{buttonText}
+				BUY
 			</Button>
 		</div>
 	);
