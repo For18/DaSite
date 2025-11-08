@@ -1,29 +1,29 @@
 import { Link } from "react-router";
-import "./styles/EndedAuction.css";
+import styles from "./styles/EndedAuction.module.scss";
 
 export default function EndedAuction({ id }: { id: number }) {
 	const nextAuctionId = id + 1;
 
 	return (
-		<div className={"base-container"}>
-			<h2 className={"header"}>
+		<div className={styles['end-container']}>
+			<h2 className={styles.header}>
 				This Auction is Over
 			</h2>
 
-			<p className={"paragraph"}>
+			<p className={styles.paragraph}>
 				You can view the pending auction or the next one below.
 			</p>
 
-			<div className={"link-container"}>
+			<div className={styles['link-container']}>
 				<Link
-					className={"link pending-auctions"}
+					className={styles['link pending-auctions']}
 					to={`/auctions/pending`}
 				>
 					Pending Auction
 				</Link>
 
 				<Link
-					className={"link next-auction"}
+					className={styles['link next-auction']}
 					to={`/clock/${nextAuctionId}`}
 				>
 					Next Auction

@@ -1,7 +1,7 @@
 import { Button, Typography } from "@mui/material";
 import React from "react";
 import { useState } from "react";
-import "./styles/Clock.css";
+import styles from "./styles/Clock.module.scss";
 
 // TODO: add onBuy callback
 export default function Clock(
@@ -17,35 +17,35 @@ export default function Clock(
 	if (isAuctionOver && buttonText != runningTxt && buttonText != boughtTxt) setButtonText(overTxt);
 
 	return (
-		<div className={"container"}>
-			<div className={"clock"} style={{ "--progress": progress } as React.CSSProperties}>
-				<div className={"clock-overlay"}>
+		<div className={styles.container}>
+			<div className={styles.clock} style={{ "--progress": progress } as React.CSSProperties}>
+				<div className={styles['clock-overlay']}>
 					{/* Top Box*/}
-					<div className={"clock-box currency"}>
+					<div className={styles['clock-box currency']}>
 						<Typography>currency</Typography>
 						<Typography>{currencyType}</Typography>
 					</div>
 
 					{/* Middle Box*/}
-					<div className={"clock-box price"}>
+					<div className={styles['clock-box price']}>
 						<Typography>price</Typography>
 						<Typography>{price}</Typography>
 					</div>
 
 					{/* Bottom Box*/}
-					<div className={"clock-box count"}>
+					<div className={styles['clock-box count']}>
 						<Typography>count</Typography>
 						<Typography>{6969}</Typography>
 					</div>
 				</div>
 			</div>
 
-			<Typography className={"typography"}>
+			<Typography className={styles.typography}>
 				{fmtedTime}
 			</Typography>
 
 			<Button
-				className={"bid-button"}
+				className={styles['bid-button']}
 				disabled={progress < 0 || progress > 1}
 				onClick={() => {
 					setIsAuctionOver(true);

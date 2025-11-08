@@ -6,9 +6,9 @@ import Throbber from "../components/Throbber";
 import { API_URL, Auction, Product, useAPI } from "../lib/api";
 import { useTime } from "../lib/util";
 import NotFound from "./NotFound";
-import Pending from "./Pending";
-import "./styles/ClockPage.css";
+import Pending from "../components/Pending";
 import EndedAuction from "../components/EndedAuction";
+import styles from "./styles/ClockPage.module.scss";
 
 function formatStartCountDown(startingTime: number, currentTime: number) {
 	if (startingTime <= 0 || currentTime <= 0) return "0.00";
@@ -79,9 +79,9 @@ export default function ClockPage() {
     : formatDuration(remainingTime);
 
 	return (
-		<div className={"base-container"}>
-			<div className={"live-auction-container"}>
-				<div className={"clock-container"}>
+		<div className={styles['base-container']}>
+			<div className={styles['live-auction-container']}>
+				<div className={styles['clock-container']}>
 					{
 						auctionProgress <= 0
 							? <Pending description={"This auction has yet to start."} startingPoint={formatStartCountDown(startingTime ?? 0, currentTime)} />
@@ -92,9 +92,9 @@ export default function ClockPage() {
 					}
 				</div>
 
-				<div className={"container-separator"} />
+				<div className={styles['container-separator']} />
 
-				<div className={"product-container"}>
+				<div className={styles['product-container']}>
 					{product == null ? <Throbber /> : <ProductView product={product} />}
 				</div>
 			</div>
