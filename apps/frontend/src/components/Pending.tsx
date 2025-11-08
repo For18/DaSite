@@ -1,3 +1,5 @@
+import styles from "./styles/Pending.module.scss"
+
 export default function Pending({ description, startingPoint = "" }: { description: string, startingPoint?: string }) {
 	return (
 		<div>
