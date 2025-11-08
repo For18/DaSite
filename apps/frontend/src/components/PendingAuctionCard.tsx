@@ -7,15 +7,13 @@ export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 	const product = useAPI<Product>("/product/" + auction.productId);
 	const user = useAPI<User>("/user/" + auction.plannerId);
 
-	const cardAspectRatio = 5 / 1;
-
 	return (
 		<Card sx={{
 			minHeight: 90,
 			display: "flex",
 			width: "100%",
 			backgroundColor: "#88888811",
-			aspectRatio: cardAspectRatio
+			aspectRatio: 5 / 1
 		}}>
 			<div className={styles.card}>
 				<img className={styles.productImage} src={product?.thumbnailImageUrl}/>
