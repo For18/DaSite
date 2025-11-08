@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef} from "react";
 import { useParams } from "react-router";
 import Clock from "../components/Clock";
 import ProductView from "../components/ProductView";

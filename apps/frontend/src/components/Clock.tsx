@@ -1,6 +1,5 @@
 import { Button, Typography } from "@mui/material";
 import React from "react";
-import { useState } from "react";
 import styles from "./styles/Clock.module.scss";
 
 // TODO: add onBuy callback
