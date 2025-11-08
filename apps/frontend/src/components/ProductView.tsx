@@ -16,7 +16,7 @@ export default function ProductView({ product }: { product: Product }) {
 	if (prodImages === null) return <Throbber/>;
 	if (prodImages === undefined) return <NotFound/>;
 
-	prodImages.forEach(prodImage => product.imageUrls.push(prodImage.url));
+	prodImages.map(prodImage => product.imageUrls.push(prodImage.url));
 
 	return (
 		<div className={styles['product-view']}>
