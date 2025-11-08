@@ -45,7 +45,7 @@ export default function ProductView({ product }: { product: Product }) {
 
 			<div className={styles['extra-image-container']}>
 				{product.imageUrls.map((url, index) => (
-					<div key={index} style={{ cursor: "pointer" }}>
+					<div key={url} style={{ cursor: "pointer" }}>
 						<img
 							className={styles['extra-image']}
 							src={url}
