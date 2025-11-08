@@ -9,8 +9,11 @@ export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 
 	return (
 		<Card sx={{
-			minHeight: 90,
 			display: "flex",
+			flexDirection: "row",
+			justifyContent: "space-between",
+			alignItems: "flex-start",
+			minHeight: 90,
 			width: "100%",
 			backgroundColor: "#88888811",
 			aspectRatio: 5 / 1
@@ -23,13 +26,13 @@ export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 					<Typography color="textPrimary" className={styles.productName}>{product?.name}</Typography>
 				</div>
 				<div className={styles.infoTextContainer}>
-					<Typography color="textPrimary" className={styles.infoText}>
+					<Typography color="textSecondary" className={styles.infoText}>
 						Seller: {user?.displayName}
 					</Typography>
-					<Typography color="textPrimary" className={styles.infoText}>
+					<Typography color="textSecondary" className={styles.infoText}>
 						Asking price: €{auction.startingPrice},-
 					</Typography>
-					<Typography color="textPrimary" className={styles.infoText}>
+					<Typography color="textSecondary" className={styles.infoText}>
 						Amount: {auction.batchSize * auction.count}
 					</Typography>
 				</div>
