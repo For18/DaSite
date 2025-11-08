@@ -20,7 +20,6 @@ export default function Layout({ children }: PropsWithChildren) {
 				links={{
 					Home: "/",
 					Auctions: "/auctions",
-					Clock: "/clock/"
 				}}
 			/>
 			<article
