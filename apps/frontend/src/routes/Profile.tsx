@@ -1,6 +1,6 @@
 import { Avatar, Box, Card, CardContent, Paper, Typography } from "@mui/material";
-import { alpha } from "@mui/material/styles";
 import { useParams } from "react-router";
+import Header from "../components/Header";
 import Throbber from "../components/Throbber";
 import { Product, useAPI } from "../lib/api";
 import NotFound from "./NotFound";
@@ -56,14 +56,9 @@ export default function Profile() {
 						border: `1px solid ${user.avatarColor}`
 					}} src={user.avatarUrl}/>
 
-					<Typography color="textPrimary" sx={{
-						fontSize: "40px",
-						fontWeight: "bold",
-						marginLeft: "16px",
-						marginBottom: "32px"
-					}}>
+					<Header level={1} color="textPrimary">
 						{user.name}
-					</Typography>
+					</Header>
 				</div>
 
 				<Typography color="textSecondary" sx={{
@@ -91,7 +86,7 @@ export default function Profile() {
 						userProducts.map(product => (
 							<Typography color="textPrimary" key={product.id} sx={{ fontSize: "16px" }}>
 								{product.name}
-							</Typography>
+							</Typography> // images be put later when new components can be used.
 						))
 					)}
 			</Paper>
