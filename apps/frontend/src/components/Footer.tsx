@@ -4,7 +4,7 @@ import Typography from "./Typography";
 export default function Footer() {
 	return (
 		<footer className={styles.footer}>
-			<Typography color="secondary" align="center">
+			<Typography color="secondary">
 				{"© "}
 				{new Date().getFullYear()} For18
 			</Typography>

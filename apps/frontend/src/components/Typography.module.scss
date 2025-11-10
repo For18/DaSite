@@ -1,4 +1,7 @@
 .typography {
+	width: fit-content;
+	height: fit-content;
+
 	&.primary {
 		color: var(--color-text-primary);
 	}
@@ -8,11 +11,5 @@
 
 	&.bold {
 		font-weight: 220%;
-	}
-	&.italic {
-		font-style: italic;
-	}
-	&.underlined {
-		text-decoration: underline;
 	}
 }
