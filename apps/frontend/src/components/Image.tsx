@@ -2,7 +2,7 @@ import { useState } from "react";
 
 export interface ImageProps {
 	src: string | string[] | null;
-	alt?: string;
+	alt: string;
 	width?: number;
 	height?: number;
 	className?: string;
