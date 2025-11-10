@@ -55,7 +55,8 @@ export default function Profile() {
 						height: 96,
 						border: `1px solid ${user.avatarColor}`
 					}} src={user.avatarUrl}/>
-
+					<Typography sx={{ marginLeft: "16px" }}>
+					</Typography>
 					<Header level={1} color="textPrimary">
 						{user.name}
 					</Header>
