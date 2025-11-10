@@ -23,7 +23,7 @@ export default function PendingAuction() {
 			<Paper sx={{
 				width: "1000px",
 				maxWidth: "80vw",
-				minHeight: `${minPaperHeight}px`,
+				flex: 1,
 				display: auctions != null && auctions.length > 0 ? "grid" : "flex",
 				gridTemplateColumns: screenWidth > 1000 ? "1fr 1fr" : "1fr",
 				justifyContent: "center",
@@ -37,7 +37,7 @@ export default function PendingAuction() {
 					auctions.length == 0 ?
 					(
 						<div className={styles.noPendingAuctions}>
-							<Typography color="textPrimary">No pending auctions</Typography>
+							<Typography color="textPrimary" className={styles.noPendingAuctionsText}>No pending auctions</Typography>
 						</div>
 					) :
 					auctions.map(auction => <PendingAuctionCard auction={auction} key={auction.id}/>)}
