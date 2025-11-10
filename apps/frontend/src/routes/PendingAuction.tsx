@@ -8,7 +8,7 @@ import { useScreenSize } from "../lib/util";
 import styles from "./PendingAuction.module.scss";
 
 export default function PendingAuction() {
-	const auctions = useAPI<Auction[]>("/auctions/pending");
+	const auctions = useAPI<Auction[]>("/auctions");
 
 	const [screenWidth, screenHeight] = useScreenSize();
 
@@ -23,7 +23,7 @@ export default function PendingAuction() {
 			<Paper sx={{
 				width: "1000px",
 				maxWidth: "80vw",
-				flex: 1,
+				height: "fit-content",
 				display: auctions != null && auctions.length > 0 ? "grid" : "flex",
 				gridTemplateColumns: screenWidth > 1000 ? "1fr 1fr" : "1fr",
 				justifyContent: "center",
