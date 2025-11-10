@@ -41,6 +41,7 @@ export default function ClockPage() {
 
 	/* TODO: remove useEffect() after testing */
 	useEffect(() => {
+    if (!auction) return;
 		fetch(API_URL + "/auction/" + auction?.id, {
 			method: "PATCH",
 			headers: { "Content-Type": "application/json" },
