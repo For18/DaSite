@@ -8,7 +8,6 @@ import styles from "./styles/ProductView.module.scss";
 export default function ProductView({ product }: { product: Product }) {
 	const owner = useAPI<User>("/user/" + product.owner) ?? null;
 	const prodImages = useAPI<ProductImage[]>("/product-image/from/" + product.id);
-	product.imageUrls = [];
 
 	if (owner === null) return <Throbber/>;
 	if (owner === undefined) return <NotFound/>;
@@ -16,7 +15,7 @@ export default function ProductView({ product }: { product: Product }) {
 	if (prodImages === null) return <Throbber/>;
 	if (prodImages === undefined) return <NotFound/>;
 
-	prodImages.map(prodImage => product.imageUrls.push(prodImage.url));
+	product.imageUrls = prodImages.map(prodImage => prodImage.url);
 
 	return (
 		<div className={styles["product-view"]}>
