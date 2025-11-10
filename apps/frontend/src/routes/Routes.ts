@@ -4,10 +4,12 @@ const Home = lazy(() => import("./Home"));
 const Clock = lazy(() => import("./Clock"));
 const Auctions = lazy(() => import("./Auctions"));
 const PendingAuction = lazy(() => import("./PendingAuction"));
+const Profile = lazy(() => import("./Profile"));
 
 export default {
 	"/": Home,
 	"/clock/:auctionId": Clock,
 	"/auctions": Auctions,
-	"/auctions/pending": PendingAuction
+	"/auctions/pending": PendingAuction,
+	"/profile/:userId": Profile
 } as { [path: string]: React.LazyExoticComponent<() => JSX.Element> };
