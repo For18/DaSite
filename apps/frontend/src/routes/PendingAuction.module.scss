@@ -10,9 +10,10 @@
 }
 
 .noPendingAuctions {
-    --min-paper-height: 300;
     align-items: center;
-    display: flex;
     justify-content: center;
-    min-height: var(--min-paper-height);
+}
+
+.noPendingAuctionsText {
+    line-height: 4;
 }
