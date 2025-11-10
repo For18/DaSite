@@ -15,8 +15,6 @@ export default function ProductView({ product }: { product: Product }) {
 	if (prodImages === null) return <Throbber/>;
 	if (prodImages === undefined) return <NotFound/>;
 
-	product.imageUrls = prodImages.map(prodImage => prodImage.url);
-
 	return (
 		<div className={styles["product-view"]}>
 			<div>
@@ -50,7 +48,7 @@ export default function ProductView({ product }: { product: Product }) {
       }
 
 			<div className={styles["extra-image-container"]}>
-				{product.imageUrls.map((url, index) => (
+				{prodImages.map(prodImage => prodImage.url).map((url, index) => (
 					<div key={url}>
             <a href={url}>
 						  <img
