@@ -13,7 +13,7 @@ export default function Image({ src, alt, width, height, className, style }: Ima
 	if (src === null) src = [];
 	else if (typeof src === 'string') src = [src];
 
-	src.push(`https://placehold.co/${width}x${height}?text=${alt ?? "Image"}`);
+	src.push(`https://placehold.co/${width}x${height}?text=${alt}`);
 
 	const [imageIndex, setImageIndex] = useState<number>(0);
 
