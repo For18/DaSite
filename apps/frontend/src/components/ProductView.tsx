@@ -32,17 +32,20 @@ export default function ProductView({ product }: { product: Product }) {
 				<p>{product.description}</p>
 			</div>
 
-			<hr className={styles["horizontal-rule"]}/>
 
       {
         product.thumbnailImageUrl
-			  ?   <div>
+			  ?
+			    <>
+            <hr className={styles["horizontal-rule"]}/>
+            <div>
 			      	<img
 			      		className={styles["thumbnail-image"]}
 			      		src={product.thumbnailImageUrl}
 			      		alt={product.name}
 			      	/>
 			      </div>
+          </>
         : null
       }
 
