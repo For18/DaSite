@@ -34,13 +34,17 @@ export default function ProductView({ product }: { product: Product }) {
 
 			<hr className={styles["horizontal-rule"]}/>
 
-			<div>
-				<img
-					className={styles["thumbnail-image"]}
-					src={product.thumbnailImageUrl}
-					alt={product.name}
-				/>
-			</div>
+      {
+        product.thumbnailImageUrl
+			  ?   <div>
+			      	<img
+			      		className={styles["thumbnail-image"]}
+			      		src={product.thumbnailImageUrl}
+			      		alt={product.name}
+			      	/>
+			      </div>
+        : null
+      }
 
 			<div className={styles["extra-image-container"]}>
 				{product.imageUrls.map((url, index) => (
