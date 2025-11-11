@@ -4,6 +4,7 @@
 }
 
 .left {
+    float: left;
     width: 50%;
     height: 100%;
 }
@@ -11,12 +12,16 @@
 .right {
     width: 50%;
     height: 100%;
+    float: right;
+
 }
 
 .header {
     position: relative;
-    top: 14%;
+    top: 10%;
     left: 2%;
+    width: 40%;
+    padding-bottom: 50px;
 }
 
 .subHeader {
@@ -24,7 +29,6 @@
     max-width: 35%;
     top: 35%;
     left: 2%;
-    text-align: center;
 }
 
 .subTextDiv {
@@ -36,14 +40,13 @@
 
 .header4 {
     position: relative;
-    top: 25%;
-    left: 70%;
-    max-width: 28%;
+    left: 60%;
+    padding-right: 10px;
 }
 
 .header4Text {
     position: relative;
     top: 30%;
-    left: 70%;
+    left: 60%;
     max-width: 28%;
 }
