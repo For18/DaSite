@@ -11,7 +11,7 @@
   width: 100vw;
   height: 100vh;
   display: grid;
-  grid-template-columns: 48vw 0.05vw 48vw;
+  grid-template-columns: 1fr 1px 1fr;
   align-items: stretch;
   margin: 0;
 }
