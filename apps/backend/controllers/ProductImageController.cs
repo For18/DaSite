@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
@@ -38,11 +39,11 @@ public class ProductImageExternal
 public class ProductImageController : ControllerBase
 {
 	[HttpGet("{id}")]
-	public ActionResult<ProductImageExternal> Get(ulong id)
+	public async Task<ActionResult<ProductImageExternal>> Get(ulong id)
 	{
 		using (var db = new DatabaseContext())
 		{
-			ProductImage? prodImage = db.ProductImages.Include(prod => prod.Parent).Where(image => image.Id == id).FirstOrDefault();
+			ProductImage? prodImage = await db.ProductImages.Include(prod => prod.Parent).Where(image => image.Id == id).FirstOrDefaultAsync();
 
 			if (prodImage == null) return NotFound();
 
@@ -51,22 +52,22 @@ public class ProductImageController : ControllerBase
 	}
 
 	[HttpGet("from/{id}")]
-	public ActionResult<ProductImageExternal[]> GetByParent(ulong id) {
+	public async Task<ActionResult<ProductImageExternal[]>> GetByParent(ulong id) {
 		using (var db = new DatabaseContext()) {
-			return db.ProductImages.Include(prodImage => prodImage.Parent)
+			return await db.ProductImages.Include(prodImage => prodImage.Parent)
 			  .Where(prodImage => prodImage.Parent.Id == id)
-			  .Select(prodImage => ProductImageExternal.ToExternal(prodImage)).ToArray();
+			  .Select(prodImage => ProductImageExternal.ToExternal(prodImage)).ToArrayAsync();
 		}
 	}
 
 	[HttpPost]
-	public ActionResult Post(ProductImageExternal productImageData)
+	public async Task<ActionResult> Post(ProductImageExternal productImageData)
 	{
 		using (var db = new DatabaseContext())
 		{
 			if (db.ProductImages.Include(img => img.Parent).Any(image => image.Id == productImageData.Id)) return Conflict("Already exists");
 
-			Product? parent = db.Products.Include(product => product.Owner).Where(product => product.Id == (productImageData.Parent)).FirstOrDefault();
+			Product? parent = await db.Products.Include(product => product.Owner).Where(product => product.Id == (productImageData.Parent)).FirstOrDefaultAsync();
 			if (parent == null) return NotFound();
 
 			ProductImage prodImage = new ProductImage
@@ -77,33 +78,33 @@ public class ProductImageController : ControllerBase
 			};
 
 			db.ProductImages.Add(prodImage);
-			db.SaveChanges();
+			await db.SaveChangesAsync();
 
 			return Ok(new IdReference(prodImage.Id));
 		}
 	}
 
 	[HttpDelete("{id}")]
-	public ActionResult Delete(ulong id)
+	public async Task<ActionResult> Delete(ulong id)
 	{
 		using (var db = new DatabaseContext())
 		{
-			ProductImage? prodImage = db.ProductImages.Find(id);
+			ProductImage? prodImage = await db.ProductImages.FindAsync(id);
 			if (prodImage == null) return NotFound();
 
 			db.ProductImages.Remove(prodImage);
-			db.SaveChanges();
+			await db.SaveChangesAsync();
 
 			return NoContent();
 		}
 	}
 
 	[HttpPatch("{id}")]
-	public ActionResult Patch(ulong id, [FromBody] JsonPatchDocument<ProductImage> patchdoc)
+	public async Task<ActionResult> Patch(ulong id, [FromBody] JsonPatchDocument<ProductImage> patchdoc)
 	{
 		using (var db = new DatabaseContext())
 		{
-			ProductImage? prodImage = db.ProductImages.Find(id);
+			ProductImage? prodImage = await db.ProductImages.FindAsync(id);
 			if (prodImage == null) return NotFound();
 
 			patchdoc.ApplyTo(prodImage, ModelState);
@@ -113,7 +114,7 @@ public class ProductImageController : ControllerBase
 				return BadRequest(ModelState);
 			}
 
-			db.SaveChanges();
+			await db.SaveChangesAsync();
 			return Ok(prodImage);
 		}
 	}

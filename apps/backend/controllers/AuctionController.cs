@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
@@ -56,12 +57,12 @@ public class AuctionExternal
 public class AuctionController : ControllerBase
 {
 	[HttpGet("{id}")]
-	public ActionResult<AuctionExternal> Get(ulong id)
+	public async Task<ActionResult<AuctionExternal>> Get(ulong id)
 	{
 		using var db = new DatabaseContext();
 		{
 
-			Auction? auction = db.Auctions.Include(auc => auc.Planner).Include(auc => auc.Product).Where(auc => auc.Id == id).FirstOrDefault();
+			Auction? auction = await db.Auctions.Include(auc => auc.Planner).Include(auc => auc.Product).Where(auc => auc.Id == id).FirstOrDefaultAsync();
 			if (auction == null) return NotFound();
 
 			return AuctionExternal.ToExternal(auction);
@@ -69,71 +70,71 @@ public class AuctionController : ControllerBase
 	}
 
 	[HttpGet("/auctions")]
-	public ActionResult<AuctionExternal[]> GetNormal()
+	public async Task<ActionResult<AuctionExternal[]>> GetNormal()
 	{
 		using (var db = new DatabaseContext())
 		{
-			return db.Auctions
+			return await db.Auctions
 				.Include(auc => auc.Planner)
 				.Include(auc => auc.Product)
 				.Where(auc => auc.StartingTime != null && auc.Length != null)
 				.Select(auction => AuctionExternal.ToExternal(auction))
-			.ToArray();
+			.ToArrayAsync();
 		}
 	}
 
 	[HttpGet("/auctions/pending")]
-	public ActionResult<AuctionExternal[]> GetPending()
+	public async Task<ActionResult<AuctionExternal[]>> GetPending()
 	{
 		using (var db = new DatabaseContext())
 		{
-			return db.Auctions
+			return await db.Auctions
 				.Include(auc => auc.Planner)
 				.Include(auc => auc.Product)
 				.Where(auc => auc.StartingTime == null || auc.Length == null)
 				.Select(auction => AuctionExternal.ToExternal(auction))
-			.ToArray();
+			.ToArrayAsync();
 		}
 	}
 
 
 	[HttpPost]
-	public ActionResult Post(AuctionExternal auctionData)
+	public async Task<ActionResult> Post(AuctionExternal auctionData)
 	{
 		using (var db = new DatabaseContext())
 		{
 
-			if (db.Auctions.Any(auc => auc.Id == auctionData.Id)) return Conflict("Already exists");
+			if (await db.Auctions.AnyAsync(auc => auc.Id == auctionData.Id)) return Conflict("Already exists");
 			Auction auction = auctionData.ToAuction(db);
 
 			db.Auctions.Add(auction);
-			db.SaveChanges();
+			await db.SaveChangesAsync();
 
 			return Ok(new IdReference(auction.Id));
 		}
 	}
 
 	[HttpDelete("{id}")]
-	public ActionResult Delete(ulong id)
+	public async Task<ActionResult> Delete(ulong id)
 	{
 		using (var db = new DatabaseContext())
 		{
-			Auction? auction = db.Auctions.Find(id);
+			Auction? auction = await db.Auctions.FindAsync(id);
 			if (auction == null) return NotFound();
 
 			db.Auctions.Remove(auction);
-			db.SaveChanges();
+			await db.SaveChangesAsync();
 
 			return NoContent();
 		}
 	}
 
 	[HttpPatch("{id}")]
-	public ActionResult Update(ulong id, [FromBody] JsonPatchDocument<Auction> patchdoc)
+	public async Task<ActionResult> Update(ulong id, [FromBody] JsonPatchDocument<Auction> patchdoc)
 	{
 		using (var db = new DatabaseContext())
 		{
-			Auction? auction = db.Auctions.Find(id);
+			Auction? auction = await db.Auctions.FindAsync(id);
 			if (auction == null) return NotFound();
 
 			patchdoc.ApplyTo(auction, ModelState);
@@ -143,7 +144,7 @@ public class AuctionController : ControllerBase
 				return BadRequest(ModelState);
 			}
 
-			db.SaveChanges();
+			await db.SaveChangesAsync();
 			return Ok(auction);
 		}
 	}

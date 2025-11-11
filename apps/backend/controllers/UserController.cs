@@ -1,4 +1,6 @@
+using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
 using System.ComponentModel.DataAnnotations;
@@ -19,10 +21,10 @@ public class PublicUser {
 [Route("user")]
 public class UserController : ControllerBase {
 	[HttpGet("{id}")]
-	public ActionResult<PublicUser> GetPublic(ulong id) {
+	public async Task<ActionResult<PublicUser>> GetPublic(ulong id) {
 		using var db = new DatabaseContext();
 		{
-			User? user = db.Users.Find(id);
+			User? user = await db.Users.FindAsync(id);
 			if (user == null) return NotFound();
 
 			return new PublicUser {
@@ -35,10 +37,10 @@ public class UserController : ControllerBase {
 	}
 
 	[HttpGet("/private-user/{id}")]
-	public ActionResult<User> GetPrivate(ulong id) {
+	public async Task<ActionResult<User>> GetPrivate(ulong id) {
 		using var db = new DatabaseContext();
 		{
-			User? user = db.Users.Find(id);
+			User? user = await db.Users.FindAsync(id);
 			if (user == null) return NotFound();
 
 			return user;
@@ -46,57 +48,55 @@ public class UserController : ControllerBase {
 	}
 
 	[HttpGet("/private-users")]
-	public ActionResult<User[]> GetAllPrivate() {
+	public async Task<ActionResult<User[]>> GetAllPrivate() {
 		using (var db = new DatabaseContext()) {
-			User[] users = db.Users.ToArray();
+			User[] users = await db.Users.ToArrayAsync();
 
 			return users;
 		}
 	}
 
 	[HttpGet("/users")]
-	public ActionResult<PublicUser[]> GetAllPublic() {
+	public async Task<ActionResult<PublicUser[]>> GetAllPublic() {
 		using (var db = new DatabaseContext()) {
-			User[] users = db.Users.ToArray();
-
-			return users.Select(user => new PublicUser {
-				DisplayName = user.DisplayName,
-				ImageUrl = user.ImageUrl,
-				Email = user.Email,
-				TelephoneNumber = user.TelephoneNumber
-			}).ToArray();
+			return await db.Users.Select(user => new PublicUser {
+          DisplayName = user.DisplayName,
+          ImageUrl = user.ImageUrl,
+          Email = user.Email,
+          TelephoneNumber = user.TelephoneNumber
+      }).ToArrayAsync();
 		}
 	}
 
 	[HttpPost]
-	public ActionResult Post(User user) {
+	public async Task<ActionResult> Post(User user) {
 		using (var db = new DatabaseContext()) {
-			if (db.Users.Any(auc => auc.Id == user.Id)) return Conflict("Already exists");
+			if (await db.Users.AnyAsync(auc => auc.Id == user.Id)) return Conflict("Already exists");
 
 			db.Users.Add(user);
-			db.SaveChanges();
+			await db.SaveChangesAsync();
 
 			return Ok(new IdReference(user.Id));
 		}
 	}
 
 	[HttpDelete("{id}")]
-	public ActionResult Delete(ulong id) {
+	public async Task<ActionResult> Delete(ulong id) {
 		using (var db = new DatabaseContext()) {
-			User? user = db.Users.Find(id);
+			User? user = await db.Users.FindAsync(id);
 			if (user == null) return NotFound();
 
 			db.Users.Remove(user);
-			db.SaveChanges();
+			await db.SaveChangesAsync();
 
 			return NoContent();
 		}
 	}
 
 	[HttpPatch("{id}")]
-	public ActionResult Update(ulong id, [FromBody] JsonPatchDocument<User> patchdoc) {
+	public async Task<ActionResult> Update(ulong id, [FromBody] JsonPatchDocument<User> patchdoc) {
 		using (var db = new DatabaseContext()) {
-			User? user = db.Users.Find(id);
+			User? user = await db.Users.FindAsync(id);
 			if (user == null) return NotFound();
 
 			patchdoc.ApplyTo(user, ModelState);
@@ -105,7 +105,7 @@ public class UserController : ControllerBase {
 				return BadRequest(ModelState);
 			}
 
-			db.SaveChanges();
+			await db.SaveChangesAsync();
 			return Ok(user);
 		}
 	}

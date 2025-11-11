@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
@@ -48,11 +49,11 @@ public class SaleController : ControllerBase
 {
 
 	[HttpGet("{id}")]
-	public ActionResult<SaleExternal> Get(ulong id)
+	public async  Task<ActionResult<SaleExternal>> Get(ulong id)
 	{
 		using var db = new DatabaseContext();
 		{
-			Sale? sale = db.Sales.Include(sale => sale.PurchasedAuction).Include(sale => sale.Purchaser).Where(sale => sale.Id == id).FirstOrDefault();
+			Sale? sale = await db.Sales.Include(sale => sale.PurchasedAuction).Include(sale => sale.Purchaser).Where(sale => sale.Id == id).FirstOrDefaultAsync();
 			if (sale == null) return NotFound();
 
 			return SaleExternal.ToExternal(sale);
@@ -60,10 +61,10 @@ public class SaleController : ControllerBase
 	}
 
 	[HttpGet("by-auction/{id}")]
-	public ActionResult<SaleExternal> GetByAuction(ulong id) {
+	public async  Task<ActionResult<SaleExternal>> GetByAuction(ulong id) {
 		using var db = new DatabaseContext();
 		{
-			Sale? sale = db.Sales.Include(sale => sale.PurchasedAuction).Include(sale => sale.Purchaser).Where(sale => sale.PurchasedAuction.Id == id).FirstOrDefault();
+			Sale? sale = await db.Sales.Include(sale => sale.PurchasedAuction).Include(sale => sale.Purchaser).Where(sale => sale.PurchasedAuction.Id == id).FirstOrDefaultAsync();
 			if (sale == null) return NotFound();
 
 			return SaleExternal.ToExternal(sale);
@@ -71,51 +72,51 @@ public class SaleController : ControllerBase
 	}
 
 	[HttpGet("/sales")]
-	public ActionResult<SaleExternal[]> GetAll()
+	public async  Task<ActionResult<SaleExternal[]>> GetAll()
 	{
 		using (var db = new DatabaseContext())
 		{
-			return db.Sales.Select(sale => SaleExternal.ToExternal(sale)).ToArray();
+			return await db.Sales.Select(sale => SaleExternal.ToExternal(sale)).ToArrayAsync();
 		}
 	}
 
 	[HttpPost]
-	public ActionResult Post(SaleExternal saleData)
+	public async Task<ActionResult> Post(SaleExternal saleData)
 	{
 		using (var db = new DatabaseContext())
 		{
-			if (db.Sales.Any(s => s.Id == saleData.Id)) return Conflict("Already exists");
+			if (await db.Sales.AnyAsync(s => s.Id == saleData.Id)) return Conflict("Already exists");
 
 			Sale sale = saleData.ToSale(db);
 
 			db.Sales.Add(sale);
-			db.SaveChanges();
+			await db.SaveChangesAsync();
 
 			return Ok(new IdReference(sale.Id));
 		}
 	}
 
 	[HttpDelete("{id}")]
-	public ActionResult Delete(ulong id)
+	public async Task<ActionResult> Delete(ulong id)
 	{
 		using (var db = new DatabaseContext())
 		{
-			Sale? sale = db.Sales.Find(id);
+			Sale? sale = await db.Sales.FindAsync(id);
 			if (sale == null) return NoContent();
 
 			db.Sales.Remove(sale);
-			db.SaveChanges();
+			await db.SaveChangesAsync();
 
 			return NotFound();
 		}
 	}
 
 	[HttpPatch("{id}")]
-	public ActionResult Update(ulong id, [FromBody] JsonPatchDocument<Sale> patchdoc)
+	public async Task<ActionResult> Update(ulong id, [FromBody] JsonPatchDocument<Sale> patchdoc)
 	{
 		using (var db = new DatabaseContext())
 		{
-			Sale? sale = db.Sales.Find(id);
+			Sale? sale = await db.Sales.FindAsync(id);
 			if (sale == null) return NotFound();
 
 			patchdoc.ApplyTo(sale, ModelState);
@@ -125,7 +126,7 @@ public class SaleController : ControllerBase
 				return BadRequest(ModelState);
 			}
 
-			db.SaveChanges();
+			await db.SaveChangesAsync();
 			return Ok(sale);
 		}
 	}
