@@ -16,22 +16,21 @@
 }
 
 .header {
-    display: block;
     width: 100%;
     height: auto;
-}
-
-.headerText {
-    float: left;
+    padding-left: 40px;
 }
 
 .subHeader {
     max-width: 50%;
+    padding: 20px;
 }
 
 .header4 {
     left: 40%;
     max-width: 70%;
+    background-color: #88888811;
+    padding: 20px;
 }
 
 .header4Text {
