@@ -8,7 +8,7 @@ import Throbber from "../components/Throbber";
 import { API_URL, Auction, Product, useAPI } from "../lib/api";
 import { useTime } from "../lib/util";
 import NotFound from "./NotFound";
-import styles from "./styles/ClockPage.module.scss";
+import styles from "./ClockPage.module.scss";
 
 function formatStartCountDown(startingTime: number, currentTime: number) {
 	if (startingTime <= 0 || currentTime <= 0) return "0.00";
