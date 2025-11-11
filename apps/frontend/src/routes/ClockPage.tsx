@@ -37,7 +37,7 @@ export default function ClockPage() {
 	const product = useAPI<Product>(auction ? "/product/" + auction.productId : null);
 
 	const mountTimeRef = useRef<number>(Date.now());
-	const wasAuctionEndedByUser = useState<boolean>(false);
+	const [wasAuctionEndedByUser, setWasAuctionEndedByUser] = useState<boolean>(false);
 
 	/* TODO: remove useEffect() after testing */
 	useEffect(() => {
@@ -90,7 +90,7 @@ export default function ClockPage() {
 							<EndedAuction id={auction.id}/> :
 							(
 								<Clock progress={auctionProgress} price={currentPrice} fmtedTime={fmtedRemainingTime}
-									setWasAuctionEndedByUser={wasAuctionEndedByUser}/>
+									setWasAuctionEndedByUser={setWasAuctionEndedByUser}/>
 							))}
 				</div>
 
