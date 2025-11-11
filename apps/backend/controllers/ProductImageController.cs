@@ -39,7 +39,7 @@ public class ProductImageExternal
 public class ProductImageController : ControllerBase
 {
 	[HttpGet("{id}")]
-	public async  Task<ActionResult<ProductImageExternal>> Get(ulong id)
+	public async Task<ActionResult<ProductImageExternal>> Get(ulong id)
 	{
 		using (var db = new DatabaseContext())
 		{
@@ -52,7 +52,7 @@ public class ProductImageController : ControllerBase
 	}
 
 	[HttpGet("from/{id}")]
-	public async  Task<ActionResult<ProductImageExternal[]>> GetByParent(ulong id) {
+	public async Task<ActionResult<ProductImageExternal[]>> GetByParent(ulong id) {
 		using (var db = new DatabaseContext()) {
 			return await db.ProductImages.Include(prodImage => prodImage.Parent)
 			  .Where(prodImage => prodImage.Parent.Id == id)
