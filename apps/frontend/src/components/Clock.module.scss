@@ -43,17 +43,11 @@
   flex-direction: column;
   font-family: 'Courier New', monospace;
   font-size: 1.2vw;
-}
 
-.clock-box.currency {
-  margin-bottom: 1vw;
+  &:not(:last-child) {
+	margin-bottom: 10px;
+  }
 }
-
-.clock-box.price {
-  margin-bottom: 1vw;
-}
-
-.clock-box.count {}
 
 .typography {
   margin-top: 1vw;

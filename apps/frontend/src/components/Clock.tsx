@@ -15,19 +15,19 @@ export default function Clock(
 			<div className={styles.clock} style={{ "--progress": progress } as React.CSSProperties}>
 				<div className={styles["clock-overlay"]}>
 					{/* Top Box*/}
-					<div className={styles["clock-box currency"]}>
+					<div className={styles["clock-box"]}>
 						<Typography color="textPrimary">currency</Typography>
 						<Typography color="textPrimary">{currencyType}</Typography>
 					</div>
 
 					{/* Middle Box*/}
-					<div className={styles["clock-box price"]}>
+					<div className={styles["clock-box"]}>
 						<Typography color="textPrimary">price</Typography>
 						<Typography color="textPrimary">{price}</Typography>
 					</div>
 
 					{/* Bottom Box*/}
-					<div className={styles["clock-box count"]}>
+					<div className={styles["clock-box"]}>
 						<Typography color="textPrimary">count</Typography>
 						<Typography color="textPrimary">{6969}</Typography>
 					</div>
