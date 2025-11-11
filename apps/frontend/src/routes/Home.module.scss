@@ -13,38 +13,28 @@
     width: 30%;
     height: 100%;
     float: right;
-
 }
 
 .header {
-    position: absolute;
-    top: 10%;
-    left: 1%;
-    padding-bottom: 50px;
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.headerText {
+    float: left;
 }
 
 .subHeader {
-    position: relative;
-    max-width: 50%;
-    top: 35%;
-    left: 2%;
-}
-
-.subTextDiv {
-    position: relative;
-    top: 48%;
-    left: 2%;
     max-width: 50%;
 }
 
 .header4 {
-    position: relative;
-    left: 20%;
-    padding-right: 10px;
+    left: 40%;
+    max-width: 70%;
 }
 
 .header4Text {
-    position: relative;
     top: 30%;
     left: 20%;
     max-width: 70%;

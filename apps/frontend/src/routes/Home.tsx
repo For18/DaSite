@@ -20,23 +20,19 @@ export default function Home() {
 
 	return (
 		<>
+			<div className={styles.header}>
+				<Typography heading={1} className="headerText">
+					Flora Holland Veiling
+				</Typography>
+			</div>
 			<div className={styles.main}>
-				<div className={styles.left}>
-					<div className={styles.header}>
-						<Typography heading={1}>
-							Flora Holland Veiling
-						</Typography>
-					</div>
-					
+				<div className={styles.left}>					
 					<div className={styles.subHeader}>
 						<Typography heading={2} color="secondary">
-							Welkom bij de (online) veiling site van Flora Holland
+							Welkom bij de veiling site van Flora Holland
 						</Typography>
-					</div>
-
-					<div className={styles.subTextDiv}>
 						<Typography>
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+							Dit is de website van royal floraholland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van royal floraholland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van royal floraholland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van royal floraholland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van royal floraholland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van royal floraholland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van royal floraholland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van royal floraholland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van royal floraholland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van royal floraholland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van royal floraholland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van royal floraholland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van royal floraholland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van royal floraholland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van royal floraholland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van royal floraholland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van royal floraholland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van royal floraholland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van royal floraholland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van royal floraholland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van royal floraholland. We verkopen bloemen door middel van ons online veilingsysteem! 
 						</Typography>
 					</div>
 				</div>
@@ -45,11 +41,8 @@ export default function Home() {
 						<Typography heading={4} color="secondary">
 							(Header 4) Info
 						</Typography>
-					</div>
-
-					<div className={styles.header4Text}>
 						<Typography>
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+							Wij verbinden kwekers en kopers, elke dag opnieuw. Met passie voor bloemen, innovatie en duurzaamheid bouwen we aan de toekomst van de internationale sierteelt.
 						</Typography>
 					</div>
 				</div>
