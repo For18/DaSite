@@ -1,0 +1,19 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header {
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+.noPendingAuctions {
+    align-items: center;
+    justify-content: center;
+}
+
+.noPendingAuctionsText {
+    line-height: 4;
+}

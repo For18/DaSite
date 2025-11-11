@@ -1,31 +1,47 @@
-import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { useEffect, useState } from "react";
 import Header from "../components/Header";
-import { randomCharacter } from "../lib/util";
+import PendingAuctionCard from "../components/PendingAuctionCard";
+import Throbber from "../components/Throbber";
+import { Auction, Product, useAPI, User } from "../lib/api";
+import { useScreenSize } from "../lib/util";
+import styles from "./PendingAuction.module.scss";
 
 export default function PendingAuction() {
-	const [text, setText] = useState("Pending Auctions");
+	const auctions = useAPI<Auction[]>("/auctions");
 
-	useEffect(() => {
-		document.title = "For18 - Pending Auction";
-	});
+	const [screenWidth, screenHeight] = useScreenSize();
+
+	const minPaperHeight = 196;
 
 	return (
-		<>
-			<Header level={1} color="textPrimary">
-				{text}
-			</Header>
-			<Typography color="textPrimary">"If that's beef, then I'm from Bangladesh"</Typography>
-			<Button
-				variant="contained"
-				onClick={() => {
-					setText(text + randomCharacter());
-				}}
-				disabled={text.length >= 50}
-			>
-				Update title
-			</Button>
-		</>
+		<div className={styles.main}>
+			<div className={styles.header}>
+				<Header>Pending auctions</Header>
+			</div>
+
+			<Paper sx={{
+				width: "1000px",
+				maxWidth: "80vw",
+				height: "fit-content",
+				display: auctions != null && auctions.length > 0 ? "grid" : "flex",
+				gridTemplateColumns: screenWidth > 1000 ? "1fr 1fr" : "1fr",
+				justifyContent: "center",
+				alignItems: "flex-start",
+				gap: "16px",
+				padding: "16px",
+				marginBottom: "32px"
+			}}>
+				{auctions == null ?
+					<Throbber/> :
+					auctions.length == 0 ?
+					(
+						<div className={styles.noPendingAuctions}>
+							<Typography color="textPrimary" className={styles.noPendingAuctionsText}>No pending auctions</Typography>
+						</div>
+					) :
+					auctions.map(auction => <PendingAuctionCard auction={auction} key={auction.id}/>)}
+			</Paper>
+		</div>
 	);
 }

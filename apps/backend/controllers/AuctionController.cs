@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 
 [DisplayName(nameof(Auction))]
-public class AuctionExternal {
-	public AuctionExternal(ulong id, ushort count, uint batchSize, uint startPrice, uint minPrice, ulong startTime, uint length, ulong productId, ulong? plannerId) {
+public class AuctionExternal
+{
+	public AuctionExternal(ulong id, ushort count, uint batchSize, uint startPrice, uint minPrice, ulong? startTime, uint? length, ulong productId, ulong? plannerId)
+	{
 		Id = id;
 		Count = count;
 		BatchSize = batchSize;
@@ -18,12 +20,15 @@ public class AuctionExternal {
 		PlannerId = plannerId;
 	}
 
-	public static AuctionExternal ToExternal(Auction auction) {
+	public static AuctionExternal ToExternal(Auction auction)
+	{
 		return new AuctionExternal(auction.Id, auction.Count, auction.BatchSize, auction.StartingPrice, auction.MinimumPrice, auction.StartingTime, auction.Length, auction.Product.Id, auction.Planner?.Id);
 	}
 
-	public Auction ToAuction(DatabaseContext db) {
-		return new Auction {
+	public Auction ToAuction(DatabaseContext db)
+	{
+		return new Auction
+		{
 			Id = Id,
 			Count = Count,
 			BatchSize = BatchSize,
@@ -40,17 +45,19 @@ public class AuctionExternal {
 	public uint BatchSize { get; init; }
 	public uint StartingPrice { get; init; }
 	public uint MinimumPrice { get; init; }
-	public ulong StartingTime { get; init; }
-	public uint Length { get; init; }
+	public ulong? StartingTime { get; init; }
+	public uint? Length { get; init; }
 	public ulong ProductId { get; init; }
 	public ulong? PlannerId { get; init; }
 }
 
 [ApiController]
 [Route("auction")]
-public class AuctionController : ControllerBase {
+public class AuctionController : ControllerBase
+{
 	[HttpGet("{id}")]
-	public ActionResult<AuctionExternal> Get(ulong id) {
+	public ActionResult<AuctionExternal> Get(ulong id)
+	{
 		using var db = new DatabaseContext();
 		{
 
@@ -62,15 +69,39 @@ public class AuctionController : ControllerBase {
 	}
 
 	[HttpGet("/auctions")]
-	public ActionResult<AuctionExternal[]> GetAll() {
-		using (var db = new DatabaseContext()) {
-			return db.Auctions.Include(auc => auc.Planner).Include(auc => auc.Product).Select(auction => AuctionExternal.ToExternal(auction)).ToArray();
+	public ActionResult<AuctionExternal[]> GetNormal()
+	{
+		using (var db = new DatabaseContext())
+		{
+			return db.Auctions
+				.Include(auc => auc.Planner)
+				.Include(auc => auc.Product)
+				.Where(auc => auc.StartingTime != null && auc.Length != null)
+				.Select(auction => AuctionExternal.ToExternal(auction))
+			.ToArray();
 		}
 	}
 
+	[HttpGet("/auctions/pending")]
+	public ActionResult<AuctionExternal[]> GetPending()
+	{
+		using (var db = new DatabaseContext())
+		{
+			return db.Auctions
+				.Include(auc => auc.Planner)
+				.Include(auc => auc.Product)
+				.Where(auc => auc.StartingTime == null || auc.Length == null)
+				.Select(auction => AuctionExternal.ToExternal(auction))
+			.ToArray();
+		}
+	}
+
+
 	[HttpPost]
-	public ActionResult Post(AuctionExternal auctionData) {
-		using (var db = new DatabaseContext()) {
+	public ActionResult Post(AuctionExternal auctionData)
+	{
+		using (var db = new DatabaseContext())
+		{
 
 			if (db.Auctions.Any(auc => auc.Id == auctionData.Id)) return Conflict("Already exists");
 			Auction auction = auctionData.ToAuction(db);
@@ -83,8 +114,10 @@ public class AuctionController : ControllerBase {
 	}
 
 	[HttpDelete("{id}")]
-	public ActionResult Delete(ulong id) {
-		using (var db = new DatabaseContext()) {
+	public ActionResult Delete(ulong id)
+	{
+		using (var db = new DatabaseContext())
+		{
 			Auction? auction = db.Auctions.Find(id);
 			if (auction == null) return NotFound();
 
@@ -96,14 +129,17 @@ public class AuctionController : ControllerBase {
 	}
 
 	[HttpPatch("{id}")]
-	public ActionResult Update(ulong id, [FromBody] JsonPatchDocument<Auction> patchdoc) {
-		using (var db = new DatabaseContext()) {
+	public ActionResult Update(ulong id, [FromBody] JsonPatchDocument<Auction> patchdoc)
+	{
+		using (var db = new DatabaseContext())
+		{
 			Auction? auction = db.Auctions.Find(id);
 			if (auction == null) return NotFound();
 
 			patchdoc.ApplyTo(auction, ModelState);
 
-			if (!ModelState.IsValid) {
+			if (!ModelState.IsValid)
+			{
 				return BadRequest(ModelState);
 			}
 

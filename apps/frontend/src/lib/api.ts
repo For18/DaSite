@@ -48,12 +48,19 @@ export type User = {
 };
 
 export function useAPI<T>(route: string | null): T | null | undefined {
+	displayName: string;
+	imageUrl: string;
+	email: string;
+	telephoneNumber: number;
+};
+
+export function useAPI<T>(route: string): T | null | undefined {
 	const [value, setValue] = useState<T | null | undefined>(null);
 
 	useEffect(() => {
 		setValue(null);
 		fetch(API_URL + route).then(response => {
-			if (response.status == 404) return setValue(undefined);
+			if (response.status == 404) return undefined;
 			return response.json();
 		}).then(setValue);
 	}, [route]);
