@@ -1,6 +1,6 @@
 import { Button, Typography } from "@mui/material";
 import React from "react";
-import styles from "./styles/Clock.module.scss";
+import styles from "./Clock.module.scss";
 
 const currencyType = "100 cent";
 

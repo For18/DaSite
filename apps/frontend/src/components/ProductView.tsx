@@ -3,7 +3,7 @@ import Throbber from "../components/Throbber";
 import { Product } from "../lib/api";
 import { ProductImage, useAPI, User } from "../lib/api";
 import NotFound from "../routes/NotFound";
-import styles from "./styles/ProductView.module.scss";
+import styles from "./ProductView.module.scss";
 
 export default function ProductView({ product }: { product: Product }) {
 	const owner = useAPI<User>("/user/" + product.owner) ?? null;

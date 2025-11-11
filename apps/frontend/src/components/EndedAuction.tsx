@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import { Link } from "react-router";
-import styles from "./styles/EndedAuction.module.scss";
+import styles from "./EndedAuction.module.scss";
 
 export default function EndedAuction({ id }: { id: number }) {
 	// TODO: add 'nextAuction' endpoint

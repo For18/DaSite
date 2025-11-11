@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import styles from "./styles/Pending.module.scss";
+import styles from "./Pending.module.scss";
 
 export default function Pending({ description, startingPoint }: { description: string, startingPoint?: string }) {
 	return (
