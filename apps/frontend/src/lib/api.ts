@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 export const API_URL: string = import.meta.env.VITE_API_URL;
 
-export type Sale = {
+export interface Sale {
 	id: number;
 	purchaserId: number;
 	purchasedAuctionId: number;
@@ -13,7 +13,7 @@ export type Sale = {
 	isPaid: boolean;
 };
 
-export type Product = {
+export interface Product {
 	id: number;
 	name: string;
 	description: string;
@@ -21,13 +21,13 @@ export type Product = {
 	ownerId: number;
 };
 
-export type ProductImage = {
+export interface ProductImage {
 	id: number;
 	parent: number;
 	url: string;
 };
 
-export type Auction = {
+export interface Auction {
 	id: number;
 	count: number;
 	batchSize: number;
@@ -39,7 +39,7 @@ export type Auction = {
 	plannerId: number;
 };
 
-export type User = {
+export interface User {
 	id: number;
 	auctionDebt: number;
 	displayName: string;
