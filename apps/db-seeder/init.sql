@@ -1,8 +1,8 @@
-TRUNCATE Auctions;
-TRUNCATE ProductImages;
-TRUNCATE Products;
-TRUNCATE Sales;
-TRUNCATE Users;
+DELETE FROM Sales;
+DELETE FROM Auctions;
+DELETE FROM ProductImages;
+DELETE FROM Products;
+DELETE FROM Users;
 
 -- Using manual id assignment so auto increment does not get involved
 
@@ -22,7 +22,7 @@ VALUES
 INSERT INTO Products(Id, Name, Description, ThumbnailImageId, OwnerId)
 VALUES
 (1, 'Tulpenboeket', 'Een kleurrijk boeket met verschillende soorten Nederlandse tulpen, ideaal voor elke gelegenheid en perfect voor een lente-uitstraling.', NULL, 3),
-(2, 'Orchideeën Arrangement', 'Een prachtig arrangement van exotische orchideeën, met een delicate geur, gepresenteerd in een handgemaakte vaas. Een luxe keuze voor elke ruimte.', NULL, 3),
+(2, 'Orchideeen Arrangement', 'Een prachtig arrangement van exotische orchideeën, met een delicate geur, gepresenteerd in een handgemaakte vaas. Een luxe keuze voor elke ruimte.', NULL, 3),
 (3, 'Narcissen Bijeenkomst', 'Vers geplukte narcissen in een bundel, die een frisse geur en een voorjaarsgevoel naar uw huis brengen. Perfect voor in een vaas of als cadeau.', NULL, 3),
 (4, 'Zonnebloem Display', 'Een stralende display van zonnebloemen die elke kamer verlicht met hun heldere gele bloemblaadjes. Een symbool van vreugde en positiviteit.', NULL, 4),
 (5, 'Hyacinten Cluster', 'Een geurige en kleurrijke cluster van hyacinten, typisch voor de Nederlandse lente, in een breed scala van kleuren, perfect voor een geurige aanvulling in uw huis.', NULL, 4),
@@ -102,7 +102,7 @@ VALUES
 (9, 25, 1, 1200, 400 , NULL, NULL, 9, 1),
 
 -- Auctions with specific starting time and length
-(10, 10, 1, 5500, 1200, EXTRACT(EPOCH FROM NOW()) * 1000, 600 , 1, 1),  -- Dynamic 'now' for starting time
-(11, 5 , 1, 9000, 2500, EXTRACT(EPOCH FROM NOW()) * 1000, 3600, 2, 1),  -- Dynamic 'now' for starting time
-(12, 15, 1, 4000, 1000, EXTRACT(EPOCH FROM NOW()) * 1000, 1200, 3, 1),  -- Dynamic 'now' for starting time
-(13, 10, 1, 3000, 900 , EXTRACT(EPOCH FROM NOW()) * 1000, 1800, 4, 1);  -- Dynamic 'now' for starting time
+(10, 10, 1, 5500, 1200, UNIX_TIMESTAMP() * 1000 + RAND() * 300000, 600 , 1, 1),  -- Dynamic 'now' for starting time
+(11, 5 , 1, 9000, 2500, UNIX_TIMESTAMP() * 1000 + RAND() * 300000, 3600, 2, 1),  -- Dynamic 'now' for starting time
+(12, 15, 1, 4000, 1000, UNIX_TIMESTAMP() * 1000 + RAND() * 300000, 1200, 3, 1),  -- Dynamic 'now' for starting time
+(13, 10, 1, 3000, 900 , UNIX_TIMESTAMP() * 1000 + RAND() * 300000, 1800, 4, 1);  -- Dynamic 'now' for starting time
