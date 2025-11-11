@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
@@ -44,11 +45,11 @@ public class ProductExternal
 public class ProductController : ControllerBase
 {
 	[HttpGet("{id}")]
-	public ActionResult<ProductExternal> Get(ulong id)
+	public async Task<ActionResult<ProductExternal>> Get(ulong id)
 	{
 		using (var db = new DatabaseContext())
 		{
-			Product? product = db.Products.Include(product => product.Owner).Where(product => product.Id == id).FirstOrDefault();
+			Product? product = await db.Products.Include(product => product.Owner).Where(product => product.Id == id).FirstOrDefaultAsync();
 
 			if (product == null) return NotFound();
 
@@ -57,63 +58,63 @@ public class ProductController : ControllerBase
 	}
 
 	[HttpGet("/products")]
-	public ActionResult<ProductExternal[]> GetAll()
+	public async Task<ActionResult<ProductExternal[]>> GetAll()
 	{
 		using (var db = new DatabaseContext())
 		{
-			return db.Products.Include(product => product.Owner).Select(product => ProductExternal.ToExternal(product)).ToArray();
+			return await db.Products.Include(product => product.Owner).Select(product => ProductExternal.ToExternal(product)).ToArrayAsync();
 		}
 	}
 	[HttpGet("/products/user/{userId}")]
-	public ActionResult<ProductExternal[]> GetOfUser(ulong userId)
+	public async Task<ActionResult<ProductExternal[]>> GetOfUser(ulong userId)
 	{
 		using (var db = new DatabaseContext())
 		{
-			return db.Products
+			return await db.Products
 				.Include(product => product.Owner)
 				.Where(product => product.Owner.Id == userId)
 				.Select(product => ProductExternal.ToExternal(product))
-			.ToArray();
+			.ToArrayAsync();
 		}
 	}
 
 	[HttpPost]
-	public ActionResult Post(ProductExternal productData)
+	public async Task<ActionResult> Post(ProductExternal productData)
 	{
 		using (var db = new DatabaseContext())
 		{
-			if (db.Products.Any(prod => prod.Id == productData.Id)) return Conflict("Already exists");
+			if (await db.Products.AnyAsync(prod => prod.Id == productData.Id)) return Conflict("Already exists");
 
 			Product product = productData.ToProduct(db);
 
 			db.Products.Add(product);
-			db.SaveChanges();
+			await db.SaveChangesAsync();
 
 			return Ok(new IdReference(product.Id));
 		}
 	}
 
 	[HttpDelete("{id}")]
-	public ActionResult Delete(ulong id)
+	public async Task<ActionResult> Delete(ulong id)
 	{
 		using (var db = new DatabaseContext())
 		{
-			Product? product = db.Products.Find(id);
+			Product? product = await db.Products.FindAsync(id);
 			if (product == null) return NotFound();
 
 			db.Products.Remove(product);
-			db.SaveChanges();
+			await db.SaveChangesAsync();
 
 			return NoContent();
 		}
 	}
 
 	[HttpPatch("{id}")]
-	public ActionResult Patch(ulong id, [FromBody] JsonPatchDocument<Product> patchdoc)
+	public async Task<ActionResult> Patch(ulong id, [FromBody] JsonPatchDocument<Product> patchdoc)
 	{
 		using (var db = new DatabaseContext())
 		{
-			Product? product = db.Products.Find(id);
+			Product? product = await db.Products.FindAsync(id);
 			if (product == null) return NotFound();
 
 			patchdoc.ApplyTo(product, ModelState);
@@ -123,7 +124,7 @@ public class ProductController : ControllerBase
 				return BadRequest(ModelState);
 			}
 
-			db.SaveChanges();
+			await db.SaveChangesAsync();
 			return Ok(product);
 		}
 	}
