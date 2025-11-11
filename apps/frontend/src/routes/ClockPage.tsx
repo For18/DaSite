@@ -82,8 +82,7 @@ export default function ClockPage() {
 				<div className={styles["clock-container"]}>
 					{auctionProgress <= 0 ?
 						(
-							<BeforeAuction description={"This auction has yet to start."}
-								startingPoint={formatStartCountDown(startingTime ?? 0, currentTime)}/>
+							<BeforeAuction startingPoint={formatStartCountDown(startingTime ?? 0, currentTime)}/>
 						) :
 						(isAuctionOver ?
 							<EndedAuction id={auction.id}/> :
