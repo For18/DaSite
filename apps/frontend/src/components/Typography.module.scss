@@ -1,0 +1,15 @@
+.typography {
+	width: fit-content;
+	height: fit-content;
+
+	&.primary {
+		color: var(--color-text-primary);
+	}
+	&.secondary {
+		color: var(--color-text-secondary);
+	}
+
+	&.bold {
+		font-weight: 220%;
+	}
+}

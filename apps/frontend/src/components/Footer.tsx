@@ -1,17 +1,10 @@
-import { alpha } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
+import styles from "./Footer.module.scss";
+import Typography from "./Typography";
 
 export default function Footer() {
 	return (
-		<footer
-			style={{
-				borderTop: "2px solid",
-				borderColor: alpha("#888888", 0.1),
-				padding: "1em",
-				backgroundColor: alpha("#888888", 0.05)
-			}}
-		>
-			<Typography variant="body2" color="textSecondary" align="center">
+		<footer className={styles.footer}>
+			<Typography color="secondary">
 				{"© "}
 				{new Date().getFullYear()} For18
 			</Typography>

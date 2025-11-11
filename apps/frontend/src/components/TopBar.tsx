@@ -1,8 +1,6 @@
-import Button from "@mui/material/Button";
-import { alpha } from "@mui/material/styles";
 import { useNavigate } from "react-router";
-import Themes from "../Themes";
-import ThemeSelector from "./ThemeSelector";
+import Button from "./Button";
+import styles from "./TopBar.module.scss";
 
 export default function TopBar({
 	links
@@ -12,34 +10,19 @@ export default function TopBar({
 	const navigate = useNavigate();
 
 	return (
-		<header
-			style={{
-				padding: "1em",
-				display: "flex",
-				flexDirection: "row",
-				justifyContent: "space-evenly",
-				alignItems: "center",
-				backgroundColor: alpha("#888888", 0.05)
-			}}
-		>
+		<header className={styles.header}>
 			<nav>
-				{Object.entries(links).map(entry => {
-					const [name, path] = entry;
-					return (
-						<Button
-							key={name}
-							onClick={() => {
-								navigate(path);
-							}}
-						>
-							{name}
-						</Button>
-					);
-				})}
+				{Object.entries(links).map(([name, path]) => (
+					<Button
+						key={name}
+						onClick={e => {
+							navigate(path);
+						}}
+					>
+						{name}
+					</Button>
+				))}
 			</nav>
-			<ThemeSelector
-				themes={[Themes.LIGHT, Themes.DARK]}
-			/>
 		</header>
 	);
 }

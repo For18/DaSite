@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const RANDOM_CHARACTER_SET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -62,4 +62,14 @@ export function useScreenSize(): [number, number] {
 
 export function sleep(ms: number) {
 	return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+export function useRenderCount(): number {
+	const countRef = useRef<number>(0);
+
+	useEffect(() => {
+		countRef.current++;
+	});
+
+	return countRef.current;
 }
