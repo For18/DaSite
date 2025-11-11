@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export interface ImageProps {
-	src: string | string[] | null;
+	src: string | string[] | null | undefined;
 	alt: string;
 	width?: number;
 	height?: number;
@@ -10,7 +10,7 @@ export interface ImageProps {
 }
 
 export default function Image({ src, alt, width, height, className, style }: ImageProps) {
-	if (src === null) src = [];
+	if (src === null || src === undefined) src = [];
 	else if (typeof src === 'string') src = [src];
 
 	src.push(`https://placehold.co/${width}x${height}?text=${alt}`);
