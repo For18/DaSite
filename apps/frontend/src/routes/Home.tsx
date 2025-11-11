@@ -23,7 +23,7 @@ export default function Home() {
 			<div className={styles.main}>
 				<div className={styles.left}>
 					<div className={styles.header}>
-						<Typography heading={1} color="primary" >
+						<Typography heading={1}>
 							Flora Holland Veiling
 						</Typography>
 					</div>
@@ -35,7 +35,7 @@ export default function Home() {
 					</div>
 
 					<div className={styles.subTextDiv}>
-						<Typography color="primary">
+						<Typography>
 							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
 						</Typography>
 					</div>
@@ -48,7 +48,7 @@ export default function Home() {
 					</div>
 
 					<div className={styles.header4Text}>
-						<Typography color="primary">
+						<Typography>
 							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 						</Typography>
 					</div>
