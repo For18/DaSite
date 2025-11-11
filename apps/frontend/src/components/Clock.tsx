@@ -6,8 +6,8 @@ const currencyType = "100 cent";
 
 // TODO: add onBuy callback
 export default function Clock(
-	{ progress, price, fmtedTime, wasAuctionEndedByUserRef }: { progress: number, price: string, fmtedTime: string,
-		wasAuctionEndedByUserRef: React.RefObject<boolean> }
+	{ progress, price, fmtedTime, setWasAuctionEndedByUser}: { progress: number, price: string, fmtedTime: string,
+    setWasAuctionEndedByUser: (value :boolean) => void }
 ) {
 
 	return (
@@ -43,7 +43,7 @@ export default function Clock(
 				className={styles["bid-button"]}
 				disabled={progress < 0 || progress > 1}
 				onClick={() => {
-					wasAuctionEndedByUserRef.current = true;
+					setWasAuctionEndedByUser(true);
 					alert(`Auction bought for € ${price}`);
 				}}
 			>

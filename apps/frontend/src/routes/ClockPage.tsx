@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { useParams } from "react-router";
 import Clock from "../components/Clock";
 import EndedAuction from "../components/EndedAuction";
@@ -37,7 +37,7 @@ export default function ClockPage() {
 	const product = useAPI<Product>(auction ? "/product/" + auction.productId : null);
 
 	const mountTimeRef = useRef<number>(Date.now());
-	const wasAuctionEndedByUser = useRef<boolean>(false);
+	const wasAuctionEndedByUser = useState<boolean>(false);
 
 	/* TODO: remove useEffect() after testing */
 	useEffect(() => {
@@ -90,7 +90,7 @@ export default function ClockPage() {
 							<EndedAuction id={auction.id}/> :
 							(
 								<Clock progress={auctionProgress} price={currentPrice} fmtedTime={fmtedRemainingTime}
-									wasAuctionEndedByUserRef={wasAuctionEndedByUser}/>
+									setWasAuctionEndedByUser={wasAuctionEndedByUser}/>
 							))}
 				</div>
 
