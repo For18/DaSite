@@ -17,9 +17,8 @@ export type Product = {
 	id: number;
 	name: string;
 	description: string;
-	thumbnailImageUrl: string;
-	imageUrls: string[];
-	owner: number;
+	thumbnailImageId: number;
+	ownerId: number;
 };
 
 export type ProductImage = {
@@ -42,7 +41,9 @@ export type Auction = {
 
 export type User = {
 	id: number;
+	auctionDebt: number;
 	displayName: string;
+	imageUrl: string;
 	email: string;
 	telephonenumber: number;
 };

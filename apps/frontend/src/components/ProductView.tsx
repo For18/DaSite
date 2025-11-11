@@ -6,8 +6,9 @@ import styles from "./ProductView.module.scss";
 import Typography from "./Typography";
 
 export default function ProductView({ product }: { product: Product }) {
-	const owner = useAPI<User>("/user/" + product.owner) ?? null;
+	const owner = useAPI<User>("/user/" + product.ownerId) ?? null;
 	const prodImages = useAPI<ProductImage[]>("/product-image/from/" + product.id);
+	const thumbnailImage = useAPI<ProductImage>(product ? "/product-image/from/" + product.thumbnailImageId : null);
 
 	if (owner === null) return <Throbber/>;
 	if (owner === undefined) return <NotFound/>;
@@ -32,13 +33,13 @@ export default function ProductView({ product }: { product: Product }) {
 
 
       {
-        product.thumbnailImageUrl
+        thumbnailImage
 			  ?
 			    <>
             <hr className={styles["horizontal-rule"]}/>
 			      	<img
 			      		className={styles["thumbnail-image"]}
-			      		src={product.thumbnailImageUrl}
+			      		src={thumbnailImage.url}
 			      		alt={product.name}
 			      	/>
           </>

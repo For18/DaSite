@@ -1,4 +1,4 @@
-import { Auction, Product, useAPI, User } from "../lib/api";
+import { Auction, Product, ProductImage, useAPI, User } from "../lib/api";
 import styles from "./PendingAuctionCard.module.scss";
 import Section from "./Section";
 import Typography from "./Typography";
@@ -6,6 +6,7 @@ import Typography from "./Typography";
 export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 	const product = useAPI<Product>("/product/" + auction.productId);
 	const user = useAPI<User>("/user/" + auction.plannerId);
+	const thumbnailImage = useAPI<ProductImage>(product ? "/product-image/from/" + product.thumbnailImageId : null);
 
 	return (
 		<Section flex={{
@@ -14,7 +15,7 @@ export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 			align: "flex-start"
 		}}>
 			<div className={styles.card}>
-				<img className={styles.productImage} src={product?.thumbnailImageUrl}/>
+				<img className={styles.productImage} src={thumbnailImage?.url}/>
 			</div>
 			<div className={styles.infoCard}>
 				<div className={styles.productNameContainer}>
