@@ -1,6 +1,7 @@
 .typography {
 	width: fit-content;
 	height: fit-content;
+	display: block;
 
 	&.primary {
 		color: var(--color-text-primary);

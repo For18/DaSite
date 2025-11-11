@@ -2,17 +2,18 @@
   margin-left: 1vw;
   font-family: Arial, sans-serif;
   line-height: 1.6;
-  font-size: 1vw;
+  width: 100%;
 }
 
 .seller {
-  font-size: 1.1vw;
   color: #555;
 }
 
 .horizontal-rule {
-  border: 0.05vw solid #ccc;
-  margin: 1vw 0;
+  background-color: var(--color-border);
+  height: 1px;
+  width: 100%;
+  border: none;
 }
 
 .thumbnail-image {

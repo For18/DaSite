@@ -1,9 +1,9 @@
-import { Typography } from "@mui/material";
 import Throbber from "../components/Throbber";
 import { Product } from "../lib/api";
 import { ProductImage, useAPI, User } from "../lib/api";
 import NotFound from "../routes/NotFound";
 import styles from "./ProductView.module.scss";
+import Typography from "./Typography";
 
 export default function ProductView({ product }: { product: Product }) {
 	const owner = useAPI<User>("/user/" + product.owner) ?? null;
@@ -18,8 +18,8 @@ export default function ProductView({ product }: { product: Product }) {
 	return (
 		<div className={styles["product-view"]}>
 			<div>
-				<Typography color="textPrimary">{product.name}</Typography>
-				<Typography className={styles.seller} color="textPrimary">
+				<Typography>{product.name}</Typography>
+				<Typography className={styles.seller}>
 					Seller: {owner ? owner.displayName : "Seller not found"}
 				</Typography>
 			</div>
@@ -27,7 +27,7 @@ export default function ProductView({ product }: { product: Product }) {
 			<hr className={styles["horizontal-rule"]}/>
 
 			<div>
-				<p>{product.description}</p>
+				<Typography>{product.description}</Typography>
 			</div>
 
 

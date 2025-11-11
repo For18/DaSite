@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo, useRef } from "react";
 import { useParams } from "react-router";
 import Clock from "../components/Clock";
 import EndedAuction from "../components/EndedAuction";
-import Pending from "../components/Pending";
+import BeforeAuction from "../components/BeforeAuction";
 import ProductView from "../components/ProductView";
 import Throbber from "../components/Throbber";
 import { API_URL, Auction, Product, useAPI } from "../lib/api";
@@ -79,11 +79,10 @@ export default function ClockPage() {
 
 	return (
 		<div className={styles["base-container"]}>
-			<div className={styles["live-auction-container"]}>
 				<div className={styles["clock-container"]}>
 					{auctionProgress <= 0 ?
 						(
-							<Pending description={"This auction has yet to start."}
+							<BeforeAuction description={"This auction has yet to start."}
 								startingPoint={formatStartCountDown(startingTime ?? 0, currentTime)}/>
 						) :
 						(isAuctionOver ?
@@ -99,7 +98,6 @@ export default function ClockPage() {
 				<div className={styles["product-container"]}>
 					{product == null ? <Throbber/> : <ProductView product={product}/>}
 				</div>
-			</div>
 		</div>
 	);
 }

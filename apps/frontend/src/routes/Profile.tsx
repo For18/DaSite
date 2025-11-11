@@ -1,9 +1,10 @@
-import { Avatar, Box, Card, CardContent, Paper, Typography } from "@mui/material";
 import { useParams } from "react-router";
-import Header from "../components/Header";
 import Throbber from "../components/Throbber";
 import { Product, useAPI } from "../lib/api";
 import NotFound from "./NotFound";
+import Typography from "../components/Typography";
+import Image from "../components/Image";
+import Section from "../components/Section";
 
 type OtherUser = {
 	id: number;
@@ -40,57 +41,41 @@ export default function Profile() {
 
 	return (
 		<>
-			<Paper sx={{
-				padding: "20px",
-				width: "1000px",
-				maxWidth: "80vw"
-			}}>
+			<Section>
 				<div style={{
 					display: "flex",
 					flexDirection: "row",
 					alignItems: "center"
 				}}>
-					<Avatar sx={{
-						width: 96,
-						height: 96,
-						border: `1px solid ${user.avatarColor}`
-					}} src={user.avatarUrl}/>
-					<Typography sx={{ marginLeft: "16px" }}>
-					</Typography>
-					<Header level={1} color="textPrimary">
+					<Image src={user.avatarUrl} alt={`${user.name}'s avatar`}/>
+					<Typography heading={1}>
 						{user.name}
-					</Header>
+					</Typography>
 				</div>
 
-				<Typography color="textSecondary" sx={{
-					marginTop: "8px"
-				}}>
+				<Typography color="secondary">
 					{user.subtitle}
 				</Typography>
-			</Paper>
-			<Paper sx={{
-				padding: "10px",
-				height: "100px",
-				marginTop: "20px",
-				alignItems: "center",
-				display: "flex",
-				flexDirection: "row",
+			</Section>
+			<Section flex={{
+				direction: "row",
+				align: "center",
 				gap: 2
 			}}>
 				{userProducts == null ? <Throbber/> : userProducts.length == 0 ?
 					(
-						<Typography color="textPrimary">
+						<Typography>
 							This user does not have any products
 						</Typography>
 					) :
 					(
 						userProducts.map(product => (
-							<Typography color="textPrimary" key={product.id} sx={{ fontSize: "16px" }}>
+							<Typography key={product.id}>
 								{product.name}
-							</Typography> // images be put later when new components can be used.
+							</Typography> // TODO: images be put later when new components can be used.
 						))
 					)}
-			</Paper>
+			</Section>
 		</>
 	);
 }
