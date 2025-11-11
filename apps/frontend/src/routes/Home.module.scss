@@ -5,28 +5,27 @@
 
 .left {
     float: left;
-    width: 50%;
+    width: 70%;
     height: 100%;
 }
 
 .right {
-    width: 50%;
+    width: 30%;
     height: 100%;
     float: right;
 
 }
 
 .header {
-    position: relative;
+    position: absolute;
     top: 10%;
-    left: 2%;
-    width: 40%;
+    left: 1%;
     padding-bottom: 50px;
 }
 
 .subHeader {
     position: relative;
-    max-width: 35%;
+    max-width: 50%;
     top: 35%;
     left: 2%;
 }
@@ -35,18 +34,18 @@
     position: relative;
     top: 48%;
     left: 2%;
-    max-width: 35%;
+    max-width: 50%;
 }
 
 .header4 {
     position: relative;
-    left: 60%;
+    left: 20%;
     padding-right: 10px;
 }
 
 .header4Text {
     position: relative;
     top: 30%;
-    left: 60%;
-    max-width: 28%;
+    left: 20%;
+    max-width: 70%;
 }
