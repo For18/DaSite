@@ -1,0 +1,73 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.clock-overlay {
+  width: 18.2vw;
+  height: 18.2vw;
+  border-radius: 50%;
+  background-color: skyblue;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.clock {
+  width: 20.8vw;
+  height: 20.8vw;
+  border-radius: 50%;
+  background-color: royalblue;
+  background-image: conic-gradient(from 0deg, darkblue, calc(360deg * var(--progress)), transparent 0deg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  font-size: 1.5vw;
+}
+
+.clock-box {
+  width: 5.2vw;
+  height: 2.6vw;
+  display: flex;
+  background-color: black;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-style: solid;
+  flex-direction: column;
+  font-family: 'Courier New', monospace;
+  font-size: 1.2vw;
+}
+
+.clock-box.currency {
+  margin-bottom: 1vw;
+}
+
+.clock-box.price {
+  margin-bottom: 1vw;
+}
+
+.clock-box.count {}
+
+.typography {
+  margin-top: 1vw;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+  font-size: 1.2vw;
+}
+
+.bid-button {
+  font-family: 'Courier New', monospace;
+  border-style: solid;
+  border-color: darkblue;
+  background-color: skyblue;
+  font-size: 1.2vw;
+  padding: 0.5vw 1vw;
+  border-radius: 0.4vw;
+}

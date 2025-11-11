@@ -7,7 +7,6 @@ public class PublicUser {
 	[StringLength(32)]
 	public required string DisplayName { get; set; }
 
-	[StringLength(128)]
 	public required string ImageUrl { get; set; }
 
 	[StringLength(254)]

@@ -4,6 +4,15 @@ import { useEffect, useState } from "react";
 
 export const API_URL: string = import.meta.env.VITE_API_URL;
 
+export type Sale = {
+	id: number;
+	purchaserId: number;
+	purchasedAuctionId: number;
+	amount: number;
+	price: number;
+	isPaid: boolean;
+};
+
 export type Product = {
 	id: number;
 	name: string;
@@ -13,6 +22,12 @@ export type Product = {
 	owner: number;
 };
 
+export type ProductImage = {
+	id: number;
+	parent: number;
+	url: string;
+};
+
 export type Auction = {
 	id: number;
 	count: number;
@@ -20,11 +35,19 @@ export type Auction = {
 	startingPrice: number;
 	minimumPrice: number;
 	startingTime: number;
+	length: number;
 	productId: number;
 	plannerId: number;
 };
 
 export type User = {
+	id: number;
+	displayName: string;
+	email: string;
+	telephonenumber: number;
+};
+
+export function useAPI<T>(route: string | null): T | null | undefined {
 	displayName: string;
 	imageUrl: string;
 	email: string;

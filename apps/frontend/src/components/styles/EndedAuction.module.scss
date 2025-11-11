@@ -1,0 +1,41 @@
+.end-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2vw;
+}
+
+.header {
+  font-size: 1.5vw;
+  margin-bottom: 1vw;
+}
+
+.paragraph {
+  margin-bottom: 1.5vw;
+  color: #555;
+  font-size: 1vw;
+}
+
+.link-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1vw;
+}
+
+.link {
+  text-decoration: none;
+  color: white;
+  padding: 0.5vw 1vw;
+  border-radius: 0.3vw;
+  font-size: 1vw;
+}
+
+.link.next-auction {
+  background: #0ea5e9;
+}
+
+.link.pending-auctions {
+  background: #10b981;
+}

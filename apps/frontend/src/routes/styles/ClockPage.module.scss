@@ -1,0 +1,42 @@
+.base-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  width: 100vw;
+  height: 100vh;
+}
+
+.live-auction-container {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 48vw 0.05vw 48vw;
+  align-items: stretch;
+  margin: 0;
+}
+
+.clock-container {
+  grid-column: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2vh 2vw;
+  flex-direction: column;
+}
+
+.container-separator {
+  grid-column: 2;
+  background-color: grey;
+  width: 0.05vw;
+}
+
+.product-container {
+  grid-column: 3;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  overflow-y: auto;
+  text-align: left;
+  padding: 2vh 2vw;
+}
