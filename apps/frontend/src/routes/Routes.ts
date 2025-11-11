@@ -1,7 +1,7 @@
 import React, { JSX, lazy } from "react";
 
 const Home = lazy(() => import("./Home"));
-const Clock = lazy(() => import("./Clock"));
+const Clock = lazy(() => import("./ClockPage"));
 const Auctions = lazy(() => import("./Auctions"));
 const PendingAuction = lazy(() => import("./PendingAuction"));
 const Profile = lazy(() => import("./Profile"));
