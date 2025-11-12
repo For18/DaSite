@@ -6,8 +6,8 @@ export default function BeforeAuction({ startingPoint }: { startingPoint?: strin
 		<div className={styles.container}>
 			{startingPoint ?
 				(
-					<Typography>
-						Starting in: {startingPoint}
+					<Typography heading={2}>
+						Auction starting in: {startingPoint}
 					</Typography>
 				) :
 				null}
