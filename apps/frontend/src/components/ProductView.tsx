@@ -19,7 +19,7 @@ export default function ProductView({ product }: { product: Product }) {
 	return (
 		<div className={styles["product-view"]}>
 			<div>
-				<Typography>{product.name}</Typography>
+				<Typography heading={1}>{product.name}</Typography>
 				<Typography className={styles.seller}>
 					Seller: {owner ? owner.displayName : "Seller not found"}
 				</Typography>
