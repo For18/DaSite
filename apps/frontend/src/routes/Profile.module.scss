@@ -1,0 +1,43 @@
+.profile-info {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 16px;
+}
+
+.profile-header {
+	padding: 20px;
+	width: 1000px;
+	max-width: 80vw;
+}
+
+.profile-image {
+	/* wrapper: exact size and circle */
+	width: 96px;
+	height: 96px;
+	flex: 0 0 96px;
+	border-radius: 50%;
+	overflow: hidden;
+	display: inline-block;
+	/* border color via CSS var (fallback) */
+	border: 2px solid var(--avatarColor, #dddddd);
+}
+
+/* Ensure the actual <img> inside is constrained */
+.profile-image img {
+	width: 96px;
+	height: 96px;
+	object-fit: cover;
+	display: block;
+	border-radius: 50%;
+}
+
+.profile-subtitle {
+	margin-top: 8px;
+}
+
+.profile-products {
+	padding: 10px;
+	height: 100px;
+	margin-top: 20px;
+}
