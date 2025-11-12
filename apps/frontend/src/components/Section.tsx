@@ -11,11 +11,12 @@ export interface FlexConfig {
 
 export interface SectionProps extends PropsWithChildren {
 	flex?: FlexConfig;
+	className?: string;
 }
 
-export default function Section({ children, flex }: SectionProps) {
+export default function Section({ children, flex, className }: SectionProps) {
 	return (
-		<section className={styles.section} style={{
+		<section className={styles.section + (className === null || className === "" ? "" : " " + className)} style={{
 			display: flex !== null ? "flex" : undefined,
 			flexDirection: flex?.direction,
 			justifyContent: flex?.justify,

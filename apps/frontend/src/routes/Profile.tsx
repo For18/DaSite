@@ -1,3 +1,4 @@
+import React from "react";
 import { useParams } from "react-router";
 import Image from "../components/Image";
 import Section from "../components/Section";
@@ -5,6 +6,7 @@ import Throbber from "../components/Throbber";
 import Typography from "../components/Typography";
 import { Product, useAPI } from "../lib/api";
 import NotFound from "./NotFound";
+import styles from "./Profile.module.scss";
 
 type OtherUser = {
 	id: number;
@@ -41,23 +43,31 @@ export default function Profile() {
 
 	return (
 		<>
-			<Section>
-				<div style={{
-					display: "flex",
-					flexDirection: "row",
-					alignItems: "center"
-				}}>
-					<Image src={user.avatarUrl} alt={`${user.name}'s avatar`}/>
+			<Section className={styles.profileHeader}>
+				<div className={styles.profileInfo}>
+					{}
+					<div
+						className={styles.profileImage}
+						style={{ ["--avatarColor" as any]: user.avatarColor } as React.CSSProperties}
+					>
+						{}
+						<Image
+							height={96}
+							src={user.avatarUrl}
+							alt={`${user.name}'s avatar`}
+						/>
+					</div>
+
 					<Typography heading={1}>
 						{user.name}
 					</Typography>
 				</div>
 
-				<Typography color="secondary">
+				<Typography className={styles.profileSubtitle} color="secondary">
 					{user.subtitle}
 				</Typography>
 			</Section>
-			<Section flex={{
+			<Section className={styles.profileProducts} flex={{
 				direction: "row",
 				align: "center",
 				gap: 2
