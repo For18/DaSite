@@ -10,7 +10,7 @@ export default function EndedAuction({ id }: { id: number }) {
   const navigate = useNavigate();
 	return (
 		<div className={styles["end-container"]}>
-			<Typography className={styles.header}>
+			<Typography className={styles.header} heading={1}>
 				This Auction is Over
 			</Typography>
 

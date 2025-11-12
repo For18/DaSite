@@ -5,7 +5,7 @@ import NotFound from "../routes/NotFound";
 import styles from "./ProductView.module.scss";
 import Typography from "./Typography";
 
-export default function ProductView({ product, batchSize }: { product: Product , batchSize: number}) {
+export default function ProductView({ product }: { product: Product }) {
 	const owner = useAPI<User>("/user/" + product.ownerId) ?? null;
 	const prodImages = useAPI<ProductImage[]>("/product-image/from/" + product.id);
 	const thumbnailImage = useAPI<ProductImage>(product ? "/product-image/from/" + product.thumbnailImageId : null);
@@ -16,21 +16,14 @@ export default function ProductView({ product, batchSize }: { product: Product ,
 	if (prodImages === null) return <Throbber/>;
 	if (prodImages === undefined) return <NotFound/>;
 
-  const ownerId = product.ownerId? product.ownerId.toString() : undefined;
 	return (
 		<div className={styles["product-view"]}>
 			<div>
 				<Typography heading={1}>{product.name}</Typography>
-				<Typography className={styles.seller} href={`/profile/${ownerId}`}>
+				<Typography className={styles.seller}>
 					Seller: {owner ? owner.displayName : "Seller not found"}
 				</Typography>
 			</div>
-
-			<hr className={styles["horizontal-rule"]}/>
-
-      <div>
-        <Typography>Batch size: {batchSize}</Typography>
-      </div>
 
 			<hr className={styles["horizontal-rule"]}/>
 
@@ -67,4 +60,3 @@ export default function ProductView({ product, batchSize }: { product: Product ,
 		</div>
 	);
 }
-
