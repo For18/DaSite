@@ -28,9 +28,7 @@ export default function PendingAuction() {
 					gridTemplateColumns: screenWidth > 1000 ? "1fr 1fr" : "1fr",
 					justifyContent: "center",
 					alignItems: "flex-start",
-					gap: "16px",
-					padding: "16px",
-					marginBottom: "32px"
+					gap: "16px"
 				}}>
 					{auctions == null ?
 						<Throbber/> :
