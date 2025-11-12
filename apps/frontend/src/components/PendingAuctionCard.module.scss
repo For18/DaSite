@@ -1,4 +1,15 @@
 .card {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: flex-start;
+	background-color: var(--color-background-secondary);
+	border-radius: var(--border-radius);
+	max-width: 80vw;
+	box-shadow: 0 2px 5px 1px #000000;
+}
+
+.image {
 	position: relative;
 	float: left;
 	width: fit-content;

@@ -9,12 +9,8 @@ export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 	const thumbnailImage = useAPI<ProductImage>(product ? "/product-image/from/" + product.thumbnailImageId : null);
 
 	return (
-		<Section flex={{
-			direction: "row",
-			justify: "space-between",
-			align: "flex-start"
-		}}>
-			<div className={styles.card}>
+		<div className={styles.card}>
+			<div className={styles.image}>
 				<img className={styles.productImage} src={thumbnailImage?.url}/>
 			</div>
 			<div className={styles.infoCard}>
@@ -33,6 +29,6 @@ export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 					</Typography>
 				</div>
 			</div>
-		</Section>
+		</div>
 	);
 }
