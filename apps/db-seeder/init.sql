@@ -76,10 +76,10 @@ VALUES
 (27, 7, 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fgarden.org%2Fpics%2F2019-03-18%2Fdirtdorphins%2Ff5226f.jpg&f=1&nofb=1&ipt=74319d633477f9c77c3cef969c940eb1ed21eee742276a381ca695b28ef8ca7d'),
 
 -- Tulpenbollen
-(28, 8, ''),
-(29, 8, ''),
-(30, 8, ''),
-(31, 8, ''),
+(28, 8, 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fblog.dutch-bulbs.com%2Fwp-content%2Fuploads%2F2023%2F05%2Ftulip-bulbs1.png&f=1&nofb=1&ipt=c66c146ef8ff1e186caf288c22f88f3c0af1bad2e3a41a28bc88555fe73cabe2'),
+(29, 8, 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fa-z-animals.com%2Fmedia%2F2022%2F12%2Fshutterstock_2028495455-1536x1024.jpg&f=1&nofb=1&ipt=32b39e73005256fe4316b446cf83d6e23bc6d891fac027f40432653965a0a2b3'),
+(30, 8, 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.shopify.com%2Fs%2Ffiles%2F1%2F0567%2F5165%2F2954%2Ft%2F2%2Fassets%2Ftulpenbol_overhouden5.jpg%3Fv%3D1670816542&f=1&nofb=1&ipt=43c22d766512f065a8a6158cc48ca986d18215c97d294a20d767572a1641f057'),
+(31, 8, 'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.tuinenbalkon.nl%2Fwp-content%2Fuploads%2F2011%2F10%2Fbloembollen-tulpen-bollen-poten-in-bloempot-300x200.jpg&f=1&nofb=1&ipt=de511936c9d66aacd2b1b3cce7efdfa5ab8b0b0b975ad9fe230481cc4b67bb0c'),
 
 -- Gerbera Daisy
 (32, 9, 'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Feskipaper.com%2Fimages%2Fgerbera-daisies-7.jpg&f=1&nofb=1&ipt=9fe36e64587b2c42b229d5cba0c2bcebb52f5a9bc595b6ced178d0dec0b63dda'),
