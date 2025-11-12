@@ -13,17 +13,6 @@ export default function Auctions() {
 	const auctions = useAPI<Auction[]>("/auctions");
 	const products = useAPI<Product[]>("/products");
 
-	if (auctions === null) return <Throbber/>; // still loading
-
-	if (auctions === undefined || auctions.length === 0) {
-		return (
-			<>
-				<Typography heading={1}>Live Auctions</Typography>
-				<Typography>No active auctions</Typography>
-			</>
-		);
-	}
-
 	return (
 		<>
 			<Typography heading={1}>Live Auctions</Typography>
@@ -33,7 +22,9 @@ export default function Auctions() {
 				wrap: "wrap",
 				gap: 2
 			}}>
-				{auctions.map(auction => {
+				{auctions === null ? <Throbber/> : 
+				auctions === undefined || auctions.length === 0 ? <Typography>No active auctions</Typography> :
+				auctions.map(auction => {
 					const product = products ? products.find(p => p.id === auction.productId) : undefined;
 
 					return (
