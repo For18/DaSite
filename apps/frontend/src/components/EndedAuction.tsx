@@ -10,7 +10,7 @@ export default function EndedAuction({ id }: { id: number }) {
   const navigate = useNavigate();
 	return (
 		<div className={styles["end-container"]}>
-			<Typography className={styles.header} heading={1}>
+			<Typography className={styles.header}>
 				This Auction is Over
 			</Typography>
 
@@ -21,14 +21,14 @@ export default function EndedAuction({ id }: { id: number }) {
 			<div className={styles["link-container"]}>
 				<Button 
           onClick={() => navigate("/auctions/pending")}
-          variant="outlined"
+          variant="contained"
           >
 					Pending Auction
 				</Button>
 
 				<Button 
           onClick={() => navigate(`/clock/${nextAuctionId}`)}
-          variant="outlined" 
+          variant="contained" 
           >
 					Next Auction
 				</Button>
