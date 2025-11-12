@@ -6,10 +6,8 @@ using Microsoft.AspNetCore.JsonPatch;
 using System.ComponentModel;
 
 [DisplayName(nameof(Product))]
-public class ProductExternal
-{
-	public ProductExternal(ulong id, string name, string? description, ulong? thumbnailImageId, ulong ownerId)
-	{
+public class ProductExternal {
+	public ProductExternal(ulong id, string name, string? description, ulong? thumbnailImageId, ulong ownerId) {
 		Id = id;
 		Name = name;
 		Description = description;
@@ -17,15 +15,12 @@ public class ProductExternal
 		OwnerId = ownerId;
 	}
 
-	public static ProductExternal ToExternal(Product product)
-	{
+	public static ProductExternal ToExternal(Product product) {
 		return new ProductExternal(product.Id, product.Name, product.Description, product.ThumbnailImage?.Id, product.Owner.Id);
 	}
 
-	public Product ToProduct(DatabaseContext db)
-	{
-		return new Product
-		{
+	public Product ToProduct(DatabaseContext db) {
+		return new Product {
 			Id = Id,
 			Name = Name,
 			Description = Description,
@@ -42,13 +37,10 @@ public class ProductExternal
 
 [ApiController]
 [Route("product")]
-public class ProductController : ControllerBase
-{
+public class ProductController : ControllerBase {
 	[HttpGet("{id}")]
-	public async Task<ActionResult<ProductExternal>> Get(ulong id)
-	{
-		using (var db = new DatabaseContext())
-		{
+	public async Task<ActionResult<ProductExternal>> Get(ulong id) {
+		using (var db = new DatabaseContext()) {
 			Product? product = await db.Products.Include(product => product.Owner).Where(product => product.Id == id).FirstOrDefaultAsync();
 
 			if (product == null) return NotFound();
@@ -58,18 +50,14 @@ public class ProductController : ControllerBase
 	}
 
 	[HttpGet("/products")]
-	public async Task<ActionResult<ProductExternal[]>> GetAll()
-	{
-		using (var db = new DatabaseContext())
-		{
+	public async Task<ActionResult<ProductExternal[]>> GetAll() {
+		using (var db = new DatabaseContext()) {
 			return await db.Products.Include(product => product.Owner).Select(product => ProductExternal.ToExternal(product)).ToArrayAsync();
 		}
 	}
 	[HttpGet("/products/user/{userId}")]
-	public async Task<ActionResult<ProductExternal[]>> GetOfUser(ulong userId)
-	{
-		using (var db = new DatabaseContext())
-		{
+	public async Task<ActionResult<ProductExternal[]>> GetOfUser(ulong userId) {
+		using (var db = new DatabaseContext()) {
 			return await db.Products
 				.Include(product => product.Owner)
 				.Where(product => product.Owner.Id == userId)
@@ -79,10 +67,8 @@ public class ProductController : ControllerBase
 	}
 
 	[HttpPost]
-	public async Task<ActionResult> Post(ProductExternal productData)
-	{
-		using (var db = new DatabaseContext())
-		{
+	public async Task<ActionResult> Post(ProductExternal productData) {
+		using (var db = new DatabaseContext()) {
 			if (await db.Products.AnyAsync(prod => prod.Id == productData.Id)) return Conflict("Already exists");
 
 			Product product = productData.ToProduct(db);
@@ -95,10 +81,8 @@ public class ProductController : ControllerBase
 	}
 
 	[HttpDelete("{id}")]
-	public async Task<ActionResult> Delete(ulong id)
-	{
-		using (var db = new DatabaseContext())
-		{
+	public async Task<ActionResult> Delete(ulong id) {
+		using (var db = new DatabaseContext()) {
 			Product? product = await db.Products.FindAsync(id);
 			if (product == null) return NotFound();
 
@@ -110,17 +94,14 @@ public class ProductController : ControllerBase
 	}
 
 	[HttpPatch("{id}")]
-	public async Task<ActionResult> Patch(ulong id, [FromBody] JsonPatchDocument<Product> patchdoc)
-	{
-		using (var db = new DatabaseContext())
-		{
+	public async Task<ActionResult> Patch(ulong id, [FromBody] JsonPatchDocument<Product> patchdoc) {
+		using (var db = new DatabaseContext()) {
 			Product? product = await db.Products.FindAsync(id);
 			if (product == null) return NotFound();
 
 			patchdoc.ApplyTo(product, ModelState);
 
-			if (!ModelState.IsValid)
-			{
+			if (!ModelState.IsValid) {
 				return BadRequest(ModelState);
 			}
 

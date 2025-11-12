@@ -1,7 +1,7 @@
 import React from "react";
+import Button from "./Button";
 import styles from "./Clock.module.scss";
 import Typography from "./Typography";
-import Button from "./Button";
 
 const currencyType = "100 cent";
 

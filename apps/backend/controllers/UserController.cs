@@ -60,11 +60,11 @@ public class UserController : ControllerBase {
 	public async Task<ActionResult<PublicUser[]>> GetAllPublic() {
 		using (var db = new DatabaseContext()) {
 			return await db.Users.Select(user => new PublicUser {
-          DisplayName = user.DisplayName,
-          ImageUrl = user.ImageUrl,
-          Email = user.Email,
-          TelephoneNumber = user.TelephoneNumber
-      }).ToArrayAsync();
+				DisplayName = user.DisplayName,
+				ImageUrl = user.ImageUrl,
+				Email = user.Email,
+				TelephoneNumber = user.TelephoneNumber
+			}).ToArrayAsync();
 		}
 	}
 

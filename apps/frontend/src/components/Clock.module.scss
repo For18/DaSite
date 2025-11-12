@@ -1,57 +1,62 @@
 .container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 }
 
 .clock-overlay {
 	$fill-percentage: 85%;
-  width: $fill-percentage;
-  height: $fill-percentage;
-  border-radius: 50%;
-  background-color: skyblue;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+	width: $fill-percentage;
+	height: $fill-percentage;
+	border-radius: 50%;
+	background-color: skyblue;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
 }
 
 .clock {
 	aspect-ratio: 1/1;
 	width: 500px;
 	max-width: 80%;
-  border-radius: 50%;
-  background-color: royalblue;
-  background-image: conic-gradient(from 0deg, darkblue, calc(360deg * var(--progress)), transparent 0deg);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-weight: bold;
-  font-family: 'Courier New', monospace;
+	border-radius: 50%;
+	background-color: royalblue;
+	background-image: conic-gradient(
+		from 0deg,
+		darkblue,
+		calc(360deg * var(--progress)),
+		transparent 0deg
+	);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	font-weight: bold;
+	font-family: "Courier New", monospace;
 }
 
 .clock-box {
-  width: 30%;
-  aspect-ratio: 5.2/2.6;
-  display: flex;
-  background-color: black;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  border-style: solid;
-  flex-direction: column;
-  font-family: 'Courier New', monospace;
+	width: 30%;
+	aspect-ratio: 5.2/2.6;
+	display: flex;
+	background-color: black;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	border-style: solid;
+	flex-direction: column;
+	font-family: "Courier New", monospace;
 
-  &:not(:last-child) {
-	margin-bottom: 10px;
-  }
+	&:not(:last-child) {
+		margin-bottom: 10px;
+	}
 }
 
 .timer {
-  margin-top: var(--spacing);
-  text-align: center;
-  font-family: 'Courier New', monospace;
-  font-size: 200%;
+	margin-top: var(--spacing);
+	text-align: center;
+	font-family: "Courier New", monospace;
+	font-size: 200%;
 }

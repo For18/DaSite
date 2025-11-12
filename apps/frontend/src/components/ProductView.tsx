@@ -31,31 +31,29 @@ export default function ProductView({ product }: { product: Product }) {
 				<Typography>{product.description}</Typography>
 			</div>
 
-
-      {
-        thumbnailImage
-			  ?
-			    <>
-            <hr className={styles["horizontal-rule"]}/>
-			      	<img
-			      		className={styles["thumbnail-image"]}
-			      		src={thumbnailImage.url}
-			      		alt={product.name}
-			      	/>
-          </>
-        : null
-      }
+			{thumbnailImage ?
+				(
+					<>
+						<hr className={styles["horizontal-rule"]}/>
+						<img
+							className={styles["thumbnail-image"]}
+							src={thumbnailImage.url}
+							alt={product.name}
+						/>
+					</>
+				) :
+				null}
 
 			<div className={styles["extra-image-container"]}>
 				{prodImages.map(prodImage => prodImage.url).map((url, index) => (
 					<div key={url}>
-            <a href={url}>
-						  <img
-							  className={styles["extra-image"]}
-							  src={url}
-							  alt={`Product Image ${index + 1}`}
-						  />
-            </a>
+						<a href={url}>
+							<img
+								className={styles["extra-image"]}
+								src={url}
+								alt={`Product Image ${index + 1}`}
+							/>
+						</a>
 					</div>
 				))}
 			</div>

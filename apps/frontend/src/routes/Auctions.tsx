@@ -22,22 +22,25 @@ export default function Auctions() {
 				wrap: "wrap",
 				gap: 2
 			}}>
-				{auctions === null ? <Throbber/> : 
-				auctions === undefined || auctions.length === 0 ? <Typography>No active auctions</Typography> :
-				auctions.map(auction => {
-					const product = products ? products.find(p => p.id === auction.productId) : undefined;
+				{auctions === null ?
+					<Throbber/> :
+					auctions === undefined || auctions.length === 0 ?
+					<Typography>No active auctions</Typography> :
+					auctions.map(auction => {
+						const product = products ? products.find(p => p.id === auction.productId) : undefined;
 
-					return (
-						<Section key={auction.id}>
-							{product ?
-								<ProductView product={product}/> :
-								<Typography>Product #{auction.productId}</Typography>}
-							<Typography color="secondary">
-								Start: {auction.startingPrice} • Min: {auction.minimumPrice} • Count: {auction.count}
-							</Typography>
-						</Section>
-					);
-				})}
+						return (
+							<Section key={auction.id}>
+								{product ?
+									<ProductView product={product}/> :
+									<Typography>Product #{auction.productId}</Typography>}
+								<Typography color="secondary">
+									Start: {auction.startingPrice} • Min: {auction.minimumPrice} • Count:{" "}
+									{auction.count}
+								</Typography>
+							</Section>
+						);
+					})}
 			</Section>
 		</>
 	);

@@ -1,10 +1,10 @@
 import { useParams } from "react-router";
-import Throbber from "../components/Throbber";
-import { Product, useAPI } from "../lib/api";
-import NotFound from "./NotFound";
-import Typography from "../components/Typography";
 import Image from "../components/Image";
 import Section from "../components/Section";
+import Throbber from "../components/Throbber";
+import Typography from "../components/Typography";
+import { Product, useAPI } from "../lib/api";
+import NotFound from "./NotFound";
 
 type OtherUser = {
 	id: number;

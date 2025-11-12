@@ -11,14 +11,17 @@ export interface ImageProps {
 
 export default function Image({ src, alt, width, height, className, style }: ImageProps) {
 	if (src === null || src === undefined) src = [];
-	else if (typeof src === 'string') src = [src];
+	else if (typeof src === "string") src = [src];
 
 	src.push(`https://placehold.co/${width}x${height}?text=${alt}`);
 
 	const [imageIndex, setImageIndex] = useState<number>(0);
 
-	return <img src={src[imageIndex]} alt={alt} width={width} height={height} className={className} style={style} onError={() => {
-		if (imageIndex >= src.length - 1) return;
-		setImageIndex(imageIndex + 1);
-	}}/>
+	return (
+		<img src={src[imageIndex]} alt={alt} width={width} height={height} className={className} style={style}
+			onError={() => {
+				if (imageIndex >= src.length - 1) return;
+				setImageIndex(imageIndex + 1);
+			}}/>
+	);
 }

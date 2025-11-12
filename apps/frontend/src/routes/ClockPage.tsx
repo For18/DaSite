@@ -1,14 +1,14 @@
-import { useEffect, useState, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router";
+import BeforeAuction from "../components/BeforeAuction";
 import Clock from "../components/Clock";
 import EndedAuction from "../components/EndedAuction";
-import BeforeAuction from "../components/BeforeAuction";
 import ProductView from "../components/ProductView";
 import Throbber from "../components/Throbber";
 import { API_URL, Auction, Product, useAPI } from "../lib/api";
 import { useTime } from "../lib/util";
-import NotFound from "./NotFound";
 import styles from "./ClockPage.module.scss";
+import NotFound from "./NotFound";
 
 function formatStartCountDown(startingTime: number, currentTime: number) {
 	if (startingTime <= 0 || currentTime <= 0) return "0.00";
@@ -41,7 +41,7 @@ export default function ClockPage() {
 
 	/* TODO: remove useEffect() after testing */
 	useEffect(() => {
-    if (!auction) return;
+		if (!auction) return;
 		fetch(API_URL + "/auction/" + auction?.id, {
 			method: "PATCH",
 			headers: { "Content-Type": "application/json" },
@@ -79,24 +79,22 @@ export default function ClockPage() {
 
 	return (
 		<div className={styles["base-container"]}>
-				<div className={styles["clock-container"]}>
-					{auctionProgress <= 0 ?
+			<div className={styles["clock-container"]}>
+				{auctionProgress <= 0 ?
+					<BeforeAuction startingPoint={formatStartCountDown(startingTime ?? 0, currentTime)}/> :
+					(isAuctionOver ?
+						<EndedAuction id={auction.id}/> :
 						(
-							<BeforeAuction startingPoint={formatStartCountDown(startingTime ?? 0, currentTime)}/>
-						) :
-						(isAuctionOver ?
-							<EndedAuction id={auction.id}/> :
-							(
-								<Clock progress={auctionProgress} price={currentPrice} fmtedTime={fmtedRemainingTime}
-									setWasAuctionEndedByUser={setWasAuctionEndedByUser}/>
-							))}
-				</div>
+							<Clock progress={auctionProgress} price={currentPrice} fmtedTime={fmtedRemainingTime}
+								setWasAuctionEndedByUser={setWasAuctionEndedByUser}/>
+						))}
+			</div>
 
-				<div className={styles["container-separator"]}/>
+			<div className={styles["container-separator"]}/>
 
-				<div className={styles["product-container"]}>
-					{product == null ? <Throbber/> : <ProductView product={product}/>}
-				</div>
+			<div className={styles["product-container"]}>
+				{product == null ? <Throbber/> : <ProductView product={product}/>}
+			</div>
 		</div>
 	);
 }

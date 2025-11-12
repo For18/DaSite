@@ -6,24 +6,19 @@ using System.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 
 [DisplayName(nameof(ProductImage))]
-public class ProductImageExternal
-{
-	public ProductImageExternal(ulong id, ulong parentId, string url)
-	{
+public class ProductImageExternal {
+	public ProductImageExternal(ulong id, ulong parentId, string url) {
 		Id = id;
 		Parent = parentId;
 		Url = url;
 	}
 
-	public static ProductImageExternal ToExternal(ProductImage prodImage)
-	{
+	public static ProductImageExternal ToExternal(ProductImage prodImage) {
 		return new ProductImageExternal(prodImage.Id, prodImage.Parent.Id, prodImage.Url);
 	}
 
-	public ProductImage ToProductImage(DatabaseContext db)
-	{
-		return new ProductImage
-		{
+	public ProductImage ToProductImage(DatabaseContext db) {
+		return new ProductImage {
 			Id = Id,
 			Parent = db.Products.Where(parent => parent.Id == Id).First(),
 			Url = Url
@@ -36,13 +31,10 @@ public class ProductImageExternal
 
 [ApiController]
 [Route("product-image")]
-public class ProductImageController : ControllerBase
-{
+public class ProductImageController : ControllerBase {
 	[HttpGet("{id}")]
-	public async Task<ActionResult<ProductImageExternal>> Get(ulong id)
-	{
-		using (var db = new DatabaseContext())
-		{
+	public async Task<ActionResult<ProductImageExternal>> Get(ulong id) {
+		using (var db = new DatabaseContext()) {
 			ProductImage? prodImage = await db.ProductImages.Include(prod => prod.Parent).Where(image => image.Id == id).FirstOrDefaultAsync();
 
 			if (prodImage == null) return NotFound();
@@ -61,17 +53,14 @@ public class ProductImageController : ControllerBase
 	}
 
 	[HttpPost]
-	public async Task<ActionResult> Post(ProductImageExternal productImageData)
-	{
-		using (var db = new DatabaseContext())
-		{
+	public async Task<ActionResult> Post(ProductImageExternal productImageData) {
+		using (var db = new DatabaseContext()) {
 			if (db.ProductImages.Include(img => img.Parent).Any(image => image.Id == productImageData.Id)) return Conflict("Already exists");
 
 			Product? parent = await db.Products.Include(product => product.Owner).Where(product => product.Id == (productImageData.Parent)).FirstOrDefaultAsync();
 			if (parent == null) return NotFound();
 
-			ProductImage prodImage = new ProductImage
-			{
+			ProductImage prodImage = new ProductImage {
 				Id = productImageData.Id,
 				Parent = parent,
 				Url = productImageData.Url
@@ -85,10 +74,8 @@ public class ProductImageController : ControllerBase
 	}
 
 	[HttpDelete("{id}")]
-	public async Task<ActionResult> Delete(ulong id)
-	{
-		using (var db = new DatabaseContext())
-		{
+	public async Task<ActionResult> Delete(ulong id) {
+		using (var db = new DatabaseContext()) {
 			ProductImage? prodImage = await db.ProductImages.FindAsync(id);
 			if (prodImage == null) return NotFound();
 
@@ -100,17 +87,14 @@ public class ProductImageController : ControllerBase
 	}
 
 	[HttpPatch("{id}")]
-	public async Task<ActionResult> Patch(ulong id, [FromBody] JsonPatchDocument<ProductImage> patchdoc)
-	{
-		using (var db = new DatabaseContext())
-		{
+	public async Task<ActionResult> Patch(ulong id, [FromBody] JsonPatchDocument<ProductImage> patchdoc) {
+		using (var db = new DatabaseContext()) {
 			ProductImage? prodImage = await db.ProductImages.FindAsync(id);
 			if (prodImage == null) return NotFound();
 
 			patchdoc.ApplyTo(prodImage, ModelState);
 
-			if (!ModelState.IsValid)
-			{
+			if (!ModelState.IsValid) {
 				return BadRequest(ModelState);
 			}
 

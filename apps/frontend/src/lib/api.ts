@@ -11,7 +11,7 @@ export interface Sale {
 	amount: number;
 	price: number;
 	isPaid: boolean;
-};
+}
 
 export interface Product {
 	id: number;
@@ -19,13 +19,13 @@ export interface Product {
 	description: string;
 	thumbnailImageId: number;
 	ownerId: number;
-};
+}
 
 export interface ProductImage {
 	id: number;
 	parent: number;
 	url: string;
-};
+}
 
 export interface Auction {
 	id: number;
@@ -37,7 +37,7 @@ export interface Auction {
 	length: number;
 	productId: number;
 	plannerId: number;
-};
+}
 
 export interface User {
 	id: number;
@@ -46,7 +46,7 @@ export interface User {
 	imageUrl: string;
 	email: string;
 	telephonenumber: number;
-};
+}
 
 export function useAPI<T>(route: string | null): T | null | undefined {
 	const [value, setValue] = useState<T | null | undefined>(null);
