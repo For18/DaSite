@@ -11,7 +11,6 @@ export default function Layout({ children }: PropsWithChildren) {
 				links={{
 					Home: "/",
 					Auctions: "/auctions",
-					Clock: "/clock/1",
 					PendingAuction: "/auctions/pending",
 					Profile: "/profile/1"
 				}}
