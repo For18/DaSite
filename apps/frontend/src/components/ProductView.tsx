@@ -16,11 +16,12 @@ export default function ProductView({ product }: { product: Product }) {
 	if (prodImages === null) return <Throbber/>;
 	if (prodImages === undefined) return <NotFound/>;
 
+  const ownerId = product.ownerId? product.ownerId.toString() : undefined;
 	return (
 		<div className={styles["product-view"]}>
 			<div>
 				<Typography heading={1}>{product.name}</Typography>
-				<Typography className={styles.seller}>
+				<Typography className={styles.seller} href={`/profile/${ownerId}`}>
 					Seller: {owner ? owner.displayName : "Seller not found"}
 				</Typography>
 			</div>
@@ -60,3 +61,4 @@ export default function ProductView({ product }: { product: Product }) {
 		</div>
 	);
 }
+
