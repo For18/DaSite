@@ -21,14 +21,14 @@ export default function EndedAuction({ id }: { id: number }) {
 			<div className={styles["link-container"]}>
 				<Button 
           onClick={() => navigate("/auctions/pending")}
-          variant="contained"
+          variant="outlined"
           >
 					Pending Auction
 				</Button>
 
 				<Button 
           onClick={() => navigate(`/clock/${nextAuctionId}`)}
-          variant="contained" 
+          variant="outlined" 
           >
 					Next Auction
 				</Button>
