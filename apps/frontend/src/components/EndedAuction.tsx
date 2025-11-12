@@ -1,11 +1,13 @@
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 import styles from "./EndedAuction.module.scss";
 import Typography from "./Typography";
+import Button from "./Button";
 
 export default function EndedAuction({ id }: { id: number }) {
 	// TODO: add 'nextAuction' endpoint
 	const nextAuctionId = id + 1;
 
+  const navigate = useNavigate();
 	return (
 		<div className={styles["end-container"]}>
 			<Typography className={styles.header}>
@@ -17,19 +19,19 @@ export default function EndedAuction({ id }: { id: number }) {
 			</Typography>
 
 			<div className={styles["link-container"]}>
-				<Link
-					className={styles["link pending-auctions"]}
-					to={`/auctions/pending`}
-				>
+				<Button 
+          onClick={() => navigate("/auctions/pending")}
+          variant="contained"
+          >
 					Pending Auction
-				</Link>
+				</Button>
 
-				<Link
-					className={styles["link next-auction"]}
-					to={`/clock/${nextAuctionId}`}
-				>
+				<Button 
+          onClick={() => navigate(`/clock/${nextAuctionId}`)}
+          variant="contained" 
+          >
 					Next Auction
-				</Link>
+				</Button>
 			</div>
 		</div>
 	);
