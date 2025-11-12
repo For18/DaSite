@@ -5,13 +5,13 @@ export default function Footer() {
 	return (
 		<footer className={styles.footer}>
 			<div className={styles.left}>
-				<Typography>
+				<Typography href="/auctions">
 					Contactgegevens
 				</Typography>
-				<Typography>
+				<Typography href="/profile/1">
 					Gebruikers
 				</Typography>
-				<Typography>
+				<Typography href="">
 					Openingstijden
 				</Typography>
 			</div>
@@ -20,7 +20,7 @@ export default function Footer() {
 				{new Date().getFullYear()} For18
 			</Typography>
 			<div className={styles.right}>
-				<Typography>
+				<Typography href="">
 					Locaties
 				</Typography>
 			</div>

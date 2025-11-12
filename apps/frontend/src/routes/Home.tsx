@@ -39,7 +39,7 @@ export default function Home() {
 				<div className={styles.right}>
 					<div className={styles.header4}>
 						<Typography heading={4} color="secondary">
-							(Header 4) Info
+							Info
 						</Typography>
 						<Typography>
 							Wij verbinden kwekers en kopers, elke dag opnieuw. Met passie voor bloemen, innovatie en duurzaamheid bouwen we aan de toekomst van de internationale sierteelt.
