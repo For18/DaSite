@@ -104,15 +104,15 @@ UPDATE Products SET ThumbnailImageId=9 WHERE Id=32;
 -- AUCTIONS
 INSERT INTO Auctions(Id, Count, BatchSize, StartingPrice, MinimumPrice, StartingTime, Length, ProductId, PlannerId)
 VALUES
-(1, 10, 1, 5000, 1000, NULL, NULL, 1, 1),
-(2, 8 , 1, 7000, 1500, NULL, NULL, 2, 1),
-(3, 12, 1, 3000, 800 , NULL, NULL, 3, 1),
-(4, 6 , 1, 4000, 1000, NULL, NULL, 4, 1),
-(5, 10, 1, 3500, 1000, NULL, NULL, 5, 1),
-(6, 15, 1, 2500, 600 , NULL, NULL, 6, 1),
-(7, 20, 1, 1500, 500 , NULL, NULL, 7, 1),
-(8, 18, 1, 2000, 700 , NULL, NULL, 8, 1),
-(9, 25, 1, 1200, 400 , NULL, NULL, 9, 1),
+(1, 10, 2 , 5000, 1000, NULL, NULL, 1, 1),
+(2, 8 , 3 , 7000, 1500, NULL, NULL, 2, 1),
+(3, 12, 6 , 3000, 800 , NULL, NULL, 3, 1),
+(4, 6 , 7 , 4000, 1000, NULL, NULL, 4, 1),
+(5, 10, 9 , 3500, 1000, NULL, NULL, 5, 1),
+(6, 15, 20, 2500, 600 , NULL, NULL, 6, 1),
+(7, 20, 2 , 1500, 500 , NULL, NULL, 7, 1),
+(8, 18, 9 , 2000, 700 , NULL, NULL, 8, 1),
+(9, 25, 10, 1200, 400 , NULL, NULL, 9, 1),
 
 -- Auctions with specific starting time and length
 (10, 10, 1, 5500, 1200, 10, 10, 1, 1),
