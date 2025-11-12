@@ -13,20 +13,24 @@ export default function Footer() {
 				</div>
 				<div className={styles.bottom}>
 					<div className={styles.left}>
-						<Typography href="/auctions">
-							Contactgegevens
-						</Typography>
-						<Typography href="/profile/1">
-							Gebruikers
-						</Typography>
-						<Typography href="">
-							Openingstijden
-						</Typography>
+						<div className={styles.textBlock}>
+							<Typography href="/auctions">
+								Contactgegevens
+							</Typography>
+							<Typography href="/profile/1">
+								Gebruikers
+							</Typography>
+							<Typography href="">
+								Openingstijden
+							</Typography>
+						</div>
 					</div>
 					<div className={styles.right}>
-						<Typography href="">
-							Locaties
-						</Typography>
+						<div className={styles.textBlock}>
+							<Typography href="">
+								Locaties
+							</Typography>
+						</div>
 					</div>
 				</div>
 			</div>

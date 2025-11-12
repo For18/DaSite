@@ -34,14 +34,19 @@
 	display: flex;
 	width: 50%;
 	flex-direction: column;
-	justify-content: space-between;
-	gap: 16px;
 	align-items: center;
+}
+
+.textBlock {
+	display: flex;
+	text-align: left;
+	justify-content: space-between;
+	flex-direction: column;
+	gap: 16px;
 }
 
 .right {
 	display: flex;
-	justify-content: space-between;
 	width: 50%;
 	flex-direction: column;
 	align-items: center;
