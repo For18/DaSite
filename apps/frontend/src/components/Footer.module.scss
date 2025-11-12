@@ -11,14 +11,15 @@
 
 .left {
 	display: flex;
-	justify-content: center;
 	width: 40%;
 	flex-direction: column;
-	column-gap: 20px;
+	justify-content: space-between;
+	gap: 16px;
 }
 
 .right {
 	display: flex;
-	justify-content: center;
+	justify-content: space-between;
 	width: 40%;
+	flex-direction: column;
 }
