@@ -93,7 +93,7 @@ export default function ClockPage() {
 			<div className={styles["container-separator"]}/>
 
 			<div className={styles["product-container"]}>
-				{product == null ? <Throbber/> : <ProductView product={product}/>}
+				{product == null ? <Throbber/> : <ProductView product={product} batchSize={auction.batchSize}/>}
 			</div>
 		</div>
 	);
