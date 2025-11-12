@@ -5,7 +5,7 @@ import NotFound from "../routes/NotFound";
 import styles from "./ProductView.module.scss";
 import Typography from "./Typography";
 
-export default function ProductView({ product }: { product: Product }) {
+export default function ProductView({ product, batchSize }: { product: Product , batchSize: number}) {
 	const owner = useAPI<User>("/user/" + product.ownerId) ?? null;
 	const prodImages = useAPI<ProductImage[]>("/product-image/from/" + product.id);
 	const thumbnailImage = useAPI<ProductImage>(product ? "/product-image/from/" + product.thumbnailImageId : null);
@@ -25,6 +25,12 @@ export default function ProductView({ product }: { product: Product }) {
 					Seller: {owner ? owner.displayName : "Seller not found"}
 				</Typography>
 			</div>
+
+			<hr className={styles["horizontal-rule"]}/>
+
+      <div>
+        <Typography>Batch size: {batchSize}</Typography>
+      </div>
 
 			<hr className={styles["horizontal-rule"]}/>
 
