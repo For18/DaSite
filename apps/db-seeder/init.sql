@@ -102,7 +102,7 @@ VALUES
 (9, 25, 1, 1200, 400 , NULL, NULL, 9, 1),
 
 -- Auctions with specific starting time and length
-(10, 10, 1, 5500, 1200, UNIX_TIMESTAMP() * 1000 + RAND() * 300000, 600 , 1, 1),  -- Dynamic 'now' for starting time
-(11, 5 , 1, 9000, 2500, UNIX_TIMESTAMP() * 1000 + RAND() * 300000, 3600, 2, 1),  -- Dynamic 'now' for starting time
-(12, 15, 1, 4000, 1000, UNIX_TIMESTAMP() * 1000 + RAND() * 300000, 1200, 3, 1),  -- Dynamic 'now' for starting time
-(13, 10, 1, 3000, 900 , UNIX_TIMESTAMP() * 1000 + RAND() * 300000, 1800, 4, 1);  -- Dynamic 'now' for starting time
+(10, 10, 1, 5500, 1200, UNIX_TIMESTAMP() * 1000 + RAND() * 300000, 10, 1, 1),
+(11, 5 , 1, 9000, 2500, UNIX_TIMESTAMP() * 1000 + RAND() * 300000, 5, 2, 1),
+(12, 15, 1, 4000, 1000, UNIX_TIMESTAMP() * 1000 + RAND() * 300000, 10, 3, 1),
+(13, 10, 1, 3000, 900 , UNIX_TIMESTAMP() * 1000 + RAND() * 300000, 15, 4, 1);
