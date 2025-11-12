@@ -13,4 +13,13 @@
 	&.bold {
 		font-weight: 220%;
 	}
+
+	&.link {
+		text-decoration: underline;
+		cursor: pointer;
+
+		&:hover {
+			filter: brightness(0.9);
+		}
+	}
 }
