@@ -7,7 +7,7 @@ export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 	const product = useAPI<Product>("/product/" + auction.productId);
 	const user = useAPI<User>("/user/" + auction.plannerId);
 	const thumbnailImage = useAPI<ProductImage>(product ? "/product-image/" + product.id : null);
-	const thumbnailUrl = thumbnailImage?.url ?? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcCBHgbS23kyBw2r8Pquu19UtKZnrZmFUx1g&s";
+	const thumbnailUrl = thumbnailImage?.url === undefined ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcCBHgbS23kyBw2r8Pquu19UtKZnrZmFUx1g&s" : thumbnailImage.url;
 
 	return (
 		<div className={styles.card}>
@@ -23,7 +23,7 @@ export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 						Seller: {user?.displayName}
 					</Typography>
 					<Typography color="secondary" className={styles.infoText}>
-						Asking price: €{auction.startingPrice},-
+						Asking price: €{auction.startingPrice / 100},-
 					</Typography>
 					<Typography color="secondary" className={styles.infoText}>
 						Amount: {auction.batchSize * auction.count}
