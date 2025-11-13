@@ -14,14 +14,8 @@ export default function Footer() {
 				<div className={styles.bottom}>
 					<div className={styles.left}>
 						<div className={styles.textBlock}>
-							<Typography href="/auctions">
-								Contactgegevens
-							</Typography>
-							<Typography href="/profile/1">
-								Gebruikers
-							</Typography>
 							<Typography href="">
-								Openingstijden
+								Contactgegevens
 							</Typography>
 						</div>
 					</div>
