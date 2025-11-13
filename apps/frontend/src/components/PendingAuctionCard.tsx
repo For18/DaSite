@@ -1,17 +1,18 @@
 import { Auction, Product, ProductImage, useAPI, User } from "../lib/api";
 import styles from "./PendingAuctionCard.module.scss";
 import Typography from "./Typography";
+import Image from "./Image";
 
 export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 	const product = useAPI<Product>("/product/" + auction.productId);
 	const user = useAPI<User>("/user/" + auction.plannerId);
-	const thumbnailImage = useAPI<ProductImage>(product ? "/product-image/" + product.id : null);
-	const thumbnailUrl = thumbnailImage?.url === undefined ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcCBHgbS23kyBw2r8Pquu19UtKZnrZmFUx1g&s" : thumbnailImage.url;
+	const thumbnailImage = useAPI<ProductImage[]>(product ? "/product-image/from/" + product.id : null);
+	const thumbnailUrl = thumbnailImage && thumbnailImage[0].url ? thumbnailImage[0].url : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcCBHgbS23kyBw2r8Pquu19UtKZnrZmFUx1g&s";
 
 	return (
 		<div className={styles.card}>
 			<div className={styles.image}>
-				<img className={styles.productImage} src={thumbnailUrl} />
+				<Image className={styles.productImage} src={thumbnailUrl} alt={`Thumbnail van ${product?.name}`}/>
 			</div>
 			<div className={styles.infoCard}>
 				<div className={styles.productNameContainer}>
