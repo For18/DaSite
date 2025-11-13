@@ -8,7 +8,7 @@ import Typography from "./Typography";
 export default function ProductView({ product, batchSize }: { product: Product , batchSize: number}) {
 	const owner = useAPI<User>("/user/" + product.ownerId) ?? null;
 	const prodImages = useAPI<ProductImage[]>("/product-image/from/" + product.id);
-	const thumbnailImage = useAPI<ProductImage>(product ? "/product-image/from/" + product.thumbnailImageId : null);
+	// const thumbnailImage = useAPI<ProductImage>(product ? "/product-image/" + product.thumbnailImageId : null);
 
 	if (owner === null) return <Throbber/>;
 	if (owner === undefined) return <NotFound/>;
@@ -16,7 +16,16 @@ export default function ProductView({ product, batchSize }: { product: Product ,
 	if (prodImages === null) return <Throbber/>;
 	if (prodImages === undefined) return <NotFound/>;
 
+  // if (thumbnailImage === null) return <Throbber/>;
+  // if (thumbnailImage === undefined) return <NotFound/>;
+  //
+  // console.log(thumbnailImage.url)
+
+  // if (thumbnailImage.url === null) return <Throbber/>;
+  // if (thumbnailImage.url === undefined) return <NotFound/>;
+
   const ownerId = product.ownerId? product.ownerId.toString() : undefined;
+
 	return (
 		<div className={styles["product-view"]}>
 			<div>
@@ -38,13 +47,13 @@ export default function ProductView({ product, batchSize }: { product: Product ,
 				<Typography>{product.description}</Typography>
 			</div>
 
-			{thumbnailImage ?
+			{prodImages[0]?
 				(
 					<>
 						<hr className={styles["horizontal-rule"]}/>
 						<img
 							className={styles["thumbnail-image"]}
-							src={thumbnailImage.url}
+							src={prodImages[0].url}
 							alt={product.name}
 						/>
 					</>
