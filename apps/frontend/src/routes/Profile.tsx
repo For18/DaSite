@@ -1,4 +1,3 @@
-import React from "react";
 import { useParams } from "react-router";
 import Image from "../components/Image";
 import Section from "../components/Section";
