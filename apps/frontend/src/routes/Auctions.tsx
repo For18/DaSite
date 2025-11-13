@@ -18,9 +18,7 @@ export default function Auctions() {
 			<Typography heading={1}>Live Auctions</Typography>
 
 			<Section flex={{
-				direction: "row",
-				wrap: "wrap",
-				gap: 2
+				direction: "column"
 			}}>
 				{auctions === null ?
 					<Throbber/> :
