@@ -35,7 +35,7 @@ export default function Auctions() {
 									<Typography>Product #{auction.productId}</Typography>}
 								<Typography color="secondary">
 									Price: {formatEuros(auction.startingPrice)}{" "}
-									→ €{formatEuros(auction.minimumPrice)},- • Count: {auction.count}
+									→ {formatEuros(auction.minimumPrice)} • Count: {auction.count}
 								</Typography>
 							</Section>
 						);

@@ -94,5 +94,5 @@ export function formatEuros(n: number): string {
 		wholeString += "," + tempDecimalPart.toString();
 	} else wholeString += ",-";
 
-	return wholeString;
+	return "€" + wholeString;
 }
