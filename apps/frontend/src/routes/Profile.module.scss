@@ -7,8 +7,11 @@
 
 .profile-header {
 	padding: 20px;
-	width: 1000px;
+	align-items: center;
+	justify-content: center;
 	max-width: 80vw;
+	width: 1000px;
+	flex-direction: row;
 }
 
 .profile-image {

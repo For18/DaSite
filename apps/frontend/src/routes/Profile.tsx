@@ -14,32 +14,35 @@ export default function Profile() {
 
 	const user = useAPI<User>("/private-user/" + userId);
 	const userProducts = useAPI<Product[]>("/products?owner=" + userId);
-	
+
 	if (user === undefined) return <NotFound/>;
 
 	return (
 		<>
 			<Section className={styles.profileHeader}>
-				{user === null ? <Throbber/> : <>
-					<div className={styles.profileInfo}>
-						{}
-						<div className={styles.profileImage}>
-							<Image
-								height={96}
-								src={user.imageUrl}
-								alt={`${user.displayName}'s avatar`}
-							/>
+				{user === null ? <Throbber/> : (
+					<>
+						<div className={styles.profileInfo}>
+							<div className={styles.profileImage}>
+								<Image
+									height={96}
+									src={user.imageUrl}
+									alt={`${user.displayName}'s avatar`}
+								/>
+							</div>
+
+							<Typography heading={1}>
+								{user.displayName}
+							</Typography>
 						</div>
 
-						<Typography heading={1}>
-							{user.displayName}
-						</Typography>
-					</div>
-
-					{/* <Typography className={styles.profileSubtitle} color="secondary">
+						{
+							/* <Typography className={styles.profileSubtitle} color="secondary">
 						{user.subtitle}
-					</Typography> */}
-				</>}
+					</Typography> */
+						}
+					</>
+				)}
 			</Section>
 			<Section className={styles.profileProducts} flex={{
 				direction: "row",
