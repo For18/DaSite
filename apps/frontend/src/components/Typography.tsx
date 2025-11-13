@@ -1,6 +1,6 @@
-import { createElement, useCallback, type JSX, type PropsWithChildren } from "react";
-import styles from "./Typography.module.scss";
+import { createElement, type JSX, type PropsWithChildren, useCallback } from "react";
 import { useNavigate } from "react-router";
+import styles from "./Typography.module.scss";
 
 export interface TypographyProps extends PropsWithChildren {
 	heading?: 1 | 2 | 3 | 4 | 5 | 6;

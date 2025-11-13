@@ -85,8 +85,8 @@ export default function ClockPage() {
 					(isAuctionOver ?
 						<EndedAuction id={auction.id}/> :
 						(
-							<Clock progress={auctionProgress} price={currentPrice} fmtedTime={fmtedRemainingTime} count={auction.count}
-								setWasAuctionEndedByUser={setWasAuctionEndedByUser}/>
+							<Clock progress={auctionProgress} price={currentPrice} fmtedTime={fmtedRemainingTime}
+								count={auction.count} setWasAuctionEndedByUser={setWasAuctionEndedByUser}/>
 						))}
 			</div>
 

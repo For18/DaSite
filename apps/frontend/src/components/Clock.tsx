@@ -7,8 +7,8 @@ const currencyType = "100 cent";
 
 // TODO: add onBuy callback
 export default function Clock(
-	{ progress, price, fmtedTime, count, setWasAuctionEndedByUser }: { progress: number, price: string, fmtedTime: string, count: number
-		setWasAuctionEndedByUser: (value: boolean) => void }
+	{ progress, price, fmtedTime, count, setWasAuctionEndedByUser }: { progress: number, price: string,
+		fmtedTime: string, count: number, setWasAuctionEndedByUser: (value: boolean) => void }
 ) {
 	return (
 		<div className={styles.container}>
