@@ -86,6 +86,8 @@ export function formatEuros(n: number): string {
 		tempWholePart = Math.floor(tempWholePart / 1000);
 	} while (tempWholePart > 0);
 
+	wholeString = wholeString.slice(0, wholeString.length - 1);
+
 	if (decimalPart !== 0) {
 		let tempDecimalPart = decimalPart;
 		while (tempDecimalPart % 1 !== 0) tempDecimalPart *= 10;
