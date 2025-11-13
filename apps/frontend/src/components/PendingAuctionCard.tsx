@@ -6,12 +6,12 @@ import Typography from "./Typography";
 export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 	const product = useAPI<Product>("/product/" + auction.productId);
 	const user = useAPI<User>("/user/" + auction.plannerId);
-	const thumbnailImage = useAPI<ProductImage>(product ? "/product-image/from/" + product.thumbnailImageId : null);
+	const thumbnailImage = useAPI<ProductImage>(product ? "/product-image/" + product.id : null);
 
 	return (
 		<div className={styles.card}>
 			<div className={styles.image}>
-				<img className={styles.productImage} src={thumbnailImage?.url}/>
+				<img className={styles.productImage} src={thumbnailImage?.url} />
 			</div>
 			<div className={styles.infoCard}>
 				<div className={styles.productNameContainer}>

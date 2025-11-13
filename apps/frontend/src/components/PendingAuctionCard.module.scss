@@ -7,6 +7,8 @@
 	border-radius: var(--border-radius);
 	max-width: 80vw;
 	box-shadow: 0 2px 5px 1px #000000;
+	width: auto;
+	aspect-ratio: 4 / 1;
 }
 
 .image {
@@ -23,16 +25,16 @@
 }
 
 .infoCard {
-	--card-aspect-ratio: calc(5 / 1);
+	--card-aspect-ratio: 5;
 	float: right;
-	width: calc(
-		(var(--card-aspect-ratio) - 1) / var(--card-aspect-ratio) * 100%
+		width: calc(
+			(var(--card-aspect-ratio) - 1) / var(--card-aspect-ratio) * 100%
 	);
 	height: 100%;
 	display: flex;
 	flex-direction: column;
-	padding-left: 3%;
-	padding-right: 3%;
+	padding-left: 10px;
+	padding-right: 10px;
 }
 
 .productImage {
