@@ -4,6 +4,7 @@ import { ProductImage, useAPI, User } from "../lib/api";
 import NotFound from "../routes/NotFound";
 import styles from "./ProductView.module.scss";
 import Typography from "./Typography";
+import Image from "./Image"
 
 export default function ProductView({ product, batchSize }: { product: Product , batchSize: number}) {
 	const owner = useAPI<User>("/user/" + product.ownerId) ?? null;
@@ -51,7 +52,7 @@ export default function ProductView({ product, batchSize }: { product: Product ,
 				(
 					<>
 						<hr className={styles["horizontal-rule"]}/>
-						<img
+						<Image
 							className={styles["thumbnail-image"]}
 							src={prodImages[0].url}
 							alt={product.name}
@@ -64,7 +65,7 @@ export default function ProductView({ product, batchSize }: { product: Product ,
 				{prodImages.map(prodImage => prodImage.url).map((url, index) => (
 					<div key={url}>
 						<a href={url}>
-							<img
+							<Image
 								className={styles["extra-image"]}
 								src={url}
 								alt={`Product Image ${index + 1}`}
