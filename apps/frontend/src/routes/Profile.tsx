@@ -47,8 +47,7 @@ export default function Profile() {
 			<Section className={styles.profileProducts} flex={{
 				direction: "row",
 				align: "center",
-				wrap: "wrap",
-				gap: 20
+				wrap: "wrap"
 			}}>
 				{userProducts == null ? <Throbber/> : userProducts.length == 0 ?
 					(

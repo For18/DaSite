@@ -4,6 +4,7 @@ import Section from "../components/Section";
 import Throbber from "../components/Throbber";
 import Typography from "../components/Typography";
 import { Auction, Product, useAPI } from "../lib/api";
+import { formatEuros } from "../lib/util";
 
 export default function Auctions() {
 	useEffect(() => {
@@ -18,9 +19,7 @@ export default function Auctions() {
 			<Typography heading={1}>Live Auctions</Typography>
 
 			<Section flex={{
-				direction: "row",
-				wrap: "wrap",
-				gap: 2
+				direction: "column"
 			}}>
 				{auctions === null ?
 					<Throbber/> :
@@ -32,11 +31,11 @@ export default function Auctions() {
 						return (
 							<Section key={auction.id}>
 								{product ?
-									<ProductView product={product}/> :
+									<ProductView product={product} showThumbnail={false}/> :
 									<Typography>Product #{auction.productId}</Typography>}
 								<Typography color="secondary">
-									Start: {auction.startingPrice} • Min: {auction.minimumPrice} • Count:{" "}
-									{auction.count}
+									Price: {formatEuros(auction.startingPrice)}{" "}
+									→ €{formatEuros(auction.minimumPrice)},- • Count: {auction.count}
 								</Typography>
 							</Section>
 						);

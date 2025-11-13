@@ -6,7 +6,6 @@ export interface FlexConfig {
 	justify?: "center" | "flex-start" | "flex-end" | "space-between" | "space-around" | "space-evenly";
 	align?: "center" | "flex-start" | "flex-end" | "stretch" | "baseline";
 	wrap?: "nowrap" | "wrap" | "wrap-reverse";
-	gap?: number;
 }
 
 export interface SectionProps extends PropsWithChildren {
@@ -21,8 +20,7 @@ export default function Section({ children, flex, className }: SectionProps) {
 			flexDirection: flex?.direction,
 			justifyContent: flex?.justify,
 			alignItems: flex?.align,
-			flexWrap: flex?.wrap,
-			gap: flex?.gap
+			flexWrap: flex?.wrap
 		}}>
 			{children}
 		</section>

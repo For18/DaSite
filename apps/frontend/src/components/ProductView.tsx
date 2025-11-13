@@ -6,10 +6,14 @@ import Image from "./Image";
 import styles from "./ProductView.module.scss";
 import Typography from "./Typography";
 
-export default function ProductView({ product, batchSize }: { product: Product, batchSize: number }) {
+export default function ProductView(
+	{ product, showThumbnail = true, batchSize }: { product: Product, showThumbnail?: boolean, batchSize?: number }
+) {
 	const owner = useAPI<User>("/user/" + product.ownerId) ?? null;
 	const prodImages = useAPI<ProductImage[]>("/product-image/from/" + product.id);
-	// const thumbnailImage = useAPI<ProductImage>(product ? "/product-image/" + product.thumbnailImageId : null);
+	// const thumbnailImage = useAPI<ProductImage>(
+	// 	product && showThumbnail ? "/product-image/from/" + product.thumbnailImageId : null
+	// );
 
 	if (owner === null) return <Throbber/>;
 	if (owner === undefined) return <NotFound/>;
@@ -36,11 +40,16 @@ export default function ProductView({ product, batchSize }: { product: Product, 
 				</Typography>
 			</div>
 
-			<hr className={styles["horizontal-rule"]}/>
-
-			<div>
-				<Typography>Batch size: {batchSize}</Typography>
-			</div>
+			{batchSize == null ?
+				null :
+				(
+					<div>
+						<>
+							<hr className={styles["horizontal-rule"]}/>
+							<Typography>Batch size: {batchSize}</Typography>
+						</>
+					</div>
+				)}
 
 			<hr className={styles["horizontal-rule"]}/>
 
@@ -48,7 +57,7 @@ export default function ProductView({ product, batchSize }: { product: Product, 
 				<Typography>{product.description}</Typography>
 			</div>
 
-			{prodImages[0].url ?
+			{prodImages[0].url && showThumbnail ?
 				(
 					<>
 						<hr className={styles["horizontal-rule"]}/>
