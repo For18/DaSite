@@ -48,7 +48,7 @@ export default function ProductView({ product, batchSize }: { product: Product ,
 				<Typography>{product.description}</Typography>
 			</div>
 
-			{prodImages[0]?
+			{prodImages[0].url?
 				(
 					<>
 						<hr className={styles["horizontal-rule"]}/>
