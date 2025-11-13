@@ -82,7 +82,7 @@ export function formatEuros(n: number): string {
 
 	let tempWholePart = wholePart;
 	do {
-		wholeString = (tempWholePart % 1000).toString() + "'" + wholeString;
+		wholeString = (tempWholePart % 1000).toString() + " " + wholeString;
 		tempWholePart = Math.floor(tempWholePart / 1000);
 	} while (tempWholePart > 0);
 
