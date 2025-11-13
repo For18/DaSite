@@ -59,8 +59,7 @@ export default function Profile() {
 			</Section>
 			<Section flex={{
 				direction: "row",
-				align: "center",
-				gap: 2
+				align: "center"
 			}}>
 				{userProducts == null ? <Throbber/> : userProducts.length == 0 ?
 					(
