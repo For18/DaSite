@@ -1,0 +1,48 @@
+.profile-info {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 16px;
+}
+
+@mixin sectionSizing {
+	max-width: 80vw;
+	width: 1000px;
+	padding: var(--spacing);
+}
+
+.profile-header {
+	@include sectionSizing;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+}
+
+.profile-image {
+	/* wrapper: exact size and circle */
+	width: 96px;
+	height: 96px;
+	flex: 0 0 96px;
+	border-radius: 50%;
+	overflow: hidden;
+	display: inline-block;
+}
+
+/* Ensure the actual <img> inside is constrained */
+.profile-image img {
+	width: 96px;
+	height: 96px;
+	object-fit: cover;
+	display: block;
+	border-radius: 50%;
+}
+
+.profile-subtitle {
+	margin-top: 8px;
+}
+
+.profile-products {
+	@include sectionSizing;
+	height: fit-content;
+	margin-top: 20px;
+}
