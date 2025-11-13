@@ -43,10 +43,10 @@ VALUES
 (3, 1, 'https://2.bp.blogspot.com/-EF-ZsrSQQhA/VS1nvPwVT1I/AAAAAAAA07A/8MwhNd5p0Hc/w1200-h630-p-k-no-nu/lente%2Bboeket%2Bmet%2Btulpen.jpg'),
  
 -- Orchideeen
-(4, 2, 'https://media.discordapp.net/attachments/1347187985711501322/1437421970147905546/1336001-ceramic_vase_of_orchids-OfficialStableDiffusionsd_xl_base_10.png?ex=69132f07&is=6911dd87&hm=657d766013a284a9a440ffb38ccc0df66477134fb007c837ba92eb71cb46af77&=&format=webp&quality=lossless&width=838&height=838'),
-(5, 2, 'https://media.discordapp.net/attachments/1347187985711501322/1437421970768527453/1337001-ceramic_vase_of_orchids-OfficialStableDiffusionsd_xl_base_10.png?ex=69132f07&is=6911dd87&hm=b31b6fef9ee44f146d8718971b83736f18776e863cc0bb0443f1370fc2994495&=&format=webp&quality=lossless&width=838&height=838'),
-(6, 2, 'https://media.discordapp.net/attachments/1347187985711501322/1437421971754319892/1337001-ceramic_vase_of_orchids-OfficialStableDiffusionsd_xl_base_10-5.png?ex=69132f08&is=6911dd88&hm=fab5c5aad25bf8846a9fa723e4dcf37a6b6bc63d4aa3c1d1aec976151f355360&=&format=webp&quality=lossless&width=838&height=838'),
-(7, 2, 'https://media.discordapp.net/attachments/1347187985711501322/1437421971297144905/1337001-ceramic_vase_of_orchids-OfficialStableDiffusionsd_xl_base_10-1.png?ex=69132f07&is=6911dd87&hm=a21409ff2980e2d905825dc24a7f20e16ee6f4399c767fa37f3aa3379939d3ed&=&format=webp&quality=lossless&width=838&height=838'),
+(4, 2, 'https://i.imgur.com/TKyjCGD.png'),
+(5, 2, 'https://i.imgur.com/1Jq57B5.png'),
+(6, 2, 'https://i.imgur.com/8y9RWX7.png'),
+(7, 2, 'https://i.imgur.com/L31jYOF.png'),
 
 -- Narcissen
 (8, 3, 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fnl-nl.bakker.com%2Fcdn%2Fshop%2Ffiles%2F100525_2.jpg%3Fv%3D1706170714%26width%3D1946&f=1&nofb=1&ipt=b8725e624447796c736a0faa93d3e61d340312ccb046637c8ece3921bafdb311'),
