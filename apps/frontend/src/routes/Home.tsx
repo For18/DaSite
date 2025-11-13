@@ -2,9 +2,13 @@ import { useCallback, useEffect, useState } from "react";
 import Button from "../components/Button";
 import Typography from "../components/Typography";
 import { randomCharacter } from "../lib/util";
+import { useScreenSize } from "../lib/util";
+import styles from "./Home.module.scss";
 
 export default function Home() {
 	const [text, setText] = useState("Hello world");
+
+	const [screenWidth, screenHeight] = useScreenSize();
 
 	useEffect(() => {
 		document.title = "For18 - Home";
@@ -16,38 +20,33 @@ export default function Home() {
 
 	return (
 		<>
-			<Typography heading={1}>
-				{text}
-			</Typography>
-			<Typography>
-				"If Hypixel has taught me something, it's that if you have a problem, the answer is slavery" -
-				Technoblade (idk when) (bonjour)
-			</Typography>
-			<table>
-				{["contained", "outlined", "text"].map(variant => (
-					<tr key={variant}>
-						{["brand", "success", "warning", "error"].map(color => (
-							<td key={color}>
-								<Button
-									variant={variant as any}
-									color={color as any}
-									onClick={updateText}
-									disabled={text.length >= 50}
-								>
-									Button
-								</Button>
-							</td>
-						))}
-					</tr>
-				))}
-			</table>
-			<Button
-				variant="contained"
-				color="error"
-				onClick={() => setText("Hello world")}
-			>
-				Reset
-			</Button>
+			<div className={styles.header}>
+				<Typography heading={1} className="headerText">
+					Flora Holland Veiling
+				</Typography>
+			</div>
+			<div className={styles.main}>
+				<div className={styles.left}>					
+					<div className={styles.subHeader}>
+						<Typography heading={2} color="secondary">
+							Welkom bij de veiling site van Royal FloraHolland
+						</Typography>
+						<Typography>
+							Dit is de website van Royal FloraHolland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van Royal FloraHolland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van Royal FloraHolland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van Royal FloraHolland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van Royal FloraHolland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van Royal FloraHolland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van Royal FloraHolland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van Royal FloraHolland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van Royal FloraHolland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van Royal FloraHolland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van Royal FloraHolland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van Royal FloraHolland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van Royal FloraHolland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van Royal FloraHolland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van Royal FloraHolland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van Royal FloraHolland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van Royal FloraHolland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van Royal FloraHolland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van Royal FloraHolland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van Royal FloraHolland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van Royal FloraHolland. We verkopen bloemen door middel van ons online veilingsysteem! Dit is de website van Royal FloraHolland. We verkopen bloemen door middel van ons online veilingsysteem!
+						</Typography>
+					</div>
+				</div>
+				<div className={styles.right}>
+					<div className={styles.header4}>
+						<Typography heading={4} color="secondary">
+							Info
+						</Typography>
+						<Typography>
+							Wij verbinden kwekers en kopers, elke dag opnieuw. Met passie voor bloemen, innovatie en duurzaamheid bouwen we aan de toekomst van de internationale sierteelt.
+						</Typography>
+					</div>
+				</div>
+			</div>
 		</>
 	);
 }
