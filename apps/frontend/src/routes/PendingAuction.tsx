@@ -7,7 +7,7 @@ import { useScreenSize } from "../lib/util";
 import styles from "./PendingAuction.module.scss";
 
 export default function PendingAuction() {
-	const auctions = useAPI<Auction[]>("/auctions");
+	const auctions = useAPI<Auction[]>("/auctions/pending");
 
 	const [screenWidth, screenHeight] = useScreenSize();
 
