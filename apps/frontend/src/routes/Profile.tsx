@@ -4,68 +4,43 @@ import Image from "../components/Image";
 import Section from "../components/Section";
 import Throbber from "../components/Throbber";
 import Typography from "../components/Typography";
-import { Product, useAPI } from "../lib/api";
+import { Product, useAPI, User } from "../lib/api";
 import NotFound from "./NotFound";
 import styles from "./Profile.module.scss";
-
-type OtherUser = {
-	id: number;
-	name: string;
-	subtitle: string;
-	avatarColor: string;
-	avatarUrl?: string;
-	auctions?: string;
-};
-
-const otherUsers: OtherUser[] = [
-	{ id: 1, name: "Lisa", subtitle: "Loves auctions and her cats, has a grey shorthair and a ginger tabby",
-		avatarColor: "#FF5733",
-		avatarUrl: "https://cats.com/wp-content/uploads/2025/10/GoodVets-Cat-At-Vet-24-540x360.jpg" },
-	{ id: 2, name: "Hendriks", subtitle: "Collector of rare items", avatarColor: "#33FF57",
-		avatarUrl: "https://upload.wikimedia.org/wikipedia/commons/4/46/WilliamOfOrange1580.jpg" },
-	{ id: 3, name: "Joost", subtitle: "Bidding enthusiast", avatarColor: "#5733ff",
-		avatarUrl:
-			"https://media.istockphoto.com/id/504709773/photo/suiting-up-for-success.jpg?s=612x612&w=0&k=20&c=8-iwsA0ZhyZRtA0jDyKqdiyA-gGYyB1GHxrNLYKJ7L8=" },
-	{ id: 4, name: "Microsoft", subtitle: "Just here for the deals", avatarColor: "#ff33a8",
-		avatarUrl:
-			"https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/2048px-Microsoft_logo.svg.png" }
-];
 
 export default function Profile() {
 	const { userId: userIdString } = useParams();
 	if (!userIdString) return <NotFound/>;
 	const userId = parseInt(userIdString);
 
-	const user = otherUsers.find(u => u.id === userId);
-	if (!user) return <NotFound/>;
-
-	const userProducts = useAPI<Product[]>("/products?owner=" + userIdString);
+	const user = useAPI<User>("/private-user/" + userId);
+	const userProducts = useAPI<Product[]>("/products?owner=" + userId);
+	
+	if (user === undefined) return <NotFound/>;
 
 	return (
 		<>
 			<Section className={styles.profileHeader}>
-				<div className={styles.profileInfo}>
-					{}
-					<div
-						className={styles.profileImage}
-						style={{ ["--avatarColor" as any]: user.avatarColor } as React.CSSProperties}
-					>
+				{user === null ? <Throbber/> : <>
+					<div className={styles.profileInfo}>
 						{}
-						<Image
-							height={96}
-							src={user.avatarUrl}
-							alt={`${user.name}'s avatar`}
-						/>
+						<div className={styles.profileImage}>
+							<Image
+								height={96}
+								src={user.imageUrl}
+								alt={`${user.displayName}'s avatar`}
+							/>
+						</div>
+
+						<Typography heading={1}>
+							{user.displayName}
+						</Typography>
 					</div>
 
-					<Typography heading={1}>
-						{user.name}
-					</Typography>
-				</div>
-
-				<Typography className={styles.profileSubtitle} color="secondary">
-					{user.subtitle}
-				</Typography>
+					{/* <Typography className={styles.profileSubtitle} color="secondary">
+						{user.subtitle}
+					</Typography> */}
+				</>}
 			</Section>
 			<Section className={styles.profileProducts} flex={{
 				direction: "row",

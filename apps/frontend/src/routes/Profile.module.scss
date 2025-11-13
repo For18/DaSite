@@ -19,8 +19,6 @@
 	border-radius: 50%;
 	overflow: hidden;
 	display: inline-block;
-	/* border color via CSS var (fallback) */
-	border: 2px solid var(--avatarColor, #dddddd);
 }
 
 /* Ensure the actual <img> inside is constrained */
