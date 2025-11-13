@@ -1,6 +1,5 @@
 import { Auction, Product, ProductImage, useAPI, User } from "../lib/api";
 import styles from "./PendingAuctionCard.module.scss";
-import Section from "./Section";
 import Typography from "./Typography";
 
 export default function PendingAuctionCard({ auction }: { auction: Auction }) {
