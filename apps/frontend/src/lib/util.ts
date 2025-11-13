@@ -73,3 +73,24 @@ export function useRenderCount(): number {
 
 	return countRef.current;
 }
+
+export function formatEuros(n: number): string {
+	const wholePart = Math.floor(n);
+	const decimalPart = n % 1;
+
+	let wholeString = "";
+
+	let tempWholePart = wholePart;
+	do {
+		wholeString = (tempWholePart % 1000).toString() + "'" + wholeString;
+		tempWholePart = Math.floor(tempWholePart / 1000);
+	} while (tempWholePart > 0);
+
+	if (decimalPart !== 0) {
+		let tempDecimalPart = decimalPart;
+		while (tempDecimalPart % 1 !== 0) tempDecimalPart *= 10;
+		wholeString += "," + tempDecimalPart.toString();
+	} else wholeString += ",-";
+
+	return wholeString;
+}

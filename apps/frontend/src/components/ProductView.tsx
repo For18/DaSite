@@ -8,7 +8,9 @@ import Typography from "./Typography";
 export default function ProductView({ product, showThumbnail = true }: { product: Product, showThumbnail?: boolean }) {
 	const owner = useAPI<User>("/user/" + product.ownerId) ?? null;
 	const prodImages = useAPI<ProductImage[]>("/product-image/from/" + product.id);
-	const thumbnailImage = useAPI<ProductImage>(product && showThumbnail ? "/product-image/from/" + product.thumbnailImageId : null);
+	const thumbnailImage = useAPI<ProductImage>(
+		product && showThumbnail ? "/product-image/from/" + product.thumbnailImageId : null
+	);
 
 	if (owner === null) return <Throbber/>;
 	if (owner === undefined) return <NotFound/>;
