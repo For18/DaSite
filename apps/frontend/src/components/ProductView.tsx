@@ -2,11 +2,11 @@ import Throbber from "../components/Throbber";
 import { Product } from "../lib/api";
 import { ProductImage, useAPI, User } from "../lib/api";
 import NotFound from "../routes/NotFound";
+import Image from "./Image";
 import styles from "./ProductView.module.scss";
 import Typography from "./Typography";
-import Image from "./Image"
 
-export default function ProductView({ product, batchSize }: { product: Product , batchSize: number}) {
+export default function ProductView({ product, batchSize }: { product: Product, batchSize: number }) {
 	const owner = useAPI<User>("/user/" + product.ownerId) ?? null;
 	const prodImages = useAPI<ProductImage[]>("/product-image/from/" + product.id);
 	// const thumbnailImage = useAPI<ProductImage>(product ? "/product-image/" + product.thumbnailImageId : null);
@@ -17,15 +17,15 @@ export default function ProductView({ product, batchSize }: { product: Product ,
 	if (prodImages === null) return <Throbber/>;
 	if (prodImages === undefined) return <NotFound/>;
 
-  // if (thumbnailImage === null) return <Throbber/>;
-  // if (thumbnailImage === undefined) return <NotFound/>;
-  //
-  // console.log(thumbnailImage.url)
+	// if (thumbnailImage === null) return <Throbber/>;
+	// if (thumbnailImage === undefined) return <NotFound/>;
+	//
+	// console.log(thumbnailImage.url)
 
-  // if (thumbnailImage.url === null) return <Throbber/>;
-  // if (thumbnailImage.url === undefined) return <NotFound/>;
+	// if (thumbnailImage.url === null) return <Throbber/>;
+	// if (thumbnailImage.url === undefined) return <NotFound/>;
 
-  const ownerId = product.ownerId? product.ownerId.toString() : undefined;
+	const ownerId = product.ownerId ? product.ownerId.toString() : undefined;
 
 	return (
 		<div className={styles["product-view"]}>
@@ -38,9 +38,9 @@ export default function ProductView({ product, batchSize }: { product: Product ,
 
 			<hr className={styles["horizontal-rule"]}/>
 
-      <div>
-        <Typography>Batch size: {batchSize}</Typography>
-      </div>
+			<div>
+				<Typography>Batch size: {batchSize}</Typography>
+			</div>
 
 			<hr className={styles["horizontal-rule"]}/>
 
@@ -48,7 +48,7 @@ export default function ProductView({ product, batchSize }: { product: Product ,
 				<Typography>{product.description}</Typography>
 			</div>
 
-			{prodImages[0].url?
+			{prodImages[0].url ?
 				(
 					<>
 						<hr className={styles["horizontal-rule"]}/>
@@ -77,4 +77,3 @@ export default function ProductView({ product, batchSize }: { product: Product ,
 		</div>
 	);
 }
-
