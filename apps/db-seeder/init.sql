@@ -92,14 +92,14 @@ VALUES
 (36, 9, 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fownyardlife.com%2Fwp-content%2Fuploads%2F2025%2F03%2FGerbera-Daisy-Plant-Care-1-1536x864.jpg&f=1&nofb=1&ipt=6ee3cba3fbaef0e4e43c7472ab7da612663d04214eb639d5b883b910ebe0072d');
 
 UPDATE Products SET ThumbnailImageId=1 WHERE Id=1;
-UPDATE Products SET ThumbnailImageId=2 WHERE Id=4;
-UPDATE Products SET ThumbnailImageId=3 WHERE Id=8;
-UPDATE Products SET ThumbnailImageId=4 WHERE Id=11;
-UPDATE Products SET ThumbnailImageId=5 WHERE Id=16;
-UPDATE Products SET ThumbnailImageId=6 WHERE Id=20;
-UPDATE Products SET ThumbnailImageId=7 WHERE Id=24;
-UPDATE Products SET ThumbnailImageId=8 WHERE Id=28;
-UPDATE Products SET ThumbnailImageId=9 WHERE Id=32;
+UPDATE Products SET ThumbnailImageId=4 WHERE Id=2;
+UPDATE Products SET ThumbnailImageId=8 WHERE Id=3;
+UPDATE Products SET ThumbnailImageId=11 WHERE Id=4;
+UPDATE Products SET ThumbnailImageId=16 WHERE Id=5;
+UPDATE Products SET ThumbnailImageId=20 WHERE Id=6;
+UPDATE Products SET ThumbnailImageId=24 WHERE Id=7;
+UPDATE Products SET ThumbnailImageId=28 WHERE Id=8;
+UPDATE Products SET ThumbnailImageId=32 WHERE Id=9;
 
 -- AUCTIONS
 INSERT INTO Auctions(Id, Count, BatchSize, StartingPrice, MinimumPrice, StartingTime, Length, ProductId, PlannerId)
