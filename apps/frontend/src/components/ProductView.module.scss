@@ -20,6 +20,8 @@
 .thumbnail-image {
 	width: 100%;
 	height: auto;
+  max-height: 250px;
+  max-width: 250px;
 	border-radius: 0.4vw;
 }
 
