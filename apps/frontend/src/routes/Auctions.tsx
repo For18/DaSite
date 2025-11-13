@@ -30,7 +30,7 @@ export default function Auctions() {
 						return (
 							<Section key={auction.id}>
 								{product ?
-									<ProductView product={product}/> :
+									<ProductView product={product} showThumbnail={false}/> :
 									<Typography>Product #{auction.productId}</Typography>}
 								<Typography color="secondary">
 									Start: {auction.startingPrice} • Min: {auction.minimumPrice} • Count:{" "}
