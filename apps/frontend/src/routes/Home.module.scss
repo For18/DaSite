@@ -1,6 +1,6 @@
 .main {
 	display: flex;
-	justify-content: center;
+	justify-content: space-evenly;
 	align-items: flex-start;
     width: 100%;
     height: 100%;
@@ -11,15 +11,17 @@
 	display: flex;
 	align-items: center;
     float: left;
-    width: 70%;
+    width: auto;
     height: 100%;
 	justify-content: center;
 }
 
 .right {
-	width: 30%;
+	display: flex;
+	width: auto;
 	height: 100%;
 	float: right;
+	justify-content: center;
 }
 
 .heading {
@@ -44,7 +46,6 @@
 	left: 40%;
 	max-width: 70%;
 	padding: 20px;
-	padding-left: 20px;
 	margin-top: 50px;
 	background-color: var(--color-background-secondary);
 	border-radius: var(--border-radius);
@@ -61,13 +62,12 @@
 }
 
 .image {
-	margin-top: 40px;
+	margin-top: 20px;
 	height: auto;
 	width: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin-bottom: 30px;
 }
 
 .mainImage {
