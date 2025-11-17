@@ -22,13 +22,13 @@ export default function Home() {
 		<>
 			<div className={styles.heading}>
 				<Typography heading={1} className="headerText">
-					Flora Holland Veiling
+					FloraHolland Veilingwebsite
 				</Typography>
 			</div>
 			<div className={styles.main}>
 				<div className={styles.left}>
-					<div className={styles.subHeader}>
-						<Typography heading={2} color="secondary">
+					<div className={styles.subHeading}>
+						<Typography heading={2}>
 							Welkom bij de veiling site van Royal FloraHolland
 						</Typography>
 						<div>
@@ -42,7 +42,7 @@ export default function Home() {
 					</div>
 				</div>
 				<div className={styles.right}>
-					<div className={styles.header4}>
+					<div className={styles.heading4}>
 						<Typography heading={4} color="secondary">
 							Info
 						</Typography>
