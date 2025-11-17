@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import Button from "../components/Button";
+import Image from "../components/Image";
 import Typography from "../components/Typography";
 import { randomCharacter } from "../lib/util";
 import { useScreenSize } from "../lib/util";
@@ -24,6 +24,9 @@ export default function Home() {
 				<Typography heading={1} className="headerText">
 					FloraHolland Veilingwebsite
 				</Typography>
+			</div>
+			<div className={styles.image}>
+				<Image className={styles.mainImage} src={"https://www.visitaalsmeer.nl/wp-content/uploads/2021/06/RoyalHolland-Flower-Auction-Aalsmeer-1-1920x1440.jpg"} alt={""}/>
 			</div>
 			<div className={styles.main}>
 				<div className={styles.left}>
