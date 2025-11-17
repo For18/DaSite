@@ -13,21 +13,21 @@ export default function Clock(
 	return (
 		<div className={styles.container}>
 			<div className={styles.clock} style={{ "--progress": progress } as React.CSSProperties}>
-				<div className={styles["clock-overlay"]}>
+				<div className={styles.clockOverlay}>
 					{/* Top Box*/}
-					<div className={styles["clock-box"]}>
+					<div className={styles.clockBox}>
 						<Typography>currency</Typography>
 						<Typography>{currencyType}</Typography>
 					</div>
 
 					{/* Middle Box*/}
-					<div className={styles["clock-box"]}>
+					<div className={styles.clockBox}>
 						<Typography>price</Typography>
 						<Typography>{price}</Typography>
 					</div>
 
 					{/* Bottom Box*/}
-					<div className={styles["clock-box"]}>
+					<div className={styles.clockBox}>
 						<Typography>count</Typography>
 						<Typography>{count}</Typography>
 					</div>

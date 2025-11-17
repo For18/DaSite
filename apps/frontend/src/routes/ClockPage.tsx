@@ -78,8 +78,8 @@ export default function ClockPage() {
 		formatDuration(remainingTime);
 
 	return (
-		<div className={styles["base-container"]}>
-			<div className={styles["clock-container"]}>
+		<div className={styles.baseContainer}>
+			<div className={styles.clockContainer}>
 				{auctionProgress <= 0 ?
 					<BeforeAuction startingPoint={formatStartCountDown(startingTime ?? 0, currentTime)}/> :
 					(isAuctionOver ?
@@ -90,9 +90,9 @@ export default function ClockPage() {
 						))}
 			</div>
 
-			<div className={styles["container-separator"]}/>
+			<div className={styles.containerSeparator}/>
 
-			<div className={styles["product-container"]}>
+			<div className={styles.productContainer}>
 				{product == null ? <Throbber/> : <ProductView product={product} batchSize={auction.batchSize}/>}
 			</div>
 		</div>

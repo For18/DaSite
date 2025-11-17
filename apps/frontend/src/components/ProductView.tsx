@@ -32,7 +32,7 @@ export default function ProductView(
 	const ownerId = product.ownerId ? product.ownerId.toString() : undefined;
 
 	return (
-		<div className={styles["product-view"]}>
+		<div className={styles.productView}>
 			<div>
 				<Typography heading={1}>{product.name}</Typography>
 				<Typography className={styles.seller} href={`/profile/${ownerId}`}>
@@ -45,13 +45,13 @@ export default function ProductView(
 				(
 					<div>
 						<>
-							<hr className={styles["horizontal-rule"]}/>
+							<hr className={styles.horizontalRule}/>
 							<Typography>Batch size: {batchSize}</Typography>
 						</>
 					</div>
 				)}
 
-			<hr className={styles["horizontal-rule"]}/>
+			<hr className={styles.horizontalRule}/>
 
 			<div>
 				<Typography>{product.description}</Typography>
@@ -60,9 +60,9 @@ export default function ProductView(
 			{prodImages[0].url && showThumbnail ?
 				(
 					<>
-						<hr className={styles["horizontal-rule"]}/>
+						<hr className={styles.horizontalRule}/>
 						<Image
-							className={styles["thumbnail-image"]}
+							className={styles.thumbnailImage}
 							src={prodImages[0].url}
 							alt={product.name}
 						/>
@@ -70,12 +70,12 @@ export default function ProductView(
 				) :
 				null}
 
-			<div className={styles["extra-image-container"]}>
+			<div className={styles.extraImageContainer}>
 				{prodImages.map(prodImage => prodImage.url).map((url, index) => (
 					<div key={url}>
 						<a href={url}>
 							<Image
-								className={styles["extra-image"]}
+								className={styles.extraImage}
 								src={url}
 								alt={`Product Image ${index + 1}`}
 							/>

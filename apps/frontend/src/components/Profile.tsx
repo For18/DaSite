@@ -4,7 +4,7 @@ import styles from "./Profile.module.scss";
 export default function Profile({ user }: { user: { avatarColor: string } }) {
 	return (
 		<div
-			className={styles["profile-image"]}
+			className={styles.profileImage}
 			style={{ ["--avatarColor" as any]: user.avatarColor } as React.CSSProperties}
 		/>
 	);
