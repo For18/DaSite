@@ -20,7 +20,7 @@ export default function Home() {
 
 	return (
 		<>
-			<div className={styles.header}>
+			<div className={styles.heading}>
 				<Typography heading={1} className="headerText">
 					Flora Holland Veiling
 				</Typography>

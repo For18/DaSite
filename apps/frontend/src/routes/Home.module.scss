@@ -1,12 +1,16 @@
 .main {
-	width: 100%;
-	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+    width: 100%;
+    height: 100%;
 }
 
 .left {
-	float: left;
-	width: 70%;
-	height: 100%;
+	align-items: center;
+    float: left;
+    width: 70%;
+    height: 100%;
 }
 
 .right {
@@ -15,10 +19,10 @@
 	float: right;
 }
 
-.header {
-	width: calc(100% - 20px);
-	padding-left: 20px;
-	line-height: 0px;
+.heading {
+	display: block;
+    float: center;
+    line-height: 0px;
 }
 
 .subHeader {
