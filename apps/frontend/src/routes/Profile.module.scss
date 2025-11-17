@@ -18,15 +18,7 @@
 	flex-direction: row;
 }
 
-.profile-image {
-	/* wrapper: exact size and circle */
-	width: 96px;
-	height: 96px;
-	flex: 0 0 96px;
-	border-radius: 50%;
-	overflow: hidden;
-	display: inline-block;
-}
+
 
 /* Ensure the actual <img> inside is constrained */
 .profile-image img {
