@@ -15,11 +15,11 @@ export default function ProductView(
 	// 	product && showThumbnail ? "/product-image/from/" + product.thumbnailImageId : null
 	// );
 
-	if (owner === null) return <Throbber/>;
-	if (owner === undefined) return <NotFound/>;
+	if (owner === null) return <Throbber />;
+	if (owner === undefined) return <NotFound />;
 
-	if (prodImages === null) return <Throbber/>;
-	if (prodImages === undefined) return <NotFound/>;
+	if (prodImages === null) return <Throbber />;
+	if (prodImages === undefined) return <NotFound />;
 
 	// if (thumbnailImage === null) return <Throbber/>;
 	// if (thumbnailImage === undefined) return <NotFound/>;
@@ -45,22 +45,22 @@ export default function ProductView(
 				(
 					<div>
 						<>
-							<hr className={styles.horizontalRule}/>
+							<hr className={styles.horizontalRule} />
 							<Typography>Batch size: {batchSize}</Typography>
 						</>
 					</div>
 				)}
 
-			<hr className={styles.horizontalRule}/>
+			<hr className={styles.horizontalRule} />
 
 			<div>
 				<Typography>{product.description}</Typography>
 			</div>
 
-			{prodImages[0].url && showThumbnail ?
+			{prodImages.length > 0 && prodImages[0]?.url && showThumbnail ?
 				(
 					<>
-						<hr className={styles.horizontalRule}/>
+						<hr className={styles.horizontalRule} />
 						<Image
 							className={styles.thumbnailImage}
 							src={prodImages[0].url}

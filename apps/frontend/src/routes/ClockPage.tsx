@@ -6,7 +6,7 @@ import EndedAuction from "../components/EndedAuction";
 import ProductView from "../components/ProductView";
 import Throbber from "../components/Throbber";
 import { API_URL, Auction, Product, useAPI } from "../lib/api";
-import { useTime } from "../lib/util";
+import { useTime, normalizeTimestamp } from "../lib/util";
 import styles from "./ClockPage.module.scss";
 import NotFound from "./NotFound";
 
@@ -26,9 +26,8 @@ function formatDuration(duration: number): string {
 	const milliseconds = Math.round(duration % 1000);
 	const seconds = Math.floor(duration / 1000) % 60;
 
-	return `${(seconds < 10 ? "0" : "") + seconds}:${
-		(milliseconds < 100 ? "0" : "") + (milliseconds < 10 ? "0" : "") + milliseconds
-	}`;
+	return `${(seconds < 10 ? "0" : "") + seconds}:${(milliseconds < 100 ? "0" : "") + (milliseconds < 10 ? "0" : "") + milliseconds
+		}`;
 }
 
 export default function ClockPage() {
@@ -49,7 +48,7 @@ export default function ClockPage() {
 		}).then(() => console.log("patched"));
 	}, [auction]);
 
-	const startingTime = auction?.startingTime ?? 0;
+	const startingTime = normalizeTimestamp(auction?.startingTime ?? 0);
 	const currentTime = useTime();
 
 	const wasOverOnLoad = useMemo(() => {
@@ -58,9 +57,9 @@ export default function ClockPage() {
 		return mountTimeRef.current > auctionEndMillis;
 	}, [auction]);
 
-	if (auction === undefined) return <NotFound/>;
-	if (auction === null) return <Throbber/>;
-	if (wasOverOnLoad) return <EndedAuction id={auction.id}/>;
+	if (auction === undefined) return <NotFound />;
+	if (auction === null) return <Throbber />;
+	if (wasOverOnLoad) return <EndedAuction id={auction.id} />;
 
 	const auctionLenMillis = auction.length * 1000;
 	const elapsedTime = startingTime != null ? currentTime - startingTime : 0;
@@ -81,19 +80,19 @@ export default function ClockPage() {
 		<div className={styles.baseContainer}>
 			<div className={styles.clockContainer}>
 				{auctionProgress <= 0 ?
-					<BeforeAuction startingPoint={formatStartCountDown(startingTime ?? 0, currentTime)}/> :
+					<BeforeAuction startingPoint={formatStartCountDown(startingTime ?? 0, currentTime)} /> :
 					(isAuctionOver ?
-						<EndedAuction id={auction.id}/> :
+						<EndedAuction id={auction.id} /> :
 						(
 							<Clock progress={auctionProgress} price={currentPrice} fmtedTime={fmtedRemainingTime}
-								count={auction.count} setWasAuctionEndedByUser={setWasAuctionEndedByUser}/>
+								count={auction.count} setWasAuctionEndedByUser={setWasAuctionEndedByUser} />
 						))}
 			</div>
 
-			<div className={styles.containerSeparator}/>
+			<div className={styles.containerSeparator} />
 
 			<div className={styles.productContainer}>
-				{product == null ? <Throbber/> : <ProductView product={product} batchSize={auction.batchSize}/>}
+				{product == null ? <Throbber /> : <ProductView product={product} batchSize={auction.batchSize} />}
 			</div>
 		</div>
 	);

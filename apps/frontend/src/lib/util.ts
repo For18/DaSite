@@ -96,3 +96,22 @@ export function formatEuros(n: number): string {
 
 	return "€" + wholeString;
 }
+
+export function normalizeTimestamp(raw: number | null | undefined): number {
+	if (!raw) return 0;
+
+	const now = Date.now();
+
+// Try scaling factors to handle timestamps with missing zeros or in seconds.
+// Prefer a scaled value that falls within ±10 years of 'now'.
+const TEN_YEARS_MS = 1000 * 60 * 60 * 24 * 365 * 10;
+const factors = [1, 10, 100, 1000, 10000];
+
+for (const f of factors) {
+    const scaled = raw * f;
+    if (scaled > now - TEN_YEARS_MS && scaled < now + TEN_YEARS_MS) return scaled;
+}
+
+// Fallback: if raw already looks like ms (>= 1e12) return as-is, otherwise return raw
+return raw;
+}
