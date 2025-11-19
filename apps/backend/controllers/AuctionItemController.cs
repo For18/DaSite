@@ -18,7 +18,7 @@ public class AuctionItemExternal {
   }
 
   public static AuctionItemExternal ToExternal(AuctionItem item) {
-    return new AuctionItemExternal(item.Id, item.Count, item.BatchSize, item.StartingPrice, item.MinimumPrice, item.Length, item.Product?.Id);
+    return new AuctionItemExternal(item.Id, item.Count, item.BatchSize, item.StartingPrice, item.MinimumPrice, item.Length, item.Product.Id);
   }
 
   public AuctionItem ToAuctionItem(DatabaseContext db) {
