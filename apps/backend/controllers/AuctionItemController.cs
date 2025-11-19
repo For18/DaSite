@@ -21,7 +21,7 @@ public class AuctionItemExternal {
     return new AuctionItemExternal(item.Id, item.Count, item.BatchSize, item.StartingPrice, item.MinimumPrice, item.Length, item.Product?.Id);
   }
 
-  public AuctionItem ToAuctionItem(Databasecontext db) {
+  public AuctionItem ToAuctionItem(DatabaseContext db) {
     return new AuctionItem{
       Id = Id,
       Count = Count,
@@ -44,7 +44,7 @@ public class AuctionItemExternal {
 
 [ApiController]
 [Route("auction-item")]
-public class AuctionController : ControllerBase {
+public class AuctionItemController : ControllerBase {
 	[HttpGet("{id}")]
 	public async Task<ActionResult<AuctionItemExternal>> Get(ulong id) {
 		using var db = new DatabaseContext();
@@ -64,7 +64,7 @@ public class AuctionController : ControllerBase {
 			if (await db.AuctionItems.AnyAsync(auc => auc.Id == auctionData.Id)) return Conflict("Already exists");
 			AuctionItem item = auctionItemData.ToAuctionItem(db);
 
-			db.AuctionItems.Add(auctionItemData);
+			db.AuctionItems.Add(item);
 			await db.SaveChangesAsync();
 
 			return Ok(new IdReference(item.Id));

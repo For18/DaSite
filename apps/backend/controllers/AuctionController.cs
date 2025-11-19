@@ -17,14 +17,14 @@ public class AuctionExternal {
     return new AuctionExternal(auction.Id, auction.StartingTime, auction.Planner?.Id);
   }
 
-  public Auction ToAuction(Databasecontext db) {
+  public Auction ToAuction(DatabaseContext db) {
     return new Auction {
       Id = Id,
       StartingTime = StartingTime,
       PlannerId = db.Users.Where(u => u.Id == PlannerId)
     };
   }
-	public ulong Id { get; init; }
+	public required ulong Id { get; init; }
 	public ulong? StartingTime { get; init; }
 	public ulong? PlannerId { get; init; }
 }
