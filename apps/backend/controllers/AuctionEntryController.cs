@@ -15,14 +15,15 @@ public class AuctionEntryExternal {
     AuctionId = auctionId;
     ItemId = itemId;
   }
+
   public static AuctionEntryExternal ToExternal(AuctionEntry entry) {
-    return new AuctionEntryExternal(entry.Auction.Id, entry.AuctionItem.Id);
+    return new AuctionEntryExternal(entry.Auction.Id, entry.Product.Id);
   }
 
-  public AuctionEntry ToAuctionEntry(DatabaseContext db) {
+  public AuctionEntry ToAuctionEntry(Databasecontext db) {
     return new AuctionEntry {
-      Auction = db.Auctions.Include(auc => auc.Planner).Where(auc => auc.Id == AuctionId).FirstOrDefault(),
-      AuctionItem = db.AuctionItems.Include(item => item.Product).ThenInclude(prod => prod.ThumbnailImage).Where(item => item.Id == ItemId).FirstOrDefault()
+      Auction = db.Auctions.Include(auc => auc.Planner).Where(auc => auc.Id == auctionId),
+      AuctionItem = db.AuctionItems.Include(item => item.Product).ThenInclude(prod => prod.ProductImage).Where(item => item.Id == itemId)
     };
   }
 
@@ -61,7 +62,7 @@ public class AuctionEntryController : ControllerBase {
         .Include(entry => entry.AuctionItem)
         .ThenInclude(item => item.Product)
         .ThenInclude(prod => prod.ThumbnailImage)
-        .Where(entry => entry.Auction.Id == id)
+        .Where(entry.Auction.Id == id)
         .Select(entry => AuctionEntryExternal.ToExternal(entry))
         .ToArrayAsync();
     }
@@ -74,12 +75,13 @@ public class AuctionEntryController : ControllerBase {
       bool isConflicting = await db.AuctionEntries
         .Include(entry => entry.Auction)
         .Include(entry => entry.AuctionItem)
+        .Where(entry.Auction.Id == id)
         .AnyAsync(entry => entry.Auction.Id == auctionEntryData.AuctionId && entry.AuctionItem.Id == auctionEntryData.ItemId);
 
 			if (isConflicting) return Conflict("Already exists");
 			AuctionEntry entry = auctionEntryData.ToAuctionEntry(db);
 
-			db.AuctionEntries.Add(entry);
+			db.AuctionEntries.Add(auctionEntryData);
 			await db.SaveChangesAsync();
 
 			return Ok();
@@ -100,7 +102,7 @@ public class AuctionEntryController : ControllerBase {
 	}
 
 	[HttpPatch("{id}")]
-	public async Task<ActionResult> Update(ulong id, [FromBody] JsonPatchDocument<AuctionEntry> patchdoc) {
+	public async Task<ActionResult> Update(ulong id, [FromBody] JsonPatchDocument<Auction> patchdoc) {
 		using (var db = new DatabaseContext()) {
 			AuctionEntry? entry = await db.AuctionEntries.FindAsync(id);
 			if (entry == null) return NotFound();

@@ -53,6 +53,8 @@ public class AuctionController : ControllerBase {
 		using (var db = new DatabaseContext()) {
 			return await db.Auctions
 				.Include(auc => auc.Planner)
+				.Include(auc => auc.Product)
+				.Where(auc => auc.StartingTime != null)
 				.Select(auction => AuctionExternal.ToExternal(auction))
 			.ToArrayAsync();
 		}
