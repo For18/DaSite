@@ -7,43 +7,25 @@ using System.ComponentModel;
 
 [DisplayName(nameof(Auction))]
 public class AuctionExternal {
-	public AuctionExternal(ulong id, ushort count, uint batchSize, uint startPrice, uint minPrice, ulong? startTime, uint? length, ulong productId, ulong? plannerId) {
-		Id = id;
-		Count = count;
-		BatchSize = batchSize;
-		StartingPrice = startPrice;
-		MinimumPrice = minPrice;
-		StartingTime = startTime;
-		Length = length;
-		ProductId = productId;
-		PlannerId = plannerId;
-	}
+  public AuctionExternal(ulong id, ulong? startingTime, ulong? plannerId) {
+    Id = id;
+    StartingTime = startingTime;
+    PlannerId = plannerId;
+  }
 
-	public static AuctionExternal ToExternal(Auction auction) {
-		return new AuctionExternal(auction.Id, auction.Count, auction.BatchSize, auction.StartingPrice, auction.MinimumPrice, auction.StartingTime, auction.Length, auction.Product.Id, auction.Planner?.Id);
-	}
+  public static AuctionExternal ToExternal(Auction auction) {
+    return new AuctionExternal(auction.Id, auction.StartingTime, auction.Planner?.Id);
+  }
 
-	public Auction ToAuction(DatabaseContext db) {
-		return new Auction {
-			Id = Id,
-			Count = Count,
-			BatchSize = BatchSize,
-			StartingPrice = StartingPrice,
-			MinimumPrice = MinimumPrice,
-			StartingTime = StartingTime,
-			Length = Length,
-			Product = db.Products.Where(p => p.Id == ProductId).First(),
-			Planner = db.Users.Where(u => u.Id == PlannerId).FirstOrDefault()
-		};
-	}
+  public Auction ToAuction(Databasecontext db) {
+    return new Auction {
+      Id = Id,
+      StartingTime = StartingTime,
+      PlannerId = db.Users.Where(u => u.Id == PlannerId)
+    };
+  }
 	public ulong Id { get; init; }
-	public ushort Count { get; init; }
-	public uint BatchSize { get; init; }
-	public uint StartingPrice { get; init; }
-	public uint MinimumPrice { get; init; }
 	public ulong? StartingTime { get; init; }
-	public uint? Length { get; init; }
-	public ulong ProductId { get; init; }
 	public ulong? PlannerId { get; init; }
 }
 
@@ -68,7 +50,7 @@ public class AuctionController : ControllerBase {
 			return await db.Auctions
 				.Include(auc => auc.Planner)
 				.Include(auc => auc.Product)
-				.Where(auc => auc.StartingTime != null && auc.Length != null)
+				.Where(auc => auc.StartingTime != null)
 				.Select(auction => AuctionExternal.ToExternal(auction))
 			.ToArrayAsync();
 		}
@@ -79,13 +61,11 @@ public class AuctionController : ControllerBase {
 		using (var db = new DatabaseContext()) {
 			return await db.Auctions
 				.Include(auc => auc.Planner)
-				.Include(auc => auc.Product)
-				.Where(auc => auc.StartingTime == null || auc.Length == null)
+				.Where(auc => auc.StartingTime == null)
 				.Select(auction => AuctionExternal.ToExternal(auction))
 			.ToArrayAsync();
 		}
 	}
-
 
 	[HttpPost]
 	public async Task<ActionResult> Post(AuctionExternal auctionData) {
