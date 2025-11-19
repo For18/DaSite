@@ -7,64 +7,72 @@ using System.ComponentModel;
 
 [DisplayName(nameof(AuctionEntry))]
 public class AuctionEntryExternal {
-	/* For annotation reasoning:
-	 * https://stackoverflow.com/questions/76909169/required-keyword-causes-error-even-if-member-initialized-in-constructor
-	 */
-	[System.Diagnostics.CodeAnalysis.SetsRequiredMembersAttribute]
-	public AuctionEntryExternal(ulong auctionId, ulong itemId) {
-		AuctionId = auctionId;
-		ItemId = itemId;
-	}
-	public static AuctionEntryExternal ToExternal(AuctionEntry entry) {
-		return new AuctionEntryExternal(entry.Auction.Id, entry.AuctionItem.Id);
-	}
+  public AuctionEntryExternal(ulong auctionId, ulong itemId) {
+    AuctionId = auctionId;
+    ItemId = itemId;
+  }
 
-	public AuctionEntry ToAuctionEntry(DatabaseContext db) {
-		return new AuctionEntry {
-			Auction = db.Auctions.Include(auc => auc.Planner).Where(auc => auc.Id == AuctionId).FirstOrDefault(),
-			AuctionItem = db.AuctionItems.Include(item => item.Product).ThenInclude(prod => prod.ThumbnailImage).Where(item => item.Id == ItemId).FirstOrDefault()
-		};
-	}
+  public static AuctionEntryExternal ToExternal(AuctionEntry entry) {
+    return new AuctionEntryExternal(entry.Auction.Id, entry.Product.Id);
+  }
+
+  public AuctionEntry ToAuctionEntry(Databasecontext db) {
+    return new AuctionEntry {
+      Auction = db.Auctions.Include(auc => auc.Planner).Where(auc => auc.Id == auctionId),
+      AuctionItem = db.AuctionItems.Include(item => item.Product).ThenInclude(prod => prod.ProductImage).Where(item => item.Id == itemId)
+    };
+  }
 
 	public required ulong AuctionId { get; set; }
-	public required ulong ItemId { get; set; }
+  public required ulong ItemId { get; set; }
 }
 
 [ApiController]
 [Route("auction-entry")]
-public class AuctionEntryController : ControllerBase {
-	[HttpGet("{auctionId}/{itemId}")]
-	public async Task<ActionResult<AuctionEntryExternal>> Get(ulong auctionId, ulong itemId) {
+public class AuctionController : ControllerBase {
+	[HttpGet("{id}")]
+	public async Task<ActionResult<AuctionEntryExternal>> Get(ulong id) {
 		using var db = new DatabaseContext();
 		{
 
-			AuctionEntry? entry = await db.AuctionEntries
-		.Include(entry => entry.AuctionItem)
-		.ThenInclude(item => item.Product)
-		.ThenInclude(prod => prod.ThumbnailImage)
-		.Include(entry => entry.Auction)
-		.ThenInclude(auc => auc.Planner)
-		.Where(entry => entry.AuctionItem.Id == itemId && entry.Auction.Id == auctionId)
-		.FirstOrDefaultAsync();
+			AuctionEntry? entry = await db.AuctionEntries.Include(entry => entry.Product).ThenInclude(prod => prod.ThumbnailImage).Where(entry => entry.Id == id).FirstOrDefaultAsync();
 			if (entry == null) return NotFound();
 
 			return AuctionEntryExternal.ToExternal(entry);
 		}
 	}
 
+  [HttpGet("get-by-auction/{id}")]
+  public async Task<ActionResult<AuctionEntryExternal[]>> getByAuction(ulong id) {
+    using var db = new DatabaseContext();
+    {
+
+      return await db.AuctionEntries
+        .Include(entry => entry.Auction)
+        .ThenInclude(auc => auc.Planner)
+        .Include(entry => entry.AuctionItem)
+        .ThenInclude(item => item.Product)
+        .ThenInclude(prod => prod.ThumbnailImage)
+        .Where(entry.Auction.Id == id)
+        .Select(entry => AuctionEntryExternal.ToExternal(entry))
+        .ToArrayAsync();
+    }
+  }
+
 	[HttpPost]
 	public async Task<ActionResult> Post(AuctionEntryExternal auctionEntryData) {
 		using (var db = new DatabaseContext()) {
 
-			bool isConflicting = await db.AuctionEntries
-			  .Include(entry => entry.Auction)
-			  .Include(entry => entry.AuctionItem)
-			  .AnyAsync(entry => entry.Auction.Id == auctionEntryData.AuctionId && entry.AuctionItem.Id == auctionEntryData.ItemId);
+      bool isConflicting = await db.AuctionEntries
+        .Include(entry => entry.Auction)
+        .Include(entry => entry.AuctionItem)
+        .Where(entry.Auction.Id == id)
+        .AnyAsync(entry => entry.Auction.Id == auctionEntryData.AuctionId && entry.AuctionItem.Id == auctionEntryData.ItemId);
 
 			if (isConflicting) return Conflict("Already exists");
 			AuctionEntry entry = auctionEntryData.ToAuctionEntry(db);
 
-			db.AuctionEntries.Add(entry);
+			db.AuctionEntries.Add(auctionEntryData);
 			await db.SaveChangesAsync();
 
 			return Ok();
@@ -85,7 +93,7 @@ public class AuctionEntryController : ControllerBase {
 	}
 
 	[HttpPatch("{id}")]
-	public async Task<ActionResult> Update(ulong id, [FromBody] JsonPatchDocument<AuctionEntry> patchdoc) {
+	public async Task<ActionResult> Update(ulong id, [FromBody] JsonPatchDocument<Auction> patchdoc) {
 		using (var db = new DatabaseContext()) {
 			AuctionEntry? entry = await db.AuctionEntries.FindAsync(id);
 			if (entry == null) return NotFound();
