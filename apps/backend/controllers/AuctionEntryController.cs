@@ -17,7 +17,7 @@ public class AuctionEntryExternal {
   }
 
   public static AuctionEntryExternal ToExternal(AuctionEntry entry) {
-    return new AuctionEntryExternal(entry.Auction.Id, entry.Product.Id);
+    return new AuctionEntryExternal(entry.Auction.Id, entry.AuctionItem.Id);
   }
 
   public AuctionEntry ToAuctionEntry(DatabaseContext db) {
