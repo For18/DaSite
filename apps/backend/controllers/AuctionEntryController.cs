@@ -30,8 +30,8 @@ public class AuctionEntryExternal {
 [ApiController]
 [Route("auction-entry")]
 public class AuctionEntryController : ControllerBase {
-	[HttpGet("{id}")]
-	public async Task<ActionResult<AuctionEntryExternal>> Get(ulong id) {
+	[HttpGet("{auctionId}/{itemId}")]
+	public async Task<ActionResult<AuctionEntryExternal>> Get(ulong auctionId, ulong itemId) {
 		using var db = new DatabaseContext();
 		{
 
