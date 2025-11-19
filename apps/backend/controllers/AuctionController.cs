@@ -7,10 +7,6 @@ using System.ComponentModel;
 
 [DisplayName(nameof(Auction))]
 public class AuctionExternal {
-  /* For annotation reasoning:
-   * https://stackoverflow.com/questions/76909169/required-keyword-causes-error-even-if-member-initialized-in-constructor
-   */
-  [System.Diagnostics.CodeAnalysis.SetsRequiredMembersAttribute]
   public AuctionExternal(ulong id, ulong? startingTime, ulong? plannerId) {
     Id = id;
     StartingTime = startingTime;
@@ -21,14 +17,14 @@ public class AuctionExternal {
     return new AuctionExternal(auction.Id, auction.StartingTime, auction.Planner?.Id);
   }
 
-  public Auction ToAuction(DatabaseContext db) {
+  public Auction ToAuction(Databasecontext db) {
     return new Auction {
       Id = Id,
       StartingTime = StartingTime,
-      Planner = db.Users.Where(u => u.Id == PlannerId).FirstOrDefault()
+      PlannerId = db.Users.Where(u => u.Id == PlannerId)
     };
   }
-	public required ulong Id { get; init; }
+	public ulong Id { get; init; }
 	public ulong? StartingTime { get; init; }
 	public ulong? PlannerId { get; init; }
 }
@@ -53,6 +49,8 @@ public class AuctionController : ControllerBase {
 		using (var db = new DatabaseContext()) {
 			return await db.Auctions
 				.Include(auc => auc.Planner)
+				.Include(auc => auc.Product)
+				.Where(auc => auc.StartingTime != null)
 				.Select(auction => AuctionExternal.ToExternal(auction))
 			.ToArrayAsync();
 		}

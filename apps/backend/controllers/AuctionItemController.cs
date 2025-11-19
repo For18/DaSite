@@ -7,11 +7,7 @@ using System.ComponentModel;
 
 [DisplayName(nameof(AuctionItem))]
 public class AuctionItemExternal {
-  /* For annotation reasoning:
-   * https://stackoverflow.com/questions/76909169/required-keyword-causes-error-even-if-member-initialized-in-constructor
-   */
-  [System.Diagnostics.CodeAnalysis.SetsRequiredMembersAttribute]
-  public AuctionItemExternal(ulong id, ushort count, uint batchSize, uint startingPrice, uint minimumPrice, uint length, ulong productId) {
+  public AuctionItemExternal(ulong id, ushort count, uint batchSize, uint startingPrice, uint minimumPrice, ulong length, ulong productId) {
     Id = id;
     Count = count;
     BatchSize = batchSize;
@@ -22,10 +18,10 @@ public class AuctionItemExternal {
   }
 
   public static AuctionItemExternal ToExternal(AuctionItem item) {
-    return new AuctionItemExternal(item.Id, item.Count, item.BatchSize, item.StartingPrice, item.MinimumPrice, item.Length, item.Product.Id);
+    return new AuctionItemExternal(item.Id, item.Count, item.BatchSize, item.StartingPrice, item.MinimumPrice, item.Length, item.Product?.Id);
   }
 
-  public AuctionItem ToAuctionItem(DatabaseContext db) {
+  public AuctionItem ToAuctionItem(Databasecontext db) {
     return new AuctionItem{
       Id = Id,
       Count = Count,
@@ -33,7 +29,7 @@ public class AuctionItemExternal {
       StartingPrice = StartingPrice,
       MinimumPrice = MinimumPrice,
       Length = Length,
-      Product = db.Products.Include(prod => prod.ThumbnailImage).Where(prod => prod.Id == ProductId).FirstOrDefault()
+      Product = db.Products.Include(prod => prod.ProductImage).Where(prod => prod.Id == ProductId)
     };
   }
 
@@ -43,18 +39,18 @@ public class AuctionItemExternal {
 	public required uint StartingPrice { get; set; }
 	public required uint MinimumPrice { get; set; }
   public required uint Length { get; set; }
-  public required ulong ProductId { get; set; }
+  public required Product ProductId { get; set; }
 }
 
 [ApiController]
 [Route("auction-item")]
-public class AuctionItemController : ControllerBase {
+public class AuctionController : ControllerBase {
 	[HttpGet("{id}")]
 	public async Task<ActionResult<AuctionItemExternal>> Get(ulong id) {
 		using var db = new DatabaseContext();
 		{
 
-			AuctionItem? item = await db.AuctionItems.Include(item => item.Product).ThenInclude(prod => prod.ThumbnailImage).Where(item => item.Id == id).FirstOrDefaultAsync();
+			AuctionItem? item = await db.AuctionItems.Include(item => item.Product).Where(item => item.Id == id).FirstOrDefaultAsync();
 			if (item == null) return NotFound();
 
 			return AuctionItemExternal.ToExternal(item);
@@ -65,10 +61,10 @@ public class AuctionItemController : ControllerBase {
 	public async Task<ActionResult> Post(AuctionItemExternal auctionItemData) {
 		using (var db = new DatabaseContext()) {
 
-			if (await db.AuctionItems.AnyAsync(auc => auc.Id == auctionItemData.Id)) return Conflict("Already exists");
+			if (await db.AuctionItems.AnyAsync(auc => auc.Id == auctionData.Id)) return Conflict("Already exists");
 			AuctionItem item = auctionItemData.ToAuctionItem(db);
 
-			db.AuctionItems.Add(item);
+			db.AuctionItems.Add(auctionItemData);
 			await db.SaveChangesAsync();
 
 			return Ok(new IdReference(item.Id));
@@ -89,7 +85,7 @@ public class AuctionItemController : ControllerBase {
 	}
 
 	[HttpPatch("{id}")]
-	public async Task<ActionResult> Update(ulong id, [FromBody] JsonPatchDocument<AuctionItem> patchdoc) {
+	public async Task<ActionResult> Update(ulong id, [FromBody] JsonPatchDocument<Auction> patchdoc) {
 		using (var db = new DatabaseContext()) {
 			AuctionItem? item = await db.AuctionItems.FindAsync(id);
 			if (item == null) return NotFound();
