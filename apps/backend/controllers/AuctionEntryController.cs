@@ -22,8 +22,8 @@ public class AuctionEntryExternal {
 
   public AuctionEntry ToAuctionEntry(DatabaseContext db) {
     return new AuctionEntry {
-      Auction = db.Auctions.Include(auc => auc.Planner).Where(auc => auc.Id == auctionId),
-      AuctionItem = db.AuctionItems.Include(item => item.Product).ThenInclude(prod => prod.ProductImage).Where(item => item.Id == itemId)
+      Auction = db.Auctions.Include(auc => auc.Planner).Where(auc => auc.Id == AuctionId).FirstOrDefault(),
+      AuctionItem = db.AuctionItems.Include(item => item.Product).ThenInclude(prod => prod.ThumbnailImage).Where(item => item.Id == ItemId).FirstOrDefault()
     };
   }
 
@@ -62,7 +62,7 @@ public class AuctionEntryController : ControllerBase {
         .Include(entry => entry.AuctionItem)
         .ThenInclude(item => item.Product)
         .ThenInclude(prod => prod.ThumbnailImage)
-        .Where(entry.Auction.Id == id)
+        .Where(entry => entry.Auction.Id == id)
         .Select(entry => AuctionEntryExternal.ToExternal(entry))
         .ToArrayAsync();
     }
