@@ -52,6 +52,4 @@ if (app.Environment.IsDevelopment()) {
 
 DatabaseContext db = await dbTask;
 
-app.MapGet("/health", () => "Healthy");
-
 app.Run();
