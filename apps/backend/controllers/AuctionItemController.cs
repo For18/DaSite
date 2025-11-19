@@ -29,7 +29,7 @@ public class AuctionItemExternal {
       StartingPrice = StartingPrice,
       MinimumPrice = MinimumPrice,
       Length = Length,
-      Product = db.Products.Include(prod => prod.ProductImage).Where(prod => prod.Id == ProductId)
+      Product = db.Products.Include(prod => prod.ThumbnailImage).Where(prod => prod.Id == ProductId).FirstOrDefault()
     };
   }
 
@@ -50,7 +50,7 @@ public class AuctionItemController : ControllerBase {
 		using var db = new DatabaseContext();
 		{
 
-			AuctionItem? item = await db.AuctionItems.Include(item => item.Product).Where(item => item.Id == id).FirstOrDefaultAsync();
+			AuctionItem? item = await db.AuctionItems.Include(item => item.Product).ThenInclude(prod => prod.ThumbnailImage).Where(item => item.Id == id).FirstOrDefaultAsync();
 			if (item == null) return NotFound();
 
 			return AuctionItemExternal.ToExternal(item);
@@ -61,7 +61,7 @@ public class AuctionItemController : ControllerBase {
 	public async Task<ActionResult> Post(AuctionItemExternal auctionItemData) {
 		using (var db = new DatabaseContext()) {
 
-			if (await db.AuctionItems.AnyAsync(auc => auc.Id == auctionData.Id)) return Conflict("Already exists");
+			if (await db.AuctionItems.AnyAsync(auc => auc.Id == auctionItemData.Id)) return Conflict("Already exists");
 			AuctionItem item = auctionItemData.ToAuctionItem(db);
 
 			db.AuctionItems.Add(item);
