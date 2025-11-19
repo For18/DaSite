@@ -25,9 +25,6 @@ export default function Home() {
 					FloraHolland Veilingwebsite
 				</Typography>
 			</div>
-			<div className={styles.image}>
-				<Image className={styles.mainImage} src={"https://www.visitaalsmeer.nl/wp-content/uploads/2021/06/RoyalHolland-Flower-Auction-Aalsmeer-1-1920x1440.jpg"} alt={""}/>
-			</div>
 			<div className={styles.main}>
 				<div className={styles.left}>
 					<div className={styles.subHeading}>
