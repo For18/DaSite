@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,15 +27,14 @@ public class AuctionItem {
   public required uint Length { get; set; }
 }
 
-// TODO: add restrict element thingy so planned in products cannot get deleted
 public class AuctionEntry {
-  [Key, Column(Order = 0)]
+  [Key]
   [Required]
   [ForeignKey("AuctionId")]
   [DeleteBehavior(DeleteBehavior.NoAction)]
   public required Auction Auction { get; set; }
 
-  [Key, Column(Order = 1)]
+  [Key]
   [Required]
   [ForeignKey("AuctionItemId")]
   [DeleteBehavior(DeleteBehavior.NoAction)]
