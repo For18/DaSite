@@ -16,7 +16,7 @@ public class AuctionEntryExternal {
     return new AuctionEntryExternal(entry.Auction.Id, entry.Product.Id);
   }
 
-  public AuctionEntry ToAuctionEntry(Databasecontext db) {
+  public AuctionEntry ToAuctionEntry(DatabaseContext db) {
     return new AuctionEntry {
       Auction = db.Auctions.Include(auc => auc.Planner).Where(auc => auc.Id == auctionId),
       AuctionItem = db.AuctionItems.Include(item => item.Product).ThenInclude(prod => prod.ProductImage).Where(item => item.Id == itemId)
@@ -29,7 +29,7 @@ public class AuctionEntryExternal {
 
 [ApiController]
 [Route("auction-entry")]
-public class AuctionController : ControllerBase {
+public class AuctionEntryController : ControllerBase {
 	[HttpGet("{id}")]
 	public async Task<ActionResult<AuctionEntryExternal>> Get(ulong id) {
 		using var db = new DatabaseContext();
@@ -72,7 +72,7 @@ public class AuctionController : ControllerBase {
 			if (isConflicting) return Conflict("Already exists");
 			AuctionEntry entry = auctionEntryData.ToAuctionEntry(db);
 
-			db.AuctionEntries.Add(auctionEntryData);
+			db.AuctionEntries.Add(entry);
 			await db.SaveChangesAsync();
 
 			return Ok();
