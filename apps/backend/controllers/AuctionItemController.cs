@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 [DisplayName(nameof(AuctionItem))]
 public class AuctionItemExternal {
-  public AuctionItemExternal(ulong id, ushort count, uint batchSize, uint startingPrice, uint minimumPrice, ulong length, ulong productId) {
+  public AuctionItemExternal(ulong id, ushort count, uint batchSize, uint startingPrice, uint minimumPrice, uint length, ulong productId) {
     Id = id;
     Count = count;
     BatchSize = batchSize;
@@ -39,7 +39,7 @@ public class AuctionItemExternal {
 	public required uint StartingPrice { get; set; }
 	public required uint MinimumPrice { get; set; }
   public required uint Length { get; set; }
-  public required Product ProductId { get; set; }
+  public required ulong ProductId { get; set; }
 }
 
 [ApiController]
@@ -85,7 +85,7 @@ public class AuctionItemController : ControllerBase {
 	}
 
 	[HttpPatch("{id}")]
-	public async Task<ActionResult> Update(ulong id, [FromBody] JsonPatchDocument<Auction> patchdoc) {
+	public async Task<ActionResult> Update(ulong id, [FromBody] JsonPatchDocument<AuctionItem> patchdoc) {
 		using (var db = new DatabaseContext()) {
 			AuctionItem? item = await db.AuctionItems.FindAsync(id);
 			if (item == null) return NotFound();
