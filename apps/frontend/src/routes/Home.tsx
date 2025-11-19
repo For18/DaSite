@@ -25,6 +25,7 @@ export default function Home() {
 					FloraHolland Veilingwebsite
 				</Typography>
 			</div>
+			<div className={styles.imageBackground}/>
 			<div className={styles.main}>
 				<div className={styles.left}>
 					<div className={styles.subHeading}>
