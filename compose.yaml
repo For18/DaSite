@@ -10,6 +10,10 @@ services:
       VITE_API_URL: "/api/v1"
   backend:
     build: ./apps/backend
+    develop:
+      watch:
+        - action: rebuild
+          path: ./apps/backend
     environment:
       DOTNET_ENVIRONMENT: Development
       MYSQL_CONNECTION_STRING: server=db;database=for18;user=for18;password=bVSFogXKSd1q3pVc
