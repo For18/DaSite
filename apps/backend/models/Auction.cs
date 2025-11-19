@@ -1,14 +1,16 @@
-using System.ComponentModel.DataAnnotations;
+using System;
+using System.Collections;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-public class Auction {
+public class AuctionItem {
 	[Key]
 	[Required]
 	public required ulong Id { get; set; }
 
 	[Required]
 	public required ushort Count { get; set; }
+
 	[Required]
 	public required uint BatchSize { get; set; }
 
@@ -18,20 +20,37 @@ public class Auction {
 	[Required]
 	public required uint MinimumPrice { get; set; }
 
-	public ulong? StartingTime { get; set; }
+  [Required]
+  public required Product Product { get; set; }
 
-	public uint? Length { get; set; }
+  [Required]
+  public required uint Length { get; set; }
+}
 
-	[Required]
-	[ForeignKey("ProductId")]
-	[DeleteBehavior(DeleteBehavior.Cascade)]
-	public virtual required Product Product { get; set; }
+public class AuctionEntry {
+  [Key]
+  [Required]
+  [ForeignKey("AuctionId")]
+  [DeleteBehavior(DeleteBehavior.NoAction)]
+  public required Auction Auction { get; set; }
 
-	[ForeignKey("PlannerId")]
-	[DeleteBehavior(DeleteBehavior.NoAction)]
-	public virtual User? Planner { get; set; }
+  [Key]
+  [Required]
+  [ForeignKey("AuctionItemId")]
+  [DeleteBehavior(DeleteBehavior.NoAction)]
+  public required AuctionItem AuctionItem { get; set; }
 
-	public bool IsPending() {
-		return StartingTime == null || Length == null;
-	}
+} 
+
+public class Auction {
+  [Key]
+  [Required]
+  public required ulong Id { get; set; }
+
+  [ForeignKey("PlannerId")]
+  [DeleteBehavior(DeleteBehavior.NoAction)]
+  public virtual User? Planner { get; set; }
+
+  public ulong? StartingTime { get; set; }
+
 }
