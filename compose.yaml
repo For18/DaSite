@@ -42,11 +42,6 @@ services:
         - action: sync
           path: ./apps/proxy/nginx.conf
           target: /etc/nginx/nginx.conf
-    depends_on:
-      frontend:
-        condition: service_healthy
-      backend:
-        condition: service_healthy
 
 volumes:
   db:
