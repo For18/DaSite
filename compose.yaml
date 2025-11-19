@@ -31,12 +31,6 @@ services:
       MYSQL_PASSWORD: bVSFogXKSd1q3pVc
     volumes:
       - db:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-      start_period: 40s
   proxy:
     build: ./apps/proxy
     ports:
