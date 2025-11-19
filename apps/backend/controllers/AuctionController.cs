@@ -21,7 +21,7 @@ public class AuctionExternal {
     return new Auction {
       Id = Id,
       StartingTime = StartingTime,
-      PlannerId = db.Users.Where(u => u.Id == PlannerId)
+      Planner = db.Users.Where(u => u.Id == PlannerId).FirstOrDefault()
     };
   }
 	public required ulong Id { get; init; }
@@ -49,8 +49,7 @@ public class AuctionController : ControllerBase {
 		using (var db = new DatabaseContext()) {
 			return await db.Auctions
 				.Include(auc => auc.Planner)
-				.Include(auc => auc.Product)
-				.Where(auc => auc.StartingTime != null)
+        .Include()
 				.Select(auction => AuctionExternal.ToExternal(auction))
 			.ToArrayAsync();
 		}
