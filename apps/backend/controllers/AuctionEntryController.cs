@@ -101,7 +101,7 @@ public class AuctionEntryController : ControllerBase {
 	}
 
 	[HttpPatch("{id}")]
-	public async Task<ActionResult> Update(ulong id, [FromBody] JsonPatchDocument<Auction> patchdoc) {
+	public async Task<ActionResult> Update(ulong id, [FromBody] JsonPatchDocument<AuctionEntry> patchdoc) {
 		using (var db = new DatabaseContext()) {
 			AuctionEntry? entry = await db.AuctionEntries.FindAsync(id);
 			if (entry == null) return NotFound();
