@@ -6,6 +6,10 @@ services:
         - action: sync
           path: ./apps/frontend/src
           target: /app/src
+        - action: rebuild
+          path: ./apps/frontend/package-lock.json
+        - action: rebuild
+          path: ./apps/frontend/Dockerfile
     environment:
       VITE_API_URL: "/api/v1"
   backend:
