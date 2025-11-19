@@ -66,7 +66,6 @@ public class AuctionEntryController : ControllerBase {
       bool isConflicting = await db.AuctionEntries
         .Include(entry => entry.Auction)
         .Include(entry => entry.AuctionItem)
-        .Where(entry.Auction.Id == id)
         .AnyAsync(entry => entry.Auction.Id == auctionEntryData.AuctionId && entry.AuctionItem.Id == auctionEntryData.ItemId);
 
 			if (isConflicting) return Conflict("Already exists");
