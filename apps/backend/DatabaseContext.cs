@@ -6,8 +6,8 @@ public class DatabaseContext : DbContext {
 	public DbSet<ProductImage> ProductImages { get; set; }
 	public DbSet<User> Users { get; set; }
 	public DbSet<Auction> Auctions { get; set; }
-  public DbSet<AuctionEntry> AuctionEntry { get; set; }
-  public DbSet<AuctionItem> AuctionItem { get; set; }
+  public DbSet<AuctionEntry> AuctionEntries { get; set; }
+  public DbSet<AuctionItem> AuctionItems { get; set; }
 	public DbSet<Sale> Sales { get; set; }
 
 	protected override void OnConfiguring(DbContextOptionsBuilder contextBuilder) {
