@@ -15,14 +15,14 @@ export default function Footer() {
 					<div className={styles.left}>
 						<div className={styles.textBlock}>
 							<Typography href="/contact">
-								Contactgegevens
+								Contact
 							</Typography>
 						</div>
 					</div>
 					<div className={styles.right}>
 						<div className={styles.textBlock}>
 							<Typography href="/locaties">
-								Locaties
+								Locations
 							</Typography>
 						</div>
 					</div>
