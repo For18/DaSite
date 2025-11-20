@@ -49,7 +49,6 @@ public class AuctionController : ControllerBase {
 		using (var db = new DatabaseContext()) {
 			return await db.Auctions
 				.Include(auc => auc.Planner)
-        .Include()
 				.Select(auction => AuctionExternal.ToExternal(auction))
 			.ToArrayAsync();
 		}
