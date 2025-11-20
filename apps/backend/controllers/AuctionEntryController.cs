@@ -7,11 +7,14 @@ using System.ComponentModel;
 
 [DisplayName(nameof(AuctionEntry))]
 public class AuctionEntryExternal {
+  /* For annotation reasoning:
+   * https://stackoverflow.com/questions/76909169/required-keyword-causes-error-even-if-member-initialized-in-constructor
+   */
+  [System.Diagnostics.CodeAnalysis.SetsRequiredMembersAttribute]
   public AuctionEntryExternal(ulong auctionId, ulong itemId) {
     AuctionId = auctionId;
     ItemId = itemId;
   }
-
   public static AuctionEntryExternal ToExternal(AuctionEntry entry) {
     return new AuctionEntryExternal(entry.Auction.Id, entry.AuctionItem.Id);
   }
