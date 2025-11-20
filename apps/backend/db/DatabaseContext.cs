@@ -1,5 +1,7 @@
-using System;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System;
 
 public class DatabaseContext : DbContext {
 	public DbSet<Product> Products { get; set; }
@@ -15,19 +17,25 @@ public class DatabaseContext : DbContext {
 	}
 
   protected override void OnModelCreating(ModelBuilder modelBuilder) {
+      modelBuilder.Entity<AuctionItem>()
+          .HasOne(item => item.Product)
+          .WithMany()
+          .HasForeignKey(item => item.Product.Id)
+          .OnDelete(DeleteBehavior.Cascade);
+
       modelBuilder.Entity<AuctionEntry>()
-          .HasKey(ae => new { ae.AuctionId, ae.AuctionItemId });
+          .HasKey(ae => new { ae.Auction, ae.AuctionItemt });
   
       modelBuilder.Entity<AuctionEntry>()
           .HasOne(ae => ae.Auction)
           .WithMany()
-          .HasForeignKey(ae => ae.AuctionId)
-          .OnDelete(DeleteBehavior.Cascade);
+          .HasForeignKey(ae => ae.Auction.Id)
+          .OnDelete(DeleteBehavior.NoAction);
   
       modelBuilder.Entity<AuctionEntry>()
           .HasOne(ae => ae.AuctionItem)
           .WithMany()
-          .HasForeignKey(ae => ae.AuctionItemId)
-          .OnDelete(DeleteBehavior.Cascade);
+          .HasForeignKey(ae => ae.AuctionItem.Id)
+          .OnDelete(DeleteBehavior.NoAction);
   }
 }
