@@ -21,7 +21,7 @@ export default function Home() {
 	return (
 		<>
 			<div className={styles.heading}>
-				<Typography heading={1} className="headerText">
+				<Typography heading={1}>
 					FloraHolland Veilingwebsite
 				</Typography>
 			</div>
