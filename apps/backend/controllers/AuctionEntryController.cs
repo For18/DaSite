@@ -15,7 +15,6 @@ public class AuctionEntryExternal {
     AuctionId = auctionId;
     ItemId = itemId;
   }
-
   public static AuctionEntryExternal ToExternal(AuctionEntry entry) {
     return new AuctionEntryExternal(entry.Auction.Id, entry.AuctionItem.Id);
   }
