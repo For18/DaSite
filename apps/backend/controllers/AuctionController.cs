@@ -7,6 +7,10 @@ using System.ComponentModel;
 
 [DisplayName(nameof(Auction))]
 public class AuctionExternal {
+  /* For annotation reasoning:
+   * https://stackoverflow.com/questions/76909169/required-keyword-causes-error-even-if-member-initialized-in-constructor
+   */
+  [System.Diagnostics.CodeAnalysis.SetsRequiredMembersAttribute]
   public AuctionExternal(ulong id, ulong? startingTime, ulong? plannerId) {
     Id = id;
     StartingTime = startingTime;
