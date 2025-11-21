@@ -22,6 +22,7 @@ public class AuctionItem {
 	public required uint MinimumPrice { get; set; }
 
   [Required]
+  [ForeignKey("ProductId")]
   public required Product Product { get; set; }
 
   [Required]
@@ -30,18 +31,13 @@ public class AuctionItem {
 
 // TODO: add restrict element thingy so planned in products cannot get deleted
 public class AuctionEntry {
-  [Key, Column(Order = 0)]
   [Required]
   [ForeignKey("AuctionId")]
-  [DeleteBehavior(DeleteBehavior.NoAction)]
   public required Auction Auction { get; set; }
 
-  [Key, Column(Order = 1)]
   [Required]
   [ForeignKey("AuctionItemId")]
-  [DeleteBehavior(DeleteBehavior.NoAction)]
   public required AuctionItem AuctionItem { get; set; }
-
 } 
 
 public class Auction {
@@ -50,7 +46,6 @@ public class Auction {
   public required ulong Id { get; set; }
 
   [ForeignKey("PlannerId")]
-  [DeleteBehavior(DeleteBehavior.NoAction)]
   public virtual User? Planner { get; set; }
 
   public ulong? StartingTime { get; set; }
