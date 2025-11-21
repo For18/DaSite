@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
@@ -24,6 +25,15 @@ builder.Services.AddSwaggerGen(c => {
 	c.SwaggerDoc(apiVersionString, new OpenApiInfo { Version = apiVersionString });
 	c.SwaggerGeneratorOptions.Servers = new List<OpenApiServer> { new OpenApiServer { Url = Environment.GetEnvironmentVariable("API_SERVER_URL") ?? throw new Exception("Missing API_SERVER_URL environment variable") } };
 });
+builder.Services.AddDbContext<DatabaseContext>(options =>
+{
+    var conn = Environment.GetEnvironmentVariable("MYSQL_CONNECTION_STRING")
+        ?? throw new Exception("Missing MYSQL_CONNECTION_STRING");
+    options.UseMySQL(conn);
+});
+
+builder.Services.AddIdentityApiEndpoints<User>()
+	.AddEntityFrameworkStores<DatabaseContext>();
 
 var app = builder.Build();
 
@@ -32,6 +42,7 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapIdentityApi<User>();
 app.MapControllers();
 
 if (app.Environment.IsDevelopment()) {
