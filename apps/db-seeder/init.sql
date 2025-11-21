@@ -106,6 +106,7 @@ UPDATE Products SET ThumbnailImageId=32 WHERE Id=9;
 
 -- AUCTIONS
 INSERT INTO Auctions(Id, PlannerId, StartingTime)
+VALUES
 (1, 1, NULL),
 (2, 1, NULL),
 (3, 1, NULL),
