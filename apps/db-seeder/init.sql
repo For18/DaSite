@@ -117,10 +117,10 @@ INSERT INTO Auctions(Id, PlannerId, StartingTime)
 (9, 1, NULL),
 
 -- Auctions with specific starting time
-(10, 1, 10)
-(11, 1, 10)
-(12, 1, 10)
-(13, 1, 10)
+(10, 1, 10),
+(11, 1, 10),
+(12, 1, 10),
+(13, 1, 10);
 
 -- AUCTION_ITEMS
 INSERT INTO AuctionItems(Id, Count, BatchSize, StaringPrice, MinimumPrice, Length, ProductId)
