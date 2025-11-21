@@ -66,12 +66,12 @@ public class AuctionItemController : ControllerBase {
     using var db = new DatabaseContext();
     {
       return await db.AuctionEntries
-        .Include(entry.Auction)
-        .Include(entry.AuctionItem)
+        .Include(entry => entry.Auction)
+        .Include(entry => entry.AuctionItem)
         .ThenInclude(ae => ae.Product)
         .ThenInclude(prod => prod.ThumbnailImage)
         .Where(entry => entry.Auction.Id == id)
-        .Select(entry => entry.AuctionItem)
+        .Select(entry => AuctionItemExternal.ToExternal(entry.AuctionItem))
         .ToArrayAsync();
     }
   }
