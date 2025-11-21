@@ -106,7 +106,6 @@ UPDATE Products SET ThumbnailImageId=32 WHERE Id=9;
 
 -- AUCTIONS
 INSERT INTO Auctions(Id, PlannerId, StartingTime)
-VALUES
 (1, 1, NULL),
 (2, 1, NULL),
 (3, 1, NULL),
@@ -118,13 +117,13 @@ VALUES
 (9, 1, NULL),
 
 -- Auctions with specific starting time
-(10, 1, 10),
-(11, 1, 10),
-(12, 1, 10),
-(13, 1, 10);
+(10, 1, 10)
+(11, 1, 10)
+(12, 1, 10)
+(13, 1, 10)
 
 -- AUCTION_ITEMS
-INSERT INTO AuctionItems(Id, Count, BatchSize, StartingPrice, MinimumPrice, Length, ProductId)
+INSERT INTO AuctionItems(Id, Count, BatchSize, StaringPrice, MinimumPrice, Length, ProductId)
 VALUES
 (1, 1, 2 , 5000, 1000, 10, 1),
 (2, 2, 3 , 7000, 1500, 5 , 2),
