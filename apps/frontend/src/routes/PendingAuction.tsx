@@ -2,7 +2,7 @@ import PendingAuctionCard from "../components/PendingAuctionCard";
 import Section from "../components/Section";
 import Throbber from "../components/Throbber";
 import Typography from "../components/Typography";
-import { Auction, Product, useAPI, User } from "../lib/api";
+import { type Auction, useAPI } from "../lib/api";
 import { useScreenSize } from "../lib/util";
 import styles from "./PendingAuction.module.scss";
 

@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import Button from "../components/Button";
 import Typography from "../components/Typography";
 import { randomCharacter } from "../lib/util";
 import { useScreenSize } from "../lib/util";

@@ -1,4 +1,4 @@
-import { Auction, Product, ProductImage, useAPI, User } from "../lib/api";
+import { type Auction, type Product, type ProductImage, useAPI, type User } from "../lib/api";
 import Image from "./Image";
 import styles from "./PendingAuctionCard.module.scss";
 import Typography from "./Typography";

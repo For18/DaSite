@@ -1,4 +1,4 @@
-import React from "react";
+import type { CSSProperties } from "react";
 import Button from "./Button";
 import styles from "./Clock.module.scss";
 import Typography from "./Typography";
@@ -12,7 +12,7 @@ export default function Clock(
 ) {
 	return (
 		<div className={styles.container}>
-			<div className={styles.clock} style={{ "--progress": progress } as React.CSSProperties}>
+			<div className={styles.clock} style={{ "--progress": progress } as CSSProperties}>
 				<div className={styles.clockOverlay}>
 					{/* Top Box*/}
 					<div className={styles.clockBox}>

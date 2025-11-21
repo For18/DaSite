@@ -3,7 +3,7 @@ import Image from "../components/Image";
 import Section from "../components/Section";
 import Throbber from "../components/Throbber";
 import Typography from "../components/Typography";
-import { Product, useAPI, User } from "../lib/api";
+import { type Product, useAPI, type User } from "../lib/api";
 import NotFound from "./NotFound";
 import styles from "./Profile.module.scss";
 
