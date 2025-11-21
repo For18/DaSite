@@ -1,6 +1,6 @@
 import { createElement, type JSX, type PropsWithChildren, useCallback } from "react";
-import styles from "./Typography.module.scss";
 import { useGoto } from "../lib/util";
+import styles from "./Typography.module.scss";
 
 export interface TypographyProps extends PropsWithChildren {
 	heading?: 1 | 2 | 3 | 4 | 5 | 6;
