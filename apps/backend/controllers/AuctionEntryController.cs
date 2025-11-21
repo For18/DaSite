@@ -42,6 +42,8 @@ public class AuctionEntryController : ControllerBase {
         .Include(entry => entry.AuctionItem)
         .ThenInclude(item => item.Product)
         .ThenInclude(prod => prod.ThumbnailImage)
+        .Include(entry => entry.Auction)
+        .ThenInclude(auc => auc.Planner)
         .Where(entry => entry.AuctionItem.Id == itemId && entry.Auction.Id == auctionId)
         .FirstOrDefaultAsync();
 			if (entry == null) return NotFound();
