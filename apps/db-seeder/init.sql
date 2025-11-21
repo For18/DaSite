@@ -124,7 +124,7 @@ VALUES
 (13, 1, 10);
 
 -- AUCTION_ITEMS
-INSERT INTO AuctionItems(Id, Count, BatchSize, StaringPrice, MinimumPrice, Length, ProductId)
+INSERT INTO AuctionItems(Id, Count, BatchSize, StartingPrice, MinimumPrice, Length, ProductId)
 VALUES
 (1, 1, 2 , 5000, 1000, 10, 1),
 (2, 2, 3 , 7000, 1500, 5 , 2),
