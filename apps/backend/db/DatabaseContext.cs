@@ -17,25 +17,25 @@ public class DatabaseContext : DbContext {
 	}
 
   protected override void OnModelCreating(ModelBuilder modelBuilder) {
-      modelBuilder.Entity<AuctionItem>()
-          .HasOne(item => item.Product)
-          .WithMany()
-          .HasForeignKey(item => item.Product.Id)
-          .OnDelete(DeleteBehavior.Cascade);
+    modelBuilder.Entity<AuctionEntry>()
+      .HasOne(ae => ae.Auction)
+      .WithMany()
+      .HasForeignKey("AuctionId")
+      .OnDelete(DeleteBehavior.Cascade);
 
-      modelBuilder.Entity<AuctionEntry>()
-          .HasKey(ae => new { ae.Auction, ae.AuctionItemt });
-  
-      modelBuilder.Entity<AuctionEntry>()
-          .HasOne(ae => ae.Auction)
-          .WithMany()
-          .HasForeignKey(ae => ae.Auction.Id)
-          .OnDelete(DeleteBehavior.NoAction);
-  
-      modelBuilder.Entity<AuctionEntry>()
-          .HasOne(ae => ae.AuctionItem)
-          .WithMany()
-          .HasForeignKey(ae => ae.AuctionItem.Id)
-          .OnDelete(DeleteBehavior.NoAction);
+    modelBuilder.Entity<AuctionEntry>()
+      .HasOne(ae => ae.AuctionItem)
+      .WithMany()
+      .HasForeignKey("AuctionItemId")
+      .OnDelete(DeleteBehavior.Cascade);
+
+    modelBuilder.Entity<AuctionItem>()
+      .HasOne(ai => ai.Product)
+      .WithMany()
+      .HasForeignKey("ProductId")
+      .OnDelete(DeleteBehavior.Cascade);
+
+    modelBuilder.Entity<AuctionEntry>()
+      .HasKey("AuctionId", "AuctionItemId");
   }
 }
