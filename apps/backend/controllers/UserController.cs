@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 public class PublicUser {
 	[StringLength(32)]
-	public required string DisplayName { get; set; }
+	public required string UserName { get; set; }
 
 	public required string ImageUrl { get; set; }
 
@@ -28,7 +28,7 @@ public class UserController : ControllerBase {
 			if (user == null) return NotFound();
 
 			return new PublicUser {
-				DisplayName = user.DisplayName,
+				UserName = user.UserName,
 				ImageUrl = user.ImageUrl,
 				Email = user.Email,
 				TelephoneNumber = user.TelephoneNumber
@@ -60,7 +60,7 @@ public class UserController : ControllerBase {
 	public async Task<ActionResult<PublicUser[]>> GetAllPublic() {
 		using (var db = new DatabaseContext()) {
 			return await db.Users.Select(user => new PublicUser {
-				DisplayName = user.DisplayName,
+				UserName = user.UserName,
 				ImageUrl = user.ImageUrl,
 				Email = user.Email,
 				TelephoneNumber = user.TelephoneNumber

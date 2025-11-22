@@ -42,7 +42,7 @@ export interface Auction {
 export interface User {
 	id: number;
 	auctionDebt: number;
-	displayName: string;
+	userName: string;
 	imageUrl: string;
 	email: string;
 	telephonenumber: number;

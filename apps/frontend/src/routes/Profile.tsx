@@ -27,12 +27,12 @@ export default function Profile() {
 								<Image
 									height={96}
 									src={user.imageUrl}
-									alt={`${user.displayName}'s avatar`}
+									alt={`${user.userName}'s avatar`}
 								/>
 							</div>
 
 							<Typography heading={1}>
-								{user.displayName}
+								{user.userName}
 							</Typography>
 						</div>
 

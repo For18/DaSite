@@ -11,10 +11,6 @@ public class User : IdentityUser<ulong> {
 	public double AuctionDebt { get; set; }
 
 	[Required]
-	[StringLength(32)]
-	public string DisplayName { get; set; }
-
-	[Required]
 	public string ImageUrl { get; set; }
 
 	[Required]
