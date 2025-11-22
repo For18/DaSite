@@ -38,7 +38,7 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapIdentityApi<User>();
+app.MapGroup("identity").MapIdentityApi<User>();
 app.MapControllers();
 
 if (app.Environment.IsDevelopment()) {
