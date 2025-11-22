@@ -19,5 +19,4 @@ public class User : IdentityUser<ulong> {
 
 	[Required]
 	public ulong TelephoneNumber { get; set; }
-	public class MyContext : DbContext {};
 }
