@@ -7,12 +7,12 @@ using System.ComponentModel.DataAnnotations;
 
 public class PublicUser {
 	[StringLength(32)]
-	public required string UserName { get; set; }
+	public required string? UserName { get; set; }
 
 	public required string? ImageUrl { get; set; }
 
 	[StringLength(254)]
-	public required string Email { get; set; }
+	public required string? Email { get; set; }
 
 	public required ulong TelephoneNumber { get; set; }
 }

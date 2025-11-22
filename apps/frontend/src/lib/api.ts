@@ -42,9 +42,9 @@ export interface Auction {
 export interface User {
 	id: number;
 	auctionDebt: number;
-	userName: string;
+	userName?: string;
 	avatarImageUrl?: string;
-	email: string;
+	email?: string;
 	telephonenumber: number;
 }
 
