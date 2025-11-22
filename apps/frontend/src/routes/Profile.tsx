@@ -26,7 +26,7 @@ export default function Profile() {
 							<div className={styles.profileImage}>
 								<Image
 									height={96}
-									src={user.imageUrl}
+									src={user.avatarImageUrl}
 									alt={`${user.userName}'s avatar`}
 								/>
 							</div>

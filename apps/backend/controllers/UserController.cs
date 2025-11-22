@@ -29,7 +29,7 @@ public class UserController : ControllerBase {
 
 			return new PublicUser {
 				UserName = user.UserName,
-				ImageUrl = user.ImageUrl,
+				ImageUrl = user.AvatarImageUrl,
 				Email = user.Email,
 				TelephoneNumber = user.TelephoneNumber
 			};
@@ -61,7 +61,7 @@ public class UserController : ControllerBase {
 		using (var db = new DatabaseContext()) {
 			return await db.Users.Select(user => new PublicUser {
 				UserName = user.UserName,
-				ImageUrl = user.ImageUrl,
+				ImageUrl = user.AvatarImageUrl,
 				Email = user.Email,
 				TelephoneNumber = user.TelephoneNumber
 			}).ToArrayAsync();

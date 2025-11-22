@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore;
 [Index(nameof(Email), IsUnique = true)]
 [Index(nameof(TelephoneNumber), IsUnique = true)]
 public class User : IdentityUser<ulong> {
-	public User() : base() {}
+	public User() : base() { }
 
 	[Required]
 	public double AuctionDebt { get; set; }
 
-	public string? ImageUrl { get; set; }
+	public string? AvatarImageUrl { get; set; }
 
 	[Required]
 	public ulong TelephoneNumber { get; set; }

@@ -43,7 +43,7 @@ export interface User {
 	id: number;
 	auctionDebt: number;
 	userName: string;
-	imageUrl?: string;
+	avatarImageUrl?: string;
 	email: string;
 	telephonenumber: number;
 }
