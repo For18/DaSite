@@ -26,12 +26,7 @@ builder.Services.AddSwaggerGen(c => {
 	c.SwaggerDoc(apiVersionString, new OpenApiInfo { Version = apiVersionString });
 	c.SwaggerGeneratorOptions.Servers = new List<OpenApiServer> { new OpenApiServer { Url = Environment.GetEnvironmentVariable("API_SERVER_URL") ?? throw new Exception("Missing API_SERVER_URL environment variable") } };
 });
-builder.Services.AddDbContext<DatabaseContext>(options =>
-{
-    var conn = Environment.GetEnvironmentVariable("MYSQL_CONNECTION_STRING")
-        ?? throw new Exception("Missing MYSQL_CONNECTION_STRING");
-    options.UseMySQL(conn);
-});
+builder.Services.AddDbContext<DatabaseContext>();
 
 builder.Services.AddIdentityApiEndpoints<User>()
 	.AddEntityFrameworkStores<DatabaseContext>();
