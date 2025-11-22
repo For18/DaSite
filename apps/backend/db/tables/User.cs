@@ -10,8 +10,7 @@ public class User : IdentityUser<ulong> {
 	[Required]
 	public double AuctionDebt { get; set; }
 
-	[Required]
-	public string ImageUrl { get; set; }
+	public string? ImageUrl { get; set; }
 
 	[Required]
 	public ulong TelephoneNumber { get; set; }
