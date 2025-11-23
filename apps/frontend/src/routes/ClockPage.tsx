@@ -47,7 +47,7 @@ export default function ClockPage() {
   const [isAuctionOver, setIsAuctionOver] = useState<boolean>(false);
 
   const currentItem = useMemo<AuctionItem | null>(() => {
-      if (!auctionItems ) return null;
+      if (!auctionItems) return null;
 
       if (auctionItems.length === 0 || currentItemIndexRef.current >= auctionItems.length) {
         setIsAuctionOver(true);
