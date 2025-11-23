@@ -6,15 +6,13 @@ import Image from "./Image";
 import styles from "./ProductView.module.scss";
 import Typography from "./Typography";
 
-export default function ProductView( { auctionItem }: { auctionItem: AuctionItem | null }) {
-  const product = useAPI<Product>("/product/" + auctionItem?.productId);
+export default function ProductView( { auctionItem }: { auctionItem: AuctionItem}) {
+  const product = useAPI<Product>("/product/" + auctionItem.productId);
 	const owner = useAPI<User>("/user/" + product?.ownerId) ?? null;
 	const prodImages = useAPI<ProductImage[]>("/product-image/from/" + product?.id);
 	// const thumbnailImage = useAPI<ProductImage>(
 	// 	product && showThumbnail ? "/product-image/from/" + product.thumbnailImageId : null
 	// );
-
-  if (auctionItem === null) return <Throbber/>;
 
   if (product === null) return <Throbber/>;
   if (product === undefined) return <NotFound/>;
