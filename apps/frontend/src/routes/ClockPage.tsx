@@ -32,6 +32,7 @@ function formatDuration(duration: number): string {
 }
 
 export default function ClockPage() {
+  /* Main state holders */
 	const { auctionId } = useParams();
 	const auction = useAPI<Auction>("/auction/" + auctionId);
 	const product = useAPI<Product>(auction ? "/product/" + auction.productId : null);
@@ -49,8 +50,24 @@ export default function ClockPage() {
 		}).then(() => console.log("patched"));
 	}, [auction]);
 
-	const startingTime = auction?.startingTime ?? 0;
-	const currentTime = useTime();
+  useEffect(() => {
+      if (progress >= 1){
+        setCurrentItemIndex(i => i + 1);
+      }
+  }, [progress]);
+
+
+  // TODO: set buffer between auctions swaps so ppl actually have time to see the product
+  const onPurchase = (count: number)  => {
+    currentItemCountRef.current -= count;
+    if (currentItemCountRef.current <= 0) setCurrentItemIndex(i => i + 1);
+  }
+
+  if (auctionItems === null) return <Throbber/>;
+  if (auctionItems === undefined) return <NotFound/>;
+
+  if (isAuctionOver) return <EndedAuction id={Number(auctionId) ?? 0}/>;
+  if (currentItem === null) return <NotFound/>;
 
 	const wasOverOnLoad = useMemo(() => {
 		if (!auction || auction.startingTime == null) return false;
@@ -72,8 +89,8 @@ export default function ClockPage() {
 		auction.startingPrice
 	).toFixed(2);
 
-	const remainingTime = auctionLenMillis - elapsedTime;
-	const fmtedRemainingTime = remainingTime > auctionLenMillis ?
+	const remainingTime = auctionedItemLenMillis ? auctionedItemLenMillis - elapsedTime : 0;
+	const fmtedRemainingTime = auctionedItemLenMillis ? (remainingTime > auctionedItemLenMillis ?
 		formatDuration(0) :
 		formatDuration(remainingTime);
 
@@ -98,3 +115,4 @@ export default function ClockPage() {
 		</div>
 	);
 }
+
