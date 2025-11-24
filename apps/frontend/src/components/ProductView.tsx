@@ -36,7 +36,7 @@ export default function ProductView(
 			<div>
 				<Typography heading={1}>{product.name}</Typography>
 				<Typography className={styles.seller} href={`/profile/${ownerId}`}>
-					Seller: {owner ? owner.displayName : "Seller not found"}
+					Seller: {owner ? owner.userName : "Seller not found"}
 				</Typography>
 			</div>
 

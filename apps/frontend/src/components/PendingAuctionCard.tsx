@@ -22,7 +22,7 @@ export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 				</div>
 				<div className={styles.infoTextContainer}>
 					<Typography color="secondary" className={styles.infoText}>
-						Seller: {user?.displayName}
+						Seller: {user?.userName}
 					</Typography>
 					<Typography color="secondary" className={styles.infoText}>
 						Asking price: €{auction.startingPrice / 100},-
