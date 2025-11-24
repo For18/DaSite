@@ -8,8 +8,9 @@ import Typography from "./Typography";
 
 export default function ProductView( { auctionItem }: { auctionItem: AuctionItem}) {
   const product = useAPI<Product>("/product/" + auctionItem.productId);
-	const owner = useAPI<User>("/user/" + product?.ownerId) ?? null;
-	const prodImages = useAPI<ProductImage[]>("/product-image/from/" + product?.id);
+	const owner = useAPI<User>(product?.id ? "/private-user/" + product.ownerId : null);
+	const prodImages = useAPI<ProductImage[]>(product?.id ? "/product-image/from/" + product.id : null);
+  /// beans
 	// const thumbnailImage = useAPI<ProductImage>(
 	// 	product && showThumbnail ? "/product-image/from/" + product.thumbnailImageId : null
 	// );
@@ -53,33 +54,34 @@ export default function ProductView( { auctionItem }: { auctionItem: AuctionItem
 				<Typography>{product.description}</Typography>
 			</div>
 
-			{prodImages[0].url ?
-				(
-					<>
-						<hr className={styles.horizontalRule}/>
-						<Image
-							className={styles.thumbnailImage}
-							src={prodImages[0].url}
-							alt={product.name}
-						/>
-					</>
-				) :
-				null}
+      {
+        prodImages && prodImages.length ?
+          <>
+           <hr className={styles.horizontalRule}/>
+           <Image
+           className={styles.thumbnailImage}
+           src={prodImages[0].url}
+           alt={product.name}
+           />
+          </>
+          : null
+      }
 
 			<div className={styles.extraImageContainer}>
-				{Array.isArray(prodImages) ?
-					prodImages.map(prodImage => prodImage.url).map((url, index) => (
-						<div key={url}>
-							<a href={url}>
-								<Image
-									className={styles.extraImage}
-									src={url}
-									alt={`Product Image ${index + 1}`}
-								/>
-							</a>
-						</div>
-					)) :
-					null}
+				{ Array.isArray(prodImages) ?
+          prodImages.map(prodImage => prodImage.url).map((url, index) => (
+					<div key={url}>
+						<a href={url}>
+							<Image
+								className={styles.extraImage}
+								src={url}
+								alt={`Product Image ${index + 1}`}
+							/>
+						</a>
+					</div>
+				)) 
+          : null
+        }
 			</div>
 		</div>
 	);
