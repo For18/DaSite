@@ -33,6 +33,7 @@ function formatDuration(duration: number): string {
 
 export default function ClockPage() {
   /* Main state holders */
+  const bufferLen = 5000;
 	const { auctionId } = useParams();
 	const auction = useAPI<Auction>("/auction/" + auctionId);
 	const product = useAPI<Product>(auction ? "/product/" + auction.productId : null);
@@ -46,7 +47,7 @@ export default function ClockPage() {
 		fetch(API_URL + "/auction/" + auction?.id, {
 			method: "PATCH",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify([{ op: "replace", path: "/startingTime", value: Math.round(Date.now() + 5000) }])
+			body: JSON.stringify([{ op: "replace", path: "/startingTime", value: Math.round(Date.now() + bufferLen) }])
 		}).then(() => console.log("patched"));
 	}, [auction]);
 
@@ -56,8 +57,7 @@ export default function ClockPage() {
       }
   }, [progress]);
 
-
-  // TODO: set buffer between auctions swaps so ppl actually have time to see the product
+  /* TODO: set buffer between auctions swaps so ppl actually have time to see the product */
   const onPurchase = (count: number)  => {
     currentItemCountRef.current -= count;
     if (currentItemCountRef.current <= 0) setCurrentItemIndex(i => i + 1);
