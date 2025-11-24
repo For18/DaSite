@@ -9,6 +9,7 @@ import NotFound from "./NotFound";
 import { useTime } from "../lib/util";
 import Button from "../components/Button";
 import Clock from "../components/Clock";
+import BeforeAuction from "../components/BeforeAuction"
 
 function lerp(from: number, to: number, t: number): number {
 	return from + t * (to - from);
@@ -25,9 +26,16 @@ function formatDuration(duration: number): string {
 	}`;
 }
 
+function formatStartCountDown(startingTime: number, currentTime: number) {
+	if (startingTime <= 0 || currentTime <= 0) return "0.00";
+	const remainingTime = startingTime - currentTime;
+	return (remainingTime / 1000).toFixed(2);
+}
+
 /* TODO: contemplate if timed out auctions should be added to the back of the auctionItems stack being sold */
 export default function ClockPage() {
   /* Main state holders */
+  const bufferLen = 5000;
 	const { auctionId } = useParams();
   const auctionItems = useAPI<AuctionItem[]>("/auction-item/get-by-auction/" + auctionId);
   const auction = useAPI<Auction>("/auction/" + auctionId);
@@ -49,7 +57,8 @@ export default function ClockPage() {
    }, [currentItemIndex, auctionItems])
 
   const currentItemStartTime = useMemo<number | null>(() => {
-      return Date.now();
+
+      return Date.now() + bufferLen;
   }, [currentItemIndex, auctionItems]);
 
   const currentTime = useTime();
@@ -66,7 +75,7 @@ export default function ClockPage() {
 		fetch(API_URL + "/auction/" + auction?.id, {
 			method: "PATCH",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify([{ op: "replace", path: "/startingTime", value: Math.round(Date.now() + 5000) }])
+			body: JSON.stringify([{ op: "replace", path: "/startingTime", value: Math.round(Date.now() + bufferLen) }])
 		}).then(() => console.log("patched"));
 	}, [auction]);
 
@@ -76,8 +85,7 @@ export default function ClockPage() {
       }
   }, [progress]);
 
-
-  // TODO: set buffer between auctions swaps so ppl actually have time to see the product
+  /* TODO: set buffer between auctions swaps so ppl actually have time to see the product */
   const onPurchase = (count: number)  => {
     currentItemCountRef.current -= count;
     if (currentItemCountRef.current <= 0) setCurrentItemIndex(i => i + 1);
@@ -103,27 +111,33 @@ export default function ClockPage() {
 		formatDuration(0) :
 		formatDuration(remainingTime)) : '0';
 
+  const isBuffered = currentItemStartTime ? currentTime < currentItemStartTime : false;
+
   return (
 		<div className={styles.baseContainer}>
-			<div className={styles.clockContainer}>
-        <Clock progress={progress} price={currentPrice} fmtedTime={fmtedRemainingTime} count={currentItemCountRef.current ?? 0}/>
+			<div className={styles.clockContainer}> 
+        { isBuffered ? <> <BeforeAuction startingPoint={formatStartCountDown(currentItemStartTime!, currentTime)}/> </> :
+        <>
+           <Clock progress={progress} price={currentPrice} fmtedTime={fmtedRemainingTime} count={currentItemCountRef.current ?? 0}/>
 
-        <input
-          type="number"
-          onChange={count => {
-            buyCountRef.current = Number(count.target.value)
-          }}
-        />
-			  <Button
-			  	variant="outlined"
-			  	disabled={progress < 0 || progress > 1}
-			  	onClick={() => {
-            onPurchase(buyCountRef.current)
-			  		alert(`Bought ${buyCountRef.current} products for € ${currentPrice} each`);
-			  	}}
-			  >
-			  	BUY
-			  </Button>
+           <input
+             type="number"
+             onChange={count => {
+               buyCountRef.current = Number(count.target.value)
+             }}
+           />
+			     <Button
+			     	variant="outlined"
+			     	disabled={progress < 0 || progress > 1}
+			     	onClick={() => {
+               onPurchase(buyCountRef.current)
+			     		alert(`Bought ${buyCountRef.current} products for € ${currentPrice} each`);
+			     	}}
+			     >
+			     	BUY
+			     </Button>
+          </>
+        }
 			</div>
 			<div className={styles.containerSeparator}/>
 
