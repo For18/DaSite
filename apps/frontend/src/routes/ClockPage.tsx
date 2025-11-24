@@ -1,4 +1,5 @@
 import { RefObject, useEffect, useMemo, useRef, useState } from "react";
+import { SetState } from "../lib/util"; 
 import { useParams } from "react-router";
 import Clock from "../components/Clock";
 import EndedAuction from "../components/EndedAuction";
@@ -31,7 +32,7 @@ function formatDuration(duration: number): string {
 	}`;
 }
 
-interface PurchasePing {
+interface AuctionStatus {
   purchase: boolean;
   timeOut: boolean;
   count: number;
@@ -41,35 +42,35 @@ export default function ClockPage() {
 	const { auctionId } = useParams();
   const auctionItems = useAPI<AuctionItem[]>("/auction-item/get-by-auction/" + auctionId);
 
-  const currentItemIndexRef = useRef<number>(0);
-  const currentItemCount = useRef<number>(0);
-  const purchasePingRef = useRef<PurchasePing>({purchase: false, count: 0, timeOut: false});
+  const [currentItemIndex, setCurrentItemIndex] = useState<number>(0);
+  const currentItemCountRef = useRef<number>(0);
+  const [auctionStatus, setAuctionStatus]  = useState<AuctionStatus>({purchase: false, count: 0, timeOut: false});
   const [isAuctionOver, setIsAuctionOver] = useState<boolean>(false);
 
   const currentItem = useMemo<AuctionItem | null>(() => {
       if (!auctionItems) return null;
 
-      if (auctionItems.length === 0 || currentItemIndexRef.current >= auctionItems.length) {
+      if (auctionItems.length === 0 || currentItemIndex >= auctionItems.length) {
         setIsAuctionOver(true);
         return null;
       }
 
-      currentItemCount.current = auctionItems[currentItemIndexRef.current].count;
-      return auctionItems[currentItemIndexRef.current];
-  }, [currentItemIndexRef.current, auctionItems])
+      currentItemCountRef.current = auctionItems[currentItemIndex].count;
+      return auctionItems[currentItemIndex];
+  }, [currentItemIndex, auctionItems])
 
   // TODO: set buffer between auctions swaps so ppl actually have time to see the product
   useEffect(() => {
-      if (!currentItemCount.current) return;
-      currentItemCount.current -= purchasePingRef.current.count;
+      if (!currentItemCountRef) return;
+      currentItemCountRef.current = currentItemCountRef.current - auctionStatus.count;
 
-      if (currentItemCount.current <= 0) currentItemIndexRef.current += 1;
-  }, [purchasePingRef.current.purchase]);
+      if (currentItemCountRef.current <= 0) setCurrentItemIndex(currentItemIndex + 1);
+  }, [auctionStatus.purchase]);
 
   useEffect(() => {
-      purchasePingRef.current.timeOut = false;
-      currentItemIndexRef.current += 1;
-  }, [purchasePingRef.current.timeOut]);
+      auctionStatus.timeOut = false;
+      setCurrentItemIndex(currentItemIndex + 1);
+  }, [auctionStatus.timeOut]);
 
   if (auctionItems === null) return <Throbber/>;
   if (auctionItems === undefined) return <NotFound/>;
@@ -81,10 +82,10 @@ export default function ClockPage() {
 		<div className={styles.baseContainer}>
 			<div className={styles.clockContainer}>
         {/* Google told me to add the bang(!) behind `currentItem` in `ClockSection` args
-            bc it kept thinking currentItem could be null even with null check
+          * bc it kept thinking currentItem could be null even with null check
           * Idk why that operator fixes it but assert operator cool cuzz no error
           */}
-        <ClockSection auctionId={Number(auctionId)} auctionItem={currentItem!} remainingItemCount={currentItemCount} purchasePingRef={purchasePingRef}/>
+        <ClockSection auctionId={Number(auctionId)} auctionItem={currentItem!} remainingItemCount={currentItemCountRef} setAuctionStatus={setAuctionStatus}/>
 			</div>
 
 			<div className={styles.containerSeparator}/>
@@ -96,7 +97,7 @@ export default function ClockPage() {
   );
 }
 
-function ClockSection({ auctionId, auctionItem, remainingItemCount, purchasePingRef} : { auctionId : number, auctionItem : AuctionItem, remainingItemCount: RefObject<number>, purchasePingRef: RefObject<PurchasePing>  }) {
+function ClockSection({ auctionId, auctionItem, remainingItemCount, setAuctionStatus} : { auctionId : number, auctionItem : AuctionItem, remainingItemCount: RefObject<number>, setAuctionStatus: SetState<AuctionStatus>  }) {
   const auction = useAPI<Auction>("/auction/" + auctionId);
 
   const buyCountRef = useRef<number>(0);
@@ -132,7 +133,9 @@ function ClockSection({ auctionId, auctionItem, remainingItemCount, purchasePing
 		formatDuration(remainingTime);
 
 
-  purchasePingRef.current.timeOut = progress >= 1;
+  setAuctionStatus(prev => {return {purchase: prev.purchase, count: prev.count,
+      timeOut: progress >= 1
+  }});
 
   return (
       <>
@@ -149,7 +152,11 @@ function ClockSection({ auctionId, auctionItem, remainingItemCount, purchasePing
 			  	variant="outlined"
 			  	disabled={progress < 0 || progress > 1}
 			  	onClick={() => {
-            purchasePingRef.current.count = buyCountRef.current <= remainingItemCount.current ? buyCountRef.current : remainingItemCount.current;
+            setAuctionStatus(prev => {return {
+                purchase: prev.purchase,
+                count: buyCountRef.current <= remainingItemCount.current ? buyCountRef.current : remainingItemCount.current,
+                timeOut: prev.timeOut
+            }})
 			  		alert(`Bought ${buyCountRef.current} products for € ${currentPrice} each`);
 			  	}}
 			  >
