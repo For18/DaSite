@@ -120,12 +120,6 @@ export default function ClockPage() {
         <>
            <Clock progress={progress} price={currentPrice} fmtedTime={fmtedRemainingTime} count={currentItemCountRef.current ?? 0}/>
 
-           <input
-             type="number"
-             onChange={count => {
-               buyCountRef.current = Number(count.target.value)
-             }}
-           />
 			     <Button
 			     	variant="outlined"
 			     	disabled={progress < 0 || progress > 1}
@@ -138,6 +132,12 @@ export default function ClockPage() {
 			     </Button>
           </>
         }
+           <input
+             type="number"
+             onChange={count => {
+               buyCountRef.current = Number(count.target.value)
+             }}
+           />
 			</div>
 			<div className={styles.containerSeparator}/>
 
