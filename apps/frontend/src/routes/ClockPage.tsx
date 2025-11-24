@@ -57,7 +57,6 @@ export default function ClockPage() {
    }, [currentItemIndex, auctionItems])
 
   const currentItemStartTime = useMemo<number | null>(() => {
-
       return Date.now() + bufferLen;
   }, [currentItemIndex, auctionItems]);
 
