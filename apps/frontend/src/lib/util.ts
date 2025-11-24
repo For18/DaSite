@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 
 const RANDOM_CHARACTER_SET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
+export type SetState<T> = (value: T) => void;
+
 export function randomCharacter(): string {
 	return RANDOM_CHARACTER_SET.charAt(
 		Math.floor(Math.random() * RANDOM_CHARACTER_SET.length)
