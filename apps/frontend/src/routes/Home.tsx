@@ -1,23 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
-import Image from "../components/Image";
 import Typography from "../components/Typography";
-import { randomCharacter } from "../lib/util";
-import { useScreenSize } from "../lib/util";
 import styles from "./Home.module.scss";
 
 export default function Home() {
-	const [text, setText] = useState("Hello world");
-
-	const [screenWidth, screenHeight] = useScreenSize();
-
-	useEffect(() => {
-		document.title = "For18 - Home";
-	});
-
-	const updateText = useCallback(() => {
-		setText(text + randomCharacter());
-	}, [text]);
-
 	return (
 		<>
 			<div className={styles.heading}>
