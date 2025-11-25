@@ -20,15 +20,10 @@ export default function PendingAuction() {
 			</div>
 
 			<Section>
-				<div style={{
-					width: "1000px",
-					maxWidth: "80vw",
-					height: "fit-content",
+				<div className={styles["card-container"]} style={{
 					display: auctions != null && auctions.length > 0 ? "grid" : "flex",
 					gridTemplateColumns: screenWidth > 1000 ? "1fr 1fr" : "1fr",
-					justifyContent: "center",
-					alignItems: "flex-start",
-					gap: "16px"
+					
 				}}>
 					{auctions == null ?
 						<Throbber/> :
