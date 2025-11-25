@@ -28,22 +28,23 @@
 }
 
 .input {
-	position: absolute;
-	width: 10%;
-	bottom: 25%;
+  position: absolute;
+  width: 10%;
+  bottom: 25%;
 }
 
 .button {
-	position: absolute;
-	bottom: 20%;
+  position: absolute;
+  bottom: 20%;
 }
 
-input::outer-spin-button, input::inner-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
+input::outer-spin-button,
+input::inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 /* Firefox */
-input[type="number"] {
-	-moz-appearance: textfield;
+input[type=number] {
+  -moz-appearance: textfield;
 }

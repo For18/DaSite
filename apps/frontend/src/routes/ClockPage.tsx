@@ -129,6 +129,7 @@ export default function ClockPage() {
          />
 
 			   <Button
+          className={styles.button}
 			   	variant="outlined"
 			   	disabled={progress < 0 || progress > 1 || isBuffered}
 			   	onClick={() => {
