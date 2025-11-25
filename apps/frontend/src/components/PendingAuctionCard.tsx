@@ -3,6 +3,7 @@ import Image from "./Image";
 import styles from "./PendingAuctionCard.module.scss";
 import Typography from "./Typography";
 import Throbber from "./Throbber";
+import NotFound from "../routes/NotFound"
 
 export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 	const item = useAPI<AuctionItem>("/auction-item/get-by-auction/" + auction.id);
@@ -12,6 +13,9 @@ export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 	const thumbnailUrl = thumbnailImage && thumbnailImage[0] && thumbnailImage[0].url ?
 		thumbnailImage[0].url :
 		"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcCBHgbS23kyBw2r8Pquu19UtKZnrZmFUx1g&s";
+
+  if (item === null) return <Throbber/>;
+  if (item === undefined) return <NotFound/>;
 
 	return (
 		<div className={styles.card}>
@@ -27,10 +31,10 @@ export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 						Seller: {user?.displayName}
 					</Typography>
 					<Typography color="secondary" className={styles.infoText}>
-						Asking price: €{item.startingPrice / 100},-
+						Asking price: €{item.startingPrice ? item.startingPrice / 100 : "NaN"},-
 					</Typography>
 					<Typography color="secondary" className={styles.infoText}>
-						Amount: {item.batchSize * item.count}
+						Amount: {item.startingPrice ? item.batchSize * item.count : "NaN"}
 					</Typography>
 				</div>
 			</div>
