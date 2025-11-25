@@ -1,8 +1,6 @@
-import { type Auction, type Product, type ProductImage, useAPI, type User } from "../lib/api";
+import { Auction, AuctionItem, Product, ProductImage, useAPI, User } from "../lib/api";
 import Image from "./Image";
 import styles from "./PendingAuctionCard.module.scss";
-import Throbber from "./Throbber";
-import Typography from "./Typography";
 import Throbber from "./Throbber";
 import Typography from "./Typography";
 
