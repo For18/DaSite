@@ -6,6 +6,10 @@ import Typography from "../components/Typography";
 import { Auction, Product, useAPI } from "../lib/api";
 import { formatEuros } from "../lib/util";
 
+/* TODO: update to fit Many to Many Auction-Item relationship
+ * each card should hold title of auction and have a list of links or hover-able text or similar
+ * which displays the info abt the products listed
+ */
 export default function Auctions() {
 	useEffect(() => {
 		document.title = "For18 - auctions";
