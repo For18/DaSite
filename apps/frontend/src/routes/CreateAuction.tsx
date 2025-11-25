@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import ProductView from "../components/ProductView";
 import Throbber from "../components/Throbber";
 import Typography from "../components/Typography";
@@ -7,7 +7,7 @@ import styles from "./CreateAuction.module.scss";
 
 
 export default function CreateAuctions() {
-    const [committedAuctionName, setCommittedAuctionName] = useState("");
+    const committedAuctionName = useRef<string>("");
     const [product, setProduct] = useState("");
     const [count, setCount] = useState(1);
     const [batchSize, setBatchSize] = useState(1);
@@ -19,8 +19,8 @@ export default function CreateAuctions() {
     const pad = (n: number) => (n < 10 ? `0${n}` : String(n));
     const defaultDate = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
     const defaultTime = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
-    const [startingDate, setStartingDate] = useState<string>(defaultDate);
-    const [startingTime, setStartingTime] = useState<string>(defaultTime);
+    const startingDateRef = useRef<string>(defaultDate);
+    const startingTimeRef = useRef<string>(defaultTime);
 
     const products = useAPI<Product[]>("/products");
     const [statusMessage, setStatusMessage] = useState<string | null>(null);
@@ -34,8 +34,8 @@ export default function CreateAuctions() {
 
         // combine startingDate and startingTime into an ISO datetime
         let startingTimeMillis: number | null = null;
-        if (startingDate && startingTime) {
-            const iso = `${startingDate}T${startingTime}:00`;
+        if (startingDateRef.current && startingTimeRef.current) {
+            const iso = `${startingDateRef.current}T${startingTimeRef.current}:00`;
             const parsed = Date.parse(iso);
             startingTimeMillis = Number.isNaN(parsed) ? null : Math.round(parsed);
         }
@@ -145,16 +145,16 @@ export default function CreateAuctions() {
                         className={styles.input}
                         name="startingDate"
                         type="date"
-                        value={startingDate}
-                        onChange={(e) => setStartingDate(e.target.value)}
+                        defaultValue={startingDateRef.current}
+                        onChange={(e) => (startingDateRef.current = e.target.value)}
                     />
                     <Typography>Starting time:</Typography>
                     <input
                         className={styles.input}
                         name="startingTime"
                         type="time"
-                        value={startingTime}
-                        onChange={(e) => setStartingTime(e.target.value)}
+                        defaultValue={startingTimeRef.current}
+                        onChange={(e) => (startingTimeRef.current = e.target.value)}
                     />
                     <Typography>Duration (seconds):</Typography>
                     <input
