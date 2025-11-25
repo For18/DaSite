@@ -7,27 +7,27 @@ using System.ComponentModel;
 
 [DisplayName(nameof(Auction))]
 public class AuctionExternal {
-  /* For annotation reasoning:
-   * https://stackoverflow.com/questions/76909169/required-keyword-causes-error-even-if-member-initialized-in-constructor
-   */
-  [System.Diagnostics.CodeAnalysis.SetsRequiredMembersAttribute]
-  public AuctionExternal(ulong id, ulong? startingTime, ulong? plannerId) {
-    Id = id;
-    StartingTime = startingTime;
-    PlannerId = plannerId;
-  }
+	/* For annotation reasoning:
+	 * https://stackoverflow.com/questions/76909169/required-keyword-causes-error-even-if-member-initialized-in-constructor
+	 */
+	[System.Diagnostics.CodeAnalysis.SetsRequiredMembersAttribute]
+	public AuctionExternal(ulong id, ulong? startingTime, ulong? plannerId) {
+		Id = id;
+		StartingTime = startingTime;
+		PlannerId = plannerId;
+	}
 
-  public static AuctionExternal ToExternal(Auction auction) {
-    return new AuctionExternal(auction.Id, auction.StartingTime, auction.Planner?.Id);
-  }
+	public static AuctionExternal ToExternal(Auction auction) {
+		return new AuctionExternal(auction.Id, auction.StartingTime, auction.Planner?.Id);
+	}
 
-  public Auction ToAuction(DatabaseContext db) {
-    return new Auction {
-      Id = Id,
-      StartingTime = StartingTime,
-      Planner = db.Users.Where(u => u.Id == PlannerId).FirstOrDefault()
-    };
-  }
+	public Auction ToAuction(DatabaseContext db) {
+		return new Auction {
+			Id = Id,
+			StartingTime = StartingTime,
+			Planner = db.Users.Where(u => u.Id == PlannerId).FirstOrDefault()
+		};
+	}
 	public required ulong Id { get; init; }
 	public ulong? StartingTime { get; init; }
 	public ulong? PlannerId { get; init; }
