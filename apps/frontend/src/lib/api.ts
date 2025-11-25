@@ -28,19 +28,19 @@ export interface ProductImage {
 }
 
 export interface Auction {
-  id: number;
-  plannerId: number;
-  startingTime: number;
+	id: number;
+	plannerId: number;
+	startingTime: number;
 }
 
 export interface AuctionItem {
- id: number;
- count: number;
- batchSize: number;
- startingPrice: number;
- minimumPrice: number;
- length: number;
- productId: number;
+	id: number;
+	count: number;
+	batchSize: number;
+	startingPrice: number;
+	minimumPrice: number;
+	length: number;
+	productId: number;
 }
 
 export interface User {

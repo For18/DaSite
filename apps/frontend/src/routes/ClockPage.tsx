@@ -1,15 +1,15 @@
-import { useMemo, useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router";
+import BeforeAuction from "../components/BeforeAuction";
+import Button from "../components/Button";
+import Clock from "../components/Clock";
 import EndedAuction from "../components/EndedAuction";
 import ProductView from "../components/ProductView";
 import Throbber from "../components/Throbber";
-import { API_URL, AuctionItem, Auction, useAPI } from "../lib/api";
+import { API_URL, Auction, AuctionItem, useAPI } from "../lib/api";
+import { useTime } from "../lib/util";
 import styles from "./ClockPage.module.scss";
 import NotFound from "./NotFound";
-import { useTime } from "../lib/util";
-import Button from "../components/Button";
-import Clock from "../components/Clock";
-import BeforeAuction from "../components/BeforeAuction"
 
 function lerp(from: number, to: number, t: number): number {
 	return from + t * (to - from);
@@ -34,39 +34,41 @@ function formatStartCountDown(startingTime: number, currentTime: number) {
 
 /* TODO: contemplate if timed out auctions should be added to the back of the auctionItems stack being sold */
 export default function ClockPage() {
-  /* Main state holders */
-  const bufferLen = 5000;
+	/* Main state holders */
+	const bufferLen = 5000;
 	const { auctionId } = useParams();
-  const auctionItems = useAPI<AuctionItem[]>("/auction-item/get-by-auction/" + auctionId);
-  const auction = useAPI<Auction>("/auction/" + auctionId);
+	const auctionItems = useAPI<AuctionItem[]>("/auction-item/get-by-auction/" + auctionId);
+	const auction = useAPI<Auction>("/auction/" + auctionId);
 
-  const [currentItemIndex, setCurrentItemIndex] = useState<number>(0);
-  const [isAuctionOver, setIsAuctionOver] = useState<boolean>(false);
-  const currentItemCountRef = useRef<number>(0);
-  const buyCountRef = useRef<number>(0);
+	const [currentItemIndex, setCurrentItemIndex] = useState<number>(0);
+	const [isAuctionOver, setIsAuctionOver] = useState<boolean>(false);
+	const currentItemCountRef = useRef<number>(0);
+	const buyCountRef = useRef<number>(0);
 
-  const currentItem = useMemo<AuctionItem | null>(() => {
-      if (!auctionItems) return null;
-      if (auctionItems.length === 0 || currentItemIndex >= auctionItems.length) {
-        setIsAuctionOver(true);
-        return null;
-      }
+	const currentItem = useMemo<AuctionItem | null>(() => {
+		if (!auctionItems) return null;
+		if (auctionItems.length === 0 || currentItemIndex >= auctionItems.length) {
+			setIsAuctionOver(true);
+			return null;
+		}
 
-      currentItemCountRef.current = auctionItems[currentItemIndex].count;
-      return auctionItems[currentItemIndex];
-   }, [currentItemIndex, auctionItems])
+		currentItemCountRef.current = auctionItems[currentItemIndex].count;
+		return auctionItems[currentItemIndex];
+	}, [currentItemIndex, auctionItems]);
 
-  const currentItemStartTime = useMemo<number | null>(() => {
-      return Date.now() + bufferLen;
-  }, [currentItemIndex, auctionItems]);
+	const currentItemStartTime = useMemo<number | null>(() => {
+		return Date.now() + bufferLen;
+	}, [currentItemIndex, auctionItems]);
 
-  const currentTime = useTime();
+	const currentTime = useTime();
 
-  const auctionedItemLenMillis = auctionItems && auctionItems[currentItemIndex] ? auctionItems[currentItemIndex].length * 1000 : null;
-  const elapsedTime = currentItemStartTime != null ? currentTime - currentItemStartTime: 0;
-  const progress = auctionedItemLenMillis ? elapsedTime / auctionedItemLenMillis : 0;
-  
-  /* Temp moving of starting time 
+	const auctionedItemLenMillis = auctionItems && auctionItems[currentItemIndex] ?
+		auctionItems[currentItemIndex].length * 1000 :
+		null;
+	const elapsedTime = currentItemStartTime != null ? currentTime - currentItemStartTime : 0;
+	const progress = auctionedItemLenMillis ? elapsedTime / auctionedItemLenMillis : 0;
+
+	/* Temp moving of starting time
    * TODO: remove after testing
    */
 	useEffect(() => {
@@ -78,67 +80,76 @@ export default function ClockPage() {
 		}).then(() => console.log("patched"));
 	}, [auction]);
 
-  useEffect(() => {
-      if (progress >= 1){
-        setCurrentItemIndex(i => i + 1);
-      }
-  }, [progress]);
+	useEffect(() => {
+		if (progress >= 1) {
+			setCurrentItemIndex(i => i + 1);
+		}
+	}, [progress]);
 
-  /* TODO: set buffer between auctions swaps so ppl actually have time to see the product */
-  const onPurchase = (count: number)  => {
-    currentItemCountRef.current -= count;
-    if (currentItemCountRef.current <= 0) setCurrentItemIndex(i => i + 1);
-  }
+	/* TODO: set buffer between auctions swaps so ppl actually have time to see the product */
+	const onPurchase = (count: number) => {
+		currentItemCountRef.current -= count;
+		if (currentItemCountRef.current <= 0) setCurrentItemIndex(i => i + 1);
+	};
 
-  if (auctionItems === null) return <Throbber/>;
-  if (auctionItems === undefined) return <NotFound/>;
+	if (auctionItems === null) return <Throbber/>;
+	if (auctionItems === undefined) return <NotFound/>;
 
-  if (isAuctionOver) return <EndedAuction id={Number(auctionId) ?? 0}/>;
-  if (currentItem === null) return <NotFound/>;
+	if (isAuctionOver) return <EndedAuction id={Number(auctionId) ?? 0}/>;
+	if (currentItem === null) return <NotFound/>;
 
 	if (auction === undefined) return <NotFound/>;
 	if (auction === null) return <Throbber/>;
 
-  /* Specifics formatting */
+	/* Specifics formatting */
 	const currentPrice = Math.min(
 		Math.max(lerp(currentItem.startingPrice, currentItem.minimumPrice, progress), currentItem.minimumPrice),
 		currentItem.startingPrice
 	).toFixed(2);
 
 	const remainingTime = auctionedItemLenMillis ? auctionedItemLenMillis - elapsedTime : 0;
-	const fmtedRemainingTime = auctionedItemLenMillis ? (remainingTime > auctionedItemLenMillis ?
-		formatDuration(0) :
-		formatDuration(remainingTime)) : '0';
+	const fmtedRemainingTime = auctionedItemLenMillis ?
+		(remainingTime > auctionedItemLenMillis ?
+			formatDuration(0) :
+			formatDuration(remainingTime)) :
+		"0";
 
-  const isBuffered = currentItemStartTime ? currentTime < currentItemStartTime : false;
+	const isBuffered = currentItemStartTime ? currentTime < currentItemStartTime : false;
 
-  return (
+	return (
 		<div className={styles.baseContainer}>
-			<div className={styles.clockContainer}> 
-        { isBuffered ? <> <BeforeAuction startingPoint={formatStartCountDown(currentItemStartTime!, currentTime)}/> </> :
-          <>
-            <Clock progress={progress} price={currentPrice} fmtedTime={fmtedRemainingTime} count={currentItemCountRef.current ?? 0}/>
-          </>
-        }
-         <input
-           className={styles.input}
-           type="number"
-           onChange={count => {
-             buyCountRef.current = Number(count.target.value)
-           }}
-         />
+			<div className={styles.clockContainer}>
+				{isBuffered ?
+					(
+						<>
+							<BeforeAuction startingPoint={formatStartCountDown(currentItemStartTime!, currentTime)}/>
+						</>
+					) :
+					(
+						<>
+							<Clock progress={progress} price={currentPrice} fmtedTime={fmtedRemainingTime}
+								count={currentItemCountRef.current ?? 0}/>
+						</>
+					)}
+				<input
+					className={styles.input}
+					type="number"
+					onChange={count => {
+						buyCountRef.current = Number(count.target.value);
+					}}
+				/>
 
-			   <Button
-          className={styles.button}
-			   	variant="outlined"
-			   	disabled={progress < 0 || progress > 1 || isBuffered}
-			   	onClick={() => {
-             onPurchase(buyCountRef.current)
-			   		alert(`Bought ${buyCountRef.current} products for € ${currentPrice} each`);
-			   	}}
-			   >
-			   	BUY
-			   </Button>
+				<Button
+					className={styles.button}
+					variant="outlined"
+					disabled={progress < 0 || progress > 1 || isBuffered}
+					onClick={() => {
+						onPurchase(buyCountRef.current);
+						alert(`Bought ${buyCountRef.current} products for € ${currentPrice} each`);
+					}}
+				>
+					BUY
+				</Button>
 			</div>
 			<div className={styles.containerSeparator}/>
 
@@ -146,6 +157,5 @@ export default function ClockPage() {
 				<ProductView auctionItem={currentItem}/>
 			</div>
 		</div>
-  );
+	);
 }
-

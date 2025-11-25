@@ -5,8 +5,8 @@ import Typography from "./Typography";
 const currencyType = "100 cent";
 
 export default function Clock(
-	{ progress, price, fmtedTime, count}
-  : { progress: number, price: string, fmtedTime: string, count: number }) {
+	{ progress, price, fmtedTime, count }: { progress: number, price: string, fmtedTime: string, count: number }
+) {
 	return (
 		<div className={styles.container}>
 			<div className={styles.clock} style={{ "--progress": progress } as CSSProperties}>

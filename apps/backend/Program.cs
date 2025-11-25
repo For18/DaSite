@@ -27,6 +27,10 @@ builder.Services.AddSwaggerGen(c => {
 	c.SwaggerGeneratorOptions.Servers = new List<OpenApiServer> { new OpenApiServer { Url = Environment.GetEnvironmentVariable("API_SERVER_URL") ?? throw new Exception("Missing API_SERVER_URL environment variable") } };
 	c.EnableAnnotations();
 });
+builder.Services.AddAuth0WebAppAuthentication(options => {
+	options.Domain = Environment.GetEnvironmentVariable("AUTH0_DOMAIN") ?? throw new Exception("Missing environment variable \"AUTH0_DOMAIN\"");
+	options.ClientId = Environment.GetEnvironmentVariable("AUTH0_CLIENTID") ?? throw new Exception("Missing environment variable \"AUTH0_CLIENTID\"");
+});
 builder.Services.AddDbContext<DatabaseContext>();
 
 builder.Services.AddIdentityApiEndpoints<User>()

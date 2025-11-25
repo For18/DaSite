@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 
 const RANDOM_CHARACTER_SET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-export type SetState<T> = React.Dispatch<React.SetStateAction<T>>
+export type SetState<T> = React.Dispatch<React.SetStateAction<T>>;
 
 export function randomCharacter(): string {
 	return RANDOM_CHARACTER_SET.charAt(
