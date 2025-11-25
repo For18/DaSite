@@ -9,13 +9,10 @@ export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 	const user = useAPI<User>("/user/" + auction.plannerId);
   const product = useAPI<Product>(item ? "/product/" + item.productId : null);
 	const thumbnailImage = useAPI<ProductImage[]>(product ? "/product-image/from/" + product.id : null);
-	const thumbnailUrl = thumbnailImage && thumbnailImage[0].url ?
+	const thumbnailUrl = thumbnailImage && thumbnailImage[0] && thumbnailImage[0].url ?
 		thumbnailImage[0].url :
 		"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcCBHgbS23kyBw2r8Pquu19UtKZnrZmFUx1g&s";
 
-  if (item === null) return <Throbber/>;
-  if (item === undefined) return null;
-  
 	return (
 		<div className={styles.card}>
 			<div className={styles.image}>
