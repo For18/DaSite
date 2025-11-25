@@ -116,27 +116,28 @@ export default function ClockPage() {
 		<div className={styles.baseContainer}>
 			<div className={styles.clockContainer}> 
         { isBuffered ? <> <BeforeAuction startingPoint={formatStartCountDown(currentItemStartTime!, currentTime)}/> </> :
-        <>
-           <Clock progress={progress} price={currentPrice} fmtedTime={fmtedRemainingTime} count={currentItemCountRef.current ?? 0}/>
-
-			     <Button
-			     	variant="outlined"
-			     	disabled={progress < 0 || progress > 1}
-			     	onClick={() => {
-               onPurchase(buyCountRef.current)
-			     		alert(`Bought ${buyCountRef.current} products for € ${currentPrice} each`);
-			     	}}
-			     >
-			     	BUY
-			     </Button>
+          <>
+            <Clock progress={progress} price={currentPrice} fmtedTime={fmtedRemainingTime} count={currentItemCountRef.current ?? 0}/>
           </>
         }
-           <input
-             type="number"
-             onChange={count => {
-               buyCountRef.current = Number(count.target.value)
-             }}
-           />
+         <input
+           className={styles.input}
+           type="number"
+           onChange={count => {
+             buyCountRef.current = Number(count.target.value)
+           }}
+         />
+
+			   <Button
+			   	variant="outlined"
+			   	disabled={progress < 0 || progress > 1 || isBuffered}
+			   	onClick={() => {
+             onPurchase(buyCountRef.current)
+			   		alert(`Bought ${buyCountRef.current} products for € ${currentPrice} each`);
+			   	}}
+			   >
+			   	BUY
+			   </Button>
 			</div>
 			<div className={styles.containerSeparator}/>
 
