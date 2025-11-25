@@ -45,6 +45,7 @@ export default function ProductView( { auctionItem }: { auctionItem: AuctionItem
 
       <div>
         <hr className={styles.horizontalRule}/>
+        <Typography>Item count: {auctionItem.count}</Typography>
         <Typography>Batch size: {auctionItem.batchSize}</Typography>
       </div>
 
