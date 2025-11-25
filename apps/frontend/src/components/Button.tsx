@@ -6,7 +6,7 @@ export interface ButtonProps extends PropsWithChildren {
 	onClick?: MouseEventHandler<HTMLButtonElement>;
 	disabled?: boolean;
 	color?: "brand" | "success" | "warning" | "error";
-  className?: string;
+	className?: string;
 }
 
 export default function Button(
@@ -17,7 +17,7 @@ export default function Button(
 			styles.button,
 			styles[variant],
 			styles[color],
-      className
+			className
 		].join(" ")} onClick={e => {
 			if (disabled) return;
 			onClick?.(e);

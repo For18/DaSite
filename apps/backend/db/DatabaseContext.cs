@@ -8,34 +8,34 @@ public class DatabaseContext : DbContext {
 	public DbSet<ProductImage> ProductImages { get; set; }
 	public DbSet<User> Users { get; set; }
 	public DbSet<Auction> Auctions { get; set; }
-  public DbSet<AuctionEntry> AuctionEntries { get; set; }
-  public DbSet<AuctionItem> AuctionItems { get; set; }
+	public DbSet<AuctionEntry> AuctionEntries { get; set; }
+	public DbSet<AuctionItem> AuctionItems { get; set; }
 	public DbSet<Sale> Sales { get; set; }
 
 	protected override void OnConfiguring(DbContextOptionsBuilder contextBuilder) {
 		contextBuilder.UseMySQL(Environment.GetEnvironmentVariable("MYSQL_CONNECTION_STRING") ?? "");
 	}
 
-  protected override void OnModelCreating(ModelBuilder modelBuilder) {
-    modelBuilder.Entity<AuctionEntry>()
-      .HasOne(ae => ae.Auction)
-      .WithMany()
-      .HasForeignKey("AuctionId")
-      .OnDelete(DeleteBehavior.Cascade);
+	protected override void OnModelCreating(ModelBuilder modelBuilder) {
+		modelBuilder.Entity<AuctionEntry>()
+		  .HasOne(ae => ae.Auction)
+		  .WithMany()
+		  .HasForeignKey("AuctionId")
+		  .OnDelete(DeleteBehavior.Cascade);
 
-    modelBuilder.Entity<AuctionEntry>()
-      .HasOne(ae => ae.AuctionItem)
-      .WithMany()
-      .HasForeignKey("AuctionItemId")
-      .OnDelete(DeleteBehavior.Cascade);
+		modelBuilder.Entity<AuctionEntry>()
+		  .HasOne(ae => ae.AuctionItem)
+		  .WithMany()
+		  .HasForeignKey("AuctionItemId")
+		  .OnDelete(DeleteBehavior.Cascade);
 
-    modelBuilder.Entity<AuctionItem>()
-      .HasOne(ai => ai.Product)
-      .WithMany()
-      .HasForeignKey("ProductId")
-      .OnDelete(DeleteBehavior.Cascade);
+		modelBuilder.Entity<AuctionItem>()
+		  .HasOne(ai => ai.Product)
+		  .WithMany()
+		  .HasForeignKey("ProductId")
+		  .OnDelete(DeleteBehavior.Cascade);
 
-    modelBuilder.Entity<AuctionEntry>()
-      .HasKey("AuctionId", "AuctionItemId");
-  }
+		modelBuilder.Entity<AuctionEntry>()
+		  .HasKey("AuctionId", "AuctionItemId");
+	}
 }

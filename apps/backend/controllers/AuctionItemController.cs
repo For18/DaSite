@@ -7,43 +7,43 @@ using System.ComponentModel;
 
 [DisplayName(nameof(AuctionItem))]
 public class AuctionItemExternal {
-  /* For annotation reasoning:
-   * https://stackoverflow.com/questions/76909169/required-keyword-causes-error-even-if-member-initialized-in-constructor
-   */
-  [System.Diagnostics.CodeAnalysis.SetsRequiredMembersAttribute]
-  public AuctionItemExternal(ulong id, ushort count, uint batchSize, uint startingPrice, uint minimumPrice, uint length, ulong productId) {
-    Id = id;
-    Count = count;
-    BatchSize = batchSize;
-    StartingPrice = startingPrice;
-    MinimumPrice = minimumPrice;
-    Length = length;
-    ProductId = productId;
-  }
+	/* For annotation reasoning:
+	 * https://stackoverflow.com/questions/76909169/required-keyword-causes-error-even-if-member-initialized-in-constructor
+	 */
+	[System.Diagnostics.CodeAnalysis.SetsRequiredMembersAttribute]
+	public AuctionItemExternal(ulong id, ushort count, uint batchSize, uint startingPrice, uint minimumPrice, uint length, ulong productId) {
+		Id = id;
+		Count = count;
+		BatchSize = batchSize;
+		StartingPrice = startingPrice;
+		MinimumPrice = minimumPrice;
+		Length = length;
+		ProductId = productId;
+	}
 
-  public static AuctionItemExternal ToExternal(AuctionItem item) {
-    return new AuctionItemExternal(item.Id, item.Count, item.BatchSize, item.StartingPrice, item.MinimumPrice, item.Length, item.Product.Id);
-  }
+	public static AuctionItemExternal ToExternal(AuctionItem item) {
+		return new AuctionItemExternal(item.Id, item.Count, item.BatchSize, item.StartingPrice, item.MinimumPrice, item.Length, item.Product.Id);
+	}
 
-  public AuctionItem ToAuctionItem(DatabaseContext db) {
-    return new AuctionItem{
-      Id = Id,
-      Count = Count,
-      BatchSize = BatchSize,
-      StartingPrice = StartingPrice,
-      MinimumPrice = MinimumPrice,
-      Length = Length,
-      Product = db.Products.Include(prod => prod.ThumbnailImage).Where(prod => prod.Id == ProductId).FirstOrDefault()
-    };
-  }
+	public AuctionItem ToAuctionItem(DatabaseContext db) {
+		return new AuctionItem {
+			Id = Id,
+			Count = Count,
+			BatchSize = BatchSize,
+			StartingPrice = StartingPrice,
+			MinimumPrice = MinimumPrice,
+			Length = Length,
+			Product = db.Products.Include(prod => prod.ThumbnailImage).Where(prod => prod.Id == ProductId).FirstOrDefault()
+		};
+	}
 
 	public required ulong Id { get; set; }
 	public required ushort Count { get; set; }
 	public required uint BatchSize { get; set; }
 	public required uint StartingPrice { get; set; }
 	public required uint MinimumPrice { get; set; }
-  public required uint Length { get; set; }
-  public required ulong ProductId { get; set; }
+	public required uint Length { get; set; }
+	public required ulong ProductId { get; set; }
 }
 
 [ApiController]
@@ -61,20 +61,20 @@ public class AuctionItemController : ControllerBase {
 		}
 	}
 
-  [HttpGet("get-by-auction/{id}")]
-  public async Task<ActionResult<AuctionItemExternal[]>> GetByAuction(ulong id) {
-    using var db = new DatabaseContext();
-    {
-      return await db.AuctionEntries
-        .Include(entry => entry.Auction)
-        .Include(entry => entry.AuctionItem)
-        .ThenInclude(ae => ae.Product)
-        .ThenInclude(prod => prod.ThumbnailImage)
-        .Where(entry => entry.Auction.Id == id)
-        .Select(entry => AuctionItemExternal.ToExternal(entry.AuctionItem))
-        .ToArrayAsync();
-    }
-  }
+	[HttpGet("get-by-auction/{id}")]
+	public async Task<ActionResult<AuctionItemExternal[]>> GetByAuction(ulong id) {
+		using var db = new DatabaseContext();
+		{
+			return await db.AuctionEntries
+			  .Include(entry => entry.Auction)
+			  .Include(entry => entry.AuctionItem)
+			  .ThenInclude(ae => ae.Product)
+			  .ThenInclude(prod => prod.ThumbnailImage)
+			  .Where(entry => entry.Auction.Id == id)
+			  .Select(entry => AuctionItemExternal.ToExternal(entry.AuctionItem))
+			  .ToArrayAsync();
+		}
+	}
 
 	[HttpPost]
 	public async Task<ActionResult> Post(AuctionItemExternal auctionItemData) {

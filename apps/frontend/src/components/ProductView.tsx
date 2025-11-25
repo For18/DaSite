@@ -6,17 +6,17 @@ import Image from "./Image";
 import styles from "./ProductView.module.scss";
 import Typography from "./Typography";
 
-export default function ProductView( { auctionItem }: { auctionItem: AuctionItem}) {
-  const product = useAPI<Product>("/product/" + auctionItem.productId);
+export default function ProductView({ auctionItem }: { auctionItem: AuctionItem }) {
+	const product = useAPI<Product>("/product/" + auctionItem.productId);
 	const owner = useAPI<User>(product?.id ? "/private-user/" + product.ownerId : null);
 	const prodImages = useAPI<ProductImage[]>(product?.id ? "/product-image/from/" + product.id : null);
-  /// beans
+	/// beans
 	// const thumbnailImage = useAPI<ProductImage>(
 	// 	product && showThumbnail ? "/product-image/from/" + product.thumbnailImageId : null
 	// );
 
-  if (product === null) return <Throbber/>;
-  if (product === undefined) return <NotFound/>;
+	if (product === null) return <Throbber/>;
+	if (product === undefined) return <NotFound/>;
 
 	if (owner === null) return <Throbber/>;
 	if (owner === undefined) return <NotFound/>;
@@ -43,11 +43,11 @@ export default function ProductView( { auctionItem }: { auctionItem: AuctionItem
 				</Typography>
 			</div>
 
-      <div>
-        <hr className={styles.horizontalRule}/>
-        <Typography>Item count: {auctionItem.count}</Typography>
-        <Typography>Batch size: {auctionItem.batchSize}</Typography>
-      </div>
+			<div>
+				<hr className={styles.horizontalRule}/>
+				<Typography>Item count: {auctionItem.count}</Typography>
+				<Typography>Batch size: {auctionItem.batchSize}</Typography>
+			</div>
 
 			<hr className={styles.horizontalRule}/>
 
@@ -55,34 +55,33 @@ export default function ProductView( { auctionItem }: { auctionItem: AuctionItem
 				<Typography>{product.description}</Typography>
 			</div>
 
-      {
-        prodImages && prodImages.length ?
-          <>
-           <hr className={styles.horizontalRule}/>
-           <Image
-           className={styles.thumbnailImage}
-           src={prodImages[0].url}
-           alt={product.name}
-           />
-          </>
-          : null
-      }
+			{prodImages && prodImages.length ?
+				(
+					<>
+						<hr className={styles.horizontalRule}/>
+						<Image
+							className={styles.thumbnailImage}
+							src={prodImages[0].url}
+							alt={product.name}
+						/>
+					</>
+				) :
+				null}
 
 			<div className={styles.extraImageContainer}>
-				{ Array.isArray(prodImages) ?
-          prodImages.map(prodImage => prodImage.url).map((url, index) => (
-					<div key={url}>
-						<a href={url}>
-							<Image
-								className={styles.extraImage}
-								src={url}
-								alt={`Product Image ${index + 1}`}
-							/>
-						</a>
-					</div>
-				)) 
-          : null
-        }
+				{Array.isArray(prodImages) ?
+					prodImages.map(prodImage => prodImage.url).map((url, index) => (
+						<div key={url}>
+							<a href={url}>
+								<Image
+									className={styles.extraImage}
+									src={url}
+									alt={`Product Image ${index + 1}`}
+								/>
+							</a>
+						</div>
+					)) :
+					null}
 			</div>
 		</div>
 	);
