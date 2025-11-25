@@ -11,25 +11,42 @@
 .imageBackground {
 	position: relative;
 	display: flex;
-	height: auto;
 	width: 100vw;
-	align-items: left;
+	align-items: flex-start;
 	aspect-ratio: 4 / 3;
 	background-image: url("https://www.visitaalsmeer.nl/wp-content/uploads/2021/06/RoyalHolland-Flower-Auction-Aalsmeer-1-1920x1440.jpg");
-	background-repeat: no-repeat;
 	background-size: cover;
-	max-height: 91vh;
 	overflow: hidden;
+	max-height: 2000px;
+}
+
+@media (min-width: 2400px) {
+  .imageBackground {
+	max-height: 700px;
+  }
+}
+
+@media (max-width: 2400px) {
+  .imageBackground {
+    max-height: 1000px;
+  }
+}
+@media (max-width: 700px) {
+  .imageBackground {
+    max-height: 2000px;
+  }
 }
 
 .left {
 	position: relative;
 	display: flex;
-	align-items: top;
+	align-items: flex-start;
 	float: left;
 	width: auto;
 	height: fit-content;
 	justify-content: center;
+	padding-left: 5%;
+	padding-top: 5%;
 	margin-bottom: 4vw;
 }
 
@@ -40,6 +57,7 @@
 	height: 100%;
 	float: right;
 	justify-content: center;
+	padding-top: 5%;
 	margin-top: 4vw;
 	margin-right: 2vw;
 }
