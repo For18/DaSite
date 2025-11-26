@@ -120,7 +120,11 @@ export function usePromise<T>(createPromise: () => (Promise<T> | null), dependen
 		if (promise === null) return;
 
 		promise
-			.then(setValue, setError)
+			.then(setValue)
+			.catch(err => {
+				console.warn(err);
+				setError(err);
+			})
 			.finally(() => setIsLoading(false))
 	}, dependencies);
 
