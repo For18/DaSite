@@ -32,10 +32,11 @@ function formatStartCountDown(startingTime: number, currentTime: number) {
 	return (remainingTime / 1000).toFixed(2);
 }
 
+const BUFFER_LEN = 5000;
+
 /* TODO: contemplate if timed out auctions should be added to the back of the auctionItems stack being sold */
 export default function ClockPage() {
 	/* Main state holders */
-	const bufferLen = 5000;
 	const { auctionId } = useParams();
 	const auctionItems = useAPI<AuctionItem[]>("/auction-item/get-by-auction/" + auctionId);
 	const auction = useAPI<Auction>("/auction/" + auctionId);
@@ -57,7 +58,7 @@ export default function ClockPage() {
 	}, [currentItemIndex, auctionItems]);
 
 	const currentItemStartTime = useMemo<number | null>(() => {
-		return Date.now() + bufferLen;
+		return Date.now() + BUFFER_LEN;
 	}, [currentItemIndex, auctionItems]);
 
 	const currentTime = useTime();
@@ -76,7 +77,7 @@ export default function ClockPage() {
 		fetch(API_URL + "/auction/" + auction?.id, {
 			method: "PATCH",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify([{ op: "replace", path: "/startingTime", value: Math.round(Date.now() + bufferLen) }])
+			body: JSON.stringify([{ op: "replace", path: "/startingTime", value: Math.round(Date.now() + BUFFER_LEN) }])
 		}).then(() => console.log("patched"));
 	}, [auction]);
 
