@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 
 import { useEffect, useState } from "react";
+import { usePromise } from "./util";
 
 export const API_URL: string = import.meta.env.VITE_API_URL;
 
@@ -53,16 +54,10 @@ export interface User {
 }
 
 export function useAPI<T>(route: string | null): T | null | undefined {
-	const [value, setValue] = useState<T | null | undefined>(null);
+	const {isLoading, value, error} = usePromise<T>(() => route !== null ? fetch(route).then(response => response.json()) : null, [route]);
 
-	useEffect(() => {
-		setValue(null);
-		if (route === null) return;
-		fetch(API_URL + route).then(response => {
-			if (response.status == 404) return undefined;
-			return response.json();
-		}).then(setValue);
-	}, [route]);
+	if (isLoading) return null;
+	if (error) return undefined;
 
 	return value;
 }
