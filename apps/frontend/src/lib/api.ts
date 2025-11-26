@@ -58,7 +58,7 @@ export interface User {
 }
 
 export function useAPI<T>(route: string | null): T | null | undefined {
-	const {isLoading, value, error} = usePromise<T>(() => route !== null ? fetch(route).then(response => response.json()) : null, [route]);
+	const {isLoading, value, error} = usePromise<T>(() => route !== null ? fetch(API_URL + route).then(response => response.json()) : null, [route]);
 
 	if (isLoading) return null;
 	if (error) return undefined;
