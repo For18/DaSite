@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
+using System;
 
 [DisplayName(nameof(AuctionEntry))]
 public class AuctionEntryExternal {
@@ -20,9 +21,14 @@ public class AuctionEntryExternal {
 	}
 
 	public AuctionEntry ToAuctionEntry(DatabaseContext db) {
+    Auction? auction = db.Auctions.Include(auc => auc.Planner).Where(auc => auc.Id == AuctionId).FirstOrDefault();
+    AuctionItem? item = db.AuctionItems.Include(item => item.Product).ThenInclude(prod => prod.ThumbnailImage).Where(item => item.Id == ItemId).FirstOrDefault();
+
+    if (auction == null || item == null) throw new ArgumentNullException();
+      
 		return new AuctionEntry {
-			Auction = db.Auctions.Include(auc => auc.Planner).Where(auc => auc.Id == AuctionId).FirstOrDefault(),
-			AuctionItem = db.AuctionItems.Include(item => item.Product).ThenInclude(prod => prod.ThumbnailImage).Where(item => item.Id == ItemId).FirstOrDefault()
+      Auction = auction,
+      AuctionItem = item
 		};
 	}
 

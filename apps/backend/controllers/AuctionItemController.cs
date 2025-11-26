@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
+using System;
 
 [DisplayName(nameof(AuctionItem))]
 public class AuctionItemExternal {
@@ -26,6 +27,9 @@ public class AuctionItemExternal {
 	}
 
 	public AuctionItem ToAuctionItem(DatabaseContext db) {
+    Product product = db.Products.Include(prod => prod.ThumbnailImage).Where(prod => prod.Id == ProductId).FirstOrDefault();
+    if (product == null) throw new ArgumentNullException();
+ 
 		return new AuctionItem {
 			Id = Id,
 			Count = Count,
@@ -33,8 +37,7 @@ public class AuctionItemExternal {
 			StartingPrice = StartingPrice,
 			MinimumPrice = MinimumPrice,
 			Length = Length,
-			Product = db.Products.Include(prod => prod.ThumbnailImage).Where(prod => prod.Id == ProductId).FirstOrDefault()
-		};
+			Product = product};
 	}
 
 	public required ulong Id { get; set; }
