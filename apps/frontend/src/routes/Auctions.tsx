@@ -6,7 +6,7 @@ import Typography from "../components/Typography";
 import { API_URL, Auction, AuctionEntry, AuctionItem, Product, useAPI } from "../lib/api";
 import { formatEuros, usePromise } from "../lib/util";
 
-/* TODO: update to fit Many to Many Auction-Item relationship
+/* TODO: update
  * each card should hold title of auction and have a list of links or hover-able text or similar
  * which displays the info abt the products listed
  */
