@@ -100,12 +100,13 @@ export function formatEuros(n: number): string {
 }
 
 export interface PromiseHookResponse<T> {
-	isLoading: boolean,
-	value?: T,
-	error?: Error
+	isLoading: boolean;
+	value?: T;
+	error?: Error;
 }
 
-export function usePromise<T>(createPromise: () => (Promise<T> | null), dependencies: DependencyList): PromiseHookResponse<T> {
+export function usePromise<T>(createPromise: () => Promise<T> | null,
+	dependencies: DependencyList): PromiseHookResponse<T> {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [value, setValue] = useState<T>();
 	const [error, setError] = useState<Error>();
@@ -125,12 +126,12 @@ export function usePromise<T>(createPromise: () => (Promise<T> | null), dependen
 				console.warn(err);
 				setError(err);
 			})
-			.finally(() => setIsLoading(false))
+			.finally(() => setIsLoading(false));
 	}, dependencies);
 
 	return {
 		isLoading,
 		value,
 		error
-	}
+	};
 }

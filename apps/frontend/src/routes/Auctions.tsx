@@ -16,17 +16,15 @@ export default function Auctions() {
 	});
 
 	const auctions = useAPI<Auction[]>("/auctions");
-	
+
 	const { value: auctionEntries, isLoading: auctionEntriesLoading } = usePromise<AuctionEntry[]>(() =>
 		Promise.all(
 			auctions?.map(auction =>
 				fetch(API_URL + "/auction-entry/from-auction/" + auction.id)
 					.then(response => response.json())
 			) ?? []
-		).then(entryArrays => entryArrays.flat()),
-		[auctions]
-	);
-	
+		).then(entryArrays => entryArrays.flat()), [auctions]);
+
 	const auctionItemIds = useMemo(() => {
 		const ids = new Set();
 		auctionEntries?.forEach(entry => ids.add(entry.itemId));
@@ -68,11 +66,9 @@ export default function Auctions() {
 											• Count: {item.count}
 										</Typography>
 									</Section>
-								))
-							}
+								))}
 						</Section>
-					))
-				}
+					))}
 			</Section>
 		</>
 	);
