@@ -54,7 +54,7 @@ export default function ProductView({ auctionItem }: { auctionItem: AuctionItem 
 				<Typography>{product.description}</Typography>
 			</div>
 
-			{prodImages && prodImages.length ?
+			{prodImages && prodImages.length > 0 ?
 				(
 					<>
 						<hr className={styles.horizontalRule}/>
