@@ -3,7 +3,6 @@ import Typography from "../components/Typography";
 import styles from "./Home.module.scss";
 
 export default function Home() {
-
 	useEffect(() => {
 		document.title = "For18 - Home";
 	});
