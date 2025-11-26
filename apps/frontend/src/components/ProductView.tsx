@@ -10,7 +10,6 @@ export default function ProductView({ auctionItem }: { auctionItem: AuctionItem 
 	const product = useAPI<Product>("/product/" + auctionItem.productId);
 	const owner = useAPI<User>(product?.id ? "/private-user/" + product.ownerId : null);
 	const prodImages = useAPI<ProductImage[]>(product?.id ? "/product-image/from/" + product.id : null);
-	/// beans
 	// const thumbnailImage = useAPI<ProductImage>(
 	// 	product && showThumbnail ? "/product-image/from/" + product.thumbnailImageId : null
 	// );
