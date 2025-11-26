@@ -33,6 +33,11 @@ export interface Auction {
 	startingTime: number;
 }
 
+export interface AuctionEntry {
+	auctionId: number;
+	itemId: number;
+}
+
 export interface AuctionItem {
 	id: number;
 	count: number;
