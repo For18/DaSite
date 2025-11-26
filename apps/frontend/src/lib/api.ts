@@ -1,6 +1,5 @@
 /// <reference types="vite/client" />
 
-import { useEffect, useState } from "react";
 import { usePromise } from "./util";
 
 export const API_URL: string = import.meta.env.VITE_API_URL;
