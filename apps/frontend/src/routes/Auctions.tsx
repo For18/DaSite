@@ -3,7 +3,7 @@ import ProductView from "../components/ProductView";
 import Section from "../components/Section";
 import Throbber from "../components/Throbber";
 import Typography from "../components/Typography";
-import { Auction, Product, useAPI } from "../lib/api";
+import { Auction, Product, AuctionItem, useAPI } from "../lib/api";
 import { formatEuros } from "../lib/util";
 
 /* TODO: update to fit Many to Many Auction-Item relationship
@@ -16,7 +16,9 @@ export default function Auctions() {
 	});
 
 	const auctions = useAPI<Auction[]>("/auctions");
+	const auctionId = useAPI<Auction[]>("/auction/" + auctions?.[0]?.id);
 	const products = useAPI<Product[]>("/products");
+	const auctionItems = useAPI<AuctionItem[]>("/auction-items/" + auctionId?.[0]?.id);
 
 	return (
 		<>
