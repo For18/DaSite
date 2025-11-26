@@ -11,12 +11,10 @@
 .imageBackground {
 	position: relative;
 	display: flex;
-	width: 100vw;
 	align-items: flex-start;
+	width: 100vw;
 	background-image: url("https://www.visitaalsmeer.nl/wp-content/uploads/2021/06/RoyalHolland-Flower-Auction-Aalsmeer-1-1920x1440.jpg");
 	background-size: cover;
-	overflow: hidden;
-	max-height: 2000px;
 }
 
 .left {
