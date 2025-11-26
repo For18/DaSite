@@ -16,7 +16,9 @@ export default function Auctions() {
 	});
 
 	const auctions = useAPI<Auction[]>("/auctions");
+	const auctionId = useAPI<Auction[]>("/auction/" + auctions?.[0]?.id);
 	const products = useAPI<Product[]>("/products");
+	const auctionItems = useAPI<AuctionItem[]>("/auction-items/" + auctionId?.[0]?.id);
 
 	return (
 		<>
