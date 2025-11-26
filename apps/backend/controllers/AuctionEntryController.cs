@@ -52,6 +52,44 @@ public class AuctionEntryController : ControllerBase {
 		}
 	}
 
+	[HttpGet("from-auction/{auctionId}")]
+	public async Task<ActionResult<AuctionEntryExternal[]>> GetFromAuction(ulong auctionId) {
+		using var db = new DatabaseContext();
+		{
+
+			AuctionEntryExternal[] entries = await db.AuctionEntries
+		.Include(entry => entry.AuctionItem)
+		.ThenInclude(item => item.Product)
+		.ThenInclude(prod => prod.ThumbnailImage)
+		.Include(entry => entry.Auction)
+		.ThenInclude(auc => auc.Planner)
+		.Where(entry => entry.Auction.Id == auctionId)
+		.Select(entry => AuctionEntryExternal.ToExternal(entry))
+		.ToArrayAsync();
+
+			return entries;
+		}
+	}
+
+	[HttpGet("from-item/{itemId}")]
+	public async Task<ActionResult<AuctionEntryExternal[]>> GetFromItem(ulong itemId) {
+		using var db = new DatabaseContext();
+		{
+
+			AuctionEntryExternal[] entries = await db.AuctionEntries
+		.Include(entry => entry.AuctionItem)
+		.ThenInclude(item => item.Product)
+		.ThenInclude(prod => prod.ThumbnailImage)
+		.Include(entry => entry.Auction)
+		.ThenInclude(auc => auc.Planner)
+		.Where(entry => entry.AuctionItem.Id == itemId)
+		.Select(entry => AuctionEntryExternal.ToExternal(entry))
+		.ToArrayAsync();
+
+			return entries;
+		}
+	}
+
 	[HttpPost]
 	public async Task<ActionResult> Post(AuctionEntryExternal auctionEntryData) {
 		using (var db = new DatabaseContext()) {
