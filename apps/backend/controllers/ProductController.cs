@@ -66,6 +66,20 @@ public class ProductController : ControllerBase {
 		}
 	}
 
+  [HttpGet("/get-contained-in")]
+  public async Task<ActionResult<ProductExternal[]>> GetContainedIn([FromQuery] ulong[] ids) {
+    using (var db = new DatabaseContext()) {
+      return await db.AuctionItems
+        .Include(item => item.Product)
+        .ThenInclude(prod => prod.ThumbnailImage)
+        .Include(item => item.Product)
+        .ThenInclude(prod => prod.Owner)
+        .Where(item => ids.Contains(item.Id))
+        .Select(item => ProductExternal.ToExternal(item.Product))
+        .ToArrayAsync();
+    }
+  }
+
 	[HttpPost]
 	public async Task<ActionResult> Post(ProductExternal productData) {
 		using (var db = new DatabaseContext()) {
