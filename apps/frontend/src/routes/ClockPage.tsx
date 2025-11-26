@@ -41,30 +41,32 @@ export default function ClockPage() {
 	const auctionItems = useAPI<AuctionItem[]>("/auction-item/get-by-auction/" + auctionId);
 	const auction = useAPI<Auction>("/auction/" + auctionId);
 
-	const [currentItemIndex, setCurrentItemIndex] = useState<number>(0);
+  const [doShift, setDoShift] = useState<boolean>(false);
 	const [isAuctionOver, setIsAuctionOver] = useState<boolean>(false);
 	const currentItemCountRef = useRef<number>(0);
 	const buyCountRef = useRef<number>(0);
 
 	const currentItem = useMemo<AuctionItem | null>(() => {
-		if (!auctionItems) return null;
-		if (auctionItems.length === 0 || currentItemIndex >= auctionItems.length) {
-			setIsAuctionOver(true);
-			return null;
-		}
+		if ((!auctionItems || !auctionItems) || auctionItems.length < 0) return null;
+    return auctionItems.shift() ?? null;
+	}, [doShift, auctionItems]);
 
-		currentItemCountRef.current = auctionItems[currentItemIndex].count;
-		return auctionItems[currentItemIndex];
-	}, [currentItemIndex, auctionItems]);
+  useEffect(() => {
+    if (auctionItems?.length === 0 && currentItem === null) {
+      setIsAuctionOver(true);
+    }
+
+    currentItemCountRef.current = currentItem?.count ?? 0;
+  }, [currentItem]);
 
 	const currentItemStartTime = useMemo<number | null>(() => {
 		return Date.now() + BUFFER_LEN;
-	}, [currentItemIndex, auctionItems]);
+	}, [doShift, auctionItems]);
 
 	const currentTime = useTime();
 
-	const auctionedItemLenMillis = auctionItems && auctionItems[currentItemIndex] ?
-		auctionItems[currentItemIndex].length * 1000 :
+	const auctionedItemLenMillis = currentItem && currentItem.length ?
+		currentItem.length * 1000 :
 		null;
 	const elapsedTime = currentItemStartTime != null ? currentTime - currentItemStartTime : 0;
 	const progress = auctionedItemLenMillis ? elapsedTime / auctionedItemLenMillis : 0;
@@ -83,14 +85,14 @@ export default function ClockPage() {
 
 	useEffect(() => {
 		if (progress >= 1) {
-			setCurrentItemIndex(i => i + 1);
+      setDoShift(!doShift);
 		}
 	}, [progress]);
 
-	/* TODO: set buffer between auctions swaps so ppl actually have time to see the product */
+  /* TODO: add entry to 'sale' db table if onPurchase is called */
 	const onPurchase = (count: number) => {
 		currentItemCountRef.current -= count;
-		if (currentItemCountRef.current <= 0) setCurrentItemIndex(i => i + 1);
+		if (currentItemCountRef.current <= 0) setDoShift(!doShift); 
 	};
 
 	if (auctionItems === null) return <Throbber/>;
