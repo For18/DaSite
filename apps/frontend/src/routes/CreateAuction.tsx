@@ -8,7 +8,7 @@ import styles from "./CreateAuction.module.scss";
 
 export default function CreateAuctions() {
     const committedAuctionName = useRef<string>("");
-    const [product, setProduct] = useState("");
+    const [productsSelected, setProductsSelected] = useState<string[]>([]);
     const [count, setCount] = useState(1);
     const [batchSize, setBatchSize] = useState(1);
     const [startingPrice, setStartingPrice] = useState(0);
@@ -26,9 +26,9 @@ export default function CreateAuctions() {
     const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
     async function submitAuction() {
-        const productId = product ? Number(product) : null;
-        if (!productId) {
-            setStatusMessage("Please select a product.");
+        const productIds = productsSelected.map(Number).filter(id => !Number.isNaN(id));
+        if (productIds.length === 0) {
+            setStatusMessage("Please select at least one product.");
             return;
         }
 
@@ -47,7 +47,7 @@ export default function CreateAuctions() {
             minimumPrice: Number(minimumPrice),
             startingTime: startingTimeMillis, // milliseconds since epoch or null
             length: Number(durationSeconds),
-            productId: productId,
+            productIds: productIds,
             plannerId: null
         } as any;
 
@@ -86,15 +86,18 @@ export default function CreateAuctions() {
                             {products.map(p => (
                                 <label
                                     key={p.id}
-                                    className={styles.product + (String(product) === String(p.id) ? ` ${styles.selected}` : "")}
+                                    className={styles.product + (productsSelected.includes(String(p.id)) ? ` ${styles.selected}` : "")}
                                 >
                                     <input
                                         className={styles.radio}
-                                        type="radio"
+                                        type="checkbox"
                                         name="productId"
                                         value={String(p.id)}
-                                        checked={String(product) === String(p.id)}
-                                        onChange={(e) => setProduct(e.target.value)}
+                                        checked={productsSelected.includes(String(p.id))}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            setProductsSelected(prev => prev.includes(val) ? prev.filter(x => x !== val) : [...prev, val]);
+                                        }}
                                     />
                                     {p.name}
                                 </label>
@@ -166,7 +169,7 @@ export default function CreateAuctions() {
                         placeholder="Enter duration in seconds"
                     />
                     <button className={styles.button} onClick={submitAuction}>Create Auction</button>
-                    <Typography heading={2}>Selected Product ID: {product || "(none selected)"}</Typography>
+                    <Typography heading={2}>Selected Products: {productsSelected.length ? productsSelected.join(', ') : "(none selected)"}</Typography>
                     {statusMessage && <Typography className={styles.status}>{statusMessage}</Typography>}
                 </div>
 
