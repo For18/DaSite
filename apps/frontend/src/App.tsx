@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import { createElement, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router";
 import Layout from "./components/Layout";
 import Throbber from "./components/Throbber";
@@ -17,7 +17,7 @@ export default function App() {
 						{Object.entries(routes).map(([path, component]) => (
 							<Route key={path} path={path} element={
 								<Suspense fallback={<Throbber/>}>
-									{React.createElement(component)}
+									{createElement(component)}
 								</Suspense>
 							}/>
 						))}

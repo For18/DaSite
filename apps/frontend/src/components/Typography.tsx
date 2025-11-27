@@ -1,5 +1,5 @@
 import { createElement, type JSX, type PropsWithChildren, useCallback } from "react";
-import { useNavigate } from "react-router";
+import { useGoto } from "../lib/util";
 import styles from "./Typography.module.scss";
 
 export interface TypographyProps extends PropsWithChildren {
@@ -18,11 +18,20 @@ export default function Typography({
 }: TypographyProps): JSX.Element {
 	const isHeading = headingLevel != null;
 	const isLink = href != null;
-	const elementType = isHeading ? `h${headingLevel}` : "span";
+	const elementType = isHeading ? `h${headingLevel}` : "a";
 
-	const navigate = useNavigate();
+	const goto = useGoto();
+
+	const handleInteract = useCallback((e: Event) => {
+		if (!isLink) return;
+		if (e instanceof KeyboardEvent && e.key !== "Enter" && e.key !== " ") return;
+
+		e.preventDefault();
+		goto(href);
+	}, [href]);
 
 	return createElement(elementType, {
+		href: href,
 		className: [
 			styles.typography,
 			styles[color],
@@ -30,8 +39,7 @@ export default function Typography({
 			isLink ? styles.link : null,
 			className
 		].filter(v => v !== null).join(" "),
-		onClick: useCallback(() => {
-			if (href != null) navigate(href);
-		}, [href])
+		onClick: handleInteract,
+		onKeyDown: handleInteract
 	}, children);
 }

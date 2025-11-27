@@ -3,7 +3,7 @@ import ProductView from "../components/ProductView";
 import Section from "../components/Section";
 import Throbber from "../components/Throbber";
 import Typography from "../components/Typography";
-import { Auction, Product, useAPI } from "../lib/api";
+import { type Auction, type Product, useAPI } from "../lib/api";
 import { formatEuros } from "../lib/util";
 
 export default function Auctions() {
@@ -34,8 +34,7 @@ export default function Auctions() {
 									<ProductView product={product} showThumbnail={false}/> :
 									<Typography>Product #{auction.productId}</Typography>}
 								<Typography color="secondary">
-									Price: {formatEuros(auction.startingPrice)}{" "}
-									→ {formatEuros(auction.minimumPrice)} • Count: {auction.count}
+									Price: {formatEuros(auction.startingPrice)} → {formatEuros(auction.minimumPrice)} • Count: {auction.count}
 								</Typography>
 							</Section>
 						);

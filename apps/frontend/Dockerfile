@@ -2,11 +2,11 @@ FROM node:24
 
 WORKDIR /app
 
-COPY ./package*.json .
+COPY ./package.json .
+COPY ./package-lock.json .
 RUN npm install
 
 COPY . .
 
 CMD ["npx", "vite", "--host", "0.0.0.0", "--port", "5173"]
 EXPOSE 5173
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD ["curl", "-f", "localhost:5173"]

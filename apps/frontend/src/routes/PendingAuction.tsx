@@ -2,16 +2,14 @@ import PendingAuctionCard from "../components/PendingAuctionCard";
 import Section from "../components/Section";
 import Throbber from "../components/Throbber";
 import Typography from "../components/Typography";
-import { Auction, Product, useAPI, User } from "../lib/api";
+import { type Auction, useAPI } from "../lib/api";
 import { useScreenSize } from "../lib/util";
 import styles from "./PendingAuction.module.scss";
 
 export default function PendingAuction() {
 	const auctions = useAPI<Auction[]>("/auctions/pending");
 
-	const [screenWidth, screenHeight] = useScreenSize();
-
-	const minPaperHeight = 196;
+	const [screenWidth] = useScreenSize();
 
 	return (
 		<div className={styles.main}>
@@ -20,22 +18,16 @@ export default function PendingAuction() {
 			</div>
 
 			<Section>
-				<div style={{
-					width: "1000px",
-					maxWidth: "80vw",
-					height: "fit-content",
+				<div className={styles["card-container"]} style={{
 					display: auctions != null && auctions.length > 0 ? "grid" : "flex",
 					gridTemplateColumns: screenWidth > 1000 ? "1fr 1fr" : "1fr",
-					justifyContent: "center",
-					alignItems: "flex-start",
-					gap: "16px"
 				}}>
 					{auctions == null ?
 						<Throbber/> :
 						auctions.length == 0 ?
 						(
-							<div className={styles.noPendingAuctions}>
-								<Typography className={styles.noPendingAuctionsText}>No pending auctions</Typography>
+							<div className={styles["no-pending-auctions"]}>
+								<Typography className={styles["no-pending-auctions-text"]}>No pending auctions</Typography>
 							</div>
 						) :
 						auctions.map(auction => <PendingAuctionCard auction={auction} key={auction.id}/>)}

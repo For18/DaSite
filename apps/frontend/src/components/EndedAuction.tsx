@@ -9,7 +9,7 @@ export default function EndedAuction({ id }: { id: number }) {
 
 	const navigate = useNavigate();
 	return (
-		<div className={styles["end-container"]}>
+		<div className={styles.endContainer}>
 			<Typography className={styles.header} heading={1}>
 				This Auction is Over
 			</Typography>
@@ -18,7 +18,7 @@ export default function EndedAuction({ id }: { id: number }) {
 				You can view the pending auction or the next one below.
 			</Typography>
 
-			<div className={styles["link-container"]}>
+			<div className={styles.linkContainer}>
 				<Button
 					onClick={() => navigate("/auctions/pending")}
 					variant="outlined"

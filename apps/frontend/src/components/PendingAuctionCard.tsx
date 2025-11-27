@@ -1,4 +1,4 @@
-import { Auction, Product, ProductImage, useAPI, User } from "../lib/api";
+import { type Auction, type Product, type ProductImage, useAPI, type User } from "../lib/api";
 import Image from "./Image";
 import styles from "./PendingAuctionCard.module.scss";
 import Typography from "./Typography";
@@ -22,7 +22,7 @@ export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 				</div>
 				<div className={styles.infoTextContainer}>
 					<Typography color="secondary" className={styles.infoText}>
-						Seller: {user?.displayName}
+						Seller: {user?.userName}
 					</Typography>
 					<Typography color="secondary" className={styles.infoText}>
 						Asking price: €{auction.startingPrice / 100},-

@@ -1,4 +1,4 @@
-import React, { JSX, lazy } from "react";
+import { type JSX, lazy, type LazyExoticComponent } from "react";
 
 const Home = lazy(() => import("./Home"));
 const Clock = lazy(() => import("./ClockPage"));
@@ -12,4 +12,4 @@ export default {
 	"/auctions": Auctions,
 	"/auctions/pending": PendingAuction,
 	"/profile/:userId": Profile
-} as { [path: string]: React.LazyExoticComponent<() => JSX.Element> };
+} as { [path: string]: LazyExoticComponent<() => JSX.Element> };

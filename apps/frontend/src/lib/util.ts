@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router";
 
 const RANDOM_CHARACTER_SET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -95,4 +96,21 @@ export function formatEuros(n: number): string {
 	} else wholeString += ",-";
 
 	return "€" + wholeString;
+}
+
+export function isInternalHref(href: string): boolean {
+	const hrefUrl = URL.parse(href, window.location.href);
+	return window.location.host === hrefUrl?.host;
+}
+
+export function useGoto() {
+	const navigate = useNavigate();
+
+	return useCallback((href: string) => {
+		if (isInternalHref(href)) {
+			navigate(href);
+		} else {
+			window.location.href = href;
+		}
+	}, []);
 }

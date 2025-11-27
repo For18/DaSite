@@ -1,5 +1,5 @@
-import { createContext, JSX, PropsWithChildren, useState } from "react";
-import { Theme } from "./Themes";
+import { createContext, type JSX, type PropsWithChildren, useState } from "react";
+import type { Theme } from "./Themes";
 
 export const SetThemeContext = createContext<(theme: Theme) => void>(() => {});
 export const ThemeContext = createContext<Theme | null>(null);

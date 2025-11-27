@@ -6,10 +6,18 @@ services:
         - action: sync
           path: ./apps/frontend/src
           target: /app/src
+        - action: rebuild
+          path: ./apps/frontend/package-lock.json
+        - action: rebuild
+          path: ./apps/frontend/Dockerfile
     environment:
       VITE_API_URL: "/api/v1"
   backend:
     build: ./apps/backend
+    develop:
+      watch:
+        - action: rebuild
+          path: ./apps/backend
     environment:
       DOTNET_ENVIRONMENT: Development
       MYSQL_CONNECTION_STRING: server=db;database=for18;user=for18;password=bVSFogXKSd1q3pVc
@@ -27,12 +35,6 @@ services:
       MYSQL_PASSWORD: bVSFogXKSd1q3pVc
     volumes:
       - db:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-      start_period: 40s
   proxy:
     build: ./apps/proxy
     ports:
@@ -42,11 +44,6 @@ services:
         - action: sync
           path: ./apps/proxy/nginx.conf
           target: /etc/nginx/nginx.conf
-    depends_on:
-      frontend:
-        condition: service_healthy
-      backend:
-        condition: service_healthy
 
 volumes:
   db:

@@ -1,4 +1,4 @@
-import { JSX, MouseEventHandler, PropsWithChildren } from "react";
+import type { JSX, MouseEventHandler, PropsWithChildren } from "react";
 import styles from "./Button.module.scss";
 
 export interface ButtonProps extends PropsWithChildren {

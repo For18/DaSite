@@ -10,15 +10,15 @@ DELETE FROM Users;
 -- Using manual id assignment so auto increment does not get involved
 
 -- USERS
-INSERT INTO Users(Id, DisplayName, AuctionDebt, ImageUrl, Email, TelephoneNumber)
+INSERT INTO Users(Id, UserName, AuctionDebt, AvatarImageUrl, Email, EmailConfirmed, TelephoneNumber, PhoneNumberConfirmed, TwoFactorEnabled, LockOutEnabled, AccessFailedCount)
 VALUES
-(1, 'Robbert Young', 0, 'https://i.redd.it/g28z3ezfxqm51.jpg', 'HS@maestro.flora.nl', 987654374),
-(2, 'Hán Zhì', 0, 'https://imgur.com/a/XazVj4C', 'HZ@admin.flora.nl', 876556789),
-(3, 'Maria de Vries', 0, 'https://media.licdn.com/dms/image/v2/D5603AQFVPGrisNSyuQ/profile-displayphoto-shrink_200_200/B56ZWa8r1_GQAY-/0/1742061355032?e=2147483647&v=beta&t=Cw8eo8Snvn8nphEkLqW2kRHMHVM6OKKSyM3akYe81ks', 'Maria.deVries@live.nl', 8798000),
-(4, 'Joris van den Berg', 0, 'https://www.hevo.nl/application/files/cache/thumbnails/hevo-joris-van-den-berg-0a83fb5ddae97038540dbc5d1966978a.jpg', 'Joris.vanBerg@live.nl', 345678),
-(5, 'Casper van de Molen', 500, 'https://i.pinimg.com/originals/59/af/9c/59af9cd100daf9aa154cc753dd58316d.jpg', 'Casper.Molen@gmail.com', 9876587),
-(6, 'Thijmen Weening', 22450, 'https://media.licdn.com/dms/image/D4E22AQFIp_NIUQ1TNw/feedshare-shrink_800/0/1689671627197?e=2147483647&v=beta&t=LeRJwHti1AGLuNVboxNY7RN82QNZXbNSINIswOsRtkg', 'Thijmen.ween.2001@live.nl', 8678675654),
-(7, 'Hans Anders', 88760, 'https://media.licdn.com/dms/image/D4E03AQEr-eBEB30FvQ/profile-displayphoto-shrink_800_800/0/1697558265625?e=2147483647&v=beta&t=lGipnIlcV5JEh1AEwNdzY0Vc11hw_Be8Po7ALIcV4VM', 'Hans@hotmail.com', 876548);
+(1, 'Robbert Young', 0, 'https://i.redd.it/g28z3ezfxqm51.jpg', 'HS@maestro.flora.nl', 1, 987654374, 1, 1, 2, 0),
+(2, 'Hán Zhì', 0, 'https://imgur.com/a/XazVj4C', 'HZ@admin.flora.nl', 1, 876556789, 1, 1, 1, 0),
+(3, 'Maria de Vries', 0, 'https://media.licdn.com/dms/image/v2/D5603AQFVPGrisNSyuQ/profile-displayphoto-shrink_200_200/B56ZWa8r1_GQAY-/0/1742061355032?e=2147483647&v=beta&t=Cw8eo8Snvn8nphEkLqW2kRHMHVM6OKKSyM3akYe81ks', 'Maria.deVries@live.nl', 1, 8798000, 1, 1, 1, 0),
+(4, 'Joris van den Berg', 0, 'https://www.hevo.nl/application/files/cache/thumbnails/hevo-joris-van-den-berg-0a83fb5ddae97038540dbc5d1966978a.jpg', 'Joris.vanBerg@live.nl', 1, 345678, 1, 1, 1, 0),
+(5, 'Casper van de Molen', 500, 'https://i.pinimg.com/originals/59/af/9c/59af9cd100daf9aa154cc753dd58316d.jpg', 'Casper.Molen@gmail.com', 1, 9876587, 1, 1, 1, 0),
+(6, 'Thijmen Weening', 22450, 'https://media.licdn.com/dms/image/D4E22AQFIp_NIUQ1TNw/feedshare-shrink_800/0/1689671627197?e=2147483647&v=beta&t=LeRJwHti1AGLuNVboxNY7RN82QNZXbNSINIswOsRtkg', 'Thijmen.ween.2001@live.nl', 1, 8678675654, 1, 1, 1, 0),
+(7, 'Hans Anders', 88760, 'https://media.licdn.com/dms/image/D4E03AQEr-eBEB30FvQ/profile-displayphoto-shrink_800_800/0/1697558265625?e=2147483647&v=beta&t=lGipnIlcV5JEh1AEwNdzY0Vc11hw_Be8Po7ALIcV4VM', 'Hans@hotmail.com', 1, 876548, 1, 1, 1, 0);
 
 
 -- PRODUCTS
