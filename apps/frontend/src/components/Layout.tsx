@@ -1,5 +1,4 @@
 import { PropsWithChildren } from "react";
-import PendingAuction from "../routes/PendingAuction";
 import Footer from "./Footer";
 import styles from "./Layout.module.scss";
 import TopBar from "./TopBar";
