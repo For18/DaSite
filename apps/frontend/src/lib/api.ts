@@ -29,14 +29,18 @@ export interface ProductImage {
 
 export interface Auction {
 	id: number;
+	plannerId: number;
+	startingTime: number;
+}
+
+export interface AuctionItem {
+	id: number;
 	count: number;
 	batchSize: number;
 	startingPrice: number;
 	minimumPrice: number;
-	startingTime: number;
 	length: number;
 	productId: number;
-	plannerId: number;
 }
 
 export interface User {

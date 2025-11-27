@@ -6,6 +6,11 @@ import { type Auction, useAPI } from "../lib/api";
 import { useScreenSize } from "../lib/util";
 import styles from "./PendingAuction.module.scss";
 
+/* TODO:
+ * Add pure text page of pending auctions
+ * [Auction] onClick => old PendingAuction page but only contains items that are sold in the current auction
+ * optionally make every Product card clickable so it shows <ProductView>
+ */
 export default function PendingAuction() {
 	const auctions = useAPI<Auction[]>("/auctions/pending");
 

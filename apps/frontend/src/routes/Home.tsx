@@ -22,7 +22,6 @@ export default function Home() {
 							<Typography heading={2}>
 								Welkom bij de veiling site van Royal FloraHolland
 							</Typography>
-							<div>
 								<Typography>
 									Bloemen en planten maken onze wereld groener. Ze kleuren onze huizen, tuinen en buurten
 									en vergroenen onze steden. Een groene omgeving maakt mensen gelukkig en het werkt
@@ -38,7 +37,6 @@ export default function Home() {
 									bereiken we duurzaam succes, internationale groei en versterken we de coöperatie. Om
 									voorop te blijven lopen, nu en in de toekomst.
 								</Typography>
-							</div>
 						</div>
 					</div>
 					<div className={styles.right}>
