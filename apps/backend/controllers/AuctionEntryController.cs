@@ -21,14 +21,14 @@ public class AuctionEntryExternal {
 	}
 
 	public AuctionEntry ToAuctionEntry(DatabaseContext db) {
-    Auction? auction = db.Auctions.Include(auc => auc.Planner).Where(auc => auc.Id == AuctionId).FirstOrDefault();
-    AuctionItem? item = db.AuctionItems.Include(item => item.Product).ThenInclude(prod => prod.ThumbnailImage).Where(item => item.Id == ItemId).FirstOrDefault();
+		Auction? auction = db.Auctions.Include(auc => auc.Planner).Where(auc => auc.Id == AuctionId).FirstOrDefault();
+		AuctionItem? item = db.AuctionItems.Include(item => item.Product).ThenInclude(prod => prod.ThumbnailImage).Where(item => item.Id == ItemId).FirstOrDefault();
 
-    if (auction == null || item == null) throw new ArgumentNullException();
-      
+		if (auction == null || item == null) throw new ArgumentNullException();
+
 		return new AuctionEntry {
-      Auction = auction,
-      AuctionItem = item
+			Auction = auction,
+			AuctionItem = item
 		};
 	}
 

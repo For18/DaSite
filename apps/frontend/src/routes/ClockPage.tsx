@@ -41,23 +41,23 @@ export default function ClockPage() {
 	const auctionItems = useAPI<AuctionItem[]>("/auction-item/get-by-auction/" + auctionId);
 	const auction = useAPI<Auction>("/auction/" + auctionId);
 
-  const [doShift, setDoShift] = useState<boolean>(false);
+	const [doShift, setDoShift] = useState<boolean>(false);
 	const [isAuctionOver, setIsAuctionOver] = useState<boolean>(false);
 	const currentItemCountRef = useRef<number>(0);
 	const buyCountRef = useRef<number>(0);
 
 	const currentItem = useMemo<AuctionItem | null>(() => {
 		if ((!auctionItems || !auctionItems) || auctionItems.length < 0) return null;
-    return auctionItems.shift() ?? null;
+		return auctionItems.shift() ?? null;
 	}, [doShift, auctionItems]);
 
-  useEffect(() => {
-    if (auctionItems?.length === 0 && currentItem === null) {
-      setIsAuctionOver(true);
-    }
+	useEffect(() => {
+		if (auctionItems?.length === 0 && currentItem === null) {
+			setIsAuctionOver(true);
+		}
 
-    currentItemCountRef.current = currentItem?.count ?? 0;
-  }, [currentItem]);
+		currentItemCountRef.current = currentItem?.count ?? 0;
+	}, [currentItem]);
 
 	const currentItemStartTime = useMemo<number | null>(() => {
 		return Date.now() + BUFFER_LEN;
@@ -85,14 +85,14 @@ export default function ClockPage() {
 
 	useEffect(() => {
 		if (progress >= 1) {
-      setDoShift(!doShift);
+			setDoShift(!doShift);
 		}
 	}, [progress]);
 
-  /* TODO: add entry to 'sale' db table if onPurchase is called */
+	/* TODO: add entry to 'sale' db table if onPurchase is called */
 	const onPurchase = (count: number) => {
 		currentItemCountRef.current -= count;
-		if (currentItemCountRef.current <= 0) setDoShift(!doShift); 
+		if (currentItemCountRef.current <= 0) setDoShift(!doShift);
 	};
 
 	if (auctionItems === null) return <Throbber/>;
