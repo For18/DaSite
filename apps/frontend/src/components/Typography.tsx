@@ -32,6 +32,7 @@ export default function Typography({
 
 	return createElement(elementType, {
 		href: href,
+		role: isLink ? "link" : undefined,
 		className: [
 			styles.typography,
 			styles[color],
