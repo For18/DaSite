@@ -14,6 +14,7 @@ export function Switch({ enabled, onClick }: ToggleSwitchProps) {
 			].filter(v => v != null).join(" ")}
 			aria-pressed={enabled}
 			role="switch"
+			tabIndex={0}
 			onClick={onClick}
 		>
 			<div className={styles.dot}></div>
