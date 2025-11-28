@@ -31,7 +31,7 @@ export default function Typography({
 	}, [href]);
 	const keydown = useCallback((e: KeyboardEvent) => {
 		if (e.key === "Enter" || e.key === " ") click(e);
-	}, [click]);
+	}, [click])
 
 	return createElement(elementType, {
 		id: id,
