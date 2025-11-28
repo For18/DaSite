@@ -1,7 +1,6 @@
 .container {
 	aspect-ratio: 1/1;
 	height: 1.3em;
-	margin: var(--spacing);
 
 	border: var(--color-border) 1px solid;
 	border-radius: var(--border-radius);
@@ -21,9 +20,9 @@
 		transform: translate(-50%, -50%);
 
 		path {
-			stroke-dasharray: 1;
-			stroke-dashoffset: 1;
-			transition: stroke-dashoffset 0.07s ease-in;
+			stroke-dasharray: 167;
+			stroke-dashoffset: 167;
+			transition: stroke-dashoffset .05s linear;
 		}
 	}
 

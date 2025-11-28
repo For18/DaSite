@@ -3,6 +3,7 @@ import Button from "../components/Button";
 import { Switch } from "../components/Switch";
 import LabeledContainer from "../components/LabeledContainer";
 import Typography from "../components/Typography";
+import Checkbox from "../components/Checkbox";
 
 export default function Test() {
 	const [buttonsEnabled, setButtonsEnabled] = useState<boolean>(true);
@@ -10,6 +11,7 @@ export default function Test() {
 	const incrementButtonsPressed = useCallback(() => {
 		setButtonsPressed(n => n + 1)
 	}, []);
+	const [checked, setChecked] = useState<boolean>(false);
 
 	return (
 		<>
@@ -33,6 +35,7 @@ export default function Test() {
 			<LabeledContainer text="Enable buttons" color={buttonsEnabled ? "primary" : "secondary"}>
 				<Switch enabled={buttonsEnabled} onClick={() => setButtonsEnabled(v => !v)}/>
 			</LabeledContainer>
+			<Checkbox checked={checked} onClick={() => setChecked(v => !v)}/>
 		</>
 	);
 }
