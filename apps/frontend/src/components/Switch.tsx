@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import styles from "./Switch.module.scss";
 
 export interface ToggleSwitchProps {
@@ -6,6 +7,10 @@ export interface ToggleSwitchProps {
 }
 
 export function Switch({ enabled, onClick }: ToggleSwitchProps) {
+	const onKeyDown = useCallback((e: KeyboardEvent) => {
+		if (e.key === "Enter" || e.key === " ") onClick();
+	}, [onClick])
+
 	return (
 		<div
 			className={[
@@ -16,6 +21,7 @@ export function Switch({ enabled, onClick }: ToggleSwitchProps) {
 			role="switch"
 			tabIndex={0}
 			onClick={onClick}
+			onKeyDown={onKeyDown as any}
 		>
 			<div className={styles.dot}/>
 		</div>
