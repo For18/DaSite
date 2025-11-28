@@ -17,7 +17,7 @@ export function Switch({ enabled, onClick }: ToggleSwitchProps) {
 			tabIndex={0}
 			onClick={onClick}
 		>
-			<div className={styles.dot}></div>
+			<div className={styles.dot}/>
 		</div>
 	);
 }
