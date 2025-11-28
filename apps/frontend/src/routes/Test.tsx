@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import Button from "../components/Button";
 import { Switch } from "../components/Switch";
+import LabeledContainer from "../components/LabeledContainer";
 import Typography from "../components/Typography";
 
 export default function Test() {
@@ -29,7 +30,9 @@ export default function Test() {
 					</tr>
 				))}
 			</table>
-			<Switch enabled={buttonsEnabled} onClick={() => setButtonsEnabled(v => !v)}/>
+			<LabeledContainer text="Enable buttons" color={buttonsEnabled ? "primary" : "secondary"}>
+				<Switch enabled={buttonsEnabled} onClick={() => setButtonsEnabled(v => !v)}/>
+			</LabeledContainer>
 		</>
 	);
 }
