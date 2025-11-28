@@ -37,7 +37,6 @@ export default function Typography({
 		id: id,
 		href: href,
 		role: isLink ? "link" : undefined,
-		tabIndex: isLink ? 0 : undefined,
 		className: [
 			styles.typography,
 			styles[color],
