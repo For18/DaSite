@@ -1,0 +1,36 @@
+.container {
+	aspect-ratio: 1/1;
+	height: 1.3em;
+
+	border: var(--color-border) 1px solid;
+	border-radius: var(--border-radius);
+
+	.svg {
+		fill: none;
+		stroke: var(--color-brand);
+		stroke-width: 20;
+
+		$scale: 130%;
+		width: $scale;
+		height: $scale;
+
+		position: relative;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+
+		path {
+			stroke-dasharray: 167;
+			stroke-dashoffset: 167;
+			transition: stroke-dashoffset .05s linear;
+		}
+	}
+
+	&.checked {
+		.svg {
+			path {
+				stroke-dashoffset: 0;
+			}
+		}
+	}
+}
