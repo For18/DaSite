@@ -22,13 +22,14 @@ export default function Typography({
 
 	const goto = useGoto();
 
-	const handleInteract = useCallback((e: Event) => {
-		if (!isLink) return;
-		if (e instanceof KeyboardEvent && e.key !== "Enter" && e.key !== " ") return;
-
+	const click = useCallback((e: Event) => {
+		if (href == null) return;
 		e.preventDefault();
 		goto(href);
 	}, [href]);
+	const keydown = useCallback((e: KeyboardEvent) => {
+		if (e.key === "Enter" || e.key === " ") click(e);
+	}, [click])
 
 	return createElement(elementType, {
 		href: href,
@@ -41,7 +42,7 @@ export default function Typography({
 			isLink ? styles.link : null,
 			className
 		].filter(v => v !== null).join(" "),
-		onClick: handleInteract,
-		onKeyDown: handleInteract
+		onClick: isLink ? click : undefined,
+		onKeyDown: isLink ? keydown : undefined
 	}, children);
 }
