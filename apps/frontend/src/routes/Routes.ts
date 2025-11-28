@@ -5,7 +5,6 @@ const Clock = lazy(() => import("./ClockPage"));
 const Auctions = lazy(() => import("./Auctions"));
 const PendingAuction = lazy(() => import("./PendingAuction"));
 const Profile = lazy(() => import("./Profile"));
-const CreateProduct = lazy(() => import("./CreateProductPage"));
 const Test = lazy(() => import("./Test"));
 
 export default {
@@ -14,6 +13,5 @@ export default {
 	"/auctions": Auctions,
 	"/auctions/pending": PendingAuction,
 	"/profile/:userId": Profile,
-	"/create-product": CreateProduct,
 	"/test": Test
 } as { [path: string]: LazyExoticComponent<() => JSX.Element> };
