@@ -1,19 +1,18 @@
 import { ReactNode } from "react";
-import styles from "./LabeledContainer.module.scss";
 import Typography from "./Typography";
+import styles from "./LabeledContainer.module.scss";
 
 export interface LabeledContainerProps {
 	color?: "primary" | "secondary";
 	text: string;
-	children: ReactNode;
-	id?: string;
+	children: ReactNode
 }
 
-export default function LabeledContainer({ color = "primary", text, children, id }: LabeledContainerProps) {
+export default function LabeledContainer({ color = "secondary", text, children }: LabeledContainerProps) {
 	return (
 		<div className={styles.container}>
 			{children}
-			<Typography color={color} id={id} className={styles.label}>{text}</Typography>
+			<Typography color={color}>{text}</Typography>
 		</div>
-	);
+	)
 }
