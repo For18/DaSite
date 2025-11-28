@@ -6,7 +6,7 @@ import NotFound from "./routes/NotFound";
 
 import routes from "./routes/Routes";
 import { DarkTheme } from "./themes/Dark";
-import ThemeCSSProvider from "./themes/ThemeProvider";
+import ThemeCSSProvider from "./themes/ThemeCSSProvider";
 
 export default function App() {
 	return (
