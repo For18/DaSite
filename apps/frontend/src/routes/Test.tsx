@@ -37,15 +37,15 @@ export default function Test() {
 					</tr>
 				))}
 			</table>
-			<LabeledContainer text="Enable buttons" color={buttonsEnabled ? "primary" : "secondary"}>
-				<Switch enabled={buttonsEnabled} onClick={() => setButtonsEnabled(v => !v)}/>
+			<LabeledContainer text="Enable buttons" color={buttonsEnabled ? "primary" : "secondary"} id="switch">
+				<Switch enabled={buttonsEnabled} onClick={() => setButtonsEnabled(v => !v)} labelledby="switch"/>
 			</LabeledContainer>
-			<LabeledContainer text="Disable fields">
-				<Checkbox checked={checked} onClick={() => setChecked(v => !v)}/>
+			<LabeledContainer text="Disable fields" id="checkbox">
+				<Checkbox checked={checked} onClick={() => setChecked(v => !v)} labelledby="checkbox"/>
 			</LabeledContainer>
 			{["text", "password", "date", "datetime-local", "email", "number", "password", "tel", "time", "url"].map(type => (
-				<LabeledContainer text={type} color={checked ? "secondary" : "primary"}>
-					<Input type={type as any} placeholder="placeholder" disabled={checked}/>
+				<LabeledContainer text={type} color={checked ? "secondary" : "primary"} id={`field-${type}`}>
+					<Input type={type as any} placeholder="placeholder" disabled={checked} labelledby={`field-${type}`}/>
 				</LabeledContainer>
 			))}
 		</>
