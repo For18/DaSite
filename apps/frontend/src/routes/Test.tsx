@@ -4,6 +4,7 @@ import { Switch } from "../components/Switch";
 import LabeledContainer from "../components/LabeledContainer";
 import Typography from "../components/Typography";
 import Checkbox from "../components/Checkbox";
+import Input from "../components/Input";
 
 export default function Test() {
 	const [buttonsEnabled, setButtonsEnabled] = useState<boolean>(true);
@@ -35,7 +36,14 @@ export default function Test() {
 			<LabeledContainer text="Enable buttons" color={buttonsEnabled ? "primary" : "secondary"}>
 				<Switch enabled={buttonsEnabled} onClick={() => setButtonsEnabled(v => !v)}/>
 			</LabeledContainer>
-			<Checkbox checked={checked} onClick={() => setChecked(v => !v)}/>
+			<LabeledContainer text="Disable fields">
+				<Checkbox checked={checked} onClick={() => setChecked(v => !v)}/>
+			</LabeledContainer>
+			{["text", "password", "date", "datetime-local", "email", "number", "password", "tel", "time", "url"].map(type => (
+				<LabeledContainer text={type} color={checked ? "secondary" : "primary"}>
+					<Input type={type as any} placeholder="placeholder" disabled={checked}/>
+				</LabeledContainer>
+			))}
 		</>
 	);
 }
