@@ -43,7 +43,7 @@ export default function Test() {
 			<LabeledContainer text="Disable fields" id="checkbox">
 				<Checkbox checked={checked} onClick={() => setChecked(v => !v)} labelledby="checkbox"/>
 			</LabeledContainer>
-			{["text", "password", "date", "datetime-local", "email", "number", "password", "tel", "time", "url"].map(type => (
+			{["text", "password", "date", "datetime-local", "email", "number", "tel", "time", "url"].map(type => (
 				<LabeledContainer text={type} color={checked ? "secondary" : "primary"} id={`field-${type}`}>
 					<Input type={type as any} placeholder="placeholder" disabled={checked} labelledby={`field-${type}`}/>
 				</LabeledContainer>
