@@ -4,15 +4,16 @@ import styles from "./Checkbox.module.scss";
 export interface CheckboxProps {
 	checked: boolean;
 	onClick: () => void;
+	labelledby?: string;
 }
 
-export default function Checkbox({ checked, onClick }: CheckboxProps) {
+export default function Checkbox({ checked, onClick, labelledby }: CheckboxProps) {
 	const onKeyDown = useCallback((e: KeyboardEvent) => {
 		if (e.key === "Enter" || e.key === " ") onClick();
 	}, [onClick])
 
 	return (
-		<div onClick={onClick} onKeyDown={onKeyDown as any} aria-pressed={checked} role="checkbox" tabIndex={0} className={styles.container + (checked ? " " + styles.checked : "")}>
+		<div onClick={onClick} onKeyDown={onKeyDown as any} aria-pressed={checked} role="checkbox" tabIndex={0} aria-labelledby={labelledby} className={styles.container + (checked ? " " + styles.checked : "")}>
 			<svg className={styles.svg} viewBox="-20 -20 130 130">
 				<path d="M100 0 L50 90 L0 50"/>
 			</svg>

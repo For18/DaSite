@@ -6,11 +6,11 @@ export interface ButtonProps extends PropsWithChildren {
 	onClick?: MouseEventHandler<HTMLButtonElement>;
 	disabled?: boolean;
 	color?: "brand" | "success" | "warning" | "error";
-	className?: string;
+	labelledby?: string;
 }
 
 export default function Button(
-	{ onClick, children: content, disabled = false, variant = "text", color = "brand", className }: ButtonProps
+	{ onClick, children: content, disabled = false, variant = "text", color = "brand", labelledby }: ButtonProps
 ): JSX.Element {
 	return (
 		<button className={[
@@ -21,7 +21,7 @@ export default function Button(
 		].filter(entry => entry !== null).join(" ")} onClick={e => {
 			if (disabled) return;
 			onClick?.(e);
-		}} disabled={disabled}>
+		}} disabled={disabled} aria-labelledby={labelledby}>
 			{content}
 		</button>
 	);
