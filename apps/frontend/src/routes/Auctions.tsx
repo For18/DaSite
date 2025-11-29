@@ -51,24 +51,22 @@ export default function Auctions() {
 					<Throbber/> :
 					auctions === undefined || auctions.length === 0 ?
 					<Typography>No active auctions</Typography> :
-					auctions.map(auction => (
-						<Section key={auction.id}>
-							{auctionEntriesLoading ? <Throbber/> : auctionEntries
-								?.filter(entry => entry.auctionId === auction.id)
-								.map(entry => auctionItems?.find(item => item.id === entry.itemId))
-								.filter(item => item !== undefined)
-								.map(item => (
-									<Section key={item.id}>
-										<ProductView auctionItem={item}/>
-										<Typography color="secondary">
-											Price: {formatEuros(item.startingPrice)} → {formatEuros(item.minimumPrice)}
-											{" "}
-											• Count: {item.count}
-										</Typography>
-									</Section>
-								))}
-						</Section>
-					))}
+					auctions.map(auction => {
+						const product = products ? products.find(p => p.id === auction.productId) : undefined;
+
+						return (
+							<Section key={auction.id}>
+								{product ?
+									<ProductView product={product} showThumbnail={false}/> :
+									<Typography>Product #{auction.productId}</Typography>}
+								<Typography color="secondary">
+									Price: {formatEuros(auction.startingPrice)} → {formatEuros(auction.minimumPrice)}
+									{" "}
+									• Count: {auction.count}
+								</Typography>
+							</Section>
+						);
+					})}
 			</Section>
 		</>
 	);

@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import Typography from "./Typography";
 import styles from "./LabeledContainer.module.scss";
+import Typography from "./Typography";
 
 export interface LabeledContainerProps {
 	color?: "primary" | "secondary";
@@ -15,5 +15,5 @@ export default function LabeledContainer({ color = "primary", text, children, id
 			{children}
 			<Typography color={color} id={id}>{text}</Typography>
 		</div>
-	)
+	);
 }

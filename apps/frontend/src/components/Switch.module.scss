@@ -1,16 +1,22 @@
 @property --progress {
-  syntax: '<number>';
-  initial-value: 0;
-  inherits: true;
+	syntax: "<number>";
+	initial-value: 0;
+	inherits: true;
 }
 
 .container {
 	--progress: 0;
-	transition: --progress .1s ease-out;
+	transition: --progress 0.1s ease-out;
 
 	$height: 1.3em;
 	cursor: pointer;
-	background-image: linear-gradient(to right, var(--color-brand) calc(var(--progress) * 100% - $height * var(--progress) + $height / 2), transparent 0);
+	background-image: linear-gradient(
+		to right,
+		var(--color-brand) calc(
+			var(--progress) * 100% - $height * var(--progress) + $height / 2
+		),
+		transparent 0
+	);
 	aspect-ratio: 2.5/1;
 	border-radius: calc($height / 2);
 	height: $height;
@@ -21,10 +27,14 @@
 		height: 100%;
 		border-radius: 50%;
 		background-color: #88888855;
-		background-color: color-mix(in oklab, color-mix(in oklab, var(--color-background-primary), #888888 30%), var(--color-text-primary) calc(var(--progress) * 100%));
+		background-color: color-mix(
+			in oklab,
+			color-mix(in oklab, var(--color-background-primary), #888888 30%),
+			var(--color-text-primary) calc(var(--progress) * 100%)
+		);
 		position: relative;
 		top: 0;
-		left: calc(100% * var(--progress) - ($height * var(--progress)));
+		left: calc(100% * var(--progress) - $height * var(--progress));
 	}
 
 	&.enabled {
