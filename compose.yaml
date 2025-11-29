@@ -6,6 +6,9 @@ services:
         - action: sync
           path: ./apps/frontend/src
           target: /app/src
+        - action: sync
+          path: ./apps/frontend/index.html
+          target: /app/index.html
         - action: rebuild
           path: ./apps/frontend/package-lock.json
         - action: rebuild

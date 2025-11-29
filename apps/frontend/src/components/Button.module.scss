@@ -35,6 +35,7 @@
 	&.contained {
 		background-color: var(--color);
 		color: var(--color-text-primary);
+		text-shadow: 0 0 5px #000000aa;
 
 		&:hover:not(:disabled) {
 			filter: brightness(0.9);
