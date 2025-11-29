@@ -8,10 +8,11 @@ export interface InputProps {
 	ref?: Ref<HTMLInputElement>;
 	placeholder?: string;
 	disabled?: boolean;
+	labelledby?: string;
 }
 
-export default function Input({ type, ref, placeholder, disabled }: InputProps) {
+export default function Input({ type, ref, placeholder, disabled, labelledby }: InputProps) {
 	return (
-		<input type={type} ref={ref} placeholder={placeholder} className={styles.input} disabled={disabled}/>
+		<input type={type} ref={ref} placeholder={placeholder} className={styles.input} disabled={disabled} aria-labelledby={labelledby}/>
 	);
 }
