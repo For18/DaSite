@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Button from "../components/Button";
 import { Switch } from "../components/Switch";
 import LabeledContainer from "../components/LabeledContainer";
@@ -7,6 +7,10 @@ import Checkbox from "../components/Checkbox";
 import Input from "../components/Input";
 
 export default function Test() {
+	useEffect(() => {
+		document.title = "For18 - Test";
+	}, []);
+
 	const [buttonsEnabled, setButtonsEnabled] = useState<boolean>(true);
 	const [buttonsPressed, setButtonsPressed] = useState<number>(0);
 	const incrementButtonsPressed = useCallback(() => {
