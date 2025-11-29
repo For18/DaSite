@@ -7,6 +7,7 @@ export interface TypographyProps extends PropsWithChildren {
 	color?: "primary" | "secondary";
 	className?: string;
 	href?: string;
+	id?: string;
 }
 
 export default function Typography({
@@ -14,7 +15,8 @@ export default function Typography({
 	heading: headingLevel,
 	color = "primary",
 	className,
-	href
+	href,
+	id
 }: TypographyProps): JSX.Element {
 	const isHeading = headingLevel != null;
 	const isLink = href != null;
@@ -32,6 +34,7 @@ export default function Typography({
 	}, [click])
 
 	return createElement(elementType, {
+		id: id,
 		href: href,
 		role: isLink ? "link" : undefined,
 		tabIndex: isLink ? 0 : undefined,
