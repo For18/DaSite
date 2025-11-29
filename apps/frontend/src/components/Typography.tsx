@@ -20,7 +20,7 @@ export default function Typography({
 }: TypographyProps): JSX.Element {
 	const isHeading = headingLevel != null;
 	const isLink = href != null;
-	const elementType = isHeading ? `h${headingLevel}` : "a";
+	const elementType = isHeading ? `h${headingLevel}` : isLink ? "a" : "span";
 
 	const goto = useGoto();
 
