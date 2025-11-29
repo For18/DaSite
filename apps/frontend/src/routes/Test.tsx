@@ -21,22 +21,22 @@ export default function Test() {
 	return (
 		<>
 			<Typography heading={3}>Buttons pressed: {buttonsPressed}</Typography>
-			<table>
+			<table><tbody>
 				{["contained", "outlined", "text"].map(variant => (
-					<tr>
+					<tr key={variant}>
 						{["brand", "success", "warning", "error"].map(color => (
-							<Button
+							<td key={color}><Button
 								variant={variant as any}
 								color={color as any}
 								disabled={!buttonsEnabled}
 								onClick={incrementButtonsPressed}
 							>
 								Button
-							</Button>
+							</Button></td>
 						))}
 					</tr>
 				))}
-			</table>
+			</tbody></table>
 			<LabeledContainer text="Enable buttons" color={buttonsEnabled ? "primary" : "secondary"} id="switch">
 				<Switch enabled={buttonsEnabled} onClick={() => setButtonsEnabled(v => !v)} labelledby="switch"/>
 			</LabeledContainer>
@@ -44,7 +44,7 @@ export default function Test() {
 				<Checkbox checked={checked} onClick={() => setChecked(v => !v)} labelledby="checkbox"/>
 			</LabeledContainer>
 			{["text", "password", "date", "datetime-local", "email", "number", "tel", "time", "url"].map(type => (
-				<LabeledContainer text={type} color={checked ? "secondary" : "primary"} id={`field-${type}`}>
+				<LabeledContainer key={type} text={type} color={checked ? "secondary" : "primary"} id={`field-${type}`}>
 					<Input type={type as any} placeholder="placeholder" disabled={checked} labelledby={`field-${type}`}/>
 				</LabeledContainer>
 			))}
