@@ -18,7 +18,7 @@ export function Switch({ enabled, onClick, labelledby }: ToggleSwitchProps) {
 				styles.container,
 				enabled ? styles.enabled : null
 			].filter(v => v != null).join(" ")}
-			aria-pressed={enabled}
+			aria-checked={enabled}
 			aria-labelledby={labelledby}
 			role="switch"
 			tabIndex={0}
