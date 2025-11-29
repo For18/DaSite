@@ -8,7 +8,7 @@ export interface LabeledContainerProps {
 	children: ReactNode
 }
 
-export default function LabeledContainer({ color = "secondary", text, children }: LabeledContainerProps) {
+export default function LabeledContainer({ color = "primary", text, children }: LabeledContainerProps) {
 	return (
 		<div className={styles.container}>
 			{children}
