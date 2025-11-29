@@ -34,7 +34,9 @@ export default function Auctions() {
 									<ProductView product={product} showThumbnail={false}/> :
 									<Typography>Product #{auction.productId}</Typography>}
 								<Typography color="secondary">
-									Price: {formatEuros(auction.startingPrice)} → {formatEuros(auction.minimumPrice)} • Count: {auction.count}
+									Price: {formatEuros(auction.startingPrice)} → {formatEuros(auction.minimumPrice)}
+									{" "}
+									• Count: {auction.count}
 								</Typography>
 							</Section>
 						);

@@ -4,13 +4,13 @@ import styles from "./Switch.module.scss";
 export interface ToggleSwitchProps {
 	enabled: boolean;
 	onClick: () => void;
-	labelledby?: string
+	labelledby?: string;
 }
 
 export function Switch({ enabled, onClick, labelledby }: ToggleSwitchProps) {
 	const onKeyDown = useCallback((e: KeyboardEvent) => {
 		if (e.key === "Enter" || e.key === " ") onClick();
-	}, [onClick])
+	}, [onClick]);
 
 	return (
 		<div
