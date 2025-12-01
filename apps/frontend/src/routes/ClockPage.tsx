@@ -6,7 +6,7 @@ import Clock from "../components/Clock";
 import EndedAuction from "../components/EndedAuction";
 import ProductView from "../components/ProductView";
 import Throbber from "../components/Throbber";
-import { API_URL, Auction, AuctionItem, useAPI } from "../lib/api";
+import { API_URL, type Auction, type Product, type AuctionItem, useAPI } from "../lib/api";
 import { useTime } from "../lib/util";
 import styles from "./ClockPage.module.scss";
 import NotFound from "./NotFound";
