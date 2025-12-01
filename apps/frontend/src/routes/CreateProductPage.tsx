@@ -73,6 +73,7 @@ export default function CreateProductPage() {
           <Accordion title="Images" open={accordionState} onToggle={setAccordionState}>
             {images.map((url, index) =>
                 <AccordionEntry
+                  index={index}
                   key={url + index}
                   imageUrl={url}
                   name={name}
@@ -84,7 +85,7 @@ export default function CreateProductPage() {
   );
 }
 
-function AccordionEntry({ imageUrl, name, setImages } : { imageUrl: string, name: string, setImages: Dispatch<SetStateAction<string[]>>}) {
+function AccordionEntry({ index, imageUrl, name, setImages } : { index: number, imageUrl: string, name: string, setImages: Dispatch<SetStateAction<string[]>>}) {
   return (
       <div className={styles.card}>
         <Image 
@@ -94,9 +95,8 @@ function AccordionEntry({ imageUrl, name, setImages } : { imageUrl: string, name
         />
         <Button 
           className={styles.accordionButton}
-          onClick={
-            () => setImages(entries => entries.filter(url => url != imageUrl))
-          }> Remove </Button>
+          onClick={() => setImages(entries => entries.filter((_, i) => i != index))}
+        > Remove </Button>
       </div>
   );
 }
