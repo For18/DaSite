@@ -1,88 +1,28 @@
-import { useState, SetStateAction, Dispatch } from "react";
+import { useState, useRef, SetStateAction, Dispatch } from "react";
 import Image from "../components/Image";
-import Button from "../components/Button";
-import Input from "../components/Input";
-import Typography from "../components/Typography";
-import Accordion from "../components/Accordion";
-import { API_URL, Product, ProductImage, User } from "../lib/api";
+import Button from "../components/Button"
 import styles from "./CreateProductPage.module.scss";
-
-async function PostProduct(name: string, description: string, ownerName: string, images: string[]) {
-  // TODO: replace owner with ownerId and add dropdown menu to select correct user
-  const userRes = await fetch(API_URL + "/users/by-name/" + ownerName);
-  const userList = await userRes.json() as User[];
-  const owner = userList && userList.length > 0 ? userList[0] : null;
-  if (!owner) return;
-
-  const productRes = await fetch(API_URL + "/product", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      name: name,
-      description: description,
-      ownerId: owner.id,
-      thumbnailImageId: null
-    })
-  });
-
-  const productId = (await productRes.json() as Product).id;
-  if (!productId) return;
-
-  // TODO: add thumbnail image correctly to product after rebase on commit with usePromise hook
-  let thumbnailImageId: number | null = null;
-
-  if (images.length > 0) {
-    const thumbRes = await fetch(API_URL + "/product-image", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        parent: productId,
-        url: images[0]
-      })
-    });
-    thumbnailImageId = ((await thumbRes.json()) as ProductImage).id ?? 0;
-  }
-
-  for (const url of images) {
-    await fetch(API_URL + "/product-image", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        parent: productId,
-        url: url
-      })
-    });
-  }
-
-  if (thumbnailImageId) {
-    await fetch(API_URL + "/product/" + productId, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify([
-        { op: "replace", path: "/ThumbnailImageId", value: thumbnailImageId }
-      ])
-    });
-  }
-}
+import Typography from "../components/Typography"
+import Accordion from "../components/Accordion"
 
 export default function CreateProductPage() {
   const [images, setImages] = useState<string[]>(IMAGES);
   const [accordionState, setAccordionState] = useState<boolean>(false);
-  const [linkText, setLinkText] = useState<string>('');
-  const [name, setName] = useState<string>("product");
-  const [description, setDescription] = useState<string>('');
-  const [batchSize, setBatchSize] = useState<number>(0);
-  const [owner, setOwner] = useState<string>('');
+  const linkTextRef = useRef<string>('');
+  const nameRef = useRef<string>("product");
+  const descriptionRef = useRef<string>('');
+  const batchSizeRef = useRef<number>(0);
+  const ownerRef = useRef<string>('');
 
   return (
       <div className={styles.container}>
         <ProductPreview 
-          name={name}
-          description={description}
-          batchSize={batchSize}
+          name={nameRef.current}
+          description={descriptionRef.current}
+          batchSize={batchSizeRef.current}
           showThumbnail={images.length > 0}
           images={images}
-          owner={owner}
+          owner={"You"}
         />
 
 			  <div className={styles.seperator}/>
@@ -90,80 +30,49 @@ export default function CreateProductPage() {
         <div className={styles.inputs}>
 
           <Typography className={styles.inputTitle}> Name </Typography>
-          <Input
-            className={styles.inputBasic}
+          <input
+            className={styles.name}
             type="text"
-            onChange={value => setName(String(value))}
+            onChange={value => nameRef.current = String(value)}
           />
 
           <Typography className={styles.inputTitle}> Description </Typography>
           <textarea
-            className={styles.inputDescription}
-            onChange={value => setDescription(String(value.target.value))}
+            className={styles.description}
+            onChange={value => descriptionRef.current = String(value)}
           />
 
           <Typography className={styles.inputTitle}> Batch size </Typography>
-          <Input
-            className={styles.inputBasic}
-            type="number"
-            onChange={value => setBatchSize(Number(value))}
+          <input
+            className={styles.batch}
+            type="text"
+            onChange={value => batchSizeRef.current = Number(value)}
           />
 
           <Typography className={styles.inputTitle}> Owner </Typography>
-          <Input
-            className={styles.inputBasic}
+          <input
+            className={styles.owner}
             type="text"
-            onChange={value => setOwner(String(value))}
+            onChange={value => ownerRef.current = String(value)}
           />
 
           <Typography className={styles.inputTitle}> Image Link </Typography>
-          <Input
-            className={styles.inputBasic}
+          <input
+            className={styles.imageLink}
             type="text"
-            onChange={value => setLinkText(String(value))}
+            onChange={value => linkTextRef.current = String(value)}
           />
-          <div className={styles.addImageButton}>
-            <Button
-              onClick={() => setImages([...images, linkText])}
-              variant="contained"
-            > Add Image </Button>
-          </div>
+          <Button onClick={() => setImages([...images, linkTextRef.current])}/>
 
           <Accordion title="Images" open={accordionState} onToggle={setAccordionState}>
-            {images.map((url, index) =>
-                <AccordionEntry
-                  index={index}
-                  key={url + index}
-                  imageUrl={url}
-                  name={name}
-                  setImages={setImages}
-                />)}
+            {images.map(image => <AccordionEntry imageUrl={image} name={nameRef.current} setImages={setImages}/>)}
           </Accordion>
-
-          {/* TODO: add `confirm` button and add product to Db */}
-          <div>
-            <Button
-              variant="contained"
-              onClick={() => {
-                PostProduct(name, description, owner, images);
-                setImages([]);
-                setAccordionState(false);
-                setLinkText('');
-                setName('');
-                setDescription('');
-                setBatchSize(0);
-                setOwner('');
-                alert("i did it");
-              }}
-            > CONFIRM </Button>
-          </div>
         </div>
-
       </div>
   );
 }
 
-function AccordionEntry({ index, imageUrl, name, setImages } : { index: number, imageUrl: string, name: string, setImages: Dispatch<SetStateAction<string[]>>}) {
+function AccordionEntry({ imageUrl, name, setImages } : { imageUrl: string, name: string, setImages: Dispatch<SetStateAction<string[]>>}) {
   return (
       <div className={styles.card}>
         <Image 
@@ -173,8 +82,9 @@ function AccordionEntry({ index, imageUrl, name, setImages } : { index: number, 
         />
         <Button 
           className={styles.accordionButton}
-          onClick={() => setImages(entries => entries.filter((_, i) => i != index))}
-        > Remove </Button>
+          onClick={
+            () => setImages(entries => entries.filter(url => url != imageUrl))
+            }> Remove </Button>
       </div>
   );
 }
@@ -183,7 +93,7 @@ function ProductPreview (
     { name, description, showThumbnail, batchSize, images, owner}: { name: string, description: string, showThumbnail?: boolean, batchSize?: number, images: string[], owner?: string}
 ) {
     return (
-        <div className={styles.productPreview}>
+        <div className={styles.productView}>
             <div>
                 <Typography heading={1}>{name}</Typography>
                 <Typography className={styles.seller}>
@@ -223,7 +133,7 @@ function ProductPreview (
 
             <div className={styles.extraImageContainer}>
                 {images.map((url, index) => (
-                    <div key={index}>
+                    <div key={url}>
                         <a href={url}>
                             <Image
                                 className={styles.extraImage}
