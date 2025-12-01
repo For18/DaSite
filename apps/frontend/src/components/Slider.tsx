@@ -6,7 +6,7 @@ export interface SliderProps {
 	min: number;
 	max: number;
 	value: number;
-	onChange: (value: number) => void;
+	onChange?: (value: number) => void;
 	step?: number;
 	marks?: boolean | number[] | {[value: number]: ReactElement}
 	width?: string;
@@ -22,6 +22,7 @@ export default function Slider({ min, max, value, onChange, step, marks = false,
 	const range = max - min;
 
 	function updateValue() {
+		if (onChange == null) return;
 		if (!dragging) return;
 		if (rectRef.current == null) return;
 		const barRect = rectRef.current.getBoundingClientRect();
