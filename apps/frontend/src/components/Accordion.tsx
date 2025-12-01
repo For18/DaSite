@@ -26,7 +26,7 @@ export default function Accordion({ title, open = false, onToggle, children }: A
 	}, [open, screenX, screenY, innerContentRef.current, children]);
 
 	return (
-		<div className={styles.container + (open ? " " + styles.open : "")}>
+		<div className={styles.container + (open ? " " + styles.open : "")} aria-label={title}>
 			<div className={styles.bar} ref={barRef} onClick={toggle} aria-owns={contentId} tabIndex={0} onKeyDown={e => {
 				if (e.key !== "Enter" && e.key !== " ") return;
 				e.preventDefault();
