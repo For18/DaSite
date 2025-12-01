@@ -31,34 +31,34 @@ export default function CreateProductPage() {
 
           <Typography className={styles.inputTitle}> Name </Typography>
           <input
-            className={styles.name}
+            className={styles.inputBasic}
             type="text"
             onChange={value => nameRef.current = String(value)}
           />
 
           <Typography className={styles.inputTitle}> Description </Typography>
           <textarea
-            className={styles.description}
+            className={styles.inputDescription}
             onChange={value => descriptionRef.current = String(value)}
           />
 
           <Typography className={styles.inputTitle}> Batch size </Typography>
           <input
-            className={styles.batch}
-            type="text"
+            className={styles.inputBasic}
+            type="number"
             onChange={value => batchSizeRef.current = Number(value)}
           />
 
           <Typography className={styles.inputTitle}> Owner </Typography>
           <input
-            className={styles.owner}
+            className={styles.inputBasic}
             type="text"
             onChange={value => ownerRef.current = String(value)}
           />
 
           <Typography className={styles.inputTitle}> Image Link </Typography>
           <input
-            className={styles.imageLink}
+            className={styles.inputBasic}
             type="text"
             onChange={value => linkTextRef.current = String(value)}
           />
@@ -104,7 +104,7 @@ function ProductPreview (
     { name, description, showThumbnail, batchSize, images, owner}: { name: string, description: string, showThumbnail?: boolean, batchSize?: number, images: string[], owner?: string}
 ) {
     return (
-        <div className={styles.productView}>
+        <div className={styles.productPreview}>
             <div>
                 <Typography heading={1}>{name}</Typography>
                 <Typography className={styles.seller}>
@@ -144,7 +144,7 @@ function ProductPreview (
 
             <div className={styles.extraImageContainer}>
                 {images.map((url, index) => (
-                    <div key={url}>
+                    <div key={index}>
                         <a href={url}>
                             <Image
                                 className={styles.extraImage}
