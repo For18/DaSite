@@ -7,18 +7,19 @@ export interface ButtonProps extends PropsWithChildren {
 	disabled?: boolean;
 	color?: "brand" | "success" | "warning" | "error";
 	labelledby?: string;
+  className?: string;
 }
 
 export default function Button(
-	{ onClick, children: content, disabled = false, variant = "text", color = "brand", labelledby }: ButtonProps
+	{ onClick, children: content, disabled = false, variant = "text", color = "brand", labelledby, className }: ButtonProps
 ): JSX.Element {
 	return (
 		<button className={[
 			styles.button,
 			styles[variant],
 			styles[color],
-			className
-		].filter(entry => entry !== null).join(" ")} onClick={e => {
+      className
+		].filter(entry => entry != null).join(" ")} onClick={e => {
 			if (disabled) return;
 			onClick?.(e);
 		}} disabled={disabled} aria-labelledby={labelledby}>
