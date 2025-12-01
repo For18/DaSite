@@ -81,6 +81,8 @@ export default function CreateProductPage() {
                 />)}
           </Accordion>
         </div>
+
+        {/* TODO: add `confirm` button and add product to Db */}
       </div>
   );
 }
