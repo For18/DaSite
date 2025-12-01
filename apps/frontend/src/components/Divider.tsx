@@ -2,13 +2,12 @@ import Typography from "./Typography";
 import styles from "./Divider.module.scss";
 
 export interface DividerProps {
-	variant?: "solid" | "dashed" | "dotted";
 	inset?: boolean;
 	label?: string;
 	"aria-hidden"?: boolean;
 }
 
-export default function Divider({ variant = "solid", inset = false, label, "aria-hidden": hidden}: DividerProps) {
+export default function Divider({ inset = false, label, "aria-hidden": hidden}: DividerProps) {
 	return (
 		<div role="seperator" aria-label={label} aria-hidden={hidden} className={[
 			styles.root,
