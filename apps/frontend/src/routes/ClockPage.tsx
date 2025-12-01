@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router";
 import BeforeAuction from "../components/BeforeAuction";
+import Button from "../components/Button";
 import Clock from "../components/Clock";
 import EndedAuction from "../components/EndedAuction";
 import ProductView from "../components/ProductView";
@@ -9,12 +10,6 @@ import { API_URL, type Auction, type Product, useAPI } from "../lib/api";
 import { useTime } from "../lib/util";
 import styles from "./ClockPage.module.scss";
 import NotFound from "./NotFound";
-
-function formatStartCountDown(startingTime: number, currentTime: number) {
-	if (startingTime <= 0 || currentTime <= 0) return "0.00";
-	const remainingTime = startingTime - currentTime;
-	return (remainingTime / 1000).toFixed(2);
-}
 
 function lerp(from: number, to: number, t: number): number {
 	return from + t * (to - from);
@@ -31,17 +26,51 @@ function formatDuration(duration: number): string {
 	}`;
 }
 
+function formatStartCountDown(startingTime: number, currentTime: number) {
+	if (startingTime <= 0 || currentTime <= 0) return "0.00";
+	const remainingTime = startingTime - currentTime;
+	return (remainingTime / 1000).toFixed(2);
+}
+
+/* TODO: contemplate if timed out auctions should be added to the back of the auctionItems stack being sold */
 export default function ClockPage() {
 	/* Main state holders */
 	const bufferLen = 5000;
 	const { auctionId } = useParams();
+	const auctionItems = useAPI<AuctionItem[]>("/auction-item/get-by-auction/" + auctionId);
 	const auction = useAPI<Auction>("/auction/" + auctionId);
-	const product = useAPI<Product>(auction ? "/product/" + auction.productId : null);
 
-	const mountTimeRef = useRef<number>(Date.now());
-	const [wasAuctionEndedByUser, setWasAuctionEndedByUser] = useState<boolean>(false);
+	const [currentItemIndex, setCurrentItemIndex] = useState<number>(0);
+	const [isAuctionOver, setIsAuctionOver] = useState<boolean>(false);
+	const currentItemCountRef = useRef<number>(0);
+	const buyCountRef = useRef<number>(0);
 
-	/* TODO: remove useEffect() after testing */
+	const currentItem = useMemo<AuctionItem | null>(() => {
+		if (!auctionItems) return null;
+		if (auctionItems.length === 0 || currentItemIndex >= auctionItems.length) {
+			setIsAuctionOver(true);
+			return null;
+		}
+
+		currentItemCountRef.current = auctionItems[currentItemIndex].count;
+		return auctionItems[currentItemIndex];
+	}, [currentItemIndex, auctionItems]);
+
+	const currentItemStartTime = useMemo<number | null>(() => {
+		return Date.now() + bufferLen;
+	}, [currentItemIndex, auctionItems]);
+
+	const currentTime = useTime();
+
+	const auctionedItemLenMillis = auctionItems && auctionItems[currentItemIndex] ?
+		auctionItems[currentItemIndex].length * 1000 :
+		null;
+	const elapsedTime = currentItemStartTime != null ? currentTime - currentItemStartTime : 0;
+	const progress = auctionedItemLenMillis ? elapsedTime / auctionedItemLenMillis : 0;
+
+	/* Temp moving of starting time
+   * TODO: remove after testing
+   */
 	useEffect(() => {
 		if (!auction) return;
 		fetch(API_URL + "/auction/" + auction?.id, {
@@ -69,24 +98,25 @@ export default function ClockPage() {
 	if (isAuctionOver) return <EndedAuction id={Number(auctionId) ?? 0}/>;
 	if (currentItem === null) return <NotFound/>;
 
-	const wasOverOnLoad = useMemo(() => {
-		if (!auction || auction.startingTime == null) return false;
-		const auctionEndMillis = auction.startingTime + auction.length * 1000;
-		return mountTimeRef.current > auctionEndMillis;
-	}, [auction]);
+	/* TODO: set buffer between auctions swaps so ppl actually have time to see the product */
+	const onPurchase = (count: number) => {
+		currentItemCountRef.current -= count;
+		if (currentItemCountRef.current <= 0) setCurrentItemIndex(i => i + 1);
+	};
+
+	if (auctionItems === null) return <Throbber/>;
+	if (auctionItems === undefined) return <NotFound/>;
+
+	if (isAuctionOver) return <EndedAuction id={Number(auctionId) ?? 0}/>;
+	if (currentItem === null) return <NotFound/>;
 
 	if (auction === undefined) return <NotFound/>;
 	if (auction === null) return <Throbber/>;
-	if (wasOverOnLoad) return <EndedAuction id={auction.id}/>;
 
-	const auctionLenMillis = auction.length * 1000;
-	const elapsedTime = startingTime != null ? currentTime - startingTime : 0;
-	const auctionProgress = elapsedTime / auctionLenMillis;
-	const isAuctionOver = wasAuctionEndedByUser || auctionProgress >= 1;
-
+	/* Specifics formatting */
 	const currentPrice = Math.min(
-		Math.max(lerp(auction.startingPrice, auction.minimumPrice, auctionProgress), auction.minimumPrice),
-		auction.startingPrice
+		Math.max(lerp(currentItem.startingPrice, currentItem.minimumPrice, progress), currentItem.minimumPrice),
+		currentItem.startingPrice
 	).toFixed(2);
 
 	const remainingTime = auctionedItemLenMillis ? auctionedItemLenMillis - elapsedTime : 0;
@@ -97,20 +127,42 @@ export default function ClockPage() {
 	return (
 		<div className={styles.baseContainer}>
 			<div className={styles.clockContainer}>
-				{auctionProgress <= 0 ?
-					<BeforeAuction startingPoint={formatStartCountDown(startingTime ?? 0, currentTime)}/> :
-					(isAuctionOver ?
-						<EndedAuction id={auction.id}/> :
-						(
-							<Clock progress={auctionProgress} price={currentPrice} fmtedTime={fmtedRemainingTime}
-								count={auction.count} setWasAuctionEndedByUser={setWasAuctionEndedByUser}/>
-						))}
-			</div>
+				{isBuffered ?
+					(
+						<>
+							<BeforeAuction startingPoint={formatStartCountDown(currentItemStartTime!, currentTime)}/>
+						</>
+					) :
+					(
+						<>
+							<Clock progress={progress} price={currentPrice} fmtedTime={fmtedRemainingTime}
+								count={currentItemCountRef.current ?? 0}/>
+						</>
+					)}
+				<input
+					className={styles.input}
+					type="number"
+					onChange={count => {
+						buyCountRef.current = Number(count.target.value);
+					}}
+				/>
 
+				<Button
+					className={styles.button}
+					variant="outlined"
+					disabled={progress < 0 || progress > 1 || isBuffered}
+					onClick={() => {
+						onPurchase(buyCountRef.current);
+						alert(`Bought ${buyCountRef.current} products for € ${currentPrice} each`);
+					}}
+				>
+					BUY
+				</Button>
+			</div>
 			<div className={styles.containerSeparator}/>
 
 			<div className={styles.productContainer}>
-				{product == null ? <Throbber/> : <ProductView product={product} batchSize={auction.batchSize}/>}
+				<ProductView auctionItem={currentItem}/>
 			</div>
 		</div>
 	);

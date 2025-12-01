@@ -3,7 +3,7 @@ import ProductView from "../components/ProductView";
 import Section from "../components/Section";
 import Throbber from "../components/Throbber";
 import Typography from "../components/Typography";
-import { type Auction, type Product, useAPI } from "../lib/api";
+import { Auction, Product, AuctionItem, useAPI } from "../lib/api";
 import { formatEuros } from "../lib/util";
 
 /* TODO: update to fit Many to Many Auction-Item relationship
