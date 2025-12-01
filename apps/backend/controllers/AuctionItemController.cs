@@ -49,6 +49,19 @@ public class AuctionItemExternal {
 [ApiController]
 [Route("auction-item")]
 public class AuctionItemController : ControllerBase {
+
+	[HttpGet]
+	public async Task<ActionResult<AuctionItemExternal[]>> GetAll() {
+		using var db = new DatabaseContext();
+		{
+			return await db.AuctionItems
+			  .Include(item => item.Product)
+			  .ThenInclude(prod => prod.ThumbnailImage)
+			  .Select(item => AuctionItemExternal.ToExternal(item))
+			  .ToArrayAsync();
+		}
+	}
+
 	[HttpGet("{id}")]
 	public async Task<ActionResult<AuctionItemExternal>> Get(ulong id) {
 		using var db = new DatabaseContext();
