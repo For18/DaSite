@@ -5,6 +5,7 @@ import Input from "../components/Input";
 import LabeledContainer from "../components/LabeledContainer";
 import { Switch } from "../components/Switch";
 import Typography from "../components/Typography";
+import Slider from "../components/Slider";
 
 export default function Test() {
 	useEffect(() => {
@@ -17,6 +18,7 @@ export default function Test() {
 		setButtonsPressed(n => n + 1);
 	}, []);
 	const [checked, setChecked] = useState<boolean>(false);
+	const [sliderValue, setSliderValue] = useState<number>(50);
 
 	return (
 		<>
@@ -53,6 +55,7 @@ export default function Test() {
 						labelledby={`field-${type}`}/>
 				</LabeledContainer>
 			))}
+			<Slider min={0} max={100} value={sliderValue} onChange={setSliderValue} width="500px" step={10}/>
 		</>
 	);
 }
