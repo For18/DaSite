@@ -10,7 +10,7 @@ export interface DividerProps {
 
 export default function Divider({ variant = "solid", inset = false, label, "aria-hidden": hidden}: DividerProps) {
 	return (
-		<div role="divider" aria-label={label} aria-hidden={hidden} className={[
+		<div role="seperator" aria-label={label} aria-hidden={hidden} className={[
 			styles.root,
 			inset ? styles.inset : null
 		].filter(v => v != null).join(" ")}>
