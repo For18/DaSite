@@ -1,0 +1,17 @@
+.root {
+	display: flex;
+	align-items: center;
+
+	&.inset {
+		padding-inline: var(--spacing);
+	}
+
+	.line {
+		height: 1px;
+		width: 100%;
+		background-color: var(--color-border);
+	}
+	.label {
+		margin: calc(var(--spacing) / 2);
+	}
+}
