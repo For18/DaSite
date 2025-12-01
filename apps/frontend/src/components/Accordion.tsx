@@ -13,6 +13,7 @@ export default function Accordion({ title, open = false, onToggle, children }: A
 	const innerContentRef = useRef<HTMLDivElement>(null);
 	const [contentHeight, setContentHeight] = useState<number>(0);
 	const [screenX, screenY] = useScreenSize();
+	const barRef = useRef<HTMLDivElement>(null);
 	const contentId = useId();
 
 	function toggle() {
@@ -26,7 +27,7 @@ export default function Accordion({ title, open = false, onToggle, children }: A
 
 	return (
 		<div className={styles.container + (open ? " " + styles.open : "")}>
-			<div className={styles.bar} onClick={toggle} aria-owns={contentId} tabIndex={0} onKeyDown={e => {
+			<div className={styles.bar} ref={barRef} onClick={toggle} aria-owns={contentId} tabIndex={0} onKeyDown={e => {
 				if (e.key !== "Enter" && e.key !== " ") return;
 				e.preventDefault();
 				toggle();
@@ -36,7 +37,11 @@ export default function Accordion({ title, open = false, onToggle, children }: A
 					<path d="M100 25 L50 75 L0 25"/>
 				</svg>
 			</div>
-			<div className={styles.content} style={{"--content-height": contentHeight} as any} inert={!open} aria-expanded={open} id={contentId}>
+			<div className={styles.content} style={{"--content-height": contentHeight} as any} inert={!open} aria-expanded={open} id={contentId} onKeyDown={e => {
+				if (e.key !== "PageUp") return;
+				e.preventDefault();
+				barRef.current?.focus();
+			}}>
 				<div className={styles.inner} ref={innerContentRef}>
 					{children}
 				</div>
