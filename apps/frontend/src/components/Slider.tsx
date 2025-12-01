@@ -8,7 +8,7 @@ export interface SliderProps { // TODO: Add direction prop (aria-direction, keyb
 	value: number;
 	onChange?: (value: number) => void;
 	valueText?: string;
-	labelledBy: string;
+	labelledBy?: string;
 	step?: number;
 	marks?: boolean | number[] | {[value: number]: ReactElement}
 	width?: string;
