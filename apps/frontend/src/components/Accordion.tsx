@@ -15,6 +15,10 @@ export default function Accordion({ title, open = false, onToggle, children }: A
 	const [screenX, screenY] = useScreenSize();
 	const contentId = useId();
 
+	function toggle() {
+		onToggle?.(!open);
+	}
+
 	useLayoutEffect(() => {
 		if (innerContentRef.current == null) return;
 		setContentHeight(innerContentRef.current.getBoundingClientRect().height);
@@ -22,7 +26,11 @@ export default function Accordion({ title, open = false, onToggle, children }: A
 
 	return (
 		<div className={styles.container + (open ? " " + styles.open : "")}>
-			<div className={styles.bar} onClick={() => onToggle?.(!open)} aria-owns={contentId}>
+			<div className={styles.bar} onClick={toggle} aria-owns={contentId} tabIndex={0} onKeyDown={e => {
+				if (e.key !== "Enter" && e.key !== " ") return;
+				e.preventDefault();
+				toggle();
+			}}>
 				<Typography heading={3}>{title}</Typography>
 				<svg viewBox="-10 -10 110 110" className={styles.arrow}>
 					<path d="M100 25 L50 75 L0 25"/>
