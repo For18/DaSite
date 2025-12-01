@@ -2,6 +2,7 @@ import { useState, SetStateAction, Dispatch } from "react";
 import Image from "../components/Image";
 import Button from "../components/Button"
 import styles from "./CreateProductPage.module.scss";
+import Input from "../components/Input"
 import Typography from "../components/Typography"
 import Accordion from "../components/Accordion"
 
@@ -30,7 +31,7 @@ export default function CreateProductPage() {
         <div className={styles.inputs}>
 
           <Typography className={styles.inputTitle}> Name </Typography>
-          <input
+          <Input
             className={styles.inputBasic}
             type="text"
             onChange={value => setName(String(value))}
@@ -43,21 +44,21 @@ export default function CreateProductPage() {
           />
 
           <Typography className={styles.inputTitle}> Batch size </Typography>
-          <input
+          <Input
             className={styles.inputBasic}
             type="number"
             onChange={value => setBatchSize(Number(value))}
           />
 
           <Typography className={styles.inputTitle}> Owner </Typography>
-          <input
+          <Input
             className={styles.inputBasic}
             type="text"
             onChange={value => setOwner(String(value))}
           />
 
           <Typography className={styles.inputTitle}> Image Link </Typography>
-          <input
+          <Input
             className={styles.inputBasic}
             type="text"
             onChange={value => setLinkText(String(value))}
