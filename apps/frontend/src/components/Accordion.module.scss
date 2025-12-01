@@ -24,6 +24,11 @@
 			width: 1.5em;
 			height: 1.5em;
 		}
+
+		&:focus {
+			filter: brightness(1.2);
+			outline: none;
+		}
 	}
 	.content {
 		background-color: var(--color-background-secondary);
