@@ -263,4 +263,3 @@ const IMAGES = [
 	"https://preview.redd.it/wanted-to-haunt-your-dreams-with-these-abominations-v0-68mqmhoo3a6e1.jpeg?format=pjpg&auto=webp&s=ec4452c1c6dc30e4c8c4dd69202a0bb837ebcda4",
 	"https://randomchoicegenerator.com/wp-content/uploads/2022/12/randomjet_meme_carp_hat.jpg"
 ];
-
