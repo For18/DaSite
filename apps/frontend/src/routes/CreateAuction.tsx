@@ -114,7 +114,7 @@ export default function CreateAuctions() {
                                         (productsSelected.includes(String(item.id)) ? ` ${styles.selected}` : "")}
                                 >
                                     <input
-                                        className={styles.radio}
+                                        className={styles.checkbox}
                                         type="checkbox"
                                         name="auctionItemId"
                                         value={String(item.id)}
