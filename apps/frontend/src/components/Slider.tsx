@@ -22,6 +22,7 @@ export default function Slider({ min, max, value, onChange, step, marks = false,
 	const range = max - min;
 
 	function updateValue() {
+		if (disabled) return;
 		if (onChange == null) return;
 		if (!dragging) return;
 		if (rectRef.current == null) return;
