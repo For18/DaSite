@@ -1,0 +1,104 @@
+// Page
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+}
+
+.seperator {
+	background-color: var(--color-border);
+	width: 1px;
+}
+
+.inputs {
+  width: 70vw;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  top: 10px;
+  margin-right: 10px;
+}
+
+.input-basic:not(:last-child),
+.input-description:not(:last-child),
+.add-image-button:not(:last-child),
+.input-title:not(:last-child) {
+  margin-top: 10px;
+}
+
+.input-basic{
+  width: 35%;
+}
+
+.input-description {
+  width: 70%;
+  height: 15%;
+  flex-shrink: 0;
+}
+
+// Accordion Entry
+
+.card {
+  position: relative;
+}
+
+.accordion-image {
+  width: 100px;
+  height: 100px;
+}
+
+.accordion-button {
+  position: absolute;
+  right: 10px;
+}
+
+// Product Preview
+.product-preview {
+  padding-left: 1vw;
+  padding-right: 10px;
+	font-family: Arial, sans-serif;
+	line-height: 1.6;
+	width: 500px;
+  overflow: auto;
+}
+
+.product-seller {
+	text-decoration: none !important;
+	color: #555555;
+}
+
+.horizontal-rule {
+	background-color: var(--color-border);
+	height: 1px;
+	width: 100%;
+	border: none;
+}
+
+.thumbnail-image {
+	width: 100%;
+	height: auto;
+	max-height: 250px;
+	max-width: 250px;
+	border-radius: 0.4vw;
+}
+
+.extra-image-container {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(5.2vw, 1fr));
+	gap: 0.5vw;
+	margin-top: 1vw;
+}
+
+.extra-image {
+	width: 115px;
+  height: 115px;
+
+	border-radius: 0.4vw;
+	box-shadow: 0 0.1vw 0.26vw rgba(0, 0, 0, 0.1);
+
+  &:not(:last-child) {
+    margin-right: 10px
+  }
+}
