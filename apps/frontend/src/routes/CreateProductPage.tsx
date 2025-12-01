@@ -1,4 +1,4 @@
-import { useState, useRef, SetStateAction, Dispatch } from "react";
+import { useState, SetStateAction, Dispatch } from "react";
 import Image from "../components/Image";
 import Button from "../components/Button"
 import styles from "./CreateProductPage.module.scss";
@@ -8,21 +8,21 @@ import Accordion from "../components/Accordion"
 export default function CreateProductPage() {
   const [images, setImages] = useState<string[]>(IMAGES);
   const [accordionState, setAccordionState] = useState<boolean>(false);
-  const linkTextRef = useRef<string>('');
-  const nameRef = useRef<string>("product");
-  const descriptionRef = useRef<string>('');
-  const batchSizeRef = useRef<number>(0);
-  const ownerRef = useRef<string>('');
+  const [linkText, setLinkText] = useState<string>('');
+  const [name, setName] = useState<string>("product");
+  const [description, setDescription] = useState<string>('');
+  const [batchSize, setBatchSize] = useState<number>(0);
+  const [owner, setOwner] = useState<string>('');
 
   return (
       <div className={styles.container}>
         <ProductPreview 
-          name={nameRef.current}
-          description={descriptionRef.current}
-          batchSize={batchSizeRef.current}
+          name={name}
+          description={description}
+          batchSize={batchSize}
           showThumbnail={images.length > 0}
           images={images}
-          owner={"You"}
+          owner={owner}
         />
 
 			  <div className={styles.seperator}/>
@@ -33,38 +33,38 @@ export default function CreateProductPage() {
           <input
             className={styles.inputBasic}
             type="text"
-            onChange={value => nameRef.current = String(value)}
+            onChange={value => setName(String(value))}
           />
 
           <Typography className={styles.inputTitle}> Description </Typography>
           <textarea
             className={styles.inputDescription}
-            onChange={value => descriptionRef.current = String(value)}
+            onChange={value => setDescription(String(value))}
           />
 
           <Typography className={styles.inputTitle}> Batch size </Typography>
           <input
             className={styles.inputBasic}
             type="number"
-            onChange={value => batchSizeRef.current = Number(value)}
+            onChange={value => setBatchSize(Number(value))}
           />
 
           <Typography className={styles.inputTitle}> Owner </Typography>
           <input
             className={styles.inputBasic}
             type="text"
-            onChange={value => ownerRef.current = String(value)}
+            onChange={value => setOwner(String(value))}
           />
 
           <Typography className={styles.inputTitle}> Image Link </Typography>
           <input
             className={styles.inputBasic}
             type="text"
-            onChange={value => linkTextRef.current = String(value)}
+            onChange={value => setLinkText(String(value))}
           />
           <div className={styles.addImageButton}>
             <Button
-              onClick={() => setImages([...images, linkTextRef.current])}
+              onClick={() => setImages([...images, linkText])}
               variant="contained"
             > Add Image </Button>
           </div>
@@ -74,7 +74,7 @@ export default function CreateProductPage() {
                 <AccordionEntry
                   key={url + index}
                   imageUrl={url}
-                  name={nameRef.current}
+                  name={name}
                   setImages={setImages}
                 />)}
           </Accordion>
