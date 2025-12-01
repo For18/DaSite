@@ -2,180 +2,160 @@ import { useRef, useState } from "react";
 import ProductView from "../components/ProductView";
 import Throbber from "../components/Throbber";
 import Typography from "../components/Typography";
-import { API_URL, Product, useAPI } from "../lib/api";
+import { API_URL, AuctionItem, useAPI } from "../lib/api";
 import styles from "./CreateAuction.module.scss";
 
 export default function CreateAuctions() {
-	const committedAuctionName = useRef<string>("");
-	const [productsSelected, setProductsSelected] = useState<string[]>([]);
-	const [count, setCount] = useState(1);
-	const [batchSize, setBatchSize] = useState(1);
-	const [startingPrice, setStartingPrice] = useState(0);
-	const [minimumPrice, setMinimumPrice] = useState(0);
-	const [durationSeconds, setDurationSeconds] = useState(120);
-	// starting date/time states (date: YYYY-MM-DD, time: HH:mm)
-	const now = new Date();
-	const pad = (n: number) => (n < 10 ? `0${n}` : String(n));
-	const defaultDate = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
-	const defaultTime = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
-	const startingDateRef = useRef<string>(defaultDate);
-	const startingTimeRef = useRef<string>(defaultTime);
+    const committedAuctionName = useRef<string>("");
+    const [productsSelected, setProductsSelected] = useState<string[]>([]);
+    const [count, setCount] = useState(1);
+    const [batchSize, setBatchSize] = useState(1);
+    const [startingPrice, setStartingPrice] = useState(0);
+    const [minimumPrice, setMinimumPrice] = useState(0);
+    const [durationSeconds, setDurationSeconds] = useState(120);
+    // starting date/time states (date: YYYY-MM-DD, time: HH:mm)
+    const now = new Date();
+    const pad = (n: number) => (n < 10 ? `0${n}` : String(n));
+    const defaultDate = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+    const defaultTime = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    const startingDateRef = useRef<string>(defaultDate);
+    const startingTimeRef = useRef<string>(defaultTime);
 
-	const products = useAPI<Product[]>("/products");
-	const [statusMessage, setStatusMessage] = useState<string | null>(null);
+    const auctionItems = useAPI<AuctionItem[]>("/auction-item");
+    const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
-	async function submitAuction() {
-		const productIds = productsSelected.map(Number).filter(id => !Number.isNaN(id));
-		if (productIds.length === 0) {
-			setStatusMessage("Please select at least one product.");
-			return;
-		}
+    async function submitAuction() {
+        const itemIds = productsSelected.map(Number).filter(id => !Number.isNaN(id));
+        if (itemIds.length === 0) {
+            setStatusMessage("Please select at least one auction item.");
+            return;
+        }
 
-		// combine startingDate and startingTime into an ISO datetime
-		let startingTimeMillis: number | null = null;
-		if (startingDateRef.current && startingTimeRef.current) {
-			const iso = `${startingDateRef.current}T${startingTimeRef.current}:00`;
-			const parsed = Date.parse(iso);
-			startingTimeMillis = Number.isNaN(parsed) ? null : Math.round(parsed);
-		}
+        // combine startingDate and startingTime into an ISO datetime
+        let startingTimeMillis: number | null = null;
+        if (startingDateRef.current && startingTimeRef.current) {
+            const iso = `${startingDateRef.current}T${startingTimeRef.current}:00`;
+            const parsed = Date.parse(iso);
+            startingTimeMillis = Number.isNaN(parsed) ? null : Math.round(parsed);
+        }
 
-		const payload = {
-			count: Number(count),
-			batchSize: Number(batchSize),
-			startingPrice: Number(startingPrice),
-			minimumPrice: Number(minimumPrice),
-			startingTime: startingTimeMillis, // milliseconds since epoch or null
-			length: Number(durationSeconds),
-			productIds: productIds,
-			plannerId: null
-		} as any;
+        const payload = {
+            count: Number(count),
+            batchSize: Number(batchSize),
+            startingPrice: Number(startingPrice),
+            minimumPrice: Number(minimumPrice),
+            startingTime: startingTimeMillis, // milliseconds since epoch or null
+            length: Number(durationSeconds),
+            // send selected auction-item ids in the legacy productIds field
+            productIds: itemIds,
+            plannerId: null
+        } as any;
 
-		try {
-			setStatusMessage("Creating auction...");
-			const resp = await fetch(API_URL + "/auction", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(payload)
-			});
+        try {
+            setStatusMessage("Creating auction...");
+            const resp = await fetch(API_URL + "/auction", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
 
-			if (!resp.ok) {
-				const text = await resp.text();
-				setStatusMessage(`Failed to create auction: ${resp.status} ${text}`);
-				return;
-			}
+            if (!resp.ok) {
+                const text = await resp.text();
+                setStatusMessage(`Failed to create auction: ${resp.status} ${text}`);
+                return;
+            }
 
-			const data = await resp.json();
-			setStatusMessage(`Created auction id=${data?.id ?? data?.Id ?? "(unknown)"}`);
-		} catch (err) {
-			setStatusMessage(String(err));
-		}
-	}
+            const data = await resp.json();
+            const createdId = data?.id ?? data?.Id ?? null;
+            setStatusMessage(`Created auction id=${createdId ?? "(unknown)"}`);
 
-	return (
-		<>
-			<div className={styles.container}>
-				<Typography heading={1}>Create Auction</Typography>
+            // create auction-entry records linking this auction to selected auction-items
+            if (createdId) {
+                const auctionId = Number(createdId);
+                setStatusMessage("Creating auction entries...");
+                try {
+                    const promises = itemIds.map(async itemId => {
+                        const r = await fetch(API_URL + "/auction-entry", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ auctionId: auctionId, itemId: Number(itemId) })
+                        });
+                        if (!r.ok) {
+                            const text = await r.text();
+                            throw new Error(`Failed to create auction entry for item ${itemId}: ${r.status} ${text}`);
+                        }
+                    });
 
-				<Typography>Available Products:</Typography>
+                    await Promise.all(promises);
+                    setStatusMessage(prev => (prev ? prev + "\n" : "") + "Created auction entries.");
+                } catch (err) {
+                    setStatusMessage(String(err));
+                }
+            }
+        } catch (err) {
+            setStatusMessage(String(err));
+        }
+    }
 
-				{Array.isArray(products) ?
-					(
-						<div className={styles.productList}>
-							{products.map(p => (
-								<label
-									key={p.id}
-									className={styles.product +
-										(productsSelected.includes(String(p.id)) ? ` ${styles.selected}` : "")}
-								>
-									<input
-										className={styles.radio}
-										type="checkbox"
-										name="productId"
-										value={String(p.id)}
-										checked={productsSelected.includes(String(p.id))}
-										onChange={e => {
-											const val = e.target.value;
-											setProductsSelected(prev =>
-												prev.includes(val) ? prev.filter(x => x !== val) : [...prev, val]
-											);
-										}}
-									/>
-									{p.name}
-								</label>
-							))}
-						</div>
-					) :
-					null}
-				<Typography>Count:</Typography>
-				<input
-					className={styles.input}
-					name="count"
-					type="number"
-					value={count}
-					onChange={e => setCount(Number(e.target.value))}
-					placeholder="Enter count"
-				/>
+    return (
+        <>
+            <div className={styles.container}>
+                <Typography heading={1}>Create Auction</Typography>
 
-				<Typography>Batch Size:</Typography>
-				<input
-					className={styles.input}
-					name="batchSize"
-					type="number"
-					value={batchSize}
-					onChange={e => setBatchSize(Number(e.target.value))}
-					placeholder="Enter batch size"
-				/>
+                <Typography>Available Auction Items:</Typography>
 
-				<Typography>Starting Price:</Typography>
-				<input
-					className={styles.input}
-					name="startingPrice"
-					type="number"
-					value={startingPrice}
-					onChange={e => setStartingPrice(Number(e.target.value))}
-					placeholder="Enter starting price"
-				/>
+                {Array.isArray(auctionItems) ?
+                    (
+                        <div className={styles.productList}>
+                            {auctionItems.map(item => (
+                                <label
+                                    key={item.id}
+                                    className={styles.product +
+                                        (productsSelected.includes(String(item.id)) ? ` ${styles.selected}` : "")}
+                                >
+                                    <input
+                                        className={styles.radio}
+                                        type="checkbox"
+                                        name="auctionItemId"
+                                        value={String(item.id)}
+                                        checked={productsSelected.includes(String(item.id))}
+                                        onChange={e => {
+                                            const val = e.target.value;
+                                            setProductsSelected(prev =>
+                                                prev.includes(val) ? prev.filter(x => x !== val) : [...prev, val]
+                                            );
+                                        }}
+                                    />
+                                    <ProductView auctionItem={item} />
+                                </label>
+                            ))}
+                        </div>
+                    ) :
+                    null}
 
-				<Typography>Minimum Price:</Typography>
-				<input
-					className={styles.input}
-					name="minimumPrice"
-					type="number"
-					value={minimumPrice}
-					onChange={e => setMinimumPrice(Number(e.target.value))}
-					placeholder="Enter minimum price"
-				/>
-				<Typography>Starting date:</Typography>
-				<input
-					className={styles.input}
-					name="startingDate"
-					type="date"
-					defaultValue={startingDateRef.current}
-					onChange={e => (startingDateRef.current = e.target.value)}
-				/>
-				<Typography>Starting time:</Typography>
-				<input
-					className={styles.input}
-					name="startingTime"
-					type="time"
-					defaultValue={startingTimeRef.current}
-					onChange={e => (startingTimeRef.current = e.target.value)}
-				/>
-				<Typography>Duration (seconds):</Typography>
-				<input
-					className={styles.input}
-					name="durationSeconds"
-					type="number"
-					value={durationSeconds}
-					onChange={e => setDurationSeconds(Number(e.target.value))}
-					placeholder="Enter duration in seconds"
-				/>
-				<button className={styles.button} onClick={submitAuction}>Create Auction</button>
-				<Typography heading={2}>
-					Selected Products: {productsSelected.length ? productsSelected.join(", ") : "(none selected)"}
-				</Typography>
-				{statusMessage && <Typography className={styles.status}>{statusMessage}</Typography>}
-			</div>
-		</>
-	);
+                <Typography>Starting date:</Typography>
+                <input
+                    className={styles.input}
+                    name="startingDate"
+                    type="date"
+                    defaultValue={startingDateRef.current}
+                    onChange={e => (startingDateRef.current = e.target.value)}
+                />
+                <Typography>Starting time:</Typography>
+                <input
+                    className={styles.input}
+                    name="startingTime"
+                    type="time"
+                    defaultValue={startingTimeRef.current}
+                    onChange={e => (startingTimeRef.current = e.target.value)}
+                />
+
+                <button className={styles.button} onClick={submitAuction}>Create Auction</button>
+                <Typography heading={2}>
+                    Selected Auction Items: {productsSelected.length ? productsSelected.join(", ") : "(none selected)"}
+                </Typography>
+                {statusMessage && <Typography className={styles.status}>{statusMessage}</Typography>}
+            </div>
+        </>
+    );
 }
