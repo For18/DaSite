@@ -59,6 +59,7 @@ export default function Slider({ min, max, value, onChange, step, marks = false,
 			</div>
 			<div className={styles.handle + (dragging ? " " + styles.dragging : "")} style={{"--position": progress} as any} onMouseDown={e => {
 				e.stopPropagation();
+				e.preventDefault();
 				if (e.button === 0) drag();
 			}}>
 				<div className={styles.fill}/>
