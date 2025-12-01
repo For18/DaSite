@@ -4,8 +4,6 @@ import Image from "./Image";
 import styles from "./PendingAuctionCard.module.scss";
 import Throbber from "./Throbber";
 import Typography from "./Typography";
-import Throbber from "./Throbber";
-import Typography from "./Typography";
 
 export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 	const auctions = useAPI<Auction[]>("/auctions/pending");
