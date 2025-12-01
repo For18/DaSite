@@ -59,7 +59,9 @@ export default function Slider({ min, max, value, onChange, valueText, labelledB
 
 	return (
 		<div className={styles.container} style={{width}} role="slider" aria-valuemin={min} aria-valuemax={max} aria-valuenow={value} aria-disabled={disabled} aria-valuetext={valueText} aria-labelledby={labelledBy}>
-			<div className={styles.bar} onMouseDown={() => {
+			<div className={styles.bar} onMouseDown={e => {
+				e.stopPropagation();
+				e.preventDefault();
 				drag();
 				updateValueFromMouse();
 			}}>
