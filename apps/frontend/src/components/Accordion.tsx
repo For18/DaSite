@@ -27,7 +27,7 @@ export default function Accordion({ title, open = false, onToggle, children }: A
 					<path d="M100 25 L50 75 L0 25"/>
 				</svg>
 			</div>
-			<div className={styles.content} style={{"--content-height": contentHeight} as any}>
+			<div className={styles.content} style={{"--content-height": contentHeight} as any} inert={!open}>
 				<div className={styles.inner} ref={innerContentRef}>
 					{children}
 				</div>
