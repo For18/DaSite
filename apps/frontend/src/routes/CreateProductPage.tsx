@@ -62,10 +62,21 @@ export default function CreateProductPage() {
             type="text"
             onChange={value => linkTextRef.current = String(value)}
           />
-          <Button onClick={() => setImages([...images, linkTextRef.current])}/>
+          <div className={styles.addImageButton}>
+            <Button
+              onClick={() => setImages([...images, linkTextRef.current])}
+              variant="contained"
+            > Add Image </Button>
+          </div>
 
           <Accordion title="Images" open={accordionState} onToggle={setAccordionState}>
-            {images.map(image => <AccordionEntry imageUrl={image} name={nameRef.current} setImages={setImages}/>)}
+            {images.map((url, index) =>
+                <AccordionEntry
+                  key={url + index}
+                  imageUrl={url}
+                  name={nameRef.current}
+                  setImages={setImages}
+                />)}
           </Accordion>
         </div>
       </div>
@@ -84,7 +95,7 @@ function AccordionEntry({ imageUrl, name, setImages } : { imageUrl: string, name
           className={styles.accordionButton}
           onClick={
             () => setImages(entries => entries.filter(url => url != imageUrl))
-            }> Remove </Button>
+          }> Remove </Button>
       </div>
   );
 }
