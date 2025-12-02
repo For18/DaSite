@@ -71,7 +71,8 @@ export default function Test() {
 				))}
 			</Accordion>
 			<Accordion title="Slider" open={sliderOpen} onToggle={setSliderOpen}>
-				<Slider min={0} max={100} value={sliderValue} onChange={setSliderValue} width="500px" step={1}/>
+				<Slider min={0} max={100} value={sliderValue} onChange={setSliderValue} width="500px" step={1} valueText={sliderValue + "%"}/>
+				<Typography>Value: {sliderValue}</Typography>
 			</Accordion>
 			<Accordion title="Text" open={textOpen} onToggle={setTextOpen}>
 				<Typography heading={1}>Heading 1</Typography>
