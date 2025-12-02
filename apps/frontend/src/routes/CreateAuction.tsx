@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import ProductView from "../components/ProductView";
+import Button from "../components/Button";
 import Throbber from "../components/Throbber";
 import Typography from "../components/Typography";
 import { API_URL, AuctionItem, useAPI } from "../lib/api";
@@ -150,9 +151,12 @@ export default function CreateAuctions() {
                     onChange={e => (startingTimeRef.current = e.target.value)}
                 />
 
-                <button className={styles.button} onClick={submitAuction}>Create Auction</button>
+                <Button variant="contained" color="brand" onClick={submitAuction}>Create Auction</Button>
                 <Typography heading={2}>
-                    Selected Auction Items: {productsSelected.length ? productsSelected.join(", ") : "(none selected)"}
+                    Selected Auction Item ID:
+                </Typography>
+                <Typography heading={3}>
+                    {productsSelected.length ? productsSelected.join(", ") : "(none selected)"}
                 </Typography>
                 {statusMessage && <Typography className={styles.status}>{statusMessage}</Typography>}
             </div>
