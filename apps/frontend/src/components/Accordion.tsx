@@ -33,7 +33,7 @@ export default function Accordion({ title, open = false, onToggle, children }: A
 				toggle();
 			}}>
 				<Typography heading={3}>{title}</Typography>
-				<svg viewBox="-10 -10 110 110" className={styles.arrow}>
+				<svg viewBox="-7 -10 114 110" className={styles.arrow}>
 					<path d="M100 25 L50 75 L0 25"/>
 				</svg>
 			</div>
