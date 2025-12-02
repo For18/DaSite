@@ -13,7 +13,7 @@ export default function LabeledContainer({ color = "primary", text, children, id
 	return (
 		<div className={styles.container}>
 			{children}
-			<Typography color={color} id={id}>{text}</Typography>
+			<Typography color={color} id={id} className={styles.label}>{text}</Typography>
 		</div>
 	);
 }

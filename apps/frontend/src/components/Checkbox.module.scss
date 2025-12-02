@@ -1,6 +1,7 @@
 .container {
 	aspect-ratio: 1/1;
 	height: 1.3em;
+	margin: var(--spacing);
 
 	border: var(--color-border) 1px solid;
 	border-radius: var(--border-radius);
