@@ -6,7 +6,6 @@ export type InputType = "text" | "textfield" | "password" | "date" | "datetime-l
 
 export interface InputProps {
 	type: InputType;
-	ref?: Ref<HTMLInputElement>;
 	placeholder?: string;
 	disabled?: boolean;
 	labelledby?: string;
@@ -16,12 +15,12 @@ export interface InputProps {
 }
 
 export default function Input(
-	{ type, ref, placeholder, disabled, labelledby, value, onChange, className }: InputProps
+	{ type, placeholder, disabled, labelledby, value, onChange, className }: InputProps
 ) {
 	const Element = type === "textfield" ? "textarea" : "input";
 	if (type === "textfield") type = "text";
 	return (
-		<Element type={type} ref={ref} placeholder={placeholder}
+		<Element type={type} placeholder={placeholder}
 			className={styles.input + (className != null ? " " + className : "")} disabled={disabled}
 			aria-labelledby={labelledby} value={value} onChange={e => onChange?.(e.target.value)}/>
 	);
