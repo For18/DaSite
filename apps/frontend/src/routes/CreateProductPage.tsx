@@ -1,10 +1,69 @@
 import { useState, SetStateAction, Dispatch } from "react";
 import Image from "../components/Image";
-import Button from "../components/Button"
+import Button from "../components/Button";
+import Input from "../components/Input";
+import Typography from "../components/Typography";
+import Accordion from "../components/Accordion";
+import { API_URL, Product, ProductImage, User } from "../lib/api";
 import styles from "./CreateProductPage.module.scss";
-import Input from "../components/Input"
-import Typography from "../components/Typography"
-import Accordion from "../components/Accordion"
+
+async function PostProduct(name: string, description: string, ownerName: string, images: string[]) {
+  // TODO: replace owner with ownerId and add dropdown menu to select correct user
+  const userRes = await fetch(API_URL + "/users/by-name/" + ownerName);
+  const userList = await userRes.json() as User[];
+  const owner = userList && userList.length > 0 ? userList[0] : null;
+  if (!owner) return;
+
+  const productRes = await fetch(API_URL + "/product", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name: name,
+      description: description,
+      ownerId: owner.id,
+      thumbnailImageId: null
+    })
+  });
+
+  const productId = (await productRes.json() as Product).id;
+  if (!productId) return;
+
+  // TODO: add thumbnail image correctly to product after rebase on commit with usePromise hook
+  let thumbnailImageId: number | null = null;
+
+  if (images.length > 0) {
+    const thumbRes = await fetch(API_URL + "/product-image", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        parent: productId,
+        url: images[0]
+      })
+    });
+    thumbnailImageId = ((await thumbRes.json()) as ProductImage).id ?? 0;
+  }
+
+  for (const url of images) {
+    await fetch(API_URL + "/product-image", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        parent: productId,
+        url: url
+      })
+    });
+  }
+
+  if (thumbnailImageId) {
+    await fetch(API_URL + "/product/" + productId, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify([
+        { op: "replace", path: "/ThumbnailImageId", value: thumbnailImageId }
+      ])
+    });
+  }
+}
 
 export default function CreateProductPage() {
   const [images, setImages] = useState<string[]>(IMAGES);
@@ -40,7 +99,7 @@ export default function CreateProductPage() {
           <Typography className={styles.inputTitle}> Description </Typography>
           <textarea
             className={styles.inputDescription}
-            onChange={value => setDescription(String(value))}
+            onChange={value => setDescription(String(value.target.value))}
           />
 
           <Typography className={styles.inputTitle}> Batch size </Typography>
@@ -80,9 +139,26 @@ export default function CreateProductPage() {
                   setImages={setImages}
                 />)}
           </Accordion>
+
+          {/* TODO: add `confirm` button and add product to Db */}
+          <div>
+            <Button
+              variant="contained"
+              onClick={() => {
+                PostProduct(name, description, owner, images);
+                setImages([]);
+                setAccordionState(false);
+                setLinkText('');
+                setName('');
+                setDescription('');
+                setBatchSize(0);
+                setOwner('');
+                alert("i did it");
+              }}
+            > CONFIRM </Button>
+          </div>
         </div>
 
-        {/* TODO: add `confirm` button and add product to Db */}
       </div>
   );
 }
