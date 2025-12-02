@@ -1,5 +1,5 @@
-import Typography from "./Typography";
 import styles from "./Divider.module.scss";
+import Typography from "./Typography";
 
 export interface DividerProps {
 	inset?: boolean;
@@ -7,7 +7,7 @@ export interface DividerProps {
 	"aria-hidden"?: boolean;
 }
 
-export default function Divider({ inset = false, label, "aria-hidden": hidden}: DividerProps) {
+export default function Divider({ inset = false, label, "aria-hidden": hidden }: DividerProps) {
 	return (
 		<div role="seperator" aria-label={label} aria-hidden={hidden} className={[
 			styles.root,
