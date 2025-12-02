@@ -1,4 +1,4 @@
-import { PropsWithChildren, useId, useLayoutEffect, useRef, useState } from "react";
+import { PropsWithChildren, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { useScreenSize } from "../lib/util";
 import styles from "./Accordion.module.scss";
 import Typography from "./Typography";
@@ -20,10 +20,19 @@ export default function Accordion({ title, open = false, onToggle, children }: A
 		onToggle?.(!open);
 	}
 
-	useLayoutEffect(() => {
+	function updateSize() {
 		if (innerContentRef.current == null) return;
 		setContentHeight(innerContentRef.current.getBoundingClientRect().height);
+	}
+	useLayoutEffect(() => {
+		updateSize();
 	}, [open, screenX, screenY, innerContentRef.current, children]);
+	useLayoutEffect(() => {
+		if (innerContentRef.current == null) return;
+		const observer = new ResizeObserver(updateSize);
+		observer.observe(innerContentRef.current);
+		return () => observer.disconnect();
+	}, [innerContentRef.current]);
 
 	return (
 		<div className={styles.container + (open ? " " + styles.open : "")} aria-label={title}>
