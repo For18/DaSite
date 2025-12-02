@@ -1,4 +1,4 @@
-$height: .7em;
+$height: 0.7em;
 
 .container {
 	margin: calc(var(--spacing));
@@ -10,9 +10,9 @@ $height: .7em;
 		width: 100%;
 		height: $height;
 		border-radius: $height;
-		background-color: #8882;
+		background-color: #88888822;
 		overflow: hidden;
-		
+
 		.fill {
 			height: 100%;
 			width: calc(var(--fill) * (100% - $height) + $height / 2);
@@ -38,7 +38,7 @@ $height: .7em;
 		.fill {
 			aspect-ratio: 1/1;
 			height: 60%;
-			transition: height .08s ease-in-out;
+			transition: height 0.08s ease-in-out;
 			background-color: var(--color-background-secondary);
 			border-radius: 50%;
 			position: absolute;

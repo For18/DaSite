@@ -11,11 +11,11 @@
 		justify-content: space-between;
 		align-items: center;
 		padding-block: calc(var(--spacing) / 2);
-		
+
 		cursor: pointer;
 
 		.arrow {
-			transition: transform 0.3s cubic-bezier(.18,.89,.32,1.28);
+			transition: transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 			margin: var(--spacing);
 
 			fill: none;
@@ -57,10 +57,10 @@
 		}
 	}
 
-	&+& {
+	& + & {
 		margin-top: 1px;
 	}
-	&:has(+&) {
+	&:has(+ &) {
 		margin-bottom: 0;
 	}
 }
