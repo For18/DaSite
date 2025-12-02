@@ -68,12 +68,12 @@ public class UserController : ControllerBase {
 		}
 	}
 
-	[HttpGet("/users/by-name/{name}")]
-	public async Task<ActionResult<User[]>> GetAllByName(string name) {
-		using (var db = new DatabaseContext()) {
-			return await db.Users.Where(user => user.UserName == name).ToArrayAsync();
-		}
-	}
+  [HttpGet("/users/by-name/{name}")]
+  public async Task<ActionResult<User[]>> GetAllByName(string name) {
+    using (var db = new DatabaseContext()) {
+      return await db.Users.Where(user => user.UserName == name).ToArrayAsync();
+    }
+  }
 
 	[HttpPost]
 	public async Task<ActionResult> Post(User user) {
