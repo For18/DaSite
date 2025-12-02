@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useRef, useState } from "react";
-import styles from "./Slider.module.scss";
 import { useMousePosition } from "../lib/util";
+import styles from "./Slider.module.scss";
 
 export interface SliderProps { // TODO: Add direction prop (aria-direction, keybinds & CSS adjustments)
 	min: number;
@@ -10,13 +10,15 @@ export interface SliderProps { // TODO: Add direction prop (aria-direction, keyb
 	valueText?: string;
 	labelledBy?: string;
 	step?: number;
-	marks?: boolean | number[] | {[value: number]: ReactElement}
+	marks?: boolean | number[] | { [value: number]: ReactElement };
 	width?: string;
 	disabled?: boolean;
-	//tooltip?: boolean | ((value: number) => string); // implement when tooltip component is added
+	// tooltip?: boolean | ((value: number) => string); // implement when tooltip component is added
 }
 
-export default function Slider({ min, max, value, onChange, valueText, labelledBy, step, marks = false, width, disabled = false }: SliderProps) {
+export default function Slider(
+	{ min, max, value, onChange, valueText, labelledBy, step, marks = false, width, disabled = false }: SliderProps
+) {
 	const [dragging, setDragging] = useState<boolean>(false);
 	const [mouseX, mouseY] = useMousePosition();
 	const rectRef = useRef<HTMLDivElement>(null);
@@ -51,23 +53,26 @@ export default function Slider({ min, max, value, onChange, valueText, labelledB
 		setDragging(false);
 	}
 	useEffect(() => undrag, []);
-	
+
 	if (range <= 0) throw new Error("Invalid min/max combination");
 	if (step != null && range % step !== 0) throw new Error("Invalid step size; not divisible");
 
 	const progress = (value - min) / range;
 
 	return (
-		<div className={styles.container} style={{width}} role="slider" aria-valuemin={min} aria-valuemax={max} aria-valuenow={value} aria-disabled={disabled} aria-valuetext={valueText} aria-labelledby={labelledBy}>
+		<div className={styles.container} style={{ width }} role="slider" aria-valuemin={min} aria-valuemax={max}
+			aria-valuenow={value} aria-disabled={disabled} aria-valuetext={valueText} aria-labelledby={labelledBy}
+		>
 			<div className={styles.bar} onMouseDown={e => {
 				e.stopPropagation();
 				e.preventDefault();
 				drag();
 				updateValueFromMouse();
 			}}>
-				<div className={styles.fill} style={{"--fill": progress} as any}/>
+				<div className={styles.fill} style={{ "--fill": progress } as any}/>
 			</div>
-			<div className={styles.handle + (dragging ? " " + styles.dragging : "")} style={{"--position": progress} as any} onMouseDown={e => {
+			<div className={styles.handle + (dragging ? " " + styles.dragging : "")}
+				style={{ "--position": progress } as any} onMouseDown={e => {
 				e.stopPropagation();
 				e.preventDefault();
 				if (e.button === 0) drag();
@@ -108,5 +113,5 @@ export default function Slider({ min, max, value, onChange, valueText, labelledB
 			</div>
 			<div className={styles.rect} ref={rectRef}/>
 		</div>
-	)
+	);
 }

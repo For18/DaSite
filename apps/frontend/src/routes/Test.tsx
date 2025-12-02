@@ -2,12 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import Accordion from "../components/Accordion";
 import Button from "../components/Button";
 import Checkbox from "../components/Checkbox";
+import Divider from "../components/Divider";
 import Input from "../components/Input";
 import LabeledContainer from "../components/LabeledContainer";
 import Slider from "../components/Slider";
 import { Switch } from "../components/Switch";
 import Typography from "../components/Typography";
-import Divider from "../components/Divider";
 
 export default function Test() {
 	useEffect(() => {
@@ -71,7 +71,8 @@ export default function Test() {
 				))}
 			</Accordion>
 			<Accordion title="Slider" open={sliderOpen} onToggle={setSliderOpen}>
-				<Slider min={0} max={100} value={sliderValue} onChange={setSliderValue} width="500px" step={1} valueText={sliderValue + "%"}/>
+				<Slider min={0} max={100} value={sliderValue} onChange={setSliderValue} width="500px" step={1}
+					valueText={sliderValue + "%"}/>
 				<Typography>Value: {sliderValue}</Typography>
 			</Accordion>
 			<Accordion title="Text" open={textOpen} onToggle={setTextOpen}>
@@ -83,7 +84,10 @@ export default function Test() {
 				<Typography heading={6}>Heading 6</Typography>
 				<Divider label="LABEL"/>
 				<Typography color="secondary">
-					Verecundia laborum apto ullam urbs cupio carcer. Tero videlicet comitatus supellex acerbitas spoliatio censura. Suspendo vaco vereor vos adinventitias celer adnuo. Velum vespillo tibi sono suscipio vapulus dolores suffragium animi. Officiis denuncio tergum appositus animadverto vero excepturi veniam. Pecco supra altus similique labore aranea odit.
+					Verecundia laborum apto ullam urbs cupio carcer. Tero videlicet comitatus supellex acerbitas
+					spoliatio censura. Suspendo vaco vereor vos adinventitias celer adnuo. Velum vespillo tibi sono
+					suscipio vapulus dolores suffragium animi. Officiis denuncio tergum appositus animadverto vero
+					excepturi veniam. Pecco supra altus similique labore aranea odit.
 				</Typography>
 			</Accordion>
 		</>

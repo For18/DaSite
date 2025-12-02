@@ -1,7 +1,7 @@
 import { PropsWithChildren, useId, useLayoutEffect, useRef, useState } from "react";
+import { useScreenSize } from "../lib/util";
 import styles from "./Accordion.module.scss";
 import Typography from "./Typography";
-import { useScreenSize } from "../lib/util";
 
 export interface AccordionProps extends PropsWithChildren {
 	title: string;
@@ -27,17 +27,20 @@ export default function Accordion({ title, open = false, onToggle, children }: A
 
 	return (
 		<div className={styles.container + (open ? " " + styles.open : "")} aria-label={title}>
-			<div className={styles.bar} ref={barRef} onClick={toggle} aria-owns={contentId} tabIndex={0} onKeyDown={e => {
-				if (e.key !== "Enter" && e.key !== " ") return;
-				e.preventDefault();
-				toggle();
-			}}>
+			<div className={styles.bar} ref={barRef} onClick={toggle} aria-owns={contentId} tabIndex={0}
+				onKeyDown={e => {
+					if (e.key !== "Enter" && e.key !== " ") return;
+					e.preventDefault();
+					toggle();
+				}}
+			>
 				<Typography heading={3}>{title}</Typography>
 				<svg viewBox="-7 -10 114 110" className={styles.arrow}>
 					<path d="M100 25 L50 75 L0 25"/>
 				</svg>
 			</div>
-			<div className={styles.content} style={{"--content-height": contentHeight} as any} inert={!open} aria-expanded={open} id={contentId} onKeyDown={e => {
+			<div className={styles.content} style={{ "--content-height": contentHeight } as any} inert={!open}
+				aria-expanded={open} id={contentId} onKeyDown={e => {
 				if (e.key !== "PageUp") return;
 				e.preventDefault();
 				barRef.current?.focus();

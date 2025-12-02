@@ -15,9 +15,12 @@ export interface InputProps {
 	className?: string;
 }
 
-export default function Input({ type, ref, placeholder, disabled, labelledby, value, onChange, className }: InputProps) {
+export default function Input(
+	{ type, ref, placeholder, disabled, labelledby, value, onChange, className }: InputProps
+) {
 	return (
-		<input type={type} ref={ref} placeholder={placeholder} className={styles.input + (className != null ? " " + className : "")} disabled={disabled}
+		<input type={type} ref={ref} placeholder={placeholder}
+			className={styles.input + (className != null ? " " + className : "")} disabled={disabled}
 			aria-labelledby={labelledby} value={value} onChange={e => onChange?.(e.target.value)}/>
 	);
 }
