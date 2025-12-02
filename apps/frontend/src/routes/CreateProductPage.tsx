@@ -97,9 +97,10 @@ export default function CreateProductPage() {
           />
 
           <Typography className={styles.inputTitle}> Description </Typography>
-          <textarea
+          <Input
+            type="textfield"
             className={styles.inputDescription}
-            onChange={value => setDescription(String(value.target.value))}
+            onChange={value => setDescription(String(value))}
           />
 
           <Typography className={styles.inputTitle}> Batch size </Typography>
