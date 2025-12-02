@@ -15,7 +15,7 @@
 		"semiColons": "always",
 		"jsx.quoteStyle": "preferDouble",
 		"quoteStyle": "preferDouble",
-		"quoteProps": "consistent",
+		"quoteProps": "asNeeded",
 		"useBraces": "whenNotSingleLine",
 		"bracePosition": "sameLine",
 		"singleBodyPosition": "sameLine",
