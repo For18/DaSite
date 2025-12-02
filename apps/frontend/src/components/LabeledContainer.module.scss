@@ -1,9 +1,11 @@
 .container {
 	width: fit-content;
-	height: fit-content;
-	padding: calc(var(--spacing) / 2);
+	height: min-content;
 	display: flex;
 	flex-direction: row;
-	align-items: flex-start;
-	gap: calc(var(--spacing) / 2);
+	align-items: center;
+
+	.label {
+		margin-left: 0;
+	}
 }

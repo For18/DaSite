@@ -30,7 +30,10 @@ export default function Test() {
 		<>
 			<Accordion title="Buttons" open={buttonsOpen} onToggle={setButtonsOpen}>
 				<Typography heading={3}>Buttons pressed: {buttonsPressed}</Typography>
-				<table>
+				<table style={{
+					margin: "var(--spacing)",
+					borderCollapse: "collapse"
+				}}>
 					<tbody>
 						{["contained", "outlined", "text"].map(variant => (
 							<tr key={variant}>
