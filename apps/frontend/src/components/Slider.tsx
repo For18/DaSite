@@ -74,33 +74,34 @@ export default function Slider({ min, max, value, onChange, valueText, labelledB
 			}} tabIndex={0} onKeyDown={e => {
 				if (onChange == null) return;
 				if (disabled) return;
+				let captured = true;
 				switch (e.key) {
 					case "ArrowLeft":
 					case "ArrowDown":
-						e.preventDefault();
 						setValue(value - (step ?? 1));
 						break;
 					case "ArrowRight":
 					case "ArrowUp":
-						e.preventDefault();
 						setValue(value + (step ?? 1));
 						break;
 					case "Home":
-						e.preventDefault();
 						setValue(min);
 						break;
 					case "End":
-						e.preventDefault();
 						setValue(max);
 						break;
 					case "PageUp":
-						e.preventDefault();
 						if (step != null) setValue(Math.min(value + step * 10, max));
 						break;
 					case "PageDown":
-						e.preventDefault();
 						if (step != null) setValue(Math.max(value - step * 10, min));
 						break;
+					default:
+						captured = false;
+				}
+				if (captured) {
+					e.preventDefault();
+					e.stopPropagation();
 				}
 			}}>
 				<div className={styles.fill}/>
