@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
-using System;
 
 [DisplayName(nameof(AuctionEntry))]
 public class AuctionEntryExternal {
@@ -20,11 +19,11 @@ public class AuctionEntryExternal {
 		return new AuctionEntryExternal(entry.Auction.Id, entry.AuctionItem.Id);
 	}
 
-	public AuctionEntry ToAuctionEntry(DatabaseContext db) {
+	public AuctionEntry? ToAuctionEntry(DatabaseContext db) {
 		Auction? auction = db.Auctions.Include(auc => auc.Planner).Where(auc => auc.Id == AuctionId).FirstOrDefault();
 		AuctionItem? item = db.AuctionItems.Include(item => item.Product).ThenInclude(prod => prod.ThumbnailImage).Where(item => item.Id == ItemId).FirstOrDefault();
 
-		if (auction == null || item == null) throw new ArgumentNullException();
+		if (auction == null || item == null) return null; 
 
 		return new AuctionEntry {
 			Auction = auction,
@@ -106,7 +105,9 @@ public class AuctionEntryController : ControllerBase {
 			  .AnyAsync(entry => entry.Auction.Id == auctionEntryData.AuctionId && entry.AuctionItem.Id == auctionEntryData.ItemId);
 
 			if (isConflicting) return Conflict("Already exists");
-			AuctionEntry entry = auctionEntryData.ToAuctionEntry(db);
+			AuctionEntry? entry = auctionEntryData.ToAuctionEntry(db);
+
+      if (entry == null) return NotFound();
 
 			db.AuctionEntries.Add(entry);
 			await db.SaveChangesAsync();
