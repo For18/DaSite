@@ -27,18 +27,24 @@ export function range(amount: number): number[] {
 	return result;
 }
 
-export function useTime() {
-	const [time, setTime] = useState(Date.now());
+export function useAnimationFrame(callback: (deltaTimeMillis: number) => void) {
 	useEffect(() => {
 		let animationFrameId: number;
-		function update() {
-			setTime(Date.now());
+		function update(deltaTimeMillis: number) {
+			callback(deltaTimeMillis);
 			animationFrameId = requestAnimationFrame(update);
 		}
 		animationFrameId = requestAnimationFrame(update);
 		return () => {
 			cancelAnimationFrame(animationFrameId);
 		};
+	});
+}
+
+export function useTime() {
+	const [time, setTime] = useState(Date.now());
+	useAnimationFrame(() => {
+		setTime(Date.now());
 	});
 	return time;
 }
