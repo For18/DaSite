@@ -38,30 +38,37 @@ const BUFFER_LEN = 5000;
 export default function ClockPage() {
 	/* Main state holders */
 	const { auctionId } = useParams();
-	const auctionItems = useAPI<AuctionItem[]>("/auction-item/get-by-auction/" + auctionId);
+	const initialAuctionItems = useAPI<AuctionItem[]>("/auction-item/get-by-auction/" + auctionId);
 	const auction = useAPI<Auction>("/auction/" + auctionId);
 
-	const [doShift, setDoShift] = useState<boolean>(false);
+  const [auctionItems, setAuctionItems] = useState<AuctionItem[] | null>(null);
+
 	const [isAuctionOver, setIsAuctionOver] = useState<boolean>(false);
 	const currentItemCountRef = useRef<number>(0);
 	const buyCountRef = useRef<number>(0);
+  const [currentItem, setCurrentItem] = useState<AuctionItem | null>(null);
 
-	const currentItem = useMemo<AuctionItem | null>(() => {
-		if ((!auctionItems || !auctionItems) || auctionItems.length < 0) return null;
-		return auctionItems.shift() ?? null;
-	}, [doShift, auctionItems]);
+  const doShift = () => {
+		if (!auctionItems || auctionItems.length < 0) return;
+    setCurrentItem(auctionItems.shift() ?? null)
+  }
+
+  useEffect(() => {
+      if (initialAuctionItems == null) return;
+      setAuctionItems(initialAuctionItems);
+      doShift();
+  }, [initialAuctionItems]); 
 
 	useEffect(() => {
 		if (auctionItems?.length === 0 && currentItem === null) {
 			setIsAuctionOver(true);
 		}
-
 		currentItemCountRef.current = currentItem?.count ?? 0;
 	}, [currentItem]);
 
 	const currentItemStartTime = useMemo<number | null>(() => {
 		return Date.now() + BUFFER_LEN;
-	}, [doShift, auctionItems]);
+	}, [currentItem, auctionItems]);
 
 	const currentTime = useTime();
 
@@ -85,23 +92,23 @@ export default function ClockPage() {
 
 	useEffect(() => {
 		if (progress >= 1) {
-			setDoShift(!doShift);
+      doShift();
 		}
 	}, [progress]);
 
 	/* TODO: add entry to 'sale' db table if onPurchase is called */
 	const onPurchase = (count: number) => {
 		currentItemCountRef.current -= count;
-		if (currentItemCountRef.current <= 0) setDoShift(!doShift);
+		if (currentItemCountRef.current <= 0) doShift();
 	};
 
 	if (auctionItems === null) return <Throbber/>;
-	if (auctionItems === undefined) return <NotFound/>;
+	if (auctionItems === undefined) { console.log("auctionItems null"); return <NotFound/>;}
 
 	if (isAuctionOver) return <EndedAuction id={Number(auctionId) ?? 0}/>;
-	if (currentItem === null) return <NotFound/>;
+	if (currentItem === null) { console.log("currentItem null"); return <NotFound/>;}
 
-	if (auction === undefined) return <NotFound/>;
+	if (auction === undefined) { console.log("auction null"); return <NotFound/>;}
 	if (auction === null) return <Throbber/>;
 
 	/* Specifics formatting */
