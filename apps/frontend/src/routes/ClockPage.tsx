@@ -40,13 +40,13 @@ export default function ClockPage() {
 	const { auctionId } = useParams();
 	const initialAuctionItems = useAPI<AuctionItem[]>("/auction-item/get-by-auction/" + auctionId);
 	const auction = useAPI<Auction>("/auction/" + auctionId);
-
   const [auctionItems, setAuctionItems] = useState<AuctionItem[] | null>(null);
 
+  const [currentItem, setCurrentItem] = useState<AuctionItem | null>(null);
 	const [isAuctionOver, setIsAuctionOver] = useState<boolean>(false);
+
 	const currentItemCountRef = useRef<number>(0);
 	const buyCountRef = useRef<number>(0);
-  const [currentItem, setCurrentItem] = useState<AuctionItem | null>(null);
 
   const doShift = () => {
 		if (!auctionItems || auctionItems.length < 0) return;
