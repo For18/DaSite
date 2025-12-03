@@ -66,7 +66,7 @@ public class ProductController : ControllerBase {
 		}
 	}
 
-	[HttpGet("/get-contained-in")]
+	[HttpGet("/get-batched")]
 	public async Task<ActionResult<ProductExternal[]>> GetContainedIn([FromQuery] ulong[] ids) {
 		using (var db = new DatabaseContext()) {
 			return await db.AuctionItems
