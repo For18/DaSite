@@ -93,12 +93,14 @@ export default function CreateProductPage() {
           <Input
             className={styles.inputBasic}
             type="text"
+            value={name}
             onChange={value => setName(String(value))}
           />
 
           <Typography className={styles.inputTitle}> Description </Typography>
           <Input
             type="textfield"
+            value={description}
             className={styles.inputDescription}
             onChange={value => setDescription(String(value))}
           />
@@ -106,6 +108,7 @@ export default function CreateProductPage() {
           <Typography className={styles.inputTitle}> Batch size </Typography>
           <Input
             className={styles.inputBasic}
+            value={String(batchSize)}
             type="number"
             onChange={value => setBatchSize(Number(value))}
           />
@@ -113,6 +116,7 @@ export default function CreateProductPage() {
           <Typography className={styles.inputTitle}> Owner </Typography>
           <Input
             className={styles.inputBasic}
+            value={owner}
             type="text"
             onChange={value => setOwner(String(value))}
           />
@@ -120,6 +124,7 @@ export default function CreateProductPage() {
           <Typography className={styles.inputTitle}> Image Link </Typography>
           <Input
             className={styles.inputBasic}
+            value={linkText}
             type="text"
             onChange={value => setLinkText(String(value))}
           />
