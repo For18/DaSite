@@ -107,12 +107,12 @@ export default function ClockPage() {
 	};
 
 	if (auctionItems === null) return <Throbber/>;
-	if (auctionItems === undefined) { console.log("auctionItems null"); return <NotFound/>;}
+	if (auctionItems === undefined) return <NotFound/>;
 
 	if (isAuctionOver) return <EndedAuction id={Number(auctionId) ?? 0}/>;
-	if (currentItem === null) { console.log("currentItem null"); return <NotFound/>;}
+	if (currentItem === null) return <NotFound/>;
 
-	if (auction === undefined) { console.log("auction null"); return <NotFound/>;}
+	if (auction === undefined) return <NotFound/>;
 	if (auction === null) return <Throbber/>;
 
 	/* Specifics formatting */
