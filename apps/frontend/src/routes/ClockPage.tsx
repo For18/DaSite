@@ -38,7 +38,6 @@ const BUFFER_LEN = 5000;
 export default function ClockPage() {
 	/* Main state holders */
 	const { auctionId } = useParams();
-	const initialAuctionItems = useAPI<AuctionItem[]>("/auction-item/get-by-auction/" + auctionId);
 	const auction = useAPI<Auction>("/auction/" + auctionId);
   const [auctionItems, setAuctionItems] = useState<AuctionItem[] | null>(null);
 
@@ -54,10 +53,15 @@ export default function ClockPage() {
   }
 
   useEffect(() => {
-      if (initialAuctionItems == null) return;
-      setAuctionItems(initialAuctionItems);
-      doShift();
-  }, [initialAuctionItems]); 
+      if (!auctionId) return;
+	    fetch(API_URL + "/auction-item/get-by-auction" + auctionId)
+                    .then(response => response.json())
+                    .then(data => data as AuctionItem[])
+                    .then(items => {
+                        setAuctionItems(items);
+                        doShift();
+                    });
+  }, [auctionId])
 
 	useEffect(() => {
 		if (auctionItems?.length === 0 && currentItem === null) {
