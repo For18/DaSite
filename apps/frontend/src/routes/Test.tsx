@@ -61,14 +61,15 @@ export default function Test() {
 				<LabeledContainer text="Disable fields" id="checkbox">
 					<Checkbox checked={checked} onClick={() => setChecked(v => !v)} labelledby="checkbox"/>
 				</LabeledContainer>
-				{["text", "textfield", "password", "date", "datetime-local", "email", "number", "tel", "time", "url"].map(type => (
-					<LabeledContainer key={type} text={type} color={checked ? "secondary" : "primary"}
-						id={`field-${type}`}
-					>
-						<Input type={type as any} placeholder="placeholder" disabled={checked}
-							labelledby={`field-${type}`}/>
-					</LabeledContainer>
-				))}
+				{["text", "textfield", "password", "date", "datetime-local", "email", "number", "tel", "time", "url"]
+					.map(type => (
+						<LabeledContainer key={type} text={type} color={checked ? "secondary" : "primary"}
+							id={`field-${type}`}
+						>
+							<Input type={type as any} placeholder="placeholder" disabled={checked}
+								labelledby={`field-${type}`}/>
+						</LabeledContainer>
+					))}
 			</Accordion>
 			<Accordion title="Slider" open={sliderOpen} onToggle={setSliderOpen}>
 				<Slider min={0} max={100} value={sliderValue} onChange={setSliderValue} width="500px" step={1}

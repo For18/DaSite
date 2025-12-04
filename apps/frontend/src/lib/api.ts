@@ -55,26 +55,24 @@ interface UseAPIOptions {
 }
 
 export function useAPI<T>(route: string | null, options: UseAPIOptions = {}): T | null | undefined {
-  const {method = "GET", body, headers} = options;
+	const { method = "GET", body, headers } = options;
 	const [value, setValue] = useState<T | null | undefined>(null);
 
 	useEffect(() => {
 		setValue(null);
 		if (route === null) return;
-		fetch(API_URL + route,
-        {
-          method,
-          headers: {
-            "Content-Type": "application/json",
-            ...headers,
-          },
-          body: body ? JSON.stringify(body): undefined,
-        }
-    )
-    .then(response => {
-			if (response.status == 404) return undefined;
-			return response.json();
-		}).then(setValue);
+		fetch(API_URL + route, {
+			method,
+			headers: {
+				"Content-Type": "application/json",
+				...headers
+			},
+			body: body ? JSON.stringify(body) : undefined
+		})
+			.then(response => {
+				if (response.status == 404) return undefined;
+				return response.json();
+			}).then(setValue);
 	}, [route]);
 
 	return value;
