@@ -86,7 +86,7 @@ public class AuctionItemController : ControllerBase {
 
 			if (await db.AuctionItems.AnyAsync(auc => auc.Id == auctionItemData.Id)) return Conflict("Already exists");
 			AuctionItem? item = auctionItemData.ToAuctionItem(db);
-      if (item == null) return NotFound();
+			if (item == null) return NotFound();
 
 			db.AuctionItems.Add(item);
 			await db.SaveChangesAsync();

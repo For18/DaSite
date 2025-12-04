@@ -39,29 +39,29 @@ export default function ClockPage() {
 	/* Main state holders */
 	const { auctionId } = useParams();
 	const auction = useAPI<Auction>("/auction/" + auctionId);
-  const [auctionItems, setAuctionItems] = useState<AuctionItem[] | null>(null);
+	const [auctionItems, setAuctionItems] = useState<AuctionItem[] | null>(null);
 
-  const [currentItem, setCurrentItem] = useState<AuctionItem | null>(null);
+	const [currentItem, setCurrentItem] = useState<AuctionItem | null>(null);
 	const [isAuctionOver, setIsAuctionOver] = useState<boolean>(false);
 
 	const currentItemCountRef = useRef<number>(0);
 	const buyCountRef = useRef<number>(0);
 
-  const doShift = () => {
+	const doShift = () => {
 		if (!auctionItems || auctionItems.length < 0) return;
-    setCurrentItem(auctionItems.shift() ?? null)
-  }
+		setCurrentItem(auctionItems.shift() ?? null);
+	};
 
-  useEffect(() => {
-      if (!auctionId) return;
-	    fetch(API_URL + "/auction-item/get-by-auction" + auctionId)
-                    .then(response => response.json())
-                    .then(data => data as AuctionItem[])
-                    .then(items => {
-                        setAuctionItems(items);
-                        doShift();
-                    });
-  }, [auctionId])
+	useEffect(() => {
+		if (!auctionId) return;
+		fetch(API_URL + "/auction-item/get-by-auction" + auctionId)
+			.then(response => response.json())
+			.then(data => data as AuctionItem[])
+			.then(items => {
+				setAuctionItems(items);
+				doShift();
+			});
+	}, [auctionId]);
 
 	useEffect(() => {
 		if (auctionItems?.length === 0 && currentItem === null) {
@@ -96,7 +96,7 @@ export default function ClockPage() {
 
 	useEffect(() => {
 		if (progress >= 1) {
-      doShift();
+			doShift();
 		}
 	}, [progress]);
 

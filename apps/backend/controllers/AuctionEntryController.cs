@@ -23,7 +23,7 @@ public class AuctionEntryExternal {
 		Auction? auction = db.Auctions.Include(auc => auc.Planner).Where(auc => auc.Id == AuctionId).FirstOrDefault();
 		AuctionItem? item = db.AuctionItems.Include(item => item.Product).ThenInclude(prod => prod.ThumbnailImage).Where(item => item.Id == ItemId).FirstOrDefault();
 
-		if (auction == null || item == null) return null; 
+		if (auction == null || item == null) return null;
 
 		return new AuctionEntry {
 			Auction = auction,
@@ -107,7 +107,7 @@ public class AuctionEntryController : ControllerBase {
 			if (isConflicting) return Conflict("Already exists");
 			AuctionEntry? entry = auctionEntryData.ToAuctionEntry(db);
 
-      if (entry == null) return NotFound();
+			if (entry == null) return NotFound();
 
 			db.AuctionEntries.Add(entry);
 			await db.SaveChangesAsync();
