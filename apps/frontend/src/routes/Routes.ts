@@ -14,6 +14,6 @@ export default {
 	"/auctions": Auctions,
 	"/auctions/pending": PendingAuction,
 	"/profile/:userId": Profile,
-  "/create-product": CreateProduct,
+	"/create-product": CreateProduct,
 	"/test": Test
 } as { [path: string]: LazyExoticComponent<() => JSX.Element> };
