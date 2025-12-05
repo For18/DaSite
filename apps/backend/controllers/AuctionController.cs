@@ -11,7 +11,7 @@ public class AuctionExternal {
 	 * https://stackoverflow.com/questions/76909169/required-keyword-causes-error-even-if-member-initialized-in-constructor
 	 */
 	[System.Diagnostics.CodeAnalysis.SetsRequiredMembersAttribute]
-	public AuctionExternal(ulong id, ulong? startingTime, ulong? plannerId) {
+	public AuctionExternal(ulong id, ulong startingTime, ulong? plannerId) {
 		Id = id;
 		StartingTime = startingTime;
 		PlannerId = plannerId;
@@ -29,7 +29,7 @@ public class AuctionExternal {
 		};
 	}
 	public required ulong Id { get; init; }
-	public ulong? StartingTime { get; init; }
+	public required ulong StartingTime { get; init; }
 	public ulong? PlannerId { get; init; }
 }
 
