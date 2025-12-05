@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
+using System;
 
 [DisplayName(nameof(Auction))]
 public class AuctionExternal {
@@ -58,12 +59,13 @@ public class AuctionController : ControllerBase {
 		}
 	}
 
-	[HttpGet("/auctions/pending")]
-	public async Task<ActionResult<AuctionExternal[]>> GetPending() {
+	[HttpGet("/auctions/upcoming")]
+	public async Task<ActionResult<AuctionExternal[]>> GetUpcoming() {
+		ulong unixTimeMillis = (ulong)DateTimeOffset.Now.ToUnixTimeMilliseconds();
 		using (var db = new DatabaseContext()) {
 			return await db.Auctions
 				.Include(auc => auc.Planner)
-				.Where(auc => auc.StartingTime == null)
+				.Where(auc => auc.StartingTime > unixTimeMillis)
 				.Select(auction => AuctionExternal.ToExternal(auction))
 			.ToArrayAsync();
 		}
