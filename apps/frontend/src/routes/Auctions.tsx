@@ -42,7 +42,7 @@ export default function Auctions() {
 
 	return (
 		<>
-			<Typography heading={1}>Live Auctions</Typography>
+			<Typography heading={1}>Upcoming auctions</Typography>
 
 			<Section flex={{
 				direction: "column"
