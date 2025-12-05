@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
+using System;
 
 [DisplayName(nameof(Auction))]
 public class AuctionExternal {
@@ -11,7 +12,7 @@ public class AuctionExternal {
 	 * https://stackoverflow.com/questions/76909169/required-keyword-causes-error-even-if-member-initialized-in-constructor
 	 */
 	[System.Diagnostics.CodeAnalysis.SetsRequiredMembersAttribute]
-	public AuctionExternal(ulong id, ulong? startingTime, ulong? plannerId) {
+	public AuctionExternal(ulong id, ulong startingTime, ulong? plannerId) {
 		Id = id;
 		StartingTime = startingTime;
 		PlannerId = plannerId;
@@ -29,7 +30,7 @@ public class AuctionExternal {
 		};
 	}
 	public required ulong Id { get; init; }
-	public ulong? StartingTime { get; init; }
+	public required ulong StartingTime { get; init; }
 	public ulong? PlannerId { get; init; }
 }
 
@@ -58,12 +59,13 @@ public class AuctionController : ControllerBase {
 		}
 	}
 
-	[HttpGet("/auctions/pending")]
-	public async Task<ActionResult<AuctionExternal[]>> GetPending() {
+	[HttpGet("/auctions/upcoming")]
+	public async Task<ActionResult<AuctionExternal[]>> GetUpcoming() {
+		ulong unixTimeMillis = (ulong)DateTimeOffset.Now.ToUnixTimeMilliseconds();
 		using (var db = new DatabaseContext()) {
 			return await db.Auctions
 				.Include(auc => auc.Planner)
-				.Where(auc => auc.StartingTime == null)
+				.Where(auc => auc.StartingTime > unixTimeMillis)
 				.Select(auction => AuctionExternal.ToExternal(auction))
 			.ToArrayAsync();
 		}

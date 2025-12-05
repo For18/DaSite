@@ -48,6 +48,7 @@ public class Auction {
 	[ForeignKey("PlannerId")]
 	public virtual User? Planner { get; set; }
 
-	public ulong? StartingTime { get; set; }
+	[Required]
+	public required ulong StartingTime { get; set; }
 
 }
