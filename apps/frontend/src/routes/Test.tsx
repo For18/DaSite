@@ -8,6 +8,8 @@ import LabeledContainer from "../components/LabeledContainer";
 import Slider from "../components/Slider";
 import { Switch } from "../components/Switch";
 import Typography from "../components/Typography";
+import { Select, Option } from "../components/Select";
+import { range } from "../lib/util";
 
 export default function Test() {
 	useEffect(() => {
@@ -25,6 +27,8 @@ export default function Test() {
 	const [buttonsOpen, setButtonsOpen] = useState<boolean>(false);
 	const [sliderOpen, setSliderOpen] = useState<boolean>(false);
 	const [textOpen, setTextOpen] = useState<boolean>(false);
+	const [selectOpen, setSelectOpen] = useState<boolean>(false);
+	const [selectValue, setSelectValue] = useState<string | null>(null);
 
 	return (
 		<>
@@ -71,7 +75,7 @@ export default function Test() {
 				))}
 			</Accordion>
 			<Accordion title="Slider" open={sliderOpen} onToggle={setSliderOpen}>
-				<Slider min={0} max={100} value={sliderValue} onChange={setSliderValue} width="500px" step={1}
+				<Slider min={0} max={100} value={sliderValue} onChange={setSliderValue} width="500px"
 					valueText={sliderValue + "%"}/>
 				<Typography>Value: {sliderValue}</Typography>
 			</Accordion>
@@ -89,6 +93,13 @@ export default function Test() {
 					suscipio vapulus dolores suffragium animi. Officiis denuncio tergum appositus animadverto vero
 					excepturi veniam. Pecco supra altus similique labore aranea odit.
 				</Typography>
+			</Accordion>
+			<Accordion title="Select" open={selectOpen} onToggle={setSelectOpen}>
+				<Select value={selectValue} onChange={setSelectValue} placeholder="Choose an option">
+					{range(20).map(i => (
+						<Option key={i} value={`option${i + 1}`}>{`Option ${i + 1}`}</Option>
+					))}
+				</Select>
 			</Accordion>
 		</>
 	);
