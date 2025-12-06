@@ -6,6 +6,7 @@ import Typography from "./Typography";
 
 // TODO: Add checkmark next to selected option
 // TODO: Add opening arrow to head
+// TODO: Fix opening via click
 
 export interface SelectContext {
 	value: string | null;
