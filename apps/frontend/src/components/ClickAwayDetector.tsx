@@ -11,7 +11,7 @@ export default function ClickAwayDetector({ onClickAway, children }: ClickAwayDe
 	}, []);
 
 	return (
-		<div style={{
+		<div role="none" style={{
 			width: "fit-content",
 			height: "fit-content"
 		}} onClick={e => e.stopPropagation()}>
