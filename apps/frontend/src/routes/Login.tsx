@@ -8,6 +8,20 @@ export default function Login() {
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
 
+    let accessToken: string | null = null;
+
+    function setAccessToken(token: string) {
+        accessToken = token;
+    }
+
+    function getAccessToken() {
+        return accessToken;
+    }
+
+    function clearAccessToken() {
+        accessToken = null;
+    }
+
     async function refreshToken() {
         const res = await fetch('/identity/refresh', {
             method: "POST",
@@ -16,7 +30,7 @@ export default function Login() {
 
         if (!res.ok) throw new Error("Token refresh failed");
         const data = await res.json();
-        (window as any).accessToken = data.accessToken;
+        setAccessToken(data.accessToken);
     }
 
     const login = async (email: string, password: string) => {
@@ -25,7 +39,7 @@ export default function Login() {
             credentials: "include",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({email, password})
-    });
+        });
 
         if (!res.ok) throw new Error("Login failed");
     }
