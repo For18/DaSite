@@ -1,8 +1,8 @@
 import { Ref } from "react";
 import styles from "./Input.module.scss";
 
-export type InputType = "text" | "textfield" | "password" | "date" | "datetime-local" | "email" | "number" | "password" | "tel"
-	| "text" | "time" | "url";
+export type InputType = "text" | "textfield" | "password" | "date" | "datetime-local" | "email" | "number" | "password"
+	| "tel" | "text" | "time" | "url";
 
 export interface InputProps {
 	type: InputType;
