@@ -5,10 +5,10 @@ import Checkbox from "../components/Checkbox";
 import Divider from "../components/Divider";
 import Input from "../components/Input";
 import LabeledContainer from "../components/LabeledContainer";
+import { Option, Select } from "../components/Select";
 import Slider from "../components/Slider";
 import { Switch } from "../components/Switch";
 import Typography from "../components/Typography";
-import { Select, Option } from "../components/Select";
 import { range } from "../lib/util";
 
 export default function Test() {
@@ -65,14 +65,15 @@ export default function Test() {
 				<LabeledContainer text="Disable fields" id="checkbox">
 					<Checkbox checked={checked} onClick={() => setChecked(v => !v)} labelledby="checkbox"/>
 				</LabeledContainer>
-				{["text", "textfield", "password", "date", "datetime-local", "email", "number", "tel", "time", "url"].map(type => (
-					<LabeledContainer key={type} text={type} color={checked ? "secondary" : "primary"}
-						id={`field-${type}`}
-					>
-						<Input type={type as any} placeholder="placeholder" disabled={checked}
-							labelledby={`field-${type}`}/>
-					</LabeledContainer>
-				))}
+				{["text", "textfield", "password", "date", "datetime-local", "email", "number", "tel", "time", "url"]
+					.map(type => (
+						<LabeledContainer key={type} text={type} color={checked ? "secondary" : "primary"}
+							id={`field-${type}`}
+						>
+							<Input type={type as any} placeholder="placeholder" disabled={checked}
+								labelledby={`field-${type}`}/>
+						</LabeledContainer>
+					))}
 			</Accordion>
 			<Accordion title="Slider" open={sliderOpen} onToggle={setSliderOpen}>
 				<Slider min={0} max={100} value={sliderValue} step={1} onChange={setSliderValue} width="500px"
@@ -96,9 +97,7 @@ export default function Test() {
 			</Accordion>
 			<Accordion title="Select" open={selectOpen} onToggle={setSelectOpen}>
 				<Select value={selectValue} onChange={setSelectValue} placeholder="Choose an option">
-					{range(20).map(i => (
-						<Option key={i} value={`option${i + 1}`}>{`Option ${i + 1}`}</Option>
-					))}
+					{range(20).map(i => <Option key={i} value={`option${i + 1}`}>{`Option ${i + 1}`}</Option>)}
 				</Select>
 			</Accordion>
 		</>
