@@ -146,6 +146,7 @@ export function Option({ value, children, key }: OptionProps) {
 				setOpen(false);
 			}
 			else if (e.key === "Home" || e.key === "PageUp") {
+				e.stopPropagation();
 				focusFirstOption();
 			}
 			else if (e.key === "End" || e.key === "PageDown") {
