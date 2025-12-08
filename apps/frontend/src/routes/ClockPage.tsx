@@ -42,9 +42,7 @@ export default function ClockPage() {
 	const [items, setItems] = useState<AuctionItem[] | null>(null);
 
 	const currentItem = items ? items[0] : null;
-	const [isAuctionOver, setIsAuctionOver] = useState<boolean>(false);
 
-	const currentItemCountRef = useRef<number>(0);
 	const buyCountRef = useRef<number>(0);
 
 	const doShift = () => {
@@ -62,13 +60,6 @@ export default function ClockPage() {
 			});
 	}, [auctionId]);
 
-	useEffect(() => {
-		if (items?.length === 0 && currentItem === null) {
-			setIsAuctionOver(true);
-		}
-		currentItemCountRef.current = currentItem?.count ?? 0;
-	}, [currentItem]);
-
 	const currentItemStartTime = useMemo<number | null>(() => {
 		return Date.now() + BUFFER_LEN;
 	}, [currentItem, items]);
@@ -80,6 +71,8 @@ export default function ClockPage() {
 		null;
 	const elapsedTime = currentItemStartTime != null ? currentTime - currentItemStartTime : 0;
 	const progress = auctionedItemLenMillis ? elapsedTime / auctionedItemLenMillis : 0;
+
+  const isAuctionOver = items?.length === 0 && items[0] === null;
 
 	/* Temp moving of starting time
    * TODO: remove after testing
@@ -101,15 +94,17 @@ export default function ClockPage() {
 
 	/* TODO: add entry to 'sale' db table if onPurchase is called */
 	const onPurchase = (count: number) => {
-		currentItemCountRef.current -= count;
-		if (currentItemCountRef.current <= 0) doShift();
+		currentItem?.count && (currentItem.count -= count);
+		if (currentItem && currentItem.count <= 0) doShift();
 	};
+
 
 	if (items === null) return <Throbber/>;
 	if (items === undefined) return <NotFound/>;
 
 	if (isAuctionOver) return <EndedAuction id={Number(auctionId) ?? 0}/>;
-	if (currentItem === null) return <NotFound/>;
+	if (currentItem === null) return <Throbber/>;
+	if (currentItem === undefined) return <NotFound/>;
 
 	if (auction === undefined) return <NotFound/>;
 	if (auction === null) return <Throbber/>;
@@ -141,7 +136,7 @@ export default function ClockPage() {
 					(
 						<>
 							<Clock progress={progress} price={currentPrice} fmtedTime={fmtedRemainingTime}
-								count={currentItemCountRef.current ?? 0}/>
+								count={currentItem.count ?? 0}/>
 						</>
 					)}
 				<input
