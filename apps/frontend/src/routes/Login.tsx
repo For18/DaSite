@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from "./Login.module.scss";
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import Input from "../components/Input";
 import Button from "../components/Button";
 import Typography from '../components/Typography';
@@ -30,6 +30,10 @@ export default function Login() {
             alert("Login failed");
         });
     }
+
+    useEffect(() => {
+            document.title = "For18 - Login";
+    });
 
     return (
         <>
