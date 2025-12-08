@@ -33,23 +33,26 @@ export default function Login() {
 
     return (
         <>
-            <div className={styles.container}>
-                <Typography heading={1}>Login</Typography>
-                <div className={styles.emailContainer}>
-                    <Input type="email" placeholder="email" ref={emailRef}/>
-                </div>
-                <div className={styles.passwordContainer}>
-                    <Input type="password" placeholder="password" ref={passwordRef}/>
-                </div>
-                <div className={styles.buttonContainer}>
-                    <Button onClick={handleSubmit}>Login</Button>
-                </div>
-                <div className={styles.forgotPassword}>
-                    <Typography href='../forgotpassword'>Forgot password?</Typography>
-                </div>
-                <div className={styles.noAccount}>
-                    <Typography>Don't have an account yet?</Typography> 
-                    <Typography href='../register'>Register here</Typography>
+            <div className={styles.imageBackground}>
+                <div className={styles.container}>
+                    <div className={styles.heading}>
+                        <Typography heading={1}>Login</Typography>
+                    </div>
+                    <div className={styles.emailContainer}>
+                        <Input type="email" placeholder="email" ref={emailRef}/>
+                    </div>
+                    <div className={styles.passwordContainer}>
+                        <Input type="password" placeholder="password" ref={passwordRef}/>
+                    </div>
+                    <div className={styles.buttonContainer}>
+                        <Button onClick={handleSubmit}>Login</Button>
+                    </div>
+                    <div className={styles.forgotPassword}>
+                        <Typography href='../forgotpassword'>Forgot password?</Typography>
+                    </div>
+                    <div className={styles.noAccount}>
+                        <Typography href='../register'>Don't have an account yet?</Typography>
+                    </div>
                 </div>
             </div>
         </>
