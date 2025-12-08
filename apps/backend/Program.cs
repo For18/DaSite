@@ -45,6 +45,11 @@ app.UseAuthorization();
 app.MapGroup("identity").MapIdentityApi<User>();
 app.MapControllers();
 
+using (var scope = app.Services.CreateScope())
+{
+	await Roles.seed(scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>());
+}
+
 if (app.Environment.IsDevelopment()) {
 	app.UseSwagger(c => {
 		c.RouteTemplate = "docs/{documentname}.json";
