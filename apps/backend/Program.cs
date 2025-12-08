@@ -18,6 +18,29 @@ Task<DatabaseContext> dbTask = new DatabaseConnector(
 	Convert.ToInt32(Environment.GetEnvironmentVariable("DB_RETRY_COUNT"))
 ).Connect();
 
+// Configure authentication to use JWT bearer tokens by default
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+	x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+	x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+// Add JWT bearer token support
+.AddJwtBearer(options =>
+{
+	// Set validation rules
+	x.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+	{
+		ValidateIssuer = true,
+		ValidateAudience = true,
+		ValidateLifetime = true,
+		ValidateIssuerSigningKey = true,
+		ValidIssuer = config["JwtSettings:Issuer"],
+		ValidAudience = config["JwtSettings:Audience"],
+		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"]))
+	};
+});
+
 string apiVersionString = "v1";
 
 // Add services to the container.
