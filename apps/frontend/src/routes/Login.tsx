@@ -8,31 +8,6 @@ export default function Login() {
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
 
-    let accessToken: string | null = null;
-
-    function setAccessToken(token: string) {
-        accessToken = token;
-    }
-
-    function getAccessToken() {
-        return accessToken;
-    }
-
-    function clearAccessToken() {
-        accessToken = null;
-    }
-
-    async function refreshToken() {
-        const res = await fetch('/identity/refresh', {
-            method: "POST",
-            credentials: "include"
-        });
-
-        if (!res.ok) throw new Error("Token refresh failed");
-        const data = await res.json();
-        setAccessToken(data.accessToken);
-    }
-
     const login = async (email: string, password: string) => {
         const res = await fetch('/identity/login', {
             method: "POST",
