@@ -7,10 +7,12 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 
 public class PublicUser {
+	public required ulong Id { get; set; }
+
 	[StringLength(32)]
 	public required string? UserName { get; set; }
 
-	public required string? ImageUrl { get; set; }
+	public required string? AvatarImageUrl { get; set; }
 
 	[StringLength(254)]
 	public required string? Email { get; set; }
@@ -29,8 +31,9 @@ public class UserController : ControllerBase {
 			if (user == null) return NotFound();
 
 			return new PublicUser {
+				Id = user.Id,
 				UserName = user.UserName,
-				ImageUrl = user.AvatarImageUrl,
+				AvatarImageUrl = user.AvatarImageUrl,
 				Email = user.Email,
 				TelephoneNumber = user.PhoneNumber
 			};
@@ -61,8 +64,9 @@ public class UserController : ControllerBase {
 	public async Task<ActionResult<PublicUser[]>> GetAllPublic() {
 		using (var db = new DatabaseContext()) {
 			return await db.Users.Select(user => new PublicUser {
+				Id = user.Id,
 				UserName = user.UserName,
-				ImageUrl = user.AvatarImageUrl,
+				AvatarImageUrl = user.AvatarImageUrl,
 				Email = user.Email,
 				TelephoneNumber = user.PhoneNumber
 			}).ToArrayAsync();

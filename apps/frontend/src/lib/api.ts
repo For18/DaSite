@@ -39,13 +39,12 @@ export interface Auction {
 	plannerId: number;
 }
 
-export interface User {
+export interface PublicUser {
 	id: number;
-	auctionDebt: number;
 	userName?: string;
 	avatarImageUrl?: string;
 	email?: string;
-	telephonenumber?: string;
+	telephoneNumber?: string;
 }
 
 export function useAPI<T>(route: string | null): T | null | undefined {
