@@ -41,7 +41,7 @@ export default function ClockPage() {
 	const auction = useAPI<Auction>("/auction/" + auctionId);
 	const [auctionItems, setAuctionItems] = useState<AuctionItem[] | null>(null);
 
-	const [currentItem, setCurrentItem] = useState<AuctionItem | null>(null);
+	const currentItem = auctionItems ? auctionItems[0] : null;
 	const [isAuctionOver, setIsAuctionOver] = useState<boolean>(false);
 
 	const currentItemCountRef = useRef<number>(0);
@@ -49,7 +49,7 @@ export default function ClockPage() {
 
 	const doShift = () => {
 		if (!auctionItems || auctionItems.length < 0) return;
-		setCurrentItem(auctionItems.shift() ?? null);
+    auctionItems.shift()
 	};
 
 	useEffect(() => {
@@ -59,7 +59,6 @@ export default function ClockPage() {
 			.then(data => data as AuctionItem[])
 			.then(items => {
 				setAuctionItems(items);
-				doShift();
 			});
 	}, [auctionId]);
 
