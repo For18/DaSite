@@ -10,7 +10,7 @@ export default function Login() {
     const passwordRef = useRef<HTMLInputElement>(null);
 
     const login = async (email: string, password: string) => {
-        const res = await fetch('/identity/login', {
+        const res = await fetch('/api/v1/identity/login', {
             method: "POST",
             credentials: "include",
             headers: {"Content-Type": "application/json"},
