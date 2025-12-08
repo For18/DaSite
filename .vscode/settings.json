@@ -1,8 +1,6 @@
 {
 	"editor.defaultFormatter": "dprint.dprint",
 	"editor.formatOnSave": true,
-	"dotnet.defaultSolution": "apps/backend/backend.sln",
-	"[typescriptreact]": {
-		"editor.defaultFormatter": "vscode.typescript-language-features"
-	}
+	"dotnet.defaultSolution": "apps/backend/backend.sln"
+	
 }

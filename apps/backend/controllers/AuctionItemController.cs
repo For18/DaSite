@@ -50,7 +50,7 @@ public class AuctionItemExternal {
 [Route("auction-item")]
 public class AuctionItemController : ControllerBase {
 
-	[HttpGet]
+	[HttpGet("all")]
 	public async Task<ActionResult<AuctionItemExternal[]>> GetAll() {
 		using var db = new DatabaseContext();
 		{

@@ -34,21 +34,17 @@ public class AuctionEntryExternal {
 [Route("auction-entry")]
 public class AuctionEntryController : ControllerBase {
 	[HttpGet("{auctionId}")]
-	public async Task<ActionResult<AuctionEntryExternal[]>> Get(ulong auctionId) {
-		using var db = new DatabaseContext();
-		{
-			var entries = await db.AuctionEntries
-		.Include(entry => entry.AuctionItem)
-		.ThenInclude(item => item.Product)
-		.ThenInclude(prod => prod.ThumbnailImage)
-		.Include(entry => entry.Auction)
-		.ThenInclude(auc => auc.Planner)
-		.Where(entry => entry.Auction.Id == auctionId)
-		.ToArrayAsync();
+		public async Task<ActionResult<AuctionEntryExternal[]>> Get(ulong auctionId) {
+			using var db = new DatabaseContext();
+			{
+				AuctionEntryExternal[] entries = await db.AuctionEntries
+					.Where(entry => entry.Auction.Id == auctionId)
+					.Select(entry => new AuctionEntryExternal(entry.Auction.Id, entry.AuctionItem.Id))
+					.ToArrayAsync();
 
-			return entries.Select(e => AuctionEntryExternal.ToExternal(e)).ToArray();
+				return entries;
+			}
 		}
-	}
 
 	[HttpPost]
 	public async Task<ActionResult> Post(AuctionEntryExternal auctionEntryData) {

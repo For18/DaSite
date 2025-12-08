@@ -103,10 +103,11 @@ export default function CreateAuctions() {
             <div className={styles.container}>
                 <Typography heading={1}>Create Auction</Typography>
 
-                <Typography>Available Auction Items:</Typography>
+                <Typography heading={3}>Available Auction Items:</Typography>
 
-                {Array.isArray(auctionItems) ?
-                    (
+
+                {Array.isArray(auctionItems) ? (
+                    auctionItems.length ? (
                         <div className={styles.productList}>
                             {auctionItems.map(item => (
                                 <label
@@ -131,10 +132,13 @@ export default function CreateAuctions() {
                                 </label>
                             ))}
                         </div>
-                    ) :
-                    null}
+                    ) : (
+                        <Typography>No auction items available</Typography>
+                    )
+                ) : null}
 
-                <Typography>Starting date:</Typography>
+
+                <Typography heading={3}>Starting date:</Typography>
                 <input
                     className={styles.input}
                     name="startingDate"
@@ -142,7 +146,7 @@ export default function CreateAuctions() {
                     defaultValue={startingDateRef.current}
                     onChange={e => (startingDateRef.current = e.target.value)}
                 />
-                <Typography>Starting time:</Typography>
+                <Typography heading={3}>Starting time:</Typography>
                 <input
                     className={styles.input}
                     name="startingTime"
