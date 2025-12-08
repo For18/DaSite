@@ -34,22 +34,22 @@ function formatStartCountDown(startingTime: number, currentTime: number) {
 
 const BUFFER_LEN = 5000;
 
-/* TODO: contemplate if timed out auctions should be added to the back of the auctionItems stack being sold */
+/* TODO: contemplate if timed out auctions should be added to the back of the items stack being sold */
 export default function ClockPage() {
 	/* Main state holders */
 	const { auctionId } = useParams();
 	const auction = useAPI<Auction>("/auction/" + auctionId);
-	const [auctionItems, setAuctionItems] = useState<AuctionItem[] | null>(null);
+	const [items, setItems] = useState<AuctionItem[] | null>(null);
 
-	const currentItem = auctionItems ? auctionItems[0] : null;
+	const currentItem = items ? items[0] : null;
 	const [isAuctionOver, setIsAuctionOver] = useState<boolean>(false);
 
 	const currentItemCountRef = useRef<number>(0);
 	const buyCountRef = useRef<number>(0);
 
 	const doShift = () => {
-		if (!auctionItems || auctionItems.length < 0) return;
-    auctionItems.shift()
+		if (!items || items.length < 0) return;
+    items.shift()
 	};
 
 	useEffect(() => {
@@ -58,12 +58,12 @@ export default function ClockPage() {
 			.then(response => response.json())
 			.then(data => data as AuctionItem[])
 			.then(items => {
-				setAuctionItems(items);
+				setItems(items);
 			});
 	}, [auctionId]);
 
 	useEffect(() => {
-		if (auctionItems?.length === 0 && currentItem === null) {
+		if (items?.length === 0 && currentItem === null) {
 			setIsAuctionOver(true);
 		}
 		currentItemCountRef.current = currentItem?.count ?? 0;
@@ -71,7 +71,7 @@ export default function ClockPage() {
 
 	const currentItemStartTime = useMemo<number | null>(() => {
 		return Date.now() + BUFFER_LEN;
-	}, [currentItem, auctionItems]);
+	}, [currentItem, items]);
 
 	const currentTime = useTime();
 
@@ -105,8 +105,8 @@ export default function ClockPage() {
 		if (currentItemCountRef.current <= 0) doShift();
 	};
 
-	if (auctionItems === null) return <Throbber/>;
-	if (auctionItems === undefined) return <NotFound/>;
+	if (items === null) return <Throbber/>;
+	if (items === undefined) return <NotFound/>;
 
 	if (isAuctionOver) return <EndedAuction id={Number(auctionId) ?? 0}/>;
 	if (currentItem === null) return <NotFound/>;
