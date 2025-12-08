@@ -76,7 +76,7 @@ public class ProductController : ControllerBase {
 			db.Products.Add(product);
 			await db.SaveChangesAsync();
 
-			return Ok(new IdReference(product.Id));
+			return Ok(new IdReference<ulong>(product.Id));
 		}
 	}
 

@@ -69,7 +69,7 @@ public class ProductImageController : ControllerBase {
 			db.ProductImages.Add(prodImage);
 			await db.SaveChangesAsync();
 
-			return Ok(new IdReference(prodImage.Id));
+			return Ok(new IdReference<ulong>(prodImage.Id));
 		}
 	}
 

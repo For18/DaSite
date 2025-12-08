@@ -81,7 +81,7 @@ public class SaleController : ControllerBase {
 			db.Sales.Add(sale);
 			await db.SaveChangesAsync();
 
-			return Ok(new IdReference(sale.Id));
+			return Ok(new IdReference<ulong>(sale.Id));
 		}
 	}
 

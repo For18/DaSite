@@ -81,7 +81,7 @@ public class UserController : ControllerBase {
 			db.Users.Add(user);
 			await db.SaveChangesAsync();
 
-			return Ok(new IdReference(user.Id));
+			return Ok(new IdReference<string>(user.Id));
 		}
 	}
 

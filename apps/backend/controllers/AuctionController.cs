@@ -97,7 +97,7 @@ public class AuctionController : ControllerBase {
 			db.Auctions.Add(auction);
 			await db.SaveChangesAsync();
 
-			return Ok(new IdReference(auction.Id));
+			return Ok(new IdReference<ulong>(auction.Id));
 		}
 	}
 
