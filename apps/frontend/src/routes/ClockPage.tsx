@@ -49,7 +49,7 @@ export default function ClockPage() {
 
 	const doShift = () => {
 		if (!items || items.length < 0) return;
-    items.shift()
+		items.shift();
 	};
 
 	useEffect(() => {
