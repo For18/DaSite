@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 [DisplayName(nameof(Sale))]
 public class SaleExternal {
-	public SaleExternal(ulong id, ulong purchaserId, ulong purchasedAuctionId, uint amount, uint price, bool isPaid) {
+	public SaleExternal(ulong id, string purchaserId, ulong purchasedAuctionId, uint amount, uint price, bool isPaid) {
 		Id = id;
 		PurchaserId = purchaserId;
 		PurchasedAuctionId = purchasedAuctionId;
@@ -31,7 +31,7 @@ public class SaleExternal {
 		};
 	}
 	public ulong Id { get; set; }
-	public ulong PurchaserId { get; set; }
+	public string PurchaserId { get; set; }
 	public ulong PurchasedAuctionId { get; set; }
 	public uint Amount { get; set; }
 	public uint Price { get; set; }

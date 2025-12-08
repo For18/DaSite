@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 
 public class PublicUser {
-	public required ulong Id { get; set; }
+	public required string Id { get; set; }
 
 	[StringLength(32)]
 	public required string? UserName { get; set; }
@@ -87,7 +87,9 @@ public class UserController : ControllerBase {
 
 	[HttpDelete("{id}")]
 	[Authorize]
-	public async Task<ActionResult> Delete(ulong id) {
+	public async Task<ActionResult> Delete(string id) {
+		if (!(User.FindFirstValue(ClaimTypes.NameIdentifier) == id || User.IsInRole("Admin"))) return Forbid();
+
 		using (var db = new DatabaseContext()) {
 			User? user = await db.Users.FindAsync(id);
 			if (user == null) return NotFound();

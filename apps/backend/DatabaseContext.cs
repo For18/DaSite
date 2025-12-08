@@ -1,10 +1,10 @@
 using System;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-public class DatabaseContext : DbContext {
+public class DatabaseContext : IdentityDbContext<User> {
 	public DbSet<Product> Products { get; set; }
 	public DbSet<ProductImage> ProductImages { get; set; }
-	public DbSet<User> Users { get; set; }
 	public DbSet<Auction> Auctions { get; set; }
 	public DbSet<Sale> Sales { get; set; }
 

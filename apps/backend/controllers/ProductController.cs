@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 [DisplayName(nameof(Product))]
 public class ProductExternal {
-	public ProductExternal(ulong id, string name, string? description, ulong? thumbnailImageId, ulong ownerId) {
+	public ProductExternal(ulong id, string name, string? description, ulong? thumbnailImageId, string ownerId) {
 		Id = id;
 		Name = name;
 		Description = description;
@@ -32,7 +32,7 @@ public class ProductExternal {
 	public string Name { get; init; }
 	public string? Description { get; init; }
 	public ulong? ThumbnailImageId { get; init; }
-	public ulong OwnerId { get; init; }
+	public string OwnerId { get; init; }
 }
 
 [ApiController]
@@ -56,7 +56,7 @@ public class ProductController : ControllerBase {
 		}
 	}
 	[HttpGet("/products/user/{userId}")]
-	public async Task<ActionResult<ProductExternal[]>> GetOfUser(ulong userId) {
+	public async Task<ActionResult<ProductExternal[]>> GetOfUser(string userId) {
 		using (var db = new DatabaseContext()) {
 			return await db.Products
 				.Include(product => product.Owner)
