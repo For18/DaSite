@@ -45,7 +45,7 @@ export interface User {
 	userName?: string;
 	avatarImageUrl?: string;
 	email?: string;
-	telephonenumber: number;
+	telephonenumber?: string;
 }
 
 export function useAPI<T>(route: string | null): T | null | undefined {

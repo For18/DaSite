@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 
 public class PublicUser {
 	[StringLength(32)]
@@ -14,7 +15,7 @@ public class PublicUser {
 	[StringLength(254)]
 	public required string? Email { get; set; }
 
-	public required ulong TelephoneNumber { get; set; }
+	public required string? TelephoneNumber { get; set; }
 }
 
 [ApiController]
@@ -31,7 +32,7 @@ public class UserController : ControllerBase {
 				UserName = user.UserName,
 				ImageUrl = user.AvatarImageUrl,
 				Email = user.Email,
-				TelephoneNumber = user.TelephoneNumber
+				TelephoneNumber = user.PhoneNumber
 			};
 		}
 	}
@@ -63,7 +64,7 @@ public class UserController : ControllerBase {
 				UserName = user.UserName,
 				ImageUrl = user.AvatarImageUrl,
 				Email = user.Email,
-				TelephoneNumber = user.TelephoneNumber
+				TelephoneNumber = user.PhoneNumber
 			}).ToArrayAsync();
 		}
 	}
@@ -81,6 +82,7 @@ public class UserController : ControllerBase {
 	}
 
 	[HttpDelete("{id}")]
+	[Authorize]
 	public async Task<ActionResult> Delete(ulong id) {
 		using (var db = new DatabaseContext()) {
 			User? user = await db.Users.FindAsync(id);
