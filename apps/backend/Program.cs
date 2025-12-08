@@ -37,9 +37,11 @@ builder.Services.AddAuthentication(x =>
 		ValidateIssuerSigningKey = true,
 		ValidIssuer = config["JwtSettings:Issuer"],
 		ValidAudience = config["JwtSettings:Audience"],
-		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"]))
+		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"]!))
 	};
 });
+
+builder.services.AddAuthorization();
 
 string apiVersionString = "v1";
 
