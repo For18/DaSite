@@ -10,7 +10,7 @@ DELETE FROM Users;
 -- Using manual id assignment so auto increment does not get involved
 
 -- USERS
-INSERT INTO Users(Id, UserName, AuctionDebt, AvatarImageUrl, Email, EmailConfirmed, TelephoneNumber, PhoneNumberConfirmed, TwoFactorEnabled, LockOutEnabled, AccessFailedCount)
+INSERT INTO Users(Id, UserName, AuctionDebt, AvatarImageUrl, Email, EmailConfirmed, PhoneNumber, PhoneNumberConfirmed, TwoFactorEnabled, LockOutEnabled, AccessFailedCount)
 VALUES
 (1, 'Robbert Young', 0, 'https://i.redd.it/g28z3ezfxqm51.jpg', 'HS@maestro.flora.nl', 1, 987654374, 1, 1, 2, 0),
 (2, 'Hán Zhì', 0, 'https://imgur.com/a/XazVj4C', 'HZ@admin.flora.nl', 1, 876556789, 1, 1, 1, 0),
