@@ -3,6 +3,7 @@ import styles from "./Login.module.scss";
 import { useRef } from 'react';
 import Input from "../components/Input";
 import Button from "../components/Button";
+import Typography from '../components/Typography';
 
 export default function Login() {
     const emailRef = useRef<HTMLInputElement>(null);
@@ -32,9 +33,26 @@ export default function Login() {
 
     return (
         <>
-            <Input type="email" placeholder="email" ref={emailRef}/>
-            <Input type="password" placeholder="password" ref={passwordRef}/>
-            <Button onClick={handleSubmit} variant="text" color="brand" disabled={false}>Submit</Button>
+            <div className={styles.container}>
+                <Typography heading={1}>Login</Typography>
+                <div className={styles.emailContainer}>
+                    <Input type="email" placeholder="email" ref={emailRef}/>
+                </div>
+                <div className={styles.passwordContainer}>
+                    <Input type="password" placeholder="password" ref={passwordRef}/>
+                </div>
+                <div className={styles.buttonContainer}>
+                    <Button onClick={handleSubmit}>Login</Button>
+                </div>
+                <div className={styles.forgotPassword}>
+                    <Typography href=''>Forgot password?</Typography>
+                </div>
+                <div className={styles.noAccount}>
+                    <Typography>Don't have an account yet?</Typography> 
+                    <Typography href='localhost/register'>Register here</Typography>
+                </div>
+            </div>
+
         </>
     );
 }
