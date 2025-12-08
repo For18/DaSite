@@ -45,14 +45,13 @@ export default function Login() {
                     <Button onClick={handleSubmit}>Login</Button>
                 </div>
                 <div className={styles.forgotPassword}>
-                    <Typography href=''>Forgot password?</Typography>
+                    <Typography href='../forgotpassword'>Forgot password?</Typography>
                 </div>
                 <div className={styles.noAccount}>
                     <Typography>Don't have an account yet?</Typography> 
-                    <Typography href='localhost/register'>Register here</Typography>
+                    <Typography href='../register'>Register here</Typography>
                 </div>
             </div>
-
         </>
     );
 }
