@@ -1,18 +1,15 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState, useRef } from "react";
 import Accordion from "../components/Accordion";
 import Button from "../components/Button";
 import Image from "../components/Image";
 import Input from "../components/Input";
+import { Select, Option } from "../components/Select";
 import Typography from "../components/Typography";
 import { API_URL, Product, ProductImage, User } from "../lib/api";
 import styles from "./CreateProductPage.module.scss";
 
-async function PostProduct(name: string, description: string, ownerName: string, images: string[]) {
+async function PostProduct(name: string, description: string, images: string[], owner: User | null) {
 	// TODO: replace owner with ownerId and add dropdown menu to select correct user
-	const userRes = await fetch(API_URL + "/users/by-name/" + ownerName);
-	const userList = await userRes.json() as User[];
-	const owner = userList && userList.length > 0 ? userList[0] : null;
-	if (!owner) return;
 
 	const productRes = await fetch(API_URL + "/product", {
 		method: "POST",
@@ -20,7 +17,7 @@ async function PostProduct(name: string, description: string, ownerName: string,
 		body: JSON.stringify({
 			name: name,
 			description: description,
-			ownerId: owner.id,
+			ownerId: owner?.id,
 			thumbnailImageId: null
 		})
 	});
@@ -72,7 +69,18 @@ export default function CreateProductPage() {
 	const [name, setName] = useState<string>("product");
 	const [description, setDescription] = useState<string>("");
 	const [batchSize, setBatchSize] = useState<number>(0);
-	const [owner, setOwner] = useState<string>("");
+
+  const [ownerSearchValue, setOwnerSearchValue] = useState<string>("");
+  const foundUsersIndexRef = useRef<number>(0);
+	const [owner, setOwner] = useState<User | null>(null);
+  const [foundUsers, setFoundUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    fetch(API_URL + "/users/by-name/" + ownerSearchValue)
+    .then(response => response.json())
+    .then(data => data as User[])
+    .then(users => setFoundUsers(users))
+  }, [ownerSearchValue]);
 
 	return (
 		<div className={styles.container}>
@@ -82,7 +90,7 @@ export default function CreateProductPage() {
 				batchSize={batchSize}
 				showThumbnail={images.length > 0}
 				images={images}
-				owner={owner}
+				owner={owner?.userName}
 			/>
 
 			<div className={styles.seperator}/>
@@ -113,12 +121,22 @@ export default function CreateProductPage() {
 				/>
 
 				<Typography className={styles.inputTitle}>Owner</Typography>
-				<Input
-					className={styles.inputBasic}
-					value={owner}
-					type="text"
-					onChange={value => setOwner(String(value))}
-				/>
+        <div>
+				  <Input
+				  	className={styles.inputBasic}
+            placeholder="Search for Users"
+				  	value={ownerSearchValue}
+				  	type="text"
+				  	onChange={value => setOwnerSearchValue(value)}
+				  />
+          <Select 
+            value={owner?.userName.length == 0 ? null : owner?.userName ?? null} 
+            onChange={(value: string) => {
+              foundUsersIndexRef.current = Number(value); setOwner(foundUsers[foundUsersIndexRef.current])}}
+            placeholder="Select a User">
+            {foundUsers.map(entry => <Option key={entry.id} value={String(entry.id)}> {entry.userName} </Option>)}
+          </Select>
+        </div>
 
 				<Typography className={styles.inputTitle}>Image Link</Typography>
 				<Input
@@ -153,14 +171,14 @@ export default function CreateProductPage() {
 					<Button
 						variant="contained"
 						onClick={() => {
-							PostProduct(name, description, owner, images);
+							PostProduct(name, description, images, owner);
 							setImages([]);
 							setAccordionState(false);
 							setLinkText("");
 							setName("");
 							setDescription("");
 							setBatchSize(0);
-							setOwner("");
+							setOwner(null);
 							alert("i did it");
 						}}
 					>
