@@ -71,7 +71,7 @@ public class UserController : ControllerBase {
 	[HttpGet("/users/by-name/{name}")]
 	public async Task<ActionResult<User[]>> GetAllByName(string name) {
 		using (var db = new DatabaseContext()) {
-			return await db.Users.Where(user => user.UserName == name).ToArrayAsync();
+			return await db.Users.Where(user => EF.Functions.Like(user.UserName.ToLower(), $"%{name}%")).ToArrayAsync();
 		}
 	}
 
