@@ -1,14 +1,11 @@
 import type { CSSProperties } from "react";
-import Button from "./Button";
 import styles from "./Clock.module.scss";
 import Typography from "./Typography";
 
 const currencyType = "100 cent";
 
-// TODO: add onBuy callback
 export default function Clock(
-	{ progress, price, fmtedTime, count, setWasAuctionEndedByUser }: { progress: number, price: string,
-		fmtedTime: string, count: number, setWasAuctionEndedByUser: (value: boolean) => void }
+	{ progress, price, fmtedTime, count }: { progress: number, price: string, fmtedTime: string, count: number }
 ) {
 	return (
 		<div className={styles.container}>
@@ -37,18 +34,6 @@ export default function Clock(
 			<Typography className={styles.timer}>
 				{fmtedTime}
 			</Typography>
-
-			{/* TODO: make seperate pop up?? */}
-			<Button
-				variant="outlined"
-				disabled={progress < 0 || progress > 1}
-				onClick={() => {
-					setWasAuctionEndedByUser(true);
-					alert(`Auction bought for € ${price}`);
-				}}
-			>
-				BUY
-			</Button>
 		</div>
 	);
 }

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect } from "react";
 import Typography from "../components/Typography";
 import styles from "./Home.module.scss";
 

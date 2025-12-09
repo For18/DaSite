@@ -7,7 +7,7 @@ export default function BeforeAuction({ startingPoint }: { startingPoint?: strin
 			{startingPoint ?
 				(
 					<Typography heading={2}>
-						Auction starting in: {startingPoint}
+						Next item in: {startingPoint}
 					</Typography>
 				) :
 				null}

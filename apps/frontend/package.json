@@ -11,6 +11,7 @@
 	},
 	"devDependencies": {
 		"@types/react": "^19.1.13",
+		"autoprefixer": "^10.4.22",
 		"sass-embedded": "^1.93.3"
 	}
 }

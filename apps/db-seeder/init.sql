@@ -1,8 +1,10 @@
 DELETE FROM Sales;
-DELETE FROM Auctions;
+DELETE FROM AuctionEntries;
 
 UPDATE Products SET ThumbnailImageId=NULL;
 
+DELETE FROM Auctions;
+DELETE FROM AuctionItems;
 DELETE FROM ProductImages;
 DELETE FROM Products;
 DELETE FROM Users;
@@ -101,21 +103,75 @@ UPDATE Products SET ThumbnailImageId=24 WHERE Id=7;
 UPDATE Products SET ThumbnailImageId=28 WHERE Id=8;
 UPDATE Products SET ThumbnailImageId=32 WHERE Id=9;
 
--- AUCTIONS
-INSERT INTO Auctions(Id, Count, BatchSize, StartingPrice, MinimumPrice, StartingTime, Length, ProductId, PlannerId)
-VALUES
-(1, 10, 2 , 5000, 1000, NULL, NULL, 1, 1),
-(2, 8 , 3 , 7000, 1500, NULL, NULL, 2, 1),
-(3, 12, 6 , 3000, 800 , NULL, NULL, 3, 1),
-(4, 6 , 7 , 4000, 1000, NULL, NULL, 4, 1),
-(5, 10, 9 , 3500, 1000, NULL, NULL, 5, 1),
-(6, 15, 20, 2500, 600 , NULL, NULL, 6, 1),
-(7, 20, 2 , 1500, 500 , NULL, NULL, 7, 1),
-(8, 18, 9 , 2000, 700 , NULL, NULL, 8, 1),
-(9, 25, 10, 1200, 400 , NULL, NULL, 9, 1),
 
--- Auctions with specific starting time and length
-(10, 10, 1, 5500, 1200, 10, 10, 1, 1),
-(11, 5 , 1, 9000, 2500, 10, 5, 2, 1),
-(12, 15, 1, 4000, 1000, 10, 10, 3, 1),
-(13, 10, 1, 3000, 900 , 10, 15, 4, 1);
+-- AUCTIONS
+INSERT INTO Auctions(Id, PlannerId, StartingTime)
+VALUES
+(1, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
+(2, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
+(3, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
+(4, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
+(5, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
+(6, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
+(7, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
+(8, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
+(9, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
+(10, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
+(11, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
+(12, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
+(13, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000);
+
+-- AUCTION_ITEMS
+INSERT INTO AuctionItems(Id, Count, BatchSize, StartingPrice, MinimumPrice, Length, ProductId)
+VALUES
+(1, 1, 2 , 5000, 1000, 10, 1),
+(2, 2, 3 , 7000, 1500, 5 , 2),
+(3, 3, 6 , 3000, 800 , 10, 3),
+(4, 4, 7 , 4000, 1000, 15, 4),
+(5, 5, 9 , 3500, 1000, 9 , 5),
+(6, 6, 20, 2500, 600 , 10, 6),
+(7, 7, 2 , 1500, 500 , 7 , 7),
+(8, 8, 9 , 2000, 700 , 10, 8),
+(9, 9, 10, 1200, 400 , 6 , 9);
+
+-- AUCTION_ENTRIES
+INSERT INTO AuctionEntries (AuctionId, AuctionItemId)
+VALUES
+-- Auction 1
+(1, 1), (1, 2), (1, 3),
+
+-- Auction 2
+(2, 4), (2, 5), (2, 6),
+
+-- Auction 3
+(3, 7), (3, 8), (3, 9),
+
+-- Auction 4
+(4, 1), (4, 4), (4, 7), (4, 9),
+
+-- Auction 5
+(5, 2), (5, 5), (5, 8), (5, 3),
+
+-- Auction 6
+(6, 1), (6, 3), (6, 5), (6, 7), (6, 9),
+
+-- Auction 7
+(7, 2), (7, 4), (7, 6), (7, 8), (7, 1),
+
+-- Auction 8
+(8, 3), (8, 4), (8, 5), (8, 6), (8, 7), (8, 8),
+
+-- Auction 9
+(9, 1), (9, 2), (9, 3), (9, 6), (9, 8), (9, 9),
+
+-- Auction 10
+(10, 4), (10, 5), (10, 6),
+
+-- Auction 11
+(11, 1), (11, 3), (11, 7), (11, 9),
+
+-- Auction 12
+(12, 2), (12, 4), (12, 6), (12, 8), (12, 9),
+
+-- Auction 13
+(13, 1), (13, 2), (13, 3), (13, 4), (13, 5), (13, 6);

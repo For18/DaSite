@@ -4,46 +4,33 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
+using System;
 
 [DisplayName(nameof(Auction))]
 public class AuctionExternal {
-	public AuctionExternal(ulong id, ushort count, uint batchSize, uint startPrice, uint minPrice, ulong? startTime, uint? length, ulong productId, ulong? plannerId) {
+	/* For annotation reasoning:
+	 * https://stackoverflow.com/questions/76909169/required-keyword-causes-error-even-if-member-initialized-in-constructor
+	 */
+	[System.Diagnostics.CodeAnalysis.SetsRequiredMembersAttribute]
+	public AuctionExternal(ulong id, ulong startingTime, ulong? plannerId) {
 		Id = id;
-		Count = count;
-		BatchSize = batchSize;
-		StartingPrice = startPrice;
-		MinimumPrice = minPrice;
-		StartingTime = startTime;
-		Length = length;
-		ProductId = productId;
+		StartingTime = startingTime;
 		PlannerId = plannerId;
 	}
 
 	public static AuctionExternal ToExternal(Auction auction) {
-		return new AuctionExternal(auction.Id, auction.Count, auction.BatchSize, auction.StartingPrice, auction.MinimumPrice, auction.StartingTime, auction.Length, auction.Product.Id, auction.Planner?.Id);
+		return new AuctionExternal(auction.Id, auction.StartingTime, auction.Planner?.Id);
 	}
 
 	public Auction ToAuction(DatabaseContext db) {
 		return new Auction {
 			Id = Id,
-			Count = Count,
-			BatchSize = BatchSize,
-			StartingPrice = StartingPrice,
-			MinimumPrice = MinimumPrice,
 			StartingTime = StartingTime,
-			Length = Length,
-			Product = db.Products.Where(p => p.Id == ProductId).First(),
 			Planner = db.Users.Where(u => u.Id == PlannerId).FirstOrDefault()
 		};
 	}
-	public ulong Id { get; init; }
-	public ushort Count { get; init; }
-	public uint BatchSize { get; init; }
-	public uint StartingPrice { get; init; }
-	public uint MinimumPrice { get; init; }
-	public ulong? StartingTime { get; init; }
-	public uint? Length { get; init; }
-	public ulong ProductId { get; init; }
+	public required ulong Id { get; init; }
+	public required ulong StartingTime { get; init; }
 	public ulong? PlannerId { get; init; }
 }
 
@@ -55,7 +42,7 @@ public class AuctionController : ControllerBase {
 		using var db = new DatabaseContext();
 		{
 
-			Auction? auction = await db.Auctions.Include(auc => auc.Planner).Include(auc => auc.Product).Where(auc => auc.Id == id).FirstOrDefaultAsync();
+			Auction? auction = await db.Auctions.Include(auc => auc.Planner).Where(auc => auc.Id == id).FirstOrDefaultAsync();
 			if (auction == null) return NotFound();
 
 			return AuctionExternal.ToExternal(auction);
@@ -67,25 +54,22 @@ public class AuctionController : ControllerBase {
 		using (var db = new DatabaseContext()) {
 			return await db.Auctions
 				.Include(auc => auc.Planner)
-				.Include(auc => auc.Product)
-				.Where(auc => auc.StartingTime != null && auc.Length != null)
 				.Select(auction => AuctionExternal.ToExternal(auction))
 			.ToArrayAsync();
 		}
 	}
 
-	[HttpGet("/auctions/pending")]
-	public async Task<ActionResult<AuctionExternal[]>> GetPending() {
+	[HttpGet("/auctions/upcoming")]
+	public async Task<ActionResult<AuctionExternal[]>> GetUpcoming() {
+		ulong unixTimeMillis = (ulong)DateTimeOffset.Now.ToUnixTimeMilliseconds();
 		using (var db = new DatabaseContext()) {
 			return await db.Auctions
 				.Include(auc => auc.Planner)
-				.Include(auc => auc.Product)
-				.Where(auc => auc.StartingTime == null || auc.Length == null)
+				.Where(auc => auc.StartingTime > unixTimeMillis)
 				.Select(auction => AuctionExternal.ToExternal(auction))
 			.ToArrayAsync();
 		}
 	}
-
 
 	[HttpPost]
 	public async Task<ActionResult> Post(AuctionExternal auctionData) {

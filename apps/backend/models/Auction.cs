@@ -1,14 +1,17 @@
+using System;
+using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-public class Auction {
+public class AuctionItem {
 	[Key]
 	[Required]
 	public required ulong Id { get; set; }
 
 	[Required]
 	public required ushort Count { get; set; }
+
 	[Required]
 	public required uint BatchSize { get; set; }
 
@@ -18,20 +21,34 @@ public class Auction {
 	[Required]
 	public required uint MinimumPrice { get; set; }
 
-	public ulong? StartingTime { get; set; }
-
-	public uint? Length { get; set; }
-
 	[Required]
 	[ForeignKey("ProductId")]
-	[DeleteBehavior(DeleteBehavior.Cascade)]
-	public virtual required Product Product { get; set; }
+	public required Product Product { get; set; }
+
+	[Required]
+	public required uint Length { get; set; }
+}
+
+// TODO: add restrict element thingy so planned in products cannot get deleted
+public class AuctionEntry {
+	[Required]
+	[ForeignKey("AuctionId")]
+	public required Auction Auction { get; set; }
+
+	[Required]
+	[ForeignKey("AuctionItemId")]
+	public required AuctionItem AuctionItem { get; set; }
+}
+
+public class Auction {
+	[Key]
+	[Required]
+	public required ulong Id { get; set; }
 
 	[ForeignKey("PlannerId")]
-	[DeleteBehavior(DeleteBehavior.NoAction)]
 	public virtual User? Planner { get; set; }
 
-	public bool IsPending() {
-		return StartingTime == null || Length == null;
-	}
+	[Required]
+	public required ulong StartingTime { get; set; }
+
 }

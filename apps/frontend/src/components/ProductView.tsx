@@ -1,19 +1,21 @@
 import Throbber from "../components/Throbber";
-import { Product } from "../lib/api";
 import { type ProductImage, useAPI, type User } from "../lib/api";
+import { AuctionItem, Product } from "../lib/api";
 import NotFound from "../routes/NotFound";
 import Image from "./Image";
 import styles from "./ProductView.module.scss";
 import Typography from "./Typography";
 
-export default function ProductView(
-	{ product, showThumbnail = true, batchSize }: { product: Product, showThumbnail?: boolean, batchSize?: number }
-) {
-	const owner = useAPI<User>("/user/" + product.ownerId) ?? null;
-	const prodImages = useAPI<ProductImage[]>("/product-image/from/" + product.id);
+export default function ProductView({ auctionItem }: { auctionItem: AuctionItem }) {
+	const product = useAPI<Product>("/product/" + auctionItem.productId);
+	const owner = useAPI<User>(product?.id ? "/private-user/" + product.ownerId : null);
+	const prodImages = useAPI<ProductImage[]>(product?.id ? "/product-image/from/" + product.id : null);
 	// const thumbnailImage = useAPI<ProductImage>(
 	// 	product && showThumbnail ? "/product-image/from/" + product.thumbnailImageId : null
 	// );
+
+	if (product === null) return <Throbber/>;
+	if (product === undefined) return <NotFound/>;
 
 	if (owner === null) return <Throbber/>;
 	if (owner === undefined) return <NotFound/>;
@@ -40,16 +42,11 @@ export default function ProductView(
 				</Typography>
 			</div>
 
-			{batchSize == null ?
-				null :
-				(
-					<div>
-						<>
-							<hr className={styles.horizontalRule}/>
-							<Typography>Batch size: {batchSize}</Typography>
-						</>
-					</div>
-				)}
+			<div>
+				<hr className={styles.horizontalRule}/>
+				<Typography>Item count: {auctionItem.count}</Typography>
+				<Typography>Batch size: {auctionItem.batchSize}</Typography>
+			</div>
 
 			<hr className={styles.horizontalRule}/>
 
@@ -57,7 +54,7 @@ export default function ProductView(
 				<Typography>{product.description}</Typography>
 			</div>
 
-			{prodImages[0].url && showThumbnail ?
+			{prodImages && prodImages.length > 0 ?
 				(
 					<>
 						<hr className={styles.horizontalRule}/>
@@ -71,17 +68,19 @@ export default function ProductView(
 				null}
 
 			<div className={styles.extraImageContainer}>
-				{prodImages.map(prodImage => prodImage.url).map((url, index) => (
-					<div key={url}>
-						<a href={url}>
-							<Image
-								className={styles.extraImage}
-								src={url}
-								alt={`Product Image ${index + 1}`}
-							/>
-						</a>
-					</div>
-				))}
+				{Array.isArray(prodImages) ?
+					prodImages.map(prodImage => prodImage.url).map((url, index) => (
+						<div key={url}>
+							<a href={url}>
+								<Image
+									className={styles.extraImage}
+									src={url}
+									alt={`Product Image ${index + 1}`}
+								/>
+							</a>
+						</div>
+					)) :
+					null}
 			</div>
 		</div>
 	);
