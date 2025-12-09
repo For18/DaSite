@@ -25,14 +25,16 @@ export default function PendingAuction() {
 			<Section>
 				<div className={styles["card-container"]} style={{
 					display: auctions != null && auctions.length > 0 ? "grid" : "flex",
-					gridTemplateColumns: screenWidth > 1000 ? "1fr 1fr" : "1fr",
+					gridTemplateColumns: screenWidth > 1000 ? "1fr 1fr" : "1fr"
 				}}>
 					{auctions == null ?
 						<Throbber/> :
 						auctions.length == 0 ?
 						(
 							<div className={styles["no-pending-auctions"]}>
-								<Typography className={styles["no-pending-auctions-text"]}>No pending auctions</Typography>
+								<Typography className={styles["no-pending-auctions-text"]}>
+									No pending auctions
+								</Typography>
 							</div>
 						) :
 						auctions.map(auction => <PendingAuctionCard auction={auction} key={auction.id}/>)}
