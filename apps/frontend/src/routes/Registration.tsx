@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from "./Registration.module.scss";
+import styles from "./AuthForm.module.scss";
 import { useState, useEffect } from 'react';
 import Input from "../components/Input";
 import Button from "../components/Button";

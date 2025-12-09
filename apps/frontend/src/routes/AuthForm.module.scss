@@ -24,6 +24,10 @@
     border-radius: var(--border-radius);
 }
 
+.heading {
+    padding-block: 5vh;
+}
+
 .email-container, .password-container {
     display: flex;
     flex-direction: column;
@@ -45,6 +49,15 @@
 }
 
 .no-account {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2vh;
+    padding-bottom: 3vh;
+}
+
+.have-account {
     margin-top: 15px;
     display: flex;
     flex-direction: column;
