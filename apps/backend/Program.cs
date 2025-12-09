@@ -33,6 +33,7 @@ builder.Services.AddDbContext<DatabaseContext>();
 
 builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<User>()
+	.AddRoles<IdentityRole>()
 	.AddEntityFrameworkStores<DatabaseContext>();
 
 var app = builder.Build();
