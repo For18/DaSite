@@ -9,8 +9,8 @@ public static class Roles
 	{
 		string[] roles = ["Customer", "AuctionMaster", "Admin"];
 
-		await Task.WhenAll(roles.Select(role => Task.Run(async () => {
+		foreach (var role in roles) {
 			if (!await roleManager.RoleExistsAsync(role)) await roleManager.CreateAsync(new IdentityRole(role));
-		})).ToArray());
+		}
 	}
 }
