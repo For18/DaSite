@@ -1,13 +1,13 @@
 import React from 'react';
 import styles from "./Login.module.scss";
-import { useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Input from "../components/Input";
 import Button from "../components/Button";
 import Typography from '../components/Typography';
 
 export default function Login() {
-    const emailRef = useRef<HTMLInputElement>(null);
-    const passwordRef = useRef<HTMLInputElement>(null);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
     const login = async (email: string, password: string) => {
         const res = await fetch('/api/v1/identity/login', {
@@ -21,9 +21,6 @@ export default function Login() {
     }
 
     function handleSubmit () {
-        const email = emailRef.current?.value || "";
-        const password = passwordRef.current?.value || "";
-
         login(email, password).catch(err => {
             console.error(err);
             console.log(email, password);
@@ -43,10 +40,10 @@ export default function Login() {
                         <Typography heading={1}>Login</Typography>
                     </div>
                     <div className={styles.emailContainer}>
-                        <Input type="email" placeholder="email" ref={emailRef}/>
+                        <Input type="email" placeholder="email" value={email} onChange={setEmail}/>
                     </div>
                     <div className={styles.passwordContainer}>
-                        <Input type="password" placeholder="password" ref={passwordRef}/>
+                        <Input type="password" placeholder="password" value={password} onChange={setPassword}/>
                     </div>
                     <div className={styles.buttonContainer}>
                         <Button onClick={handleSubmit}>Login</Button>
