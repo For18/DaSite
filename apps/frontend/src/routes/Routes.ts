@@ -7,6 +7,7 @@ const PendingAuction = lazy(() => import("./PendingAuction"));
 const Profile = lazy(() => import("./Profile"));
 const Test = lazy(() => import("./Test"));
 const Login = lazy(() => import("./Login"));
+const Registration = lazy(() => import("./Registration"));
 
 export default {
 	"/": Home,
@@ -15,5 +16,6 @@ export default {
 	"/auctions/pending": PendingAuction,
 	"/profile/:userId": Profile,
 	"/test": Test,
-	"/login": Login
+	"/login": Login,
+	"/register": Registration
 } as { [path: string]: LazyExoticComponent<() => JSX.Element> };
