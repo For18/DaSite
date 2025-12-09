@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from "./Login.module.scss";
+import styles from "./Registration.module.scss";
 import { useState, useEffect } from 'react';
 import Input from "../components/Input";
 import Button from "../components/Button";
@@ -51,7 +51,7 @@ export default function Registration() {
                         <Input type="password" placeholder="password" value={password} onChange={setPassword}/>
                     </div>
                     <div className={styles.buttonContainer}>
-                        <Button onClick={handleSubmit}>Login</Button>
+                        <Button onClick={handleSubmit}>Register</Button>
                     </div>
                     <div className={styles.haveAccount}>
                         <Typography href='../login'>Already have an account?</Typography>
