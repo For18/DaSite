@@ -40,12 +40,24 @@ export interface Auction {
 }
 
 export interface User {
-	id: number;
-	auctionDebt: number;
-	userName?: string;
-	avatarImageUrl?: string;
-	email?: string;
-	telephonenumber: number;
+  id: number;
+  userName: string;
+  normalizedUserName: string;
+  email: string;
+  normalizedEmail: string;
+  emailConfirmed: boolean;
+  passwordHash: string;
+  securityStamp: string;
+  concurrencyStamp: string;
+  phoneNumber: string;
+  phoneNumberConfirmed: boolean;
+  twoFactorEnabled: boolean;
+  lockoutEnd: string;
+  lockoutEnabled: boolean;
+  accessFailedCount: number;
+  auctionDebt: number;
+  avatarImageUrl: string;
+  telephoneNumber: number;
 }
 
 interface UseAPIOptions {
