@@ -33,6 +33,7 @@
     flex-direction: column;
     margin-bottom: 20px;
     width: 20vw;
+    min-width: 100px;
 }
 
 .button-container {
@@ -48,17 +49,8 @@
     justify-content: center;
 }
 
-.no-account {
-    margin-top: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2vh;
-    padding-bottom: 3vh;
-}
-
-.have-account {
-    margin-top: 15px;
+.have-account, .no-account {
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
