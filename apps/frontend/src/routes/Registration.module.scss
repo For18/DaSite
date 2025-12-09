@@ -24,6 +24,10 @@
     border-radius: var(--border-radius);
 }
 
+.heading {
+    padding-block: 5vh;
+}
+
 .email-container, .password-container {
     display: flex;
     flex-direction: column;
