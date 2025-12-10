@@ -17,20 +17,27 @@ export default function Registration() {
             body: JSON.stringify({email, password})
         });
 
-        if (!res.ok) {
-            const error = await res.text();
-            throw new Error(error || "Registration failed");
-        }
+        const text = await res.text();
+        let data;
 
-        console.log("Registration successful");
-        return res.json();  
+        try {
+            data = JSON.parse(text);
+        } catch {
+            data = text;
+        }
+        
+        return {works: res.ok, httpStatus: res.status, data}  
     }
 
-    function handleSubmit () {
-        register(email, password).catch(err => {
-            console.error(err);
-            console.log(email, password);
-        });
+    async function handleSubmit () {
+        const { works, httpStatus, data } = await register(email, password);
+
+        if (!works) {
+            console.error("Registration failed: ", httpStatus, data);
+            return;
+        }
+        
+        console.log("Registration successful: ", httpStatus, data);
     }
 
     useEffect(() => {
