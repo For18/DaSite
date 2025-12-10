@@ -4,13 +4,14 @@ import { useState, useEffect } from 'react';
 import Input from "../components/Input";
 import Button from "../components/Button";
 import Typography from '../components/Typography';
+import { API_URL } from '../lib/api';
 
 export default function Registration() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const register = async (email: string, password: string) => {
-        const res = await fetch('/api/v1/identity/register', {
+        const res = await fetch(API_URL + '/identity/register', {
             method: "POST",
             credentials: "include",
             headers: {"Content-Type": "application/json"},
@@ -33,11 +34,11 @@ export default function Registration() {
         const { works, httpStatus, data } = await register(email, password);
 
         if (!works) {
-            console.error("Registration failed: ", httpStatus, data);
+            console.error("Registration failed:", httpStatus, data);
             return;
         }
         
-        console.log("Registration successful: ", httpStatus, data);
+        console.log("Registration successful:", httpStatus, data);
     }
 
     useEffect(() => {
