@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("DatabaseContextConnection") ?? throw new InvalidOperationException("Connection string 'DatabaseContextConnection' not found.");;
 
 Task<DatabaseContext> dbTask = new DatabaseConnector(
 	Convert.ToInt32(Environment.GetEnvironmentVariable("DB_RETRY_DELAY")),
