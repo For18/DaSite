@@ -1,0 +1,67 @@
+$height: 0.7em;
+
+.container {
+	margin: calc(var(--spacing));
+	width: 100%;
+	height: fit-content;
+	position: relative;
+
+	.bar {
+		width: 100%;
+		height: $height;
+		border-radius: $height;
+		background-color: #88888822;
+		overflow: hidden;
+
+		.fill {
+			height: 100%;
+			width: calc(var(--fill) * (100% - $height) + $height / 2);
+			position: relative;
+			top: 0;
+			left: 0;
+			background-color: var(--color-brand);
+			clip-path: inherit;
+		}
+	}
+	.handle {
+		$handlesize: calc($height * 1.6);
+		aspect-ratio: 1/1;
+		height: $handlesize;
+		border-radius: 50%;
+		background-color: var(--color-brand);
+		position: absolute;
+		top: 50%;
+		left: calc($height / 2 + var(--position) * (100% - $height));
+		transform: translate(-50%, -50%);
+		cursor: grab;
+
+		.fill {
+			aspect-ratio: 1/1;
+			height: 60%;
+			transition: height 0.08s ease-in-out;
+			background-color: var(--color-background-secondary);
+			border-radius: 50%;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		&.dragging {
+			cursor: grabbing;
+
+			.fill {
+				height: 0%;
+			}
+		}
+	}
+	.rect {
+		opacity: 0;
+		height: $height;
+		width: calc(100% - $height);
+		position: absolute;
+		top: 0;
+		left: calc($height / 2);
+		z-index: -1000;
+	}
+}
