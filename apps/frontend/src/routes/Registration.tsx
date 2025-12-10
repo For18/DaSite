@@ -22,6 +22,7 @@ export default function Registration() {
             throw new Error(error || "Registration failed");
         }
 
+        console.log("Registration successful");
         return res.json();  
     }
 
@@ -40,21 +41,11 @@ export default function Registration() {
         <>
             <div className={styles.imageBackground}>
                 <div className={styles.container}>
-                    <div className={styles.heading}>
-                        <Typography heading={1}>Register</Typography>
-                    </div>
-                    <div className={styles.emailContainer}>
-                        <Input type="email" placeholder="email" value={email} onChange={setEmail}/>
-                    </div>
-                    <div className={styles.passwordContainer}>
-                        <Input type="password" placeholder="password" value={password} onChange={setPassword}/>
-                    </div>
-                    <div className={styles.buttonContainer}>
-                        <Button onClick={handleSubmit}>Register</Button>
-                    </div>
-                    <div className={styles.haveAccount}>
-                        <Typography href='../login'>Already have an account?</Typography>
-                    </div>
+                    <Typography heading={1}>Register</Typography>
+                    <Input type="email" placeholder="email" value={email} onChange={setEmail}/>
+                    <Input type="password" placeholder="password" value={password} onChange={setPassword}/>
+                    <Button onClick={handleSubmit}>Register</Button>
+                    <Typography href='/login'>Already have an account?</Typography>
                 </div>
             </div>
         </>

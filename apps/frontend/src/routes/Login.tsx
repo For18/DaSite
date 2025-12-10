@@ -35,24 +35,12 @@ export default function Login() {
         <>
             <div className={styles.imageBackground}>
                 <div className={styles.container}>
-                    <div className={styles.heading}>
-                        <Typography heading={1}>Login</Typography>
-                    </div>
-                    <div className={styles.emailContainer}>
-                        <Input type="email" placeholder="email" value={email} onChange={setEmail}/>
-                    </div>
-                    <div className={styles.passwordContainer}>
-                        <Input type="password" placeholder="password" value={password} onChange={setPassword}/>
-                    </div>
-                    <div className={styles.buttonContainer}>
-                        <Button onClick={handleSubmit}>Login</Button>
-                    </div>
-                    <div className={styles.forgotPassword}>
-                        <Typography href='../forgotpassword'>Forgot password?</Typography>
-                    </div>
-                    <div className={styles.noAccount}>
-                        <Typography href='../register'>Don't have an account yet?</Typography>
-                    </div>
+                    <Typography heading={1}>Login</Typography>
+                    <Input type="email" placeholder="email" value={email} onChange={setEmail}/>
+                    <Input type="password" placeholder="password" value={password} onChange={setPassword}/>
+                    <Button onClick={handleSubmit}>Login</Button>
+                    <Typography href='../forgotpassword'>Forgot password?</Typography>
+                    <Typography href='../register'>Don't have an account yet?</Typography>
                 </div>
             </div>
         </>
