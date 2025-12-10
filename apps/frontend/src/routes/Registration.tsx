@@ -7,8 +7,8 @@ import Typography from '../components/Typography';
 import { API_URL } from '../lib/api';
 
 export default function Registration() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
 
     const register = async (email: string, password: string) => {
         const res = await fetch(API_URL + '/identity/register', {
