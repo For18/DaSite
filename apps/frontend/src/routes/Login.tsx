@@ -10,6 +10,7 @@ import { API_URL } from '../lib/api';
 export default function Login() {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const navigate = useNavigate();
 
     const login = async (email: string, password: string) => {
         const res = await fetch(API_URL + '/identity/login', {
@@ -33,7 +34,6 @@ export default function Login() {
 
     async function handleSubmit () {
         const { works, httpStatus, data } = await login(email, password);
-        const navigate = useNavigate();
 
         if (!works) {
             console.error("Registration failed:", httpStatus, data);
