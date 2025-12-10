@@ -6,23 +6,29 @@ import Typography from "../components/Typography";
 import { API_URL, AuctionItem, useAPI } from "../lib/api";
 import styles from "./CreateAuction.module.scss";
 
+const pad = (n: number) => (n < 10 ? `0${n}` : String(n));
+
+function getDefaultDate() {
+    const now = new Date();
+    return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+}
+
+function getDefaultTime() {
+    const now = new Date();
+    return `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+}
+
 export default function CreateAuctions() {
-    const committedAuctionName = useRef<string>("");
     const [productsSelected, setProductsSelected] = useState<string[]>([]);
     const [count, setCount] = useState(1);
     const [batchSize, setBatchSize] = useState(1);
     const [startingPrice, setStartingPrice] = useState(0);
     const [minimumPrice, setMinimumPrice] = useState(0);
     const [durationSeconds, setDurationSeconds] = useState(120);
-    // starting date/time states (date: YYYY-MM-DD, time: HH:mm)
-    const now = new Date();
-    const pad = (n: number) => (n < 10 ? `0${n}` : String(n));
-    const defaultDate = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
-    const defaultTime = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
-    const startingDateRef = useRef<string>(defaultDate);
-    const startingTimeRef = useRef<string>(defaultTime);
+    const startingDateRef = useRef<string>(getDefaultDate());
+    const startingTimeRef = useRef<string>(getDefaultTime());
 
-    const auctionItems = useAPI<AuctionItem[]>("/auction-item");
+    const auctionItems = useAPI<AuctionItem[]>("/auction-item/all");
     const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
     async function submitAuction() {
@@ -88,7 +94,7 @@ export default function CreateAuctions() {
                     });
 
                     await Promise.all(promises);
-                    setStatusMessage(prev => (prev ? prev + "\n" : "") + "Created auction entries.");
+                    setStatusMessage("Created auction entries.");
                 } catch (err) {
                     setStatusMessage(String(err));
                 }
