@@ -73,6 +73,33 @@ public class ProductImageController : ControllerBase {
 		}
 	}
 
+  [HttpPost]
+  public async Task<ActionResult> BatchPost([FromBody] ProductImageExternal[] images) {
+    using (var db = new DatabaseContext()) {
+      ulong[] imageIds = images.Select(image => image.Id).ToArray();
+      ProductImageExternal[] existingImages = await db.ProductImages.Where(image => imageIds.Contains(image.Id)).Select(image => ProductImageExternal.ToExternal(image)).ToArrayAsync();
+
+      ProductImageExternal[] newImages = images.Where(image => !existingImages.Contains(image)).ToArray();
+      ulong[] newImageIds = images.Select(image => image.Id).ToArray();
+      Product[] parents = await db.Products.Where(product => newImageIds.Contains(product.Id)).ToArrayAsync();
+
+      foreach(ProductImageExternal image in newImages) {
+        Product parent = parents.Where(prod => prod.Id == image.Parent).First();
+        if (parent == null) continue; /* TODO: Handle this case */
+        ProductImage prodImage = new ProductImage {
+          Id = image.Id,
+          Parent = parent,
+          Url = image.Url
+        };
+        db.ProductImages.Add(prodImage);
+      }
+
+      await db.SaveChangesAsync();
+
+      return Ok(newImageIds.Select(id => new IdReference(id)).ToArray());
+    }
+  }
+
 	[HttpDelete("{id}")]
 	public async Task<ActionResult> Delete(ulong id) {
 		using (var db = new DatabaseContext()) {
