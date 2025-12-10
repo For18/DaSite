@@ -34,7 +34,7 @@ async function PostProduct(name: string, description: string, images: string[], 
     })
     .then(response => response.json())
     .then(data => data as ProductImage[])
-    .then(images => images);
+    .then(images => images.map(image => image.id));
 
     if (imageIds.length >= 1) {
       await fetch(API_URL + "/product/" + productId, {
