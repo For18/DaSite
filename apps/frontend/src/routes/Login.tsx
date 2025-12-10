@@ -24,7 +24,6 @@ export default function Login() {
         login(email, password).catch(err => {
             console.error(err);
             console.log(email, password);
-            alert("Login failed");
         });
     }
 

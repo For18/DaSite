@@ -29,7 +29,6 @@ export default function Registration() {
         register(email, password).catch(err => {
             console.error(err);
             console.log(email, password);
-            alert("Registration failed");
         });
     }
 
