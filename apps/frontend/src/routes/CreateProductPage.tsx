@@ -8,8 +8,9 @@ import Typography from "../components/Typography";
 import { API_URL, ProductImage, User } from "../lib/api";
 import styles from "./CreateProductPage.module.scss";
 
+// TODO: add visual status for user
 async function PostProduct(name: string, description: string, images: string[], owner: User | null) {
-    const productId = await fetch(API_URL + "/product", {
+    const productId: number = await fetch(API_URL + "/product", {
 		            method: "POST",
 		            headers: { "Content-Type": "application/json" },
 		            body: JSON.stringify({
@@ -28,7 +29,7 @@ async function PostProduct(name: string, description: string, images: string[], 
       body: JSON.stringify(images.map(url => JSON.stringify({parent: productId, url: url})))
     })
 
-    const imageIds = await fetch(API_URL + "/product/from/" + productId, {
+    const imageIds: number[] = await fetch(API_URL + "/product/from/" + productId, {
 		  method: "GET",
 		  headers: { "Content-Type": "application/json" },
     })
