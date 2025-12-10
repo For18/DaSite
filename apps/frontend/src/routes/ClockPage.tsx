@@ -72,7 +72,7 @@ export default function ClockPage() {
 	const elapsedTime = currentItemStartTime != null ? currentTime - currentItemStartTime : 0;
 	const progress = auctionedItemLenMillis ? elapsedTime / auctionedItemLenMillis : 0;
 
-  const isAuctionOver = items?.length === 0 && items[0] === null;
+	const isAuctionOver = items?.length === 0 && items[0] === null;
 
 	/* Temp moving of starting time
    * TODO: remove after testing
@@ -97,7 +97,6 @@ export default function ClockPage() {
 		currentItem?.count && (currentItem.count -= count);
 		if (currentItem && currentItem.count <= 0) doShift();
 	};
-
 
 	if (items === null) return <Throbber/>;
 	if (items === undefined) return <NotFound/>;
