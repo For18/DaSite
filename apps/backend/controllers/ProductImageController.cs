@@ -73,7 +73,7 @@ public class ProductImageController : ControllerBase {
 		}
 	}
 
-  [HttpPost]
+  [HttpPost("batch")]
   public async Task<ActionResult> BatchPost([FromBody] ProductImageExternal[] images) {
     using (var db = new DatabaseContext()) {
       FailedBatchEntry<ProductImageExternal>[] failedPosts = [];
