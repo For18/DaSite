@@ -56,8 +56,8 @@ export default function Login() {
                     <Input type="email" placeholder="email" value={email} onChange={setEmail}/>
                     <Input type="password" placeholder="password" value={password} onChange={setPassword}/>
                     <Button onClick={handleSubmit}>Login</Button>
-                    <Typography href='../forgotpassword'>Forgot password?</Typography>
-                    <Typography href='../register'>Don't have an account yet?</Typography>
+                    <Typography href='/forgotpassword'>Forgot password?</Typography>
+                    <Typography href='/register'>Don't have an account yet?</Typography>
                 </div>
             </div>
         </>
