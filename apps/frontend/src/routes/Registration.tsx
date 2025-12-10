@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router';
 import styles from "./AuthForm.module.scss";
 import { useState, useEffect } from 'react';
 import Input from "../components/Input";
@@ -27,11 +28,12 @@ export default function Registration() {
             data = text;
         }
         
-        return {works: res.ok, httpStatus: res.status, data}  
+        return {works: res.ok, httpStatus: res.status, data}
     }
 
     async function handleSubmit () {
         const { works, httpStatus, data } = await register(email, password);
+        const navigate = useNavigate();
 
         if (!works) {
             console.error("Registration failed:", httpStatus, data);
@@ -39,6 +41,7 @@ export default function Registration() {
         }
         
         console.log("Registration successful:", httpStatus, data);
+        navigate('/login');
     }
 
     useEffect(() => {
