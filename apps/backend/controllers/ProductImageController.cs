@@ -116,7 +116,7 @@ public class ProductImageController : ControllerBase {
 
       return Ok( new {
           AddedImages = newImageIds.Select(id => new IdReference(id)).ToArray(),
-          FailedImaged = failedPosts.Select(entry => entry).ToArray()
+          FailedImaged = failedPosts
       });
     }
   }
