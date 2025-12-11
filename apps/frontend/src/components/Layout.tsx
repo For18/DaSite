@@ -1,6 +1,5 @@
 import { PropsWithChildren } from "react";
 import { useLocation } from "react-router";
-import PendingAuction from "../routes/PendingAuction";
 import Footer from "./Footer";
 import styles from "./Layout.module.scss";
 import TopBar from "./TopBar";
@@ -18,7 +17,8 @@ export default function Layout({ children }: PropsWithChildren) {
 					Home: "/",
 					Auctions: "/auctions",
 					PendingAuction: "/auctions/pending",
-					Profile: "/profile/1"
+					Profile: "/profile/1",
+					CreateAuction: "/auctions/create"
 				}}
 			/>
 			<article className={isHomepage ? styles.homepageArticle : styles.article}>

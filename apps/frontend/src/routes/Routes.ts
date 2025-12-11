@@ -6,6 +6,7 @@ const Auctions = lazy(() => import("./Auctions"));
 const PendingAuction = lazy(() => import("./PendingAuction"));
 const Profile = lazy(() => import("./Profile"));
 const Test = lazy(() => import("./Test"));
+const CreateAuction = lazy(() => import("./CreateAuction"));
 
 export default {
 	"/": Home,
@@ -13,5 +14,6 @@ export default {
 	"/auctions": Auctions,
 	"/auctions/pending": PendingAuction,
 	"/profile/:userId": Profile,
+  "/auctions/create": CreateAuction,
 	"/test": Test
 } as { [path: string]: LazyExoticComponent<() => JSX.Element> };
