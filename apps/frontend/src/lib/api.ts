@@ -69,32 +69,14 @@ export interface User {
   telephoneNumber: number;
 }
 
-interface UseAPIOptions {
-	method?: "GET" | "POST" | "PATCH" | "DELETE";
-	body?: {} | Array<any>;
-	headers?: Record<string, string>;
-}
+export function useAPI<T>(route: string | null): T | null | undefined {
+	const { isLoading, value, error } = usePromise<T>(
+		() => route !== null ? fetch(API_URL + route).then(response => response.json()) : null,
+		[route]
+	);
 
-export function useAPI<T>(route: string | null, options: UseAPIOptions = {}): T | null | undefined {
-	const { method = "GET", body, headers } = options;
-	const [value, setValue] = useState<T | null | undefined>(null);
-
-	useEffect(() => {
-		setValue(null);
-		if (route === null) return;
-		fetch(API_URL + route, {
-			method,
-			headers: {
-				"Content-Type": "application/json",
-				...headers
-			},
-			body: body ? JSON.stringify(body) : undefined
-		})
-			.then(response => {
-				if (response.status == 404) return undefined;
-				return response.json();
-			}).then(setValue);
-	}, [route]);
+	if (isLoading) return null;
+	if (error) return undefined;
 
 	return value;
 }
