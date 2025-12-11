@@ -154,7 +154,6 @@ export default function CreateProductPage() {
 					))}
 				</Accordion>
 
-				{/* TODO: add `confirm` button and add product to Db */}
 				<div>
 					<Button
 						variant="contained"
