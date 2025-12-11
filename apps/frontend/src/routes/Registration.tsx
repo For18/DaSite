@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router';
 import styles from "./AuthForm.module.scss";
 import { useState, useEffect } from 'react';
@@ -13,7 +12,7 @@ export default function Registration() {
     const navigate = useNavigate();
 
     const register = async (email: string, password: string) => {
-        const res = await fetch(API_URL + '/identity/register?useCookies=true', {
+        const res = await fetch(API_URL + '/identity/register', {
             method: "POST",
             credentials: "include",
             headers: {"Content-Type": "application/json"},

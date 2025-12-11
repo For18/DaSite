@@ -1,4 +1,3 @@
-import React, { use } from 'react';
 import { useNavigate } from 'react-router';
 import styles from "./AuthForm.module.scss";
 import { useState, useEffect } from 'react';
