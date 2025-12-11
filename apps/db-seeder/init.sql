@@ -14,27 +14,27 @@ DELETE FROM AspNetUsers;
 -- USERS
 INSERT INTO AspNetUsers(Id, UserName, AuctionDebt, AvatarImageUrl, Email, EmailConfirmed, TelephoneNumber, PhoneNumberConfirmed, TwoFactorEnabled, LockOutEnabled, AccessFailedCount)
 VALUES
-(1, 'Robbert Young', 0, 'https://i.redd.it/g28z3ezfxqm51.jpg', 'HS@maestro.flora.nl', 1, 987654374, 1, 1, 2, 0),
-(2, 'Hán Zhì', 0, 'https://imgur.com/a/XazVj4C', 'HZ@admin.flora.nl', 1, 876556789, 1, 1, 1, 0),
-(3, 'Maria de Vries', 0, 'https://media.licdn.com/dms/image/v2/D5603AQFVPGrisNSyuQ/profile-displayphoto-shrink_200_200/B56ZWa8r1_GQAY-/0/1742061355032?e=2147483647&v=beta&t=Cw8eo8Snvn8nphEkLqW2kRHMHVM6OKKSyM3akYe81ks', 'Maria.deVries@live.nl', 1, 8798000, 1, 1, 1, 0),
-(4, 'Joris van den Berg', 0, 'https://www.hevo.nl/application/files/cache/thumbnails/hevo-joris-van-den-berg-0a83fb5ddae97038540dbc5d1966978a.jpg', 'Joris.vanBerg@live.nl', 1, 345678, 1, 1, 1, 0),
-(5, 'Casper van de Molen', 500, 'https://i.pinimg.com/originals/59/af/9c/59af9cd100daf9aa154cc753dd58316d.jpg', 'Casper.Molen@gmail.com', 1, 9876587, 1, 1, 1, 0),
-(6, 'Thijmen Weening', 22450, 'https://media.licdn.com/dms/image/D4E22AQFIp_NIUQ1TNw/feedshare-shrink_800/0/1689671627197?e=2147483647&v=beta&t=LeRJwHti1AGLuNVboxNY7RN82QNZXbNSINIswOsRtkg', 'Thijmen.ween.2001@live.nl', 1, 8678675654, 1, 1, 1, 0),
-(7, 'Hans Anders', 88760, 'https://media.licdn.com/dms/image/D4E03AQEr-eBEB30FvQ/profile-displayphoto-shrink_800_800/0/1697558265625?e=2147483647&v=beta&t=lGipnIlcV5JEh1AEwNdzY0Vc11hw_Be8Po7ALIcV4VM', 'Hans@hotmail.com', 1, 876548, 1, 1, 1, 0);
+('c2afc4ca-0c53-4f0f-8edf-89bb991640f2', 'Robbert Young', 0, 'https://i.redd.it/g28z3ezfxqm51.jpg', 'HS@maestro.flora.nl', 1, 987654374, 1, 1, 2, 0),
+('ce971fe1-727a-486a-88dd-117b8fd6592b', 'Hán Zhì', 0, 'https://imgur.com/a/XazVj4C', 'HZ@admin.flora.nl', 1, 876556789, 1, 1, 1, 0),
+('6ec13e7a-55fe-4091-93bb-f08d776b3572', 'Maria de Vries', 0, 'https://media.licdn.com/dms/image/v2/D5603AQFVPGrisNSyuQ/profile-displayphoto-shrink_200_200/B56ZWa8r1_GQAY-/0/1742061355032?e=2147483647&v=beta&t=Cw8eo8Snvn8nphEkLqW2kRHMHVM6OKKSyM3akYe81ks', 'Maria.deVries@live.nl', 1, 8798000, 1, 1, 1, 0),
+('f63baa9d-f109-4fe1-a5a8-8c5ab0bc0a1a', 'Joris van den Berg', 0, 'https://www.hevo.nl/application/files/cache/thumbnails/hevo-joris-van-den-berg-0a83fb5ddae97038540dbc5d1966978a.jpg', 'Joris.vanBerg@live.nl', 1, 345678, 1, 1, 1, 0),
+('05a3f581-8b97-4f74-852b-f8dfe3dd1961', 'Casper van de Molen', 500, 'https://i.pinimg.com/originals/59/af/9c/59af9cd100daf9aa154cc753dd58316d.jpg', 'Casper.Molen@gmail.com', 1, 9876587, 1, 1, 1, 0),
+('a3ef4c50-9a82-4922-aada-b32c3e594248', 'Thijmen Weening', 22450, 'https://media.licdn.com/dms/image/D4E22AQFIp_NIUQ1TNw/feedshare-shrink_800/0/1689671627197?e=2147483647&v=beta&t=LeRJwHti1AGLuNVboxNY7RN82QNZXbNSINIswOsRtkg', 'Thijmen.ween.2001@live.nl', 1, 8678675654, 1, 1, 1, 0),
+('8fd5b74f-34d1-4028-b2e4-8be2f081c69b', 'Hans Anders', 88760, 'https://media.licdn.com/dms/image/D4E03AQEr-eBEB30FvQ/profile-displayphoto-shrink_800_800/0/1697558265625?e=2147483647&v=beta&t=lGipnIlcV5JEh1AEwNdzY0Vc11hw_Be8Po7ALIcV4VM', 'Hans@hotmail.com', 1, 876548, 1, 1, 1, 0);
 
 
 -- PRODUCTS
 INSERT INTO Products(Id, Name, Description, ThumbnailImageId, OwnerId)
 VALUES
-(1, 'Tulpenboeket', 'Een kleurrijk boeket met verschillende soorten Nederlandse tulpen, ideaal voor elke gelegenheid en perfect voor een lente-uitstraling.', NULL, 3),
-(2, 'Orchideeen Arrangement', 'Een prachtig arrangement van exotische orchideeen, met een delicate geur, gepresenteerd in een handgemaakte vaas. Een luxe keuze voor elke ruimte.', NULL, 3),
-(3, 'Narcissen Bijeenkomst', 'Vers geplukte narcissen in een bundel, die een frisse geur en een voorjaarsgevoel naar uw huis brengen. Perfect voor in een vaas of als cadeau.', NULL, 3),
-(4, 'Zonnebloem Display', 'Een stralende display van zonnebloemen die elke kamer verlicht met hun heldere gele bloemblaadjes. Een symbool van vreugde en positiviteit.', NULL, 4),
-(5, 'Hyacinten Cluster', 'Een geurige en kleurrijke cluster van hyacinten, typisch voor de Nederlandse lente, in een breed scala van kleuren, perfect voor een geurige aanvulling in uw huis.', NULL, 4),
-(6, 'Leliebouquet', 'Een elegant boeket van witte en gekleurde lelies met een verfijnde geur, die elke ruimte een luxe uitstraling geven. Ideaal voor speciale gelegenheden.', NULL, 4),
-(7, 'Krokus Collectie', 'Een unieke verzameling van vroege krokussen, die in het voorjaar de eerste bloemen zijn die bloeien', NULL, 4),
-(8, 'Tulpenbollen Set', 'Een set premium tulpenbollen, zorgvuldig geselecteerd voor het kweken van de mooiste tulpen in uw tuin volgend seizoen. De bollen zijn van topkwaliteit en leveren levendige bloemen.', NULL, 4),
-(9, 'Gerbera Daisy Arrangement', 'Een vrolijk en kleurrijk boeket van gerbera’s in diverse tinten zoals rood, geel en roze. Perfect voor het opfleuren van elke kamer of als cadeau voor een speciale gelegenheid.', NULL, 3);
+(1, 'Tulpenboeket', 'Een kleurrijk boeket met verschillende soorten Nederlandse tulpen, ideaal voor elke gelegenheid en perfect voor een lente-uitstraling.', NULL, '6ec13e7a-55fe-4091-93bb-f08d776b3572'),
+(2, 'Orchideeen Arrangement', 'Een prachtig arrangement van exotische orchideeen, met een delicate geur, gepresenteerd in een handgemaakte vaas. Een luxe keuze voor elke ruimte.', NULL, '6ec13e7a-55fe-4091-93bb-f08d776b3572'),
+(3, 'Narcissen Bijeenkomst', 'Vers geplukte narcissen in een bundel, die een frisse geur en een voorjaarsgevoel naar uw huis brengen. Perfect voor in een vaas of als cadeau.', NULL, '6ec13e7a-55fe-4091-93bb-f08d776b3572'),
+(4, 'Zonnebloem Display', 'Een stralende display van zonnebloemen die elke kamer verlicht met hun heldere gele bloemblaadjes. Een symbool van vreugde en positiviteit.', NULL, 'f63baa9d-f109-4fe1-a5a8-8c5ab0bc0a1a'),
+(5, 'Hyacinten Cluster', 'Een geurige en kleurrijke cluster van hyacinten, typisch voor de Nederlandse lente, in een breed scala van kleuren, perfect voor een geurige aanvulling in uw huis.', NULL, 'f63baa9d-f109-4fe1-a5a8-8c5ab0bc0a1a'),
+(6, 'Leliebouquet', 'Een elegant boeket van witte en gekleurde lelies met een verfijnde geur, die elke ruimte een luxe uitstraling geven. Ideaal voor speciale gelegenheden.', NULL, 'f63baa9d-f109-4fe1-a5a8-8c5ab0bc0a1a'),
+(7, 'Krokus Collectie', 'Een unieke verzameling van vroege krokussen, die in het voorjaar de eerste bloemen zijn die bloeien', NULL, 'f63baa9d-f109-4fe1-a5a8-8c5ab0bc0a1a'),
+(8, 'Tulpenbollen Set', 'Een set premium tulpenbollen, zorgvuldig geselecteerd voor het kweken van de mooiste tulpen in uw tuin volgend seizoen. De bollen zijn van topkwaliteit en leveren levendige bloemen.', NULL, 'f63baa9d-f109-4fe1-a5a8-8c5ab0bc0a1a'),
+(9, 'Gerbera Daisy Arrangement', 'Een vrolijk en kleurrijk boeket van gerbera’s in diverse tinten zoals rood, geel en roze. Perfect voor het opfleuren van elke kamer of als cadeau voor een speciale gelegenheid.', NULL, '6ec13e7a-55fe-4091-93bb-f08d776b3572');
 
 -- PRODUCT_IMAGES
 INSERT INTO ProductImages(Id, ParentId, Url)
@@ -107,19 +107,19 @@ UPDATE Products SET ThumbnailImageId=32 WHERE Id=9;
 -- AUCTIONS
 INSERT INTO Auctions(Id, PlannerId, StartingTime)
 VALUES
-(1, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
-(2, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
-(3, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
-(4, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
-(5, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
-(6, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
-(7, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
-(8, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
-(9, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
-(10, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
-(11, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
-(12, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
-(13, 1, UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000);
+(1, 'c2afc4ca-0c53-4f0f-8edf-89bb991640f2', UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
+(2, 'c2afc4ca-0c53-4f0f-8edf-89bb991640f2', UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
+(3, 'c2afc4ca-0c53-4f0f-8edf-89bb991640f2', UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
+(4, 'c2afc4ca-0c53-4f0f-8edf-89bb991640f2', UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
+(5, 'c2afc4ca-0c53-4f0f-8edf-89bb991640f2', UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
+(6, 'c2afc4ca-0c53-4f0f-8edf-89bb991640f2', UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
+(7, 'c2afc4ca-0c53-4f0f-8edf-89bb991640f2', UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
+(8, 'c2afc4ca-0c53-4f0f-8edf-89bb991640f2', UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
+(9, 'c2afc4ca-0c53-4f0f-8edf-89bb991640f2', UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
+(10, 'c2afc4ca-0c53-4f0f-8edf-89bb991640f2', UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
+(11, 'c2afc4ca-0c53-4f0f-8edf-89bb991640f2', UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
+(12, 'c2afc4ca-0c53-4f0f-8edf-89bb991640f2', UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000),
+(13, 'c2afc4ca-0c53-4f0f-8edf-89bb991640f2', UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000);
 
 -- AUCTION_ITEMS
 INSERT INTO AuctionItems(Id, Count, BatchSize, StartingPrice, MinimumPrice, Length, ProductId)
