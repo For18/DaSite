@@ -1,0 +1,11 @@
+.container {
+	width: fit-content;
+	height: min-content;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+
+	.label {
+		margin-left: 0;
+	}
+}

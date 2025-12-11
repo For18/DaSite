@@ -32,41 +32,47 @@ function formatStartCountDown(startingTime: number, currentTime: number) {
 	return (remainingTime / 1000).toFixed(2);
 }
 
-/* TODO: contemplate if timed out auctions should be added to the back of the auctionItems stack being sold */
+const BUFFER_LEN = 5000;
+
+/* TODO: contemplate if timed out auctions should be added to the back of the items stack being sold */
 export default function ClockPage() {
 	/* Main state holders */
-	const bufferLen = 5000;
 	const { auctionId } = useParams();
-	const auctionItems = useAPI<AuctionItem[]>("/auction-item/get-by-auction/" + auctionId);
 	const auction = useAPI<Auction>("/auction/" + auctionId);
+	const [items, setItems] = useState<AuctionItem[] | null>(null);
 
-	const [currentItemIndex, setCurrentItemIndex] = useState<number>(0);
-	const [isAuctionOver, setIsAuctionOver] = useState<boolean>(false);
-	const currentItemCountRef = useRef<number>(0);
+	const currentItem = items ? items[0] : null;
+
 	const buyCountRef = useRef<number>(0);
 
-	const currentItem = useMemo<AuctionItem | null>(() => {
-		if (!auctionItems) return null;
-		if (auctionItems.length === 0 || currentItemIndex >= auctionItems.length) {
-			setIsAuctionOver(true);
-			return null;
-		}
+	const doShift = () => {
+		if (!items || items.length < 0) return;
+		items.shift();
+	};
 
-		currentItemCountRef.current = auctionItems[currentItemIndex].count;
-		return auctionItems[currentItemIndex];
-	}, [currentItemIndex, auctionItems]);
+	useEffect(() => {
+		if (!auctionId) return;
+		fetch(API_URL + "/auction-item/get-by-auction/" + auctionId)
+			.then(response => response.json())
+			.then(data => data as AuctionItem[])
+			.then(items => {
+				setItems(items);
+			});
+	}, [auctionId]);
 
 	const currentItemStartTime = useMemo<number | null>(() => {
-		return Date.now() + bufferLen;
-	}, [currentItemIndex, auctionItems]);
+		return Date.now() + BUFFER_LEN;
+	}, [currentItem, items]);
 
 	const currentTime = useTime();
 
-	const auctionedItemLenMillis = auctionItems && auctionItems[currentItemIndex] ?
-		auctionItems[currentItemIndex].length * 1000 :
+	const auctionedItemLenMillis = currentItem && currentItem.length ?
+		currentItem.length * 1000 :
 		null;
 	const elapsedTime = currentItemStartTime != null ? currentTime - currentItemStartTime : 0;
 	const progress = auctionedItemLenMillis ? elapsedTime / auctionedItemLenMillis : 0;
+
+	const isAuctionOver = items?.length === 0 && items[0] === null;
 
 	/* Temp moving of starting time
    * TODO: remove after testing
@@ -76,27 +82,28 @@ export default function ClockPage() {
 		fetch(API_URL + "/auction/" + auction?.id, {
 			method: "PATCH",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify([{ op: "replace", path: "/startingTime", value: Math.round(Date.now() + bufferLen) }])
+			body: JSON.stringify([{ op: "replace", path: "/startingTime", value: Math.round(Date.now() + BUFFER_LEN) }])
 		}).then(() => console.log("patched"));
 	}, [auction]);
 
 	useEffect(() => {
 		if (progress >= 1) {
-			setCurrentItemIndex(i => i + 1);
+			doShift();
 		}
 	}, [progress]);
 
-	/* TODO: set buffer between auctions swaps so ppl actually have time to see the product */
+	/* TODO: add entry to 'sale' db table if onPurchase is called */
 	const onPurchase = (count: number) => {
-		currentItemCountRef.current -= count;
-		if (currentItemCountRef.current <= 0) setCurrentItemIndex(i => i + 1);
+		currentItem?.count && (currentItem.count -= count);
+		if (currentItem && currentItem.count <= 0) doShift();
 	};
 
-	if (auctionItems === null) return <Throbber/>;
-	if (auctionItems === undefined) return <NotFound/>;
+	if (items === null) return <Throbber/>;
+	if (items === undefined) return <NotFound/>;
 
 	if (isAuctionOver) return <EndedAuction id={Number(auctionId) ?? 0}/>;
-	if (currentItem === null) return <NotFound/>;
+	if (currentItem === null) return <Throbber/>;
+	if (currentItem === undefined) return <NotFound/>;
 
 	if (auction === undefined) return <NotFound/>;
 	if (auction === null) return <Throbber/>;
@@ -128,7 +135,7 @@ export default function ClockPage() {
 					(
 						<>
 							<Clock progress={progress} price={currentPrice} fmtedTime={fmtedRemainingTime}
-								count={currentItemCountRef.current ?? 0}/>
+								count={currentItem.count ?? 0}/>
 						</>
 					)}
 				<input

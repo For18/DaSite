@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { DependencyList, useCallback, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router";
 
 const RANDOM_CHARACTER_SET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -28,18 +29,24 @@ export function range(amount: number): number[] {
 	return result;
 }
 
-export function useTime() {
-	const [time, setTime] = useState(Date.now());
+export function useAnimationFrame(callback: (deltaTimeMillis: number) => void) {
 	useEffect(() => {
 		let animationFrameId: number;
-		function update() {
-			setTime(Date.now());
+		function update(deltaTimeMillis: number) {
+			callback(deltaTimeMillis);
 			animationFrameId = requestAnimationFrame(update);
 		}
 		animationFrameId = requestAnimationFrame(update);
 		return () => {
 			cancelAnimationFrame(animationFrameId);
 		};
+	});
+}
+
+export function useTime() {
+	const [time, setTime] = useState(Date.now());
+	useAnimationFrame(() => {
+		setTime(Date.now());
 	});
 	return time;
 }
@@ -97,4 +104,73 @@ export function formatEuros(n: number): string {
 	} else wholeString += ",-";
 
 	return "€" + wholeString;
+}
+
+export function isInternalHref(href: string): boolean {
+	const hrefUrl = URL.parse(href, window.location.href);
+	return window.location.host === hrefUrl?.host;
+}
+
+export function useGoto() {
+	const navigate = useNavigate();
+
+	return useCallback((href: string) => {
+		if (isInternalHref(href)) {
+			navigate(href);
+		} else {
+			window.location.href = href;
+		}
+	}, []);
+}
+
+export interface PromiseHookResponse<T> {
+	isLoading: boolean;
+	value?: T;
+	error?: Error;
+}
+
+export function usePromise<T>(createPromise: () => Promise<T> | null,
+	dependencies: DependencyList): PromiseHookResponse<T> {
+	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [value, setValue] = useState<T>();
+	const [error, setError] = useState<Error>();
+
+	useEffect(() => {
+		setIsLoading(true);
+		setValue(undefined);
+		setError(undefined);
+
+		const promise = createPromise();
+
+		if (promise === null) return;
+
+		promise
+			.then(setValue)
+			.catch(err => {
+				console.warn(err);
+				setError(err);
+			})
+			.finally(() => setIsLoading(false));
+	}, dependencies);
+
+	return {
+		isLoading,
+		value,
+		error
+	};
+}
+
+export function useMousePosition(): [number, number] {
+	const [mousePosition, setMousePosition] = useState<[number, number]>([0, 0]);
+
+	function listener(e: MouseEvent) {
+		setMousePosition([e.clientX, e.clientY]);
+	}
+
+	useEffect(() => {
+		window.addEventListener("mousemove", listener);
+		return () => window.removeEventListener("mousemove", listener);
+	}, []);
+
+	return mousePosition;
 }

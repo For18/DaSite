@@ -3,7 +3,7 @@ import Image from "../components/Image";
 import Section from "../components/Section";
 import Throbber from "../components/Throbber";
 import Typography from "../components/Typography";
-import { Product, useAPI, User } from "../lib/api";
+import { type Product, useAPI, type User } from "../lib/api";
 import NotFound from "./NotFound";
 import styles from "./Profile.module.scss";
 
@@ -26,13 +26,13 @@ export default function Profile() {
 							<div className={styles.profileImage}>
 								<Image
 									height={96}
-									src={user.imageUrl}
-									alt={`${user.displayName}'s avatar`}
+									src={user.avatarImageUrl}
+									alt={`${user.userName ?? `User ${user.id}`}'s avatar`}
 								/>
 							</div>
 
 							<Typography heading={1}>
-								{user.displayName}
+								{user.userName ?? "Unnamed user"}
 							</Typography>
 						</div>
 

@@ -1,4 +1,4 @@
-import { JSX, MouseEventHandler, PropsWithChildren } from "react";
+import type { JSX, MouseEventHandler, PropsWithChildren } from "react";
 import styles from "./Button.module.scss";
 
 export interface ButtonProps extends PropsWithChildren {
@@ -7,10 +7,12 @@ export interface ButtonProps extends PropsWithChildren {
 	disabled?: boolean;
 	color?: "brand" | "success" | "warning" | "error";
 	className?: string;
+	labelledby?: string;
 }
 
 export default function Button(
-	{ onClick, children: content, disabled = false, variant = "text", color = "brand", className = "" }: ButtonProps
+	{ onClick, children: content, disabled = false, variant = "text", color = "brand", className, labelledby }:
+		ButtonProps
 ): JSX.Element {
 	return (
 		<button className={[
@@ -18,10 +20,10 @@ export default function Button(
 			styles[variant],
 			styles[color],
 			className
-		].join(" ")} onClick={e => {
+		].filter(entry => entry !== null).join(" ")} onClick={e => {
 			if (disabled) return;
 			onClick?.(e);
-		}} disabled={disabled}>
+		}} disabled={disabled} aria-labelledby={labelledby}>
 			{content}
 		</button>
 	);

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
+using System;
 
 [DisplayName(nameof(AuctionItem))]
 public class AuctionItemExternal {
@@ -25,7 +26,10 @@ public class AuctionItemExternal {
 		return new AuctionItemExternal(item.Id, item.Count, item.BatchSize, item.StartingPrice, item.MinimumPrice, item.Length, item.Product.Id);
 	}
 
-	public AuctionItem ToAuctionItem(DatabaseContext db) {
+	public AuctionItem? ToAuctionItem(DatabaseContext db) {
+		Product? product = db.Products.Include(prod => prod.ThumbnailImage).Where(prod => prod.Id == ProductId).FirstOrDefault();
+		if (product == null) return null;
+
 		return new AuctionItem {
 			Id = Id,
 			Count = Count,
@@ -33,7 +37,7 @@ public class AuctionItemExternal {
 			StartingPrice = StartingPrice,
 			MinimumPrice = MinimumPrice,
 			Length = Length,
-			Product = db.Products.Include(prod => prod.ThumbnailImage).Where(prod => prod.Id == ProductId).FirstOrDefault()
+			Product = product
 		};
 	}
 
@@ -94,7 +98,8 @@ public class AuctionItemController : ControllerBase {
 		using (var db = new DatabaseContext()) {
 
 			if (await db.AuctionItems.AnyAsync(auc => auc.Id == auctionItemData.Id)) return Conflict("Already exists");
-			AuctionItem item = auctionItemData.ToAuctionItem(db);
+			AuctionItem? item = auctionItemData.ToAuctionItem(db);
+			if (item == null) return NotFound();
 
 			db.AuctionItems.Add(item);
 			await db.SaveChangesAsync();

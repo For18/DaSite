@@ -19,10 +19,15 @@ public class AuctionEntryExternal {
 		return new AuctionEntryExternal(entry.Auction.Id, entry.AuctionItem.Id);
 	}
 
-	public AuctionEntry ToAuctionEntry(DatabaseContext db) {
+	public AuctionEntry? ToAuctionEntry(DatabaseContext db) {
+		Auction? auction = db.Auctions.Include(auc => auc.Planner).Where(auc => auc.Id == AuctionId).FirstOrDefault();
+		AuctionItem? item = db.AuctionItems.Include(item => item.Product).ThenInclude(prod => prod.ThumbnailImage).Where(item => item.Id == ItemId).FirstOrDefault();
+
+		if (auction == null || item == null) return null;
+
 		return new AuctionEntry {
-			Auction = db.Auctions.Include(auc => auc.Planner).Where(auc => auc.Id == AuctionId).FirstOrDefault(),
-			AuctionItem = db.AuctionItems.Include(item => item.Product).ThenInclude(prod => prod.ThumbnailImage).Where(item => item.Id == ItemId).FirstOrDefault()
+			Auction = auction,
+			AuctionItem = item
 		};
 	}
 
@@ -46,6 +51,44 @@ public class AuctionEntryController : ControllerBase {
 			}
 		}
 
+	[HttpGet("from-auction/{auctionId}")]
+	public async Task<ActionResult<AuctionEntryExternal[]>> GetFromAuction(ulong auctionId) {
+		using var db = new DatabaseContext();
+		{
+
+			AuctionEntryExternal[] entries = await db.AuctionEntries
+		.Include(entry => entry.AuctionItem)
+		.ThenInclude(item => item.Product)
+		.ThenInclude(prod => prod.ThumbnailImage)
+		.Include(entry => entry.Auction)
+		.ThenInclude(auc => auc.Planner)
+		.Where(entry => entry.Auction.Id == auctionId)
+		.Select(entry => AuctionEntryExternal.ToExternal(entry))
+		.ToArrayAsync();
+
+			return entries;
+		}
+	}
+
+	[HttpGet("from-item/{itemId}")]
+	public async Task<ActionResult<AuctionEntryExternal[]>> GetFromItem(ulong itemId) {
+		using var db = new DatabaseContext();
+		{
+
+			AuctionEntryExternal[] entries = await db.AuctionEntries
+		.Include(entry => entry.AuctionItem)
+		.ThenInclude(item => item.Product)
+		.ThenInclude(prod => prod.ThumbnailImage)
+		.Include(entry => entry.Auction)
+		.ThenInclude(auc => auc.Planner)
+		.Where(entry => entry.AuctionItem.Id == itemId)
+		.Select(entry => AuctionEntryExternal.ToExternal(entry))
+		.ToArrayAsync();
+
+			return entries;
+		}
+	}
+
 	[HttpPost]
 	public async Task<ActionResult> Post(AuctionEntryExternal auctionEntryData) {
 		using (var db = new DatabaseContext()) {
@@ -56,7 +99,9 @@ public class AuctionEntryController : ControllerBase {
 			  .AnyAsync(entry => entry.Auction.Id == auctionEntryData.AuctionId && entry.AuctionItem.Id == auctionEntryData.ItemId);
 
 			if (isConflicting) return Conflict("Already exists");
-			AuctionEntry entry = auctionEntryData.ToAuctionEntry(db);
+			AuctionEntry? entry = auctionEntryData.ToAuctionEntry(db);
+
+			if (entry == null) return NotFound();
 
 			db.AuctionEntries.Add(entry);
 			await db.SaveChangesAsync();

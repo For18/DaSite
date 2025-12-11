@@ -1,5 +1,5 @@
-import { createContext, JSX, PropsWithChildren, useState } from "react";
-import { Theme } from "./Themes";
+import { createContext, type JSX, type PropsWithChildren, useState } from "react";
+import type { Theme } from "./Themes";
 
 export const SetThemeContext = createContext<(theme: Theme) => void>(() => {});
 export const ThemeContext = createContext<Theme | null>(null);
@@ -28,10 +28,10 @@ export default function ThemeCSSProvider({ children, theme }: {
 			"--border-radius": `${currentTheme.shape.radius}px`,
 			"--spacing": `${currentTheme.shape.spacing}px`,
 
-			"fontSize": `${currentTheme.typography.fontSize}px`,
-			"fontFamily": currentTheme.typography.fonts.join(", ") + ", " + currentTheme.typography.fontType,
+			fontSize: `${currentTheme.typography.fontSize}px`,
+			fontFamily: currentTheme.typography.fonts.join(", ") + ", " + currentTheme.typography.fontType,
 
-			"fontWeight": currentTheme.typography.fontWeight
+			fontWeight: currentTheme.typography.fontWeight
 		} as React.CSSProperties}>
 			<SetThemeContext.Provider value={setCurrentTheme}>
 				<ThemeContext.Provider value={currentTheme}>

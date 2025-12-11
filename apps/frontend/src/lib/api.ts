@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 
-import { useEffect, useState } from "react";
+import { usePromise } from "./util";
 
 export const API_URL: string = import.meta.env.VITE_API_URL;
 
@@ -33,6 +33,11 @@ export interface Auction {
 	startingTime: number;
 }
 
+export interface AuctionEntry {
+	auctionId: number;
+	itemId: number;
+}
+
 export interface AuctionItem {
 	id: number;
 	count: number;
@@ -46,23 +51,20 @@ export interface AuctionItem {
 export interface User {
 	id: number;
 	auctionDebt: number;
-	displayName: string;
-	imageUrl: string;
-	email: string;
+	userName?: string;
+	avatarImageUrl?: string;
+	email?: string;
 	telephonenumber: number;
 }
 
 export function useAPI<T>(route: string | null): T | null | undefined {
-	const [value, setValue] = useState<T | null | undefined>(null);
+	const { isLoading, value, error } = usePromise<T>(
+		() => route !== null ? fetch(API_URL + route).then(response => response.json()) : null,
+		[route]
+	);
 
-	useEffect(() => {
-		setValue(null);
-		if (route === null) return;
-		fetch(API_URL + route).then(response => {
-			if (response.status == 404) return undefined;
-			return response.json();
-		}).then(setValue);
-	}, [route]);
+	if (isLoading) return null;
+	if (error) return undefined;
 
 	return value;
 }

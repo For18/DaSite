@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import { createElement, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router";
 import Layout from "./components/Layout";
 import Throbber from "./components/Throbber";
@@ -6,7 +6,7 @@ import NotFound from "./routes/NotFound";
 
 import routes from "./routes/Routes";
 import { DarkTheme } from "./themes/Dark";
-import ThemeCSSProvider from "./themes/ThemeProvider";
+import ThemeCSSProvider from "./themes/ThemeCSSProvider";
 
 export default function App() {
 	return (
@@ -17,7 +17,7 @@ export default function App() {
 						{Object.entries(routes).map(([path, component]) => (
 							<Route key={path} path={path} element={
 								<Suspense fallback={<Throbber/>}>
-									{React.createElement(component)}
+									{createElement(component)}
 								</Suspense>
 							}/>
 						))}
