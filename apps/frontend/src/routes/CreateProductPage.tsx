@@ -179,8 +179,8 @@ export default function CreateProductPage() {
 }
 
 function AccordionEntry(
-	{ index, imageUrl, name, setImages }: { index: number, imageUrl: string, name: string,
-		setImages: Dispatch<SetStateAction<string[]>> }
+    { index, imageUrl, name, setImages }:
+    { index: number, imageUrl: string, name: string, setImages: Dispatch<SetStateAction<string[]>> }
 ) {
 	return (
 		<div className={styles.card}>
