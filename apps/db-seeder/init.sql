@@ -7,12 +7,12 @@ DELETE FROM Auctions;
 DELETE FROM AuctionItems;
 DELETE FROM ProductImages;
 DELETE FROM Products;
-DELETE FROM Users;
+DELETE FROM AspNetUsers;
 
 -- Using manual id assignment so auto increment does not get involved
 
 -- USERS
-INSERT INTO Users(Id, UserName, AuctionDebt, AvatarImageUrl, Email, EmailConfirmed, TelephoneNumber, PhoneNumberConfirmed, TwoFactorEnabled, LockOutEnabled, AccessFailedCount)
+INSERT INTO AspNetUsers(Id, UserName, AuctionDebt, AvatarImageUrl, Email, EmailConfirmed, TelephoneNumber, PhoneNumberConfirmed, TwoFactorEnabled, LockOutEnabled, AccessFailedCount)
 VALUES
 (1, 'Robbert Young', 0, 'https://i.redd.it/g28z3ezfxqm51.jpg', 'HS@maestro.flora.nl', 1, 987654374, 1, 1, 2, 0),
 (2, 'Hán Zhì', 0, 'https://imgur.com/a/XazVj4C', 'HZ@admin.flora.nl', 1, 876556789, 1, 1, 1, 0),
