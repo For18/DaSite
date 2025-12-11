@@ -17,5 +17,5 @@ export default {
 	"/profile/:userId": Profile,
 	"/create-product": CreateProduct,
 	"/auctions/create": CreateAuction,
-  "/test": Test
+	"/test": Test
 } as { [path: string]: React.LazyExoticComponent<() => JSX.Element> };

@@ -51,7 +51,7 @@ export default function Auctions() {
 					<Throbber/> :
 					auctions === undefined || auctions.length === 0 ?
 					<Typography>No active auctions</Typography> :
-				auctions.map(auction => (
+					auctions.map(auction => (
 						<Section key={auction.id}>
 							{auctionEntriesLoading ? <Throbber/> : auctionEntries
 								?.filter(entry => entry.auctionId === auction.id)
