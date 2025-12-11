@@ -6,7 +6,7 @@ import Throbber from "./Throbber";
 import Typography from "./Typography";
 
 export default function PendingAuctionCard({ auction }: { auction: Auction }) {
-	const item = useAPI<AuctionItem>("/auction-item/get-by-auction/" + auction.id);
+	const item = useAPI<AuctionItem>("/auction-item/by-auction/" + auction.id);
 	const user = useAPI<User>("/user/" + auction.plannerId);
 	const product = useAPI<Product>(item ? "/product/" + item.productId : null);
 	const thumbnailImage = useAPI<ProductImage[]>(product ? "/product-image/from/" + product.id : null);

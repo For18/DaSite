@@ -12,7 +12,7 @@ export default function Profile() {
 	if (!userIdString) return <NotFound/>;
 	const userId = parseInt(userIdString);
 
-	const user = useAPI<User>("/private-user/" + userId);
+	const user = useAPI<User>("/user/private" + userId);
 	const userProducts = useAPI<Product[]>("/products/user/" + userId);
 
 	if (user === undefined) return <NotFound/>;
