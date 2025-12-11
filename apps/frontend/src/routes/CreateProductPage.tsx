@@ -54,7 +54,7 @@ export default function CreateProductPage() {
 	const [images, setImages] = useState<string[]>([]);
 	const [accordionState, setAccordionState] = useState<boolean>(false);
 	const [linkText, setLinkText] = useState<string>("");
-	const [name, setName] = useState<string>("product");
+	const [name, setName] = useState<string>("");
 	const [description, setDescription] = useState<string>("");
 	const [batchSize, setBatchSize] = useState<number>(0);
 
@@ -205,7 +205,7 @@ function ProductPreview(
 	return (
 		<div className={styles.productPreview}>
 			<div>
-				<Typography heading={1}>{name}</Typography>
+				<Typography heading={1}>{name == '' ? "Product Name" : name}</Typography>
 				<Typography className={styles.seller}>
 					Seller: {owner ? owner : "Seller not found"}
 				</Typography>
@@ -225,7 +225,7 @@ function ProductPreview(
 			<hr className={styles.horizontalRule}/>
 
 			<div>
-				<Typography>{description}</Typography>
+				<Typography>{description == '' ? "Description" : description}</Typography>
 			</div>
 
 			{images[0] && showThumbnail ?
