@@ -38,24 +38,18 @@ public class AuctionEntryExternal {
 [ApiController]
 [Route("auction-entry")]
 public class AuctionEntryController : ControllerBase {
-	[HttpGet("{auctionId}/{itemId}")]
-	public async Task<ActionResult<AuctionEntryExternal>> Get(ulong auctionId, ulong itemId) {
-		using var db = new DatabaseContext();
-		{
+	[HttpGet("{auctionId}")]
+		public async Task<ActionResult<AuctionEntryExternal[]>> Get(ulong auctionId) {
+			using var db = new DatabaseContext();
+			{
+				AuctionEntryExternal[] entries = await db.AuctionEntries
+					.Where(entry => entry.Auction.Id == auctionId)
+					.Select(entry => new AuctionEntryExternal(entry.Auction.Id, entry.AuctionItem.Id))
+					.ToArrayAsync();
 
-			AuctionEntry? entry = await db.AuctionEntries
-		.Include(entry => entry.AuctionItem)
-		.ThenInclude(item => item.Product)
-		.ThenInclude(prod => prod.ThumbnailImage)
-		.Include(entry => entry.Auction)
-		.ThenInclude(auc => auc.Planner)
-		.Where(entry => entry.AuctionItem.Id == itemId && entry.Auction.Id == auctionId)
-		.FirstOrDefaultAsync();
-			if (entry == null) return NotFound();
-
-			return AuctionEntryExternal.ToExternal(entry);
+				return entries;
+			}
 		}
-	}
 
 	[HttpGet("from-auction/{auctionId}")]
 	public async Task<ActionResult<AuctionEntryExternal[]>> GetFromAuction(ulong auctionId) {

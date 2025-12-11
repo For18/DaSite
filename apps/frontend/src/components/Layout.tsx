@@ -18,7 +18,8 @@ export default function Layout({ children }: PropsWithChildren) {
 					Home: "/",
 					Auctions: "/auctions",
 					PendingAuction: "/auctions/pending",
-					Profile: "/profile/1"
+					Profile: "/profile/1",
+					CreateAuction: "/auctions/create"
 				}}
 			/>
 			<article className={isHomepage ? styles.homepageArticle : styles.article}>

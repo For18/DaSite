@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, DependencyList } from "react";
+import { DependencyList, useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 
 const RANDOM_CHARACTER_SET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -121,7 +121,6 @@ export function useGoto() {
 			window.location.href = href;
 		}
 	}, []);
-
 }
 
 export interface PromiseHookResponse<T> {
