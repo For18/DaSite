@@ -75,7 +75,10 @@ public class AuctionController : ControllerBase {
 	}
 
 	[HttpGet("/auctions/pending")]
+	[Authorize]
 	public async Task<ActionResult<AuctionExternal[]>> GetPending() {
+		if (!(User.IsInRole("AuctionMaster") || User.IsInRole("Admin"))) return Forbid();
+
 		using (var db = new DatabaseContext()) {
 			return await db.Auctions
 				.Include(auc => auc.Planner)
@@ -88,7 +91,10 @@ public class AuctionController : ControllerBase {
 
 
 	[HttpPost]
+	[Authorize]
 	public async Task<ActionResult> Post(AuctionExternal auctionData) {
+		if (!(User.IsInRole("AuctionMaster") || User.IsInRole("Admin"))) return Forbid();
+
 		using (var db = new DatabaseContext()) {
 
 			if (await db.Auctions.AnyAsync(auc => auc.Id == auctionData.Id)) return Conflict("Already exists");
@@ -102,7 +108,10 @@ public class AuctionController : ControllerBase {
 	}
 
 	[HttpDelete("{id}")]
+	[Authorize]
 	public async Task<ActionResult> Delete(ulong id) {
+		if (!(User.IsInRole("AuctionMaster") && User.FindFirstValue(ClaimTypes.NameIdentifier) == auc.PlannerId || User.IsInRole("Admin"))) return Forbid();
+		
 		using (var db = new DatabaseContext()) {
 			Auction? auction = await db.Auctions.FindAsync(id);
 			if (auction == null) return NotFound();
@@ -115,7 +124,10 @@ public class AuctionController : ControllerBase {
 	}
 
 	[HttpPatch("{id}")]
+	[Authorize]
 	public async Task<ActionResult> Update(ulong id, [FromBody] JsonPatchDocument<Auction> patchdoc) {
+		if (!(User.IsInRole("AuctionMaster") && User.FindFirstValue(ClaimTypes.NameIdentifier) == auc.PlannerId || User.IsInRole("Admin"))) return Forbid();
+
 		using (var db = new DatabaseContext()) {
 			Auction? auction = await db.Auctions.FindAsync(id);
 			if (auction == null) return NotFound();

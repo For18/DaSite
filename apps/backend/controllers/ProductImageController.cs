@@ -53,7 +53,10 @@ public class ProductImageController : ControllerBase {
 	}
 
 	[HttpPost]
+	[Authorize]
 	public async Task<ActionResult> Post(ProductImageExternal productImageData) {
+		if (!(GetOfUser.User.IsInRole("Admin") || GetOfUser.User.IsInRole("AuctionMaster"))) return Forbid();
+
 		using (var db = new DatabaseContext()) {
 			if (db.ProductImages.Include(img => img.Parent).Any(image => image.Id == productImageData.Id)) return Conflict("Already exists");
 
@@ -74,7 +77,10 @@ public class ProductImageController : ControllerBase {
 	}
 
 	[HttpDelete("{id}")]
+	[Authorize]
 	public async Task<ActionResult> Delete(ulong id) {
+		if (!(GetOfUser.User.IsInRole("Admin") || GetOfUser.User.IsInRole("AuctionMaster"))) return Forbid();
+
 		using (var db = new DatabaseContext()) {
 			ProductImage? prodImage = await db.ProductImages.FindAsync(id);
 			if (prodImage == null) return NotFound();
@@ -87,7 +93,10 @@ public class ProductImageController : ControllerBase {
 	}
 
 	[HttpPatch("{id}")]
+	[Authorize]
 	public async Task<ActionResult> Patch(ulong id, [FromBody] JsonPatchDocument<ProductImage> patchdoc) {
+		if (!(GetOfUser.User.IsInRole("Admin") || GetOfUser.User.IsInRole("AuctionMaster"))) return Forbid();
+
 		using (var db = new DatabaseContext()) {
 			ProductImage? prodImage = await db.ProductImages.FindAsync(id);
 			if (prodImage == null) return NotFound();
