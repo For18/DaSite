@@ -120,9 +120,9 @@ export default function CreateProductPage() {
           <Select 
             value={owner?.userName.length == 0 ? null : owner?.userName ?? null} 
             onChange={(value: string) => {
-              foundUsersIndexRef.current = Number(value); setOwner(foundUsers[foundUsersIndexRef.current])}}
+              foundUsersIndexRef.current = Number(value) ; setOwner(foundUsers[foundUsersIndexRef.current])}}
             placeholder="Select a User">
-            {foundUsers.map(entry => <Option key={entry.id} value={String(entry.id)}> {entry.userName} </Option>)}
+            {foundUsers.map((entry, index) => <Option key={entry.id} value={String(index)}> {entry.userName} </Option>)}
           </Select>
         </div>
 
