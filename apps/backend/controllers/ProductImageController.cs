@@ -73,6 +73,54 @@ public class ProductImageController : ControllerBase {
 		}
 	}
 
+  [HttpPost("batch")]
+  public async Task<ActionResult> BatchPost([FromBody] ProductImageExternal[] images) {
+    using (var db = new DatabaseContext()) {
+      FailedBatchEntry<ProductImageExternal>[] failedPosts = [];
+
+      ulong[] imageIds = images.Select(image => image.Id).ToArray();
+      ProductImageExternal[] existingImages = await db.ProductImages
+        .Where(image => imageIds.Contains(image.Id))
+        .Select(image => ProductImageExternal.ToExternal(image))
+        .ToArrayAsync();
+      foreach(ProductImageExternal image in existingImages) {
+        failedPosts.Append(new FailedBatchEntry<ProductImageExternal>(image, "Conflict image already exists"));
+      }
+
+      ProductImageExternal[] newImages = images
+        .Where(image => !existingImages.Contains(image))
+        .ToArray();
+
+      ulong[] newImageIds = images.Select(image => image.Id).ToArray();
+      Product[] parents = await db.Products
+        .Where(product => newImageIds.Contains(product.Id))
+        .ToArrayAsync();
+
+      
+      foreach(ProductImageExternal image in newImages) {
+        Product parent = parents.Where(prod => prod.Id == image.Parent).First();
+        if (parent == null) {
+          failedPosts.Append(new FailedBatchEntry<ProductImageExternal>(image, "Invalid parent"));
+          continue;
+        }
+
+        ProductImage prodImage = new ProductImage {
+          Id = image.Id,
+          Parent = parent,
+          Url = image.Url
+        };
+        db.ProductImages.Add(prodImage);
+      }
+
+      await db.SaveChangesAsync();
+
+      return Ok( new {
+          AddedImages = newImageIds.Select(id => new IdReference(id)).ToArray(),
+          FailedImages = failedPosts
+      });
+    }
+  }
+
 	[HttpDelete("{id}")]
 	public async Task<ActionResult> Delete(ulong id) {
 		using (var db = new DatabaseContext()) {

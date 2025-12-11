@@ -19,7 +19,7 @@ export default function Button(
 			styles[variant],
 			styles[color],
 			className
-		].filter(entry => entry !== null).join(" ")} onClick={e => {
+		].filter(entry => entry != null).join(" ")} onClick={e => {
 			if (disabled) return;
 			onClick?.(e);
 		}} disabled={disabled} aria-labelledby={labelledby}>
