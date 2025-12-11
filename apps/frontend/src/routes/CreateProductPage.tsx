@@ -51,7 +51,7 @@ async function PostProduct(name: string, description: string, images: string[], 
 }
 
 export default function CreateProductPage() {
-	const [images, setImages] = useState<string[]>(IMAGES);
+	const [images, setImages] = useState<string[]>([]);
 	const [accordionState, setAccordionState] = useState<boolean>(false);
 	const [linkText, setLinkText] = useState<string>("");
 	const [name, setName] = useState<string>("product");
@@ -258,14 +258,3 @@ function ProductPreview(
 		</div>
 	);
 }
-
-const IMAGES = [
-	"https://preview.redd.it/wanted-to-haunt-your-dreams-with-these-abominations-v0-68mqmhoo3a6e1.jpeg?format=pjpg&auto=webp&s=ec4452c1c6dc30e4c8c4dd69202a0bb837ebcda4",
-	"https://randomchoicegenerator.com/wp-content/uploads/2022/12/randomjet_meme_carp_hat.jpg",
-	"https://preview.redd.it/wanted-to-haunt-your-dreams-with-these-abominations-v0-68mqmhoo3a6e1.jpeg?format=pjpg&auto=webp&s=ec4452c1c6dc30e4c8c4dd69202a0bb837ebcda4",
-	"https://randomchoicegenerator.com/wp-content/uploads/2022/12/randomjet_meme_carp_hat.jpg",
-	"https://preview.redd.it/wanted-to-haunt-your-dreams-with-these-abominations-v0-68mqmhoo3a6e1.jpeg?format=pjpg&auto=webp&s=ec4452c1c6dc30e4c8c4dd69202a0bb837ebcda4",
-	"https://randomchoicegenerator.com/wp-content/uploads/2022/12/randomjet_meme_carp_hat.jpg",
-	"https://preview.redd.it/wanted-to-haunt-your-dreams-with-these-abominations-v0-68mqmhoo3a6e1.jpeg?format=pjpg&auto=webp&s=ec4452c1c6dc30e4c8c4dd69202a0bb837ebcda4",
-	"https://randomchoicegenerator.com/wp-content/uploads/2022/12/randomjet_meme_carp_hat.jpg"
-];
