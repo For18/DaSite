@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 [DisplayName(nameof(Auction))]
 public class AuctionExternal {
@@ -111,11 +112,12 @@ public class AuctionController : ControllerBase {
 	[HttpDelete("{id}")]
 	[Authorize]
 	public async Task<ActionResult> Delete(ulong id) {
-		if (!(User.IsInRole("AuctionMaster") && User.FindFirstValue(ClaimTypes.NameIdentifier) == auc.PlannerId || User.IsInRole("Admin"))) return Forbid();
+		if (!(User.IsInRole("AuctionMaster") || User.IsInRole("Admin"))) return Forbid();
 		
 		using (var db = new DatabaseContext()) {
-			Auction? auction = await db.Auctions.FindAsync(id);
+			Auction? auction = await db.Auctions.Where(auc => auc.Id == id).Include(auc => auc.Planner).FirstOrDefaultAsync();
 			if (auction == null) return NotFound();
+			if (auction.Planner != null && User.FindFirstValue(ClaimTypes.NameIdentifier) != auction.Planner.Id && !User.IsInRole("Admin")) return Forbid();
 
 			db.Auctions.Remove(auction);
 			await db.SaveChangesAsync();
@@ -127,11 +129,12 @@ public class AuctionController : ControllerBase {
 	[HttpPatch("{id}")]
 	[Authorize]
 	public async Task<ActionResult> Update(ulong id, [FromBody] JsonPatchDocument<Auction> patchdoc) {
-		if (!(User.IsInRole("AuctionMaster") && User.FindFirstValue(ClaimTypes.NameIdentifier) == auc.PlannerId || User.IsInRole("Admin"))) return Forbid();
+		if (!(User.IsInRole("AuctionMaster") || User.IsInRole("Admin"))) return Forbid();
 
 		using (var db = new DatabaseContext()) {
-			Auction? auction = await db.Auctions.FindAsync(id);
+			Auction? auction = await db.Auctions.Where(auc => auc.Id == id).Include(auc => auc.Planner).FirstOrDefaultAsync();
 			if (auction == null) return NotFound();
+			if (auction.Planner != null && User.FindFirstValue(ClaimTypes.NameIdentifier) != auction.Planner.Id && !User.IsInRole("Admin")) return Forbid();
 
 			patchdoc.ApplyTo(auction, ModelState);
 
