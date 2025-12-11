@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
-using System;
 
 [DisplayName(nameof(AuctionItem))]
 public class AuctionItemExternal {
@@ -78,7 +77,7 @@ public class AuctionItemController : ControllerBase {
 		}
 	}
 
-	[HttpGet("get-by-auction/{id}")]
+	[HttpGet("by-auction/{id}")]
 	public async Task<ActionResult<AuctionItemExternal[]>> GetByAuction(ulong id) {
 		using var db = new DatabaseContext();
 		{

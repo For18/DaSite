@@ -59,7 +59,7 @@ public class UserController : ControllerBase {
 		}
 	}
 
-	[HttpGet("/private-users")]
+	[HttpGet("users/private")]
 	public async Task<ActionResult<User[]>> GetAllPrivate() {
 		using (var db = new DatabaseContext()) {
 			User[] users = await db.Users.ToArrayAsync();

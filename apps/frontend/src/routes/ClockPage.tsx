@@ -52,7 +52,7 @@ export default function ClockPage() {
 
 	useEffect(() => {
 		if (!auctionId) return;
-		fetch(API_URL + "/auction-item/get-by-auction/" + auctionId)
+		fetch(API_URL + "/auction-item/by-auction/" + auctionId)
 			.then(response => response.json())
 			.then(data => data as AuctionItem[])
 			.then(items => {
