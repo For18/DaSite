@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
+using Microsoft.AspNetCore.Authorization;
 
 [DisplayName(nameof(Auction))]
 public class AuctionExternal {

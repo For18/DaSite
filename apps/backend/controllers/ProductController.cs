@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
 using System.ComponentModel;
+using Microsoft.AspNetCore.Authorization;
 
 [DisplayName(nameof(Product))]
 public class ProductExternal {
