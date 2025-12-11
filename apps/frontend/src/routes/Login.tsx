@@ -13,7 +13,7 @@ export default function Login() {
     const navigate = useNavigate();
 
     const login = async (email: string, password: string) => {
-        const res = await fetch(API_URL + '/identity/login', {
+        const res = await fetch(API_URL + '/identity/login?useCookies=true', {
             method: "POST",
             credentials: "include",
             headers: {"Content-Type": "application/json"},

@@ -13,7 +13,7 @@ export default function Registration() {
     const navigate = useNavigate();
 
     const register = async (email: string, password: string) => {
-        const res = await fetch(API_URL + '/identity/register', {
+        const res = await fetch(API_URL + '/identity/register?useCookies=true', {
             method: "POST",
             credentials: "include",
             headers: {"Content-Type": "application/json"},
