@@ -53,7 +53,7 @@ public class ProductController : ControllerBase {
 	[HttpGet("/products")]
 	[Authorize]
 	public async Task<ActionResult<ProductExternal[]>> GetAll() {
-		if (!(GetOfUser.User.IsInRole("AuctionMaster") || GetOfUser.User.IsInRole("Admin"))) return Forbid();
+		if (!(User.IsInRole("AuctionMaster") || User.IsInRole("Admin"))) return Forbid();
 
 		using (var db = new DatabaseContext()) {
 			return await db.Products.Include(product => product.Owner).Select(product => ProductExternal.ToExternal(product)).ToArrayAsync();
@@ -73,7 +73,7 @@ public class ProductController : ControllerBase {
 	[HttpPost]
 	[Authorize]
 	public async Task<ActionResult> Post(ProductExternal productData) {
-		if (!(GetOfUser.User.IsInRole("Admin") || GetOfUser.User.IsInRole("AuctionMaster"))) return Forbid();
+		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
 
 		using (var db = new DatabaseContext()) {
 			if (await db.Products.AnyAsync(prod => prod.Id == productData.Id)) return Conflict("Already exists");
@@ -90,7 +90,7 @@ public class ProductController : ControllerBase {
 	[HttpDelete("{id}")]
 	[Authorize]
 	public async Task<ActionResult> Delete(ulong id) {
-		if (!(GetOfUser.User.IsInRole("Admin") || GetOfUser.User.IsInRole("AuctionMaster"))) return Forbid();
+		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
 
 		using (var db = new DatabaseContext()) {
 			Product? product = await db.Products.FindAsync(id);
@@ -106,7 +106,7 @@ public class ProductController : ControllerBase {
 	[HttpPatch("{id}")]
 	[Authorize]
 	public async Task<ActionResult> Patch(ulong id, [FromBody] JsonPatchDocument<Product> patchdoc) {
-		if (!(GetOfUser.User.IsInRole("Admin") || GetOfUser.User.IsInRole("AuctionMaster"))) return Forbid();
+		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
 
 		using (var db = new DatabaseContext()) {
 			Product? product = await db.Products.FindAsync(id);
