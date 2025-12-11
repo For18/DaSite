@@ -167,7 +167,7 @@ export default function CreateProductPage() {
 							setDescription("");
 							setBatchSize(0);
 							setOwner(null);
-							alert("i did it");
+							alert("Product added");
 						}}
 					>
 						CONFIRM
