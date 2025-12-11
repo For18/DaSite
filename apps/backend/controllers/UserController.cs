@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,12 @@ public class UserController : ControllerBase {
 			};
 		}
 	}
+
+  [HttpGet("/private-user/current")]
+  [Authorize]
+  public Task<ActionResult<User>> GetCurrent() {
+    return GetPrivate(Convert.ToUInt64(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+  }
 
 	[HttpGet("/private-user/{id}")]
 	public async Task<ActionResult<User>> GetPrivate(ulong id) {
