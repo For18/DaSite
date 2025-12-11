@@ -12,7 +12,7 @@ import styles from "./PendingAuction.module.scss";
  * optionally make every Product card clickable so it shows <ProductView>
  */
 export default function PendingAuction() {
-	const auctions = useAPI<Auction[]>("/auctions/pending");
+	const auctions = useAPI<Auction[]>("/auctions/upcoming");
 
 	const [screenWidth] = useScreenSize();
 
