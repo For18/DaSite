@@ -22,7 +22,7 @@ public class PublicUser {
 public class UserController : ControllerBase {
 	[HttpGet("{id}")]
 	public async Task<ActionResult<PublicUser>> GetPublic(ulong id) {
-		using var db = new DatabaseContext();
+		using (var db = new DatabaseContext())
 		{
 			User? user = await db.Users.FindAsync(id);
 			if (user == null) return NotFound();
@@ -38,7 +38,7 @@ public class UserController : ControllerBase {
 
 	[HttpGet("private/{id}")]
 	public async Task<ActionResult<User>> GetPrivate(ulong id) {
-		using var db = new DatabaseContext();
+		using (var db = new DatabaseContext())
 		{
 			User? user = await db.Users.FindAsync(id);
 			if (user == null) return NotFound();

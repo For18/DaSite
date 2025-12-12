@@ -40,7 +40,7 @@ public class AuctionEntryExternal {
 public class AuctionEntryController : ControllerBase {
 	[HttpGet("{auctionId}")]
 		public async Task<ActionResult<AuctionEntryExternal[]>> Get(ulong auctionId) {
-			using var db = new DatabaseContext();
+			using (var db = new DatabaseContext())
 			{
 				AuctionEntryExternal[] entries = await db.AuctionEntries
 					.Where(entry => entry.Auction.Id == auctionId)
@@ -53,7 +53,7 @@ public class AuctionEntryController : ControllerBase {
 
 	[HttpGet("from-auction/{auctionId}")]
 	public async Task<ActionResult<AuctionEntryExternal[]>> GetFromAuction(ulong auctionId) {
-		using var db = new DatabaseContext();
+		using (var db = new DatabaseContext())
 		{
 
 			AuctionEntryExternal[] entries = await db.AuctionEntries
@@ -72,7 +72,7 @@ public class AuctionEntryController : ControllerBase {
 
 	[HttpGet("from-item/{itemId}")]
 	public async Task<ActionResult<AuctionEntryExternal[]>> GetFromItem(ulong itemId) {
-		using var db = new DatabaseContext();
+		using (var db = new DatabaseContext())
 		{
 
 			AuctionEntryExternal[] entries = await db.AuctionEntries
