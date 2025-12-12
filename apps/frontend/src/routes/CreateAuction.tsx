@@ -5,6 +5,7 @@ import Throbber from "../components/Throbber";
 import Typography from "../components/Typography";
 import { API_URL, AuctionItem, useAPI } from "../lib/api";
 import styles from "./CreateAuction.module.scss";
+import { Routes } from "./Routes";
 
 const pad = (n: number) => (n < 10 ? `0${n}` : String(n));
 
@@ -28,7 +29,7 @@ export default function CreateAuctions() {
     const startingDateRef = useRef<string>(getDefaultDate());
     const startingTimeRef = useRef<string>(getDefaultTime());
 
-    const auctionItems = useAPI<AuctionItem[]>("/auction-item/all");
+    const auctionItems = useAPI<AuctionItem[]>(Routes.AuctionItem.GetAll);
     const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
     async function submitAuction() {
@@ -60,7 +61,7 @@ export default function CreateAuctions() {
 
         try {
             setStatusMessage("Creating auction...");
-            const resp = await fetch(API_URL + "/auction", {
+            const resp = await fetch(API_URL + Routes.Auction.Post, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
@@ -82,7 +83,7 @@ export default function CreateAuctions() {
                 setStatusMessage("Creating auction entries...");
                 try {
                     const promises = itemIds.map(async itemId => {
-                        const r = await fetch(API_URL + "/auction-entry", {
+                        const r = await fetch(API_URL + Routes.AuctionEntry.Post, {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ auctionId: auctionId, itemId: Number(itemId) })

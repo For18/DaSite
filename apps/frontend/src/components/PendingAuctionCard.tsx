@@ -4,12 +4,13 @@ import Image from "./Image";
 import styles from "./PendingAuctionCard.module.scss";
 import Throbber from "./Throbber";
 import Typography from "./Typography";
+import { Routes } from "../routes/Routes"
 
 export default function PendingAuctionCard({ auction }: { auction: Auction }) {
-	const item = useAPI<AuctionItem>("/auction-item/by-auction/" + auction.id);
-	const user = useAPI<User>("/user/" + auction.plannerId);
-	const product = useAPI<Product>(item ? "/product/" + item.productId : null);
-	const thumbnailImage = useAPI<ProductImage[]>(product ? "/product-image/from/" + product.id : null);
+	const item = useAPI<AuctionItem>(Routes.AuctionItem.GetByAuction(auction.id));
+	const user = useAPI<User>(Routes.User.GetPrivate(auction.plannerId));
+	const product = useAPI<Product>(item ? Routes.Product.Get(item.productId) : null);
+	const thumbnailImage = useAPI<ProductImage[]>(product ? Routes.ProductImage.FromParent(product.id) : null);
 	const thumbnailUrl = thumbnailImage && thumbnailImage[0] && thumbnailImage[0].url ?
 		thumbnailImage[0].url :
 		"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcCBHgbS23kyBw2r8Pquu19UtKZnrZmFUx1g&s";

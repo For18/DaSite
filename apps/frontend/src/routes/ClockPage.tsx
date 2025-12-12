@@ -10,6 +10,7 @@ import { API_URL, Auction, AuctionItem, useAPI } from "../lib/api";
 import { useTime } from "../lib/util";
 import styles from "./ClockPage.module.scss";
 import NotFound from "./NotFound";
+import { Routes } from "./Routes";
 
 function lerp(from: number, to: number, t: number): number {
 	return from + t * (to - from);
@@ -38,7 +39,7 @@ const BUFFER_LEN = 5000;
 export default function ClockPage() {
 	/* Main state holders */
 	const { auctionId } = useParams();
-	const auction = useAPI<Auction>("/auction/" + auctionId);
+	const auction = useAPI<Auction>(Routes.Auction.Get(auctionId ?? ""));
 	const [items, setItems] = useState<AuctionItem[] | null>(null);
 
 	const currentItem = items ? items[0] : null;
@@ -52,7 +53,7 @@ export default function ClockPage() {
 
 	useEffect(() => {
 		if (!auctionId) return;
-		fetch(API_URL + "/auction-item/by-auction/" + auctionId)
+		fetch(API_URL + Routes.AuctionItem.GetByAuction(auctionId))
 			.then(response => response.json())
 			.then(data => data as AuctionItem[])
 			.then(items => {
@@ -79,7 +80,7 @@ export default function ClockPage() {
    */
 	useEffect(() => {
 		if (!auction) return;
-		fetch(API_URL + "/auction/" + auction?.id, {
+		fetch(API_URL + Routes.Auction.Get(auction?.id), {
 			method: "PATCH",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify([{ op: "replace", path: "/startingTime", value: Math.round(Date.now() + BUFFER_LEN) }])

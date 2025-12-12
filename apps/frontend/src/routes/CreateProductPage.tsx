@@ -7,10 +7,11 @@ import { Select, Option } from "../components/Select";
 import Typography from "../components/Typography";
 import { API_URL, ProductImage, User } from "../lib/api";
 import styles from "./CreateProductPage.module.scss";
+import { Routes } from "./Routes"
 
 // TODO: add visual status for user
 async function PostProduct(name: string, description: string, images: string[], owner: User | null) {
-    const productId: number = await fetch(API_URL + "/product", {
+    const productId: number = await fetch(API_URL + Routes.Product.Post, {
 		            method: "POST",
 		            headers: { "Content-Type": "application/json" },
 		            body: JSON.stringify({
@@ -23,13 +24,13 @@ async function PostProduct(name: string, description: string, images: string[], 
               .then(data => data as number)
               .then(id => id);
 
-    await fetch(API_URL + "/product-image/batch", {
+    await fetch(API_URL + Routes.ProductImage.BatchPost, {
       method: "POST",
       headers: { "Content-Type": "application/json"},
       body: JSON.stringify(images.map(url => JSON.stringify({parent: productId, url: url})))
     })
 
-    const imageIds: number[] = await fetch(API_URL + "/product/from/" + productId, {
+    const imageIds: number[] = await fetch(API_URL + Routes.ProductImage.FromParent(productId), {
 		  method: "GET",
 		  headers: { "Content-Type": "application/json" },
     })
@@ -38,7 +39,7 @@ async function PostProduct(name: string, description: string, images: string[], 
     .then(images => images.map(image => image.id));
 
     if (imageIds.length >= 1) {
-      await fetch(API_URL + "/product/" + productId, {
+      await fetch(API_URL + Routes.Product.Patch(productId), {
 		    method: "PATCH",
 		    headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -64,7 +65,7 @@ export default function CreateProductPage() {
   const [foundUsers, setFoundUsers] = useState<User[]>([]);
 
   useEffect(() => {
-    fetch(API_URL + "/users/by-name/" + ownerSearchValue)
+    fetch(API_URL + Routes.User.GetAllByName(ownerSearchValue))
     .then(response => response.json())
     .then(data => data as User[])
     .then(users => setFoundUsers(users))
