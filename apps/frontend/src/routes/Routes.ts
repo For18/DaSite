@@ -89,6 +89,7 @@ export const Routes = {
     GetAll:          `/auctions`,
     GetUpcoming:     `/auctions/upcoming`,
     Post:            `/auction`,
+    BatchPost:       `/auctions/batch`,
     Delete:          (id: number | string) => `/auction/${id}`,
     Patch:           (id: number | string) => `/auction/${id}`,
   },
