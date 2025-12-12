@@ -85,6 +85,7 @@ export const Routes = {
 
   Auction: {
     Get:             (id: number | string) => `/auction/${id}`,
+    BatchGet:        `/auctions/batch`,
     GetAll:          `/auctions`,
     GetUpcoming:     `/auctions/upcoming`,
     Post:            `/auction`,
