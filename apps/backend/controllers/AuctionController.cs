@@ -87,6 +87,39 @@ public class AuctionController : ControllerBase {
 		}
 	}
 
+  [HttpPost("/auctions/batch")]
+  public async Task<ActionResult> BatchPost(AuctionExternal[] auctionsData) {
+    using (var db = new DatabaseContext()) {
+      FailedBatchEntry<AuctionExternal>[] failedPost = [];
+
+      Auction[] auctions = auctionsData.Select(auc => auc.ToAuction(db)).ToArray();
+
+      ulong[] auctionIds = auctionsData.Select(auc => auc.Id).ToArray();
+      AuctionExternal[] existingAuctions = await db.Auctions
+        .Where(auc => auctionIds.Contains(auc.Id))
+        .Select(auc => AuctionExternal.ToExternal(auc))
+        .ToArrayAsync();
+
+      IdReference[] newAuctions = [];
+
+      foreach(AuctionExternal entry in auctionsData) {
+        if (existingAuctions.Contains(entry)) {
+          failedPost.Append(new FailedBatchEntry<AuctionExternal>(entry, "Conflict, auction already exists"));
+        } else {
+          db.Add(entry);
+          newAuctions.Append(new IdReference(entry.Id));
+        }
+      }
+
+      await db.SaveChangesAsync();
+
+      return Ok(new {
+        AddedAuctions = newAuctions,
+        FailedAuctions = failedPost
+      });
+    }
+  }
+
 	[HttpPost]
 	[Authorize]
 	public async Task<ActionResult> Post(AuctionExternal auctionData) {
