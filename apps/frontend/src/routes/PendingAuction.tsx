@@ -5,6 +5,7 @@ import Typography from "../components/Typography";
 import { type Auction, useAPI } from "../lib/api";
 import { useScreenSize } from "../lib/util";
 import styles from "./PendingAuction.module.scss";
+import { Routes } from "./Routes"
 
 /* TODO:
  * Add pure text page of pending auctions
@@ -12,7 +13,7 @@ import styles from "./PendingAuction.module.scss";
  * optionally make every Product card clickable so it shows <ProductView>
  */
 export default function PendingAuction() {
-	const auctions = useAPI<Auction[]>("/auctions/upcoming");
+	const auctions = useAPI<Auction[]>(Routes.Auction.GetUpcoming);
 
 	const [screenWidth] = useScreenSize();
 
