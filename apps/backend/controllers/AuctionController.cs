@@ -41,7 +41,7 @@ public class AuctionExternal {
 public class AuctionController : ControllerBase {
 	[HttpGet("{id}")]
 	public async Task<ActionResult<AuctionExternal>> Get(ulong id) {
-		using var db = new DatabaseContext();
+		using (var db = new DatabaseContext())
 		{
 
 			Auction? auction = await db.Auctions.Include(auc => auc.Planner).Where(auc => auc.Id == id).FirstOrDefaultAsync();

@@ -55,7 +55,7 @@ public class AuctionItemController : ControllerBase {
 
 	[HttpGet("all")]
 	public async Task<ActionResult<AuctionItemExternal[]>> GetAll() {
-		using var db = new DatabaseContext();
+		using (var db = new DatabaseContext())
 		{
 			return await db.AuctionItems
 			  .Include(item => item.Product)
@@ -67,7 +67,7 @@ public class AuctionItemController : ControllerBase {
 
 	[HttpGet("{id}")]
 	public async Task<ActionResult<AuctionItemExternal>> Get(ulong id) {
-		using var db = new DatabaseContext();
+		using (var db = new DatabaseContext())
 		{
 
 			AuctionItem? item = await db.AuctionItems.Include(item => item.Product).ThenInclude(prod => prod.ThumbnailImage).Where(item => item.Id == id).FirstOrDefaultAsync();
@@ -79,7 +79,7 @@ public class AuctionItemController : ControllerBase {
 
 	[HttpGet("by-auction/{id}")]
 	public async Task<ActionResult<AuctionItemExternal[]>> GetByAuction(ulong id) {
-		using var db = new DatabaseContext();
+		using (var db = new DatabaseContext())
 		{
 			return await db.AuctionEntries
 			  .Include(entry => entry.Auction)
