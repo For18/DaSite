@@ -77,6 +77,19 @@ public class AuctionItemController : ControllerBase {
 		}
 	}
 
+  [HttpGet("auction-items/batch")]
+  public async Task<ActionResult<AuctionItemExternal[]>> BatchGet([FromBody] ulong[] ids) {
+    using (var db = new DatabaseContext())
+    {
+      return await db.AuctionItems
+        .Include(auc => auc.Product)
+        .ThenInclude(prod => prod.ThumbnailImage)
+        .Where(auc => ids.Contains(auc.Id))
+        .Select(auc => AuctionItemExternal.ToExternal(auc))
+        .ToArrayAsync();
+    }
+  }
+
 	[HttpGet("by-auction/{id}")]
 	public async Task<ActionResult<AuctionItemExternal[]>> GetByAuction(ulong id) {
 		using (var db = new DatabaseContext())
