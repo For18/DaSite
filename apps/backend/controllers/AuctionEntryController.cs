@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using System.Linq;
+using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
@@ -136,7 +137,7 @@ public class AuctionEntryController : ControllerBase {
 		}
 	}
 
-  [HttpPost("/entries/batch")]
+  [HttpPost("/auction-entries/batch")]
   public async Task<ActionResult> BatchPost([FromBody] AuctionEntryExternal[] entriesData) {
     using (var db = new DatabaseContext())
     {
@@ -185,6 +186,42 @@ public class AuctionEntryController : ControllerBase {
 			return NoContent();
 		}
 	}
+
+  /* TODO: decide if tuple should be split into two argument
+   * increasing clarity on which ulong is which FK in the composite key
+   *  
+   * For now tuple.Item1 = auctionId, tuple.Item2 = itemId
+   */
+  [HttpDelete("/auction-entries/batch")]
+  public async Task<ActionResult> BatchDelete([FromBody] Tuple<ulong, ulong>[] ids) {
+    using (var db = new DatabaseContext())
+    {
+      FailedBatchEntry<Tuple<ulong, ulong>>[] failedDeletes = []; 
+      ulong[] auctionIds = ids.Select(entry => entry.Item1).ToArray();
+      ulong[] itemIds = ids.Select(entry => entry.Item2).ToArray();
+      ulong[] foundAuctionIds = await db.Auctions.Where(auc => auctionIds.Contains(auc.Id)).Select(auc => auc.Id).ToArrayAsync();
+      ulong[] foundItemIds = await db.AuctionItems.Where(item => itemIds.Contains(item.Id)).Select(item => item.Id).ToArrayAsync();
+
+      Tuple<ulong, ulong>[] validIds = [];
+      foreach(Tuple<ulong, ulong> key in ids) {
+        if (!foundAuctionIds.Contains(key.Item1)) {
+          failedDeletes.Append(new FailedBatchEntry<Tuple<ulong, ulong>>(key, "Invalid auctionId"));
+        } else if (!foundItemIds.Contains(key.Item2)) {
+          failedDeletes.Append(new FailedBatchEntry<Tuple<ulong, ulong>>(key, "Invalid itemId"));
+        } else {
+          validIds.Append(key);
+        }
+      }
+
+      foreach(Tuple<ulong, ulong> key in ids) {
+        db.Remove(key);
+      }
+      await db.SaveChangesAsync();
+
+      if (failedDeletes.Length > 0) return StatusCode(207, new {DeletedEntries = validIds, FailedDeletes = failedDeletes});
+      return Ok(validIds);
+    }
+  }
 
 	[HttpPatch("{id}")]
 	public async Task<ActionResult> Update(ulong id, [FromBody] JsonPatchDocument<AuctionEntry> patchdoc) {
