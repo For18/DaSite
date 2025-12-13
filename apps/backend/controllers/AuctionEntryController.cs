@@ -168,10 +168,15 @@ public class AuctionEntryController : ControllerBase {
     }
   }
 
-	[HttpDelete("{id}")]
-	public async Task<ActionResult> Delete(ulong id) {
+	[HttpDelete("{auctionId}/{itemId}")]
+	public async Task<ActionResult> Delete(ulong auctionId, ulong itemId) {
 		using (var db = new DatabaseContext()) {
-			AuctionEntry? entry = await db.AuctionEntries.FindAsync(id);
+			AuctionEntry? entry = await db.AuctionEntries
+        .Include(entry => entry.Auction)
+        .Include(entry => entry.AuctionItem)
+        .Where(entry => entry.Auction.Id == auctionId && entry.AuctionItem.Id == itemId)
+        .Select(entry => entry)
+        .FirstAsync();
 			if (entry == null) return NotFound();
 
 			db.AuctionEntries.Remove(entry);
