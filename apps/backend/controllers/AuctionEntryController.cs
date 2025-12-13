@@ -136,6 +136,38 @@ public class AuctionEntryController : ControllerBase {
 		}
 	}
 
+  [HttpPost("/entries/batch")]
+  public async Task<ActionResult> BatchPost([FromBody] AuctionEntryExternal[] entriesData) {
+    using (var db = new DatabaseContext())
+    {
+      FailedBatchEntry<AuctionEntryExternal>[] failedPosts = [];
+      ulong[] auctionIds = entriesData.Select(entry => entry.AuctionId).ToArray();
+      ulong[] itemIds = entriesData.Select(entry => entry.ItemId).ToArray();
+      ulong[] foundAuctionIds = await db.Auctions.Where(auc => auctionIds.Contains(auc.Id)).Select(auc => auc.Id).ToArrayAsync();
+      ulong[] foundItemIds = await db.AuctionItems.Where(item => itemIds.Contains(item.Id)).Select(item => item.Id).ToArrayAsync();
+
+      AuctionEntryExternal[] validEntries = [];
+      foreach(AuctionEntryExternal entry in entriesData) {
+        if (!foundAuctionIds.Contains(entry.AuctionId)) {
+          failedPosts.Append(new FailedBatchEntry<AuctionEntryExternal>(entry, "Invalid auctionId"));
+        } else if (!foundItemIds.Contains(entry.ItemId)) {
+          failedPosts.Append(new FailedBatchEntry<AuctionEntryExternal>(entry, "Invalid itemId"));
+        } else {
+          validEntries.Append(entry);
+        }
+      }
+
+      foreach(AuctionEntryExternal entry in validEntries) {
+        db.Add(entry);
+      }
+
+      await db.SaveChangesAsync();
+
+      if (failedPosts.Length > 0) return StatusCode(207, new {AddedEntries = validEntries, FailedPosts = failedPosts});
+      return Ok(validEntries);
+    }
+  }
+
 	[HttpDelete("{id}")]
 	public async Task<ActionResult> Delete(ulong id) {
 		using (var db = new DatabaseContext()) {
