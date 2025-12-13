@@ -64,6 +64,7 @@ export const Routes = {
   AuctionItem: {
     GetAll:          `/auction-item/all`,
     Get:             (id: number | string) => `/auction-item/${id}`,
+    BatchGet:        `/auction-items/batch`,
     GetByAuction:    (auctionId: number | string) => `/auction-item/by-auction/${auctionId}`,
     Post:            `/auction-item`,
     Delete:          (id: number | string) => `/auction-item/${id}`,
