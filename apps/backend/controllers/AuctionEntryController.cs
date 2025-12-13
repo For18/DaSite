@@ -163,7 +163,11 @@ public class AuctionEntryController : ControllerBase {
 		}
 	}
 
+<<<<<<< HEAD
   [HttpPost("/auction-entries/batch")]
+=======
+  [HttpPost("/entries/batch")]
+>>>>>>> 9d092b5 (Add BatchPost API endpoint to AuctionEntryController)
   public async Task<ActionResult> BatchPost([FromBody] AuctionEntryExternal[] entriesData) {
     using (var db = new DatabaseContext())
     {
@@ -195,8 +199,13 @@ public class AuctionEntryController : ControllerBase {
     }
   }
 
+<<<<<<< HEAD
 	[HttpDelete("{auctionId}/{itemId}")]
 	public async Task<ActionResult> Delete(ulong auctionId, ulong itemId) {
+=======
+	[HttpDelete("{id}")]
+	public async Task<ActionResult> Delete(ulong id) {
+>>>>>>> 9d092b5 (Add BatchPost API endpoint to AuctionEntryController)
 		using (var db = new DatabaseContext()) {
 			AuctionEntry? entry = await db.AuctionEntries
         .Include(entry => entry.Auction)
