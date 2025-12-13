@@ -108,10 +108,14 @@ public class AuctionController : ControllerBase {
 
       await db.SaveChangesAsync();
 
-      return Ok(new {
-        AddedAuctions = newAuctions,
-        FailedAuctions = failedPost
-      });
+      if (failedPost.Length > 0) {
+          return StatusCode(207, new {
+          AddedAuctions = newAuctions,
+          FailedAuctions = failedPost
+        });
+      }
+
+      return Ok(newAuctions);
     }
   }
 
@@ -128,6 +132,24 @@ public class AuctionController : ControllerBase {
 			return Ok(new IdReference(auction.Id));
 		}
 	}
+
+  [HttpDelete("/auctions/batch")]
+  public async Task<ActionResult> BatchDelete([FromBody] ulong[] ids) {
+    using (var db = new DatabaseContext()) {
+      FailedBatchEntry<ulong>[] failedDeletes = [];
+
+      Auction[] auctions = await db.Auctions.Where(auc => ids.Contains(auc.Id)).Select(auc => auc).ToArrayAsync();
+      ulong[] foundIds = auctions.Select(auc => auc.Id).ToArray();
+      foreach(ulong aucId in ids) {
+        if (!foundIds.Contains(aucId)) failedDeletes.Append(new FailedBatchEntry<ulong>(aucId, "Corresponding Auction does not exist"));
+      }
+
+      await db.SaveChangesAsync();
+
+      if (failedDeletes.Length > 0) return StatusCode(207, new {FailedDeletes = failedDeletes});
+      return NoContent();
+    }
+  }
 
 	[HttpDelete("{id}")]
 	public async Task<ActionResult> Delete(ulong id) {
