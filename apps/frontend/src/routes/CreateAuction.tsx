@@ -5,6 +5,7 @@ import Throbber from "../components/Throbber";
 import Typography from "../components/Typography";
 import { API_URL, AuctionItem, useAPI } from "../lib/api";
 import styles from "./CreateAuction.module.scss";
+import { Status, StatusDisplay } from "../components/StatusDisplay";
 
 const pad = (n: number) => (n < 10 ? `0${n}` : String(n));
 
@@ -29,12 +30,15 @@ export default function CreateAuctions() {
     const startingTimeRef = useRef<string>(getDefaultTime());
 
     const auctionItems = useAPI<AuctionItem[]>("/auction-item/all");
-    const [statusMessage, setStatusMessage] = useState<string | null>(null);
+    const [status, setStatus] = useState<Status>({type: "none", label: ""});
 
     async function submitAuction() {
         const itemIds = productsSelected.map(Number).filter(id => !Number.isNaN(id));
         if (itemIds.length === 0) {
-            setStatusMessage("Please select at least one auction item.");
+            setStatus({
+				type: "error",
+				label: "Please select at least one auction item."
+			});
             return;
         }
 
@@ -59,7 +63,10 @@ export default function CreateAuctions() {
         } as any;
 
         try {
-            setStatusMessage("Creating auction...");
+            setStatus({
+				type: "progress",
+				label: "Creating auction..."
+			});
             const resp = await fetch(API_URL + "/auction", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -68,18 +75,27 @@ export default function CreateAuctions() {
 
             if (!resp.ok) {
                 const text = await resp.text();
-                setStatusMessage(`Failed to create auction: ${resp.status} ${text}`);
+                setStatus({
+					type: "error",
+					label: `Failed to create auction: ${resp.status} ${text}`
+				});
                 return;
             }
 
             const data = await resp.json();
             const createdId = data?.id ?? data?.Id ?? null;
-            setStatusMessage(`Created auction id=${createdId ?? "(unknown)"}`);
+            setStatus({
+				type: "success",
+				label: `Created auction id=${createdId ?? "(unknown)"}`
+			});
 
             // create auction-entry records linking this auction to selected auction-items
             if (createdId) {
                 const auctionId = Number(createdId);
-                setStatusMessage("Creating auction entries...");
+                setStatus({
+					type: "progress",
+					label: "Creating auction entries..."
+				});
                 try {
                     const promises = itemIds.map(async itemId => {
                         const r = await fetch(API_URL + "/auction-entry", {
@@ -94,13 +110,22 @@ export default function CreateAuctions() {
                     });
 
                     await Promise.all(promises);
-                    setStatusMessage("Created auction entries.");
+                    setStatus({
+						type: "success",
+						label: "Created auction entries."
+					});
                 } catch (err) {
-                    setStatusMessage(String(err));
+                    setStatus({
+						type: "error",
+						label: String(err)
+					});
                 }
             }
         } catch (err) {
-            setStatusMessage(String(err));
+            setStatus({
+				type: "error",
+				label: String(err)
+			});
         }
     }
 
@@ -168,7 +193,7 @@ export default function CreateAuctions() {
                 <Typography heading={3}>
                     {productsSelected.length ? productsSelected.join(", ") : "(none selected)"}
                 </Typography>
-                {statusMessage && <Typography className={styles.status}>{statusMessage}</Typography>}
+                <StatusDisplay status={status}/>
             </div>
         </>
     );
