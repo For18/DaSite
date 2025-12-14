@@ -174,3 +174,7 @@ export function useMousePosition(): [number, number] {
 
 	return mousePosition;
 }
+
+export function pickRandom<T>(values: T[]): T {
+	return values[Math.floor(Math.random() * values.length)];
+}
