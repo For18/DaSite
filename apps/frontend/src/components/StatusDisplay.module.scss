@@ -1,0 +1,91 @@
+@keyframes drawPath {
+	from {
+		stroke-dashoffset: 1;
+	}
+	to {
+		stroke-dashoffset: 0;
+	}
+}
+@keyframes rotate {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+@keyframes rotateIn {
+	from {
+		transform: rotate(-360deg) scale(0);
+	}
+	to {
+		transform: rotate(0deg) scale(1);
+	}
+}
+$fadeDuration: 300ms;
+
+@mixin icon {
+	aspect-ratio: 1/1;
+	height: 100%;
+}
+
+.success-icon {
+	@include icon;
+	fill: none;
+	stroke: var(--color-status-success);
+	stroke-dasharray: 1;
+	stroke-width: 10px;
+	stroke-linecap: round;
+
+	animation-name: drawPath;
+	animation-duration: $fadeDuration;
+	animation-timing-function: ease;
+	animation-fill-mode: both;
+	animation-delay: 100ms;
+}
+.progress-icon {
+	@include icon;
+	fill: none;
+	stroke: var(--color-text-secondary);
+	stroke-width: 10px;
+	stroke-linecap: round;
+
+	animation-name: rotate;
+	animation-duration: 1000ms;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+}
+.error-icon {
+	@include icon;
+	fill: none;
+	stroke: var(--color-status-error);
+	stroke-width: 10px;
+	stroke-linecap: round;
+
+	animation-name: rotateIn;
+	animation-duration: $fadeDuration * 1.6;
+	animation-timing-function: cubic-bezier(.47,1.62,.64,1);
+	animation-fill-mode: forwards;
+}
+
+.container {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: calc(var(--spacing) / 2);
+	margin: var(--spacing);
+	height: 1.5em;
+
+	opacity: 0;
+	transition: opacity 400ms ease;
+	transition-delay: 2s;
+
+	&.active {
+		opacity: 1;
+		transition: opacity 100ms ease;
+	}
+}
+
+.label {
+	color: var(--color-text-secondary);
+}
