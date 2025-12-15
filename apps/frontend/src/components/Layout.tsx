@@ -22,9 +22,9 @@ export default function Layout({ children }: PropsWithChildren) {
 					Login: "/login"
 				}}
 			/>
-			<article className={isHomepage ? styles.homepageArticle : styles.article}>
+			<main className={isHomepage ? styles.homepageArticle : styles.article}>
 				{children}
-			</article>
+			</main>
 			<Footer/>
 		</div>
 	);
