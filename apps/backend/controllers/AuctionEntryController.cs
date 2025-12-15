@@ -52,7 +52,7 @@ public class AuctionEntryController : ControllerBase {
 		}
 	}
 
-  [HttpGet("/auctions/batch")]
+  [HttpGet("/auction-entries/batch")]
   public async Task<ActionResult<AuctionEntryExternal[][]>> BatchGet([FromBody] ulong[] auctionIds) {
     using (var db = new DatabaseContext())
     {
