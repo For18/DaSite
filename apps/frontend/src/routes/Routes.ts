@@ -18,13 +18,27 @@ export default {
 	"/auctions/pending": PendingAuction,
 	"/profile/:userId": Profile,
 	"/auctions/create": CreateAuction,
-	"/create-product": CreateProduct,
+	"/products/create": CreateProduct,
 	"/test": Test,
 	"/login": Login,
 	"/register": Registration
 } as { [path: string]: LazyExoticComponent<() => JSX.Element> };
 
 export const Routes = {
+  Pages: {
+    Home:             `/`,
+    Clock:            (id: number | string) => `/clock/${id}`,
+    Auctions: {
+      Base:           `/auctions`,
+      Create:         `/auctions/create`,
+      Pending:        `/auctions/pending`,
+    },
+    CreateProduct:    `/products/create`,
+    Profile:          (id: number | string) => `/profile/${id}`,
+    Test:             `/test`,
+    Login:            `/Login`,
+    Register:         `/register`,
+  },
   User: {
     GetPublic:        (id: number | string) => `/user/${id}`,
     GetPrivate:       (id: number | string) => `/user/private/${id}`,

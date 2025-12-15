@@ -2,6 +2,7 @@ import { useNavigate } from "react-router";
 import Button from "./Button";
 import styles from "./EndedAuction.module.scss";
 import Typography from "./Typography";
+import { Routes } from "../routes/Routes";
 
 export default function EndedAuction({ id }: { id: number }) {
 	// TODO: add 'nextAuction' endpoint
@@ -20,14 +21,14 @@ export default function EndedAuction({ id }: { id: number }) {
 
 			<div className={styles.linkContainer}>
 				<Button
-					onClick={() => navigate("/auctions/pending")}
+					onClick={() => navigate(Routes.Pages.Auctions.Pending)}
 					variant="outlined"
 				>
 					Pending Auction
 				</Button>
 
 				<Button
-					onClick={() => navigate(`/clock/${nextAuctionId}`)}
+					onClick={() => navigate(Routes.Pages.Clock(nextAuctionId))}
 					variant="outlined"
 				>
 					Next Auction

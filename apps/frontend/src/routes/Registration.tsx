@@ -56,7 +56,7 @@ export default function Registration() {
 					<Input type="email" placeholder="email" value={email} onChange={setEmail}/>
 					<Input type="password" placeholder="password" value={password} onChange={setPassword}/>
 					<Button onClick={handleSubmit}>Register</Button>
-					<Typography href="/login">Already have an account?</Typography>
+					<Typography href={Routes.Pages.Login}>Already have an account?</Typography>
 				</div>
 			</div>
 		</>

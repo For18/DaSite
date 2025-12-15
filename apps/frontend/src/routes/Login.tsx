@@ -57,7 +57,7 @@ export default function Login() {
           <Input type="password" placeholder="password" value={password} onChange={setPassword} />
           <Button onClick={handleSubmit}>Login</Button>
           <Typography href="/forgotpassword">Forgot password?</Typography>
-          <Typography href="/register">Don't have an account yet?</Typography>
+          <Typography href={Routes.Pages.Register}>Don't have an account yet?</Typography>
         </div>
       </div>
     </>
