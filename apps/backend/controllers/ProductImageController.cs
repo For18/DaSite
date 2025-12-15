@@ -119,7 +119,7 @@ public class ProductImageController : ControllerBase {
       await db.SaveChangesAsync();
 
       return Ok( new {
-          AddedImages = newImageIds.Select(id => new IdReference(id)).ToArray(),
+          AddedImages = newImageIds.Select(id => new IdReference<ulong>(id)).ToArray(),
           FailedImages = failedPosts
       });
     }
