@@ -73,6 +73,7 @@ export const Routes = {
     Post:            `/auction-item`,
     BatchPost:       `/auction-item/batch`,
     Delete:          (id: number | string) => `/auction-item/${id}`,
+    BatchDelete:     `/auction-item/batch`,
     Patch:           (id: number | string) => `/auction-item/${id}`,
   },
 
