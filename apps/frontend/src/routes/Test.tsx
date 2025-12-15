@@ -9,7 +9,8 @@ import { Option, Select } from "../components/Select";
 import Slider from "../components/Slider";
 import { Switch } from "../components/Switch";
 import Typography from "../components/Typography";
-import { range } from "../lib/util";
+import { pickRandom, range, sleep } from "../lib/util";
+import { Status, StatusDisplay } from "../components/StatusDisplay";
 
 export default function Test() {
 	useEffect(() => {
@@ -29,6 +30,8 @@ export default function Test() {
 	const [textOpen, setTextOpen] = useState<boolean>(false);
 	const [selectOpen, setSelectOpen] = useState<boolean>(false);
 	const [selectValue, setSelectValue] = useState<string | null>(null);
+	const [statusDisplayOpen, setStatusDisplayOpen] = useState<boolean>(false);
+	const [status, setStatus] = useState<Status>({type:"none",label:""});
 
 	return (
 		<>
@@ -99,6 +102,26 @@ export default function Test() {
 				<Select value={selectValue} onChange={setSelectValue} placeholder="Choose an option">
 					{range(20).map(i => <Option key={i} value={`option${i + 1}`}>{`Option ${i + 1}`}</Option>)}
 				</Select>
+			</Accordion>
+			<Accordion title="Status display" open={statusDisplayOpen} onToggle={setStatusDisplayOpen}>
+				<Button onClick={async () => {
+					setStatus({
+						type: "progress",
+						label: "Processing..."
+					});
+					await sleep(2000);
+					setStatus(pickRandom<Status>([
+						{
+							type: "success",
+							label: "Success!"
+						},
+						{
+							type: "error",
+							label: "Error"
+						}
+					]));
+				}}>Test</Button>
+				<StatusDisplay status={status}/>
 			</Accordion>
 		</>
 	);
