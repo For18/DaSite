@@ -18,6 +18,8 @@ public class DatabaseContext : IdentityDbContext<User> {
 	}
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder) {
+		base.OnModelCreating(modelBuilder);
+		
 		modelBuilder.Entity<AuctionEntry>()
 		  .HasOne(ae => ae.Auction)
 		  .WithMany()
