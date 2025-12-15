@@ -5,6 +5,7 @@ import Input from "../components/Input";
 import Typography from "../components/Typography";
 import { API_URL } from "../lib/api";
 import styles from "./AuthForm.module.scss";
+import { Routes } from "./Routes";
 
 export default function Registration() {
 	const [email, setEmail] = useState<string>("");
@@ -12,7 +13,7 @@ export default function Registration() {
 	const navigate = useNavigate();
 
 	const register = async (email: string, password: string) => {
-		const res = await fetch(API_URL + "/identity/register", {
+		const res = await fetch(API_URL + Routes.Identity.PostRegister, {
 			method: "POST",
 			credentials: "include",
 			headers: { "Content-Type": "application/json" },
@@ -40,7 +41,7 @@ export default function Registration() {
 		}
 
 		console.log("Registration successful:", httpStatus, data);
-		navigate("/login");
+		navigate(Routes.Identity.PostLogin);
 	}
 
 	useEffect(() => {

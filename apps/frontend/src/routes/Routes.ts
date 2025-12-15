@@ -101,4 +101,16 @@ export const Routes = {
     BatchDelete:     `/auctions/batch`,
     Patch:           (id: number | string) => `/auction/${id}`,
   },
+  Identity: {
+    PostRegister:    `/identity/register`,
+    PostLogin:       `/identity/login`,
+    PostRefresh:     `/identity/refresh`,
+    GetConfirmEmail: `/identity/confirmEmail`,
+    PostResendConfirmEmail: `/identity/resendConfirmEmail`,
+    PostForgotPassword: `/identity/forgotPassword`,
+    PostResetPassword: `/identity/resetPassword`,
+    PostManage2fa:       `/identity/manage/2fa`,
+    GetManageInfo:   `/identity/manage/info`,
+    PostManageInfo:  `/identity/manage/info`,
+  },
 } as const;

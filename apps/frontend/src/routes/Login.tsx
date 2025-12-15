@@ -5,6 +5,7 @@ import Input from "../components/Input";
 import Typography from "../components/Typography";
 import { API_URL } from "../lib/api";
 import styles from "./AuthForm.module.scss";
+import { Routes } from "./Routes";
 
 export default function Login() {
   const [email, setEmail] = useState<string>("");
@@ -12,7 +13,7 @@ export default function Login() {
   const navigate = useNavigate();
 
   const login = async (email: string, password: string) => {
-    const res = await fetch(API_URL + "/identity/login?useCookies=true", {
+    const res = await fetch(API_URL + Routes.Identity.PostLogin + "?useCookies=true", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
