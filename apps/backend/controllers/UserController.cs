@@ -1,20 +1,25 @@
+using System;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 public class PublicUser {
+	public required string Id { get; set; }
+
 	[StringLength(32)]
 	public required string? UserName { get; set; }
 
-	public required string? ImageUrl { get; set; }
+	public required string? AvatarImageUrl { get; set; }
 
 	[StringLength(254)]
 	public required string? Email { get; set; }
 
-	public required ulong TelephoneNumber { get; set; }
+	public required string? TelephoneNumber { get; set; }
 }
 
 [ApiController]
@@ -28,13 +33,20 @@ public class UserController : ControllerBase {
 			if (user == null) return NotFound();
 
 			return new PublicUser {
+				Id = user.Id,
 				UserName = user.UserName,
-				ImageUrl = user.AvatarImageUrl,
+				AvatarImageUrl = user.AvatarImageUrl,
 				Email = user.Email,
-				TelephoneNumber = user.TelephoneNumber
+				TelephoneNumber = user.PhoneNumber
 			};
 		}
 	}
+
+  [HttpGet("/private-user/current")]
+  [Authorize]
+  public Task<ActionResult<User>> GetCurrent() {
+    return GetPrivate(Convert.ToUInt64(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+  }
 
 	[HttpGet("/private-user/{id}")]
 	public async Task<ActionResult<User>> GetPrivate(ulong id) {
@@ -60,10 +72,11 @@ public class UserController : ControllerBase {
 	public async Task<ActionResult<PublicUser[]>> GetAllPublic() {
 		using (var db = new DatabaseContext()) {
 			return await db.Users.Select(user => new PublicUser {
+				Id = user.Id,
 				UserName = user.UserName,
-				ImageUrl = user.AvatarImageUrl,
+				AvatarImageUrl = user.AvatarImageUrl,
 				Email = user.Email,
-				TelephoneNumber = user.TelephoneNumber
+				TelephoneNumber = user.PhoneNumber
 			}).ToArrayAsync();
 		}
 	}
@@ -83,12 +96,15 @@ public class UserController : ControllerBase {
 			db.Users.Add(user);
 			await db.SaveChangesAsync();
 
-			return Ok(new IdReference(user.Id));
+			return Ok(new IdReference<string>(user.Id));
 		}
 	}
 
 	[HttpDelete("{id}")]
-	public async Task<ActionResult> Delete(ulong id) {
+	[Authorize]
+	public async Task<ActionResult> Delete(string id) {
+		if (!(User.FindFirstValue(ClaimTypes.NameIdentifier) == id || User.IsInRole("Admin"))) return Forbid();
+
 		using (var db = new DatabaseContext()) {
 			User? user = await db.Users.FindAsync(id);
 			if (user == null) return NotFound();

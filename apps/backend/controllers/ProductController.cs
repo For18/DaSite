@@ -4,10 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
 using System.ComponentModel;
+using Microsoft.AspNetCore.Authorization;
 
 [DisplayName(nameof(Product))]
 public class ProductExternal {
-	public ProductExternal(ulong id, string name, string? description, ulong? thumbnailImageId, ulong ownerId) {
+	public ProductExternal(ulong id, string name, string? description, ulong? thumbnailImageId, string ownerId) {
 		Id = id;
 		Name = name;
 		Description = description;
@@ -32,7 +33,7 @@ public class ProductExternal {
 	public string Name { get; init; }
 	public string? Description { get; init; }
 	public ulong? ThumbnailImageId { get; init; }
-	public ulong OwnerId { get; init; }
+	public string OwnerId { get; init; }
 }
 
 [ApiController]
@@ -50,13 +51,16 @@ public class ProductController : ControllerBase {
 	}
 
 	[HttpGet("/products")]
+	[Authorize]
 	public async Task<ActionResult<ProductExternal[]>> GetAll() {
+		if (!(User.IsInRole("AuctionMaster") || User.IsInRole("Admin"))) return Forbid();
+
 		using (var db = new DatabaseContext()) {
 			return await db.Products.Include(product => product.Owner).Select(product => ProductExternal.ToExternal(product)).ToArrayAsync();
 		}
 	}
 	[HttpGet("/products/user/{userId}")]
-	public async Task<ActionResult<ProductExternal[]>> GetOfUser(ulong userId) {
+	public async Task<ActionResult<ProductExternal[]>> GetOfUser(string userId) {
 		using (var db = new DatabaseContext()) {
 			return await db.Products
 				.Include(product => product.Owner)
@@ -81,7 +85,10 @@ public class ProductController : ControllerBase {
 	}
 
 	[HttpPost]
+	[Authorize]
 	public async Task<ActionResult> Post(ProductExternal productData) {
+		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+
 		using (var db = new DatabaseContext()) {
 			if (await db.Products.AnyAsync(prod => prod.Id == productData.Id)) return Conflict("Already exists");
 
@@ -90,12 +97,15 @@ public class ProductController : ControllerBase {
 			db.Products.Add(product);
 			await db.SaveChangesAsync();
 
-			return Ok(new IdReference(product.Id));
+			return Ok(new IdReference<ulong>(product.Id));
 		}
 	}
 
 	[HttpDelete("{id}")]
+	[Authorize]
 	public async Task<ActionResult> Delete(ulong id) {
+		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+
 		using (var db = new DatabaseContext()) {
 			Product? product = await db.Products.FindAsync(id);
 			if (product == null) return NotFound();
@@ -108,7 +118,10 @@ public class ProductController : ControllerBase {
 	}
 
 	[HttpPatch("{id}")]
+	[Authorize]
 	public async Task<ActionResult> Patch(ulong id, [FromBody] JsonPatchDocument<Product> patchdoc) {
+		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+
 		using (var db = new DatabaseContext()) {
 			Product? product = await db.Products.FindAsync(id);
 			if (product == null) return NotFound();

@@ -1,12 +1,13 @@
+using System;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
 
-public class DatabaseContext : DbContext {
+public class DatabaseContext : IdentityDbContext<User> {
 	public DbSet<Product> Products { get; set; }
 	public DbSet<ProductImage> ProductImages { get; set; }
-	public DbSet<User> Users { get; set; }
 	public DbSet<Auction> Auctions { get; set; }
 	public DbSet<AuctionEntry> AuctionEntries { get; set; }
 	public DbSet<AuctionItem> AuctionItems { get; set; }

@@ -69,6 +69,14 @@ export interface User {
   telephoneNumber: number;
 }
 
+export interface PublicUser {
+	id: number;
+	userName?: string;
+	avatarImageUrl?: string;
+	email?: string;
+	telephoneNumber?: string;
+}
+
 export function useAPI<T>(route: string | null): T | null | undefined {
 	const { isLoading, value, error } = usePromise<T>(
 		() => route !== null ? fetch(API_URL + route).then(response => response.json()) : null,

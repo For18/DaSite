@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
 using System.ComponentModel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 [DisplayName(nameof(ProductImage))]
 public class ProductImageExternal {
@@ -53,7 +54,10 @@ public class ProductImageController : ControllerBase {
 	}
 
 	[HttpPost]
+	[Authorize]
 	public async Task<ActionResult> Post(ProductImageExternal productImageData) {
+		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+
 		using (var db = new DatabaseContext()) {
 			if (db.ProductImages.Include(img => img.Parent).Any(image => image.Id == productImageData.Id)) return Conflict("Already exists");
 
@@ -69,7 +73,7 @@ public class ProductImageController : ControllerBase {
 			db.ProductImages.Add(prodImage);
 			await db.SaveChangesAsync();
 
-			return Ok(new IdReference(prodImage.Id));
+			return Ok(new IdReference<ulong>(prodImage.Id));
 		}
 	}
 
@@ -122,7 +126,10 @@ public class ProductImageController : ControllerBase {
   }
 
 	[HttpDelete("{id}")]
+	[Authorize]
 	public async Task<ActionResult> Delete(ulong id) {
+		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+
 		using (var db = new DatabaseContext()) {
 			ProductImage? prodImage = await db.ProductImages.FindAsync(id);
 			if (prodImage == null) return NotFound();
@@ -135,7 +142,10 @@ public class ProductImageController : ControllerBase {
 	}
 
 	[HttpPatch("{id}")]
+	[Authorize]
 	public async Task<ActionResult> Patch(ulong id, [FromBody] JsonPatchDocument<ProductImage> patchdoc) {
+		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+
 		using (var db = new DatabaseContext()) {
 			ProductImage? prodImage = await db.ProductImages.FindAsync(id);
 			if (prodImage == null) return NotFound();

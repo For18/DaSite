@@ -8,6 +8,8 @@ const Profile = lazy(() => import("./Profile"));
 const CreateProduct = lazy(() => import("./CreateProductPage"));
 const Test = lazy(() => import("./Test"));
 const CreateAuction = lazy(() => import("./CreateAuction"));
+const Login = lazy(() => import("./Login"));
+const Registration = lazy(() => import("./Registration"));
 
 export default {
 	"/": Home,
@@ -17,5 +19,7 @@ export default {
 	"/profile/:userId": Profile,
   "/auctions/create": CreateAuction,
 	"/create-product": CreateProduct,
-	"/test": Test
+	"/test": Test,
+	"/login": Login,
+	"/register": Registration
 } as { [path: string]: LazyExoticComponent<() => JSX.Element> };

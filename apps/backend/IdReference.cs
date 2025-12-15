@@ -1,6 +1,6 @@
-public class IdReference {
-	public IdReference(ulong id) {
+public class IdReference<T> {
+	public IdReference(T id) {
 		Id = id;
 	}
-	public readonly ulong Id;
+	public readonly T Id;
 }
