@@ -12,7 +12,7 @@ DELETE FROM AspNetUsers;
 -- Using manual id assignment so auto increment does not get involved
 
 -- USERS
-INSERT INTO AspNetUsers(Id, UserName, AuctionDebt, AvatarImageUrl, Email, EmailConfirmed, TelephoneNumber, PhoneNumberConfirmed, TwoFactorEnabled, LockOutEnabled, AccessFailedCount)
+INSERT INTO AspNetUsers(Id, UserName, AuctionDebt, AvatarImageUrl, Email, EmailConfirmed, PhoneNumber, PhoneNumberConfirmed, TwoFactorEnabled, LockOutEnabled, AccessFailedCount)
 VALUES
 ('c2afc4ca-0c53-4f0f-8edf-89bb991640f2', 'Robbert Young', 0, 'https://i.redd.it/g28z3ezfxqm51.jpg', 'HS@maestro.flora.nl', 1, 987654374, 1, 1, 2, 0),
 ('ce971fe1-727a-486a-88dd-117b8fd6592b', 'Hán Zhì', 0, 'https://imgur.com/a/XazVj4C', 'HZ@admin.flora.nl', 1, 876556789, 1, 1, 1, 0),
