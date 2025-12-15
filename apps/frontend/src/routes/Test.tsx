@@ -30,6 +30,7 @@ export default function Test() {
 	const [textOpen, setTextOpen] = useState<boolean>(false);
 	const [selectOpen, setSelectOpen] = useState<boolean>(false);
 	const [selectValue, setSelectValue] = useState<string | null>(null);
+	const [statusDisplayOpen, setStatusDisplayOpen] = useState<boolean>(false);
 	const [status, setStatus] = useState<Status>({type:"none",label:""});
 
 	return (
@@ -102,7 +103,7 @@ export default function Test() {
 					{range(20).map(i => <Option key={i} value={`option${i + 1}`}>{`Option ${i + 1}`}</Option>)}
 				</Select>
 			</Accordion>
-			<Accordion title="Status display" open={true}>
+			<Accordion title="Status display" open={statusDisplayOpen} onToggle={setStatusDisplayOpen}>
 				<Button onClick={async () => {
 					setStatus({
 						type: "progress",
