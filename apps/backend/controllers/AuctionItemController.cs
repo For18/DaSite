@@ -147,9 +147,9 @@ public class AuctionItemController : ControllerBase {
       await db.SaveChangesAsync();
 
       if (failedPosts.Length > 0) {
-        return StatusCode(207, new {PostedItems = newItems.Select(item => new IdReference(item.Id)).ToArray(), FailedPosts = failedPosts});
+        return StatusCode(207, new {PostedItems = newItems.Select(item => new IdReference<ulong>(item.Id)).ToArray(), FailedPosts = failedPosts});
       }
-      return Ok(newItems.Select(item => new IdReference(item.Id)).ToArray());
+      return Ok(newItems.Select(item => new IdReference<ulong>(item.Id)).ToArray());
      }
   }
 

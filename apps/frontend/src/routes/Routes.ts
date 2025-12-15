@@ -31,6 +31,7 @@ export const Routes = {
     GetAllPrivate:    `/user/users/private`,
     GetAllPublic:     `/users`,
     GetAllByName:     (name: string) => `/users/by-name/${name}`,
+    GetCurrent:       `/private/current`,
     Post:             `/user`,
     Delete:           (id: number | string) => `/user/${id}`,
     Patch:            (id: number | string) => `/user/${id}`,

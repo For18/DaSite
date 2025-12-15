@@ -100,14 +100,14 @@ public class AuctionController : ControllerBase {
         .Select(auc => AuctionExternal.ToExternal(auc))
         .ToArrayAsync();
 
-      IdReference[] newAuctions = [];
+      IdReference<ulong>[] newAuctions = [];
 
       foreach(AuctionExternal entry in auctionsData) {
         if (existingAuctions.Contains(entry)) {
           failedPost.Append(new FailedBatchEntry<AuctionExternal>(entry, "Conflict, auction already exists"));
         } else {
           db.Add(entry);
-          newAuctions.Append(new IdReference(entry.Id));
+          newAuctions.Append(new IdReference<ulong>(entry.Id));
         }
       }
 
