@@ -5,12 +5,12 @@ import Image from "../components/Image";
 import Input from "../components/Input";
 import { Option, Select } from "../components/Select";
 import Typography from "../components/Typography";
-import { API_URL, ProductImage, User } from "../lib/api";
+import { API_URL, ProductImage, PublicUser } from "../lib/api";
 import styles from "./CreateProductPage.module.scss";
 import { Routes } from "./Routes"
 
 // TODO: add visual status for user
-async function PostProduct(name: string, description: string, images: string[], owner: User | null) {
+async function PostProduct(name: string, description: string, images: string[], owner: PublicUser | null) {
     const productId: number = await fetch(API_URL + Routes.Product.Post, {
 		            method: "POST",
 		            headers: { "Content-Type": "application/json" },
@@ -61,13 +61,13 @@ export default function CreateProductPage() {
 
 	const [ownerSearchValue, setOwnerSearchValue] = useState<string>("");
 	const foundUsersIndexRef = useRef<number>(0);
-	const [owner, setOwner] = useState<User | null>(null);
-	const [foundUsers, setFoundUsers] = useState<User[]>([]);
+	const [owner, setOwner] = useState<PublicUser | null>(null);
+	const [foundUsers, setFoundUsers] = useState<PublicUser[]>([]);
 
   useEffect(() => {
     fetch(API_URL + Routes.User.GetAllByName(ownerSearchValue))
     .then(response => response.json())
-    .then(data => data as User[])
+    .then(data => data as PublicUser[])
     .then(users => setFoundUsers(users))
   }, [ownerSearchValue]);
 
@@ -119,7 +119,7 @@ export default function CreateProductPage() {
 						onChange={value => setOwnerSearchValue(value)}
 					/>
 					<Select
-						value={owner?.userName.length == 0 ? null : owner?.userName ?? null}
+						value={owner?.userName?.length == 0 ? null : owner?.userName ?? null}
 						onChange={(value: string) => {
 							foundUsersIndexRef.current = Number(value);
 							setOwner(foundUsers[foundUsersIndexRef.current]);
