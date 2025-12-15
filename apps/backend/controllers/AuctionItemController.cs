@@ -120,6 +120,39 @@ public class AuctionItemController : ControllerBase {
 		}
 	}
 
+  [HttpPost("auction-items/batch")]
+  public async Task<ActionResult> BatchPost([FromBody] AuctionItemExternal[] itemsData) {
+    using (var db = new DatabaseContext()) {
+      FailedBatchEntry<AuctionItemExternal>[] failedPosts = [];
+
+      ulong[] itemIds = itemsData.Select(item => item.Id).ToArray();
+      ulong[] existingItems = await db.AuctionItems
+        .Where(item => itemIds.Contains(item.Id))
+        .Select(item => item.Id)
+        .ToArrayAsync();
+
+      AuctionItem[] newItems = [];
+      foreach(AuctionItemExternal item in itemsData) {
+        if (existingItems.Contains(item.Id)) {
+          failedPosts.Append(new FailedBatchEntry<AuctionItemExternal>(item, "Conflict item already exists"));
+        } else {
+          newItems.Append(item.ToAuctionItem(db));
+        }
+      }
+
+      foreach(AuctionItem item in newItems) {
+        db.AuctionItems.Add(item);
+      }
+
+      await db.SaveChangesAsync();
+
+      if (failedPosts.Length > 0) {
+        return StatusCode(207, new {PostedItems = newItems.Select(item => new IdReference(item.Id)).ToArray(), FailedPosts = failedPosts});
+      }
+      return Ok(newItems.Select(item => new IdReference(item.Id)).ToArray());
+     }
+  }
+
 	[HttpDelete("{id}")]
 	public async Task<ActionResult> Delete(ulong id) {
 		using (var db = new DatabaseContext()) {
