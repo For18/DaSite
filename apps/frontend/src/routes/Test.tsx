@@ -7,10 +7,10 @@ import Input from "../components/Input";
 import LabeledContainer from "../components/LabeledContainer";
 import { Option, Select } from "../components/Select";
 import Slider from "../components/Slider";
+import { Status, StatusDisplay } from "../components/StatusDisplay";
 import { Switch } from "../components/Switch";
 import Typography from "../components/Typography";
 import { pickRandom, range, sleep } from "../lib/util";
-import { Status, StatusDisplay } from "../components/StatusDisplay";
 
 export default function Test() {
 	useEffect(() => {
@@ -31,7 +31,7 @@ export default function Test() {
 	const [selectOpen, setSelectOpen] = useState<boolean>(false);
 	const [selectValue, setSelectValue] = useState<string | null>(null);
 	const [statusDisplayOpen, setStatusDisplayOpen] = useState<boolean>(false);
-	const [status, setStatus] = useState<Status>({type:"none",label:""});
+	const [status, setStatus] = useState<Status>({ type: "none", label: "" });
 
 	return (
 		<>
@@ -120,7 +120,9 @@ export default function Test() {
 							label: "Error"
 						}
 					]));
-				}}>Test</Button>
+				}}>
+					Test
+				</Button>
 				<StatusDisplay status={status}/>
 			</Accordion>
 		</>

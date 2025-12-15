@@ -64,7 +64,7 @@ $fadeDuration: 300ms;
 
 	animation-name: rotateIn;
 	animation-duration: $fadeDuration * 1.6;
-	animation-timing-function: cubic-bezier(.47,1.62,.64,1);
+	animation-timing-function: cubic-bezier(0.47, 1.62, 0.64, 1);
 	animation-fill-mode: forwards;
 }
 

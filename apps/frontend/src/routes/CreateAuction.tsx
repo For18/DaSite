@@ -1,11 +1,11 @@
 import { useRef, useState } from "react";
 import Button from "../components/Button";
 import ProductView from "../components/ProductView";
+import { Status, StatusDisplay } from "../components/StatusDisplay";
 import Throbber from "../components/Throbber";
 import Typography from "../components/Typography";
 import { API_URL, AuctionItem, useAPI } from "../lib/api";
 import styles from "./CreateAuction.module.scss";
-import { Status, StatusDisplay } from "../components/StatusDisplay";
 
 const pad = (n: number) => (n < 10 ? `0${n}` : String(n));
 
@@ -29,18 +29,18 @@ export default function CreateAuctions() {
 	const startingDateRef = useRef<string>(getDefaultDate());
 	const startingTimeRef = useRef<string>(getDefaultTime());
 
-    const auctionItems = useAPI<AuctionItem[]>("/auction-item/all");
-    const [status, setStatus] = useState<Status>({type: "none", label: ""});
+	const auctionItems = useAPI<AuctionItem[]>("/auction-item/all");
+	const [status, setStatus] = useState<Status>({ type: "none", label: "" });
 
-    async function submitAuction() {
-        const itemIds = productsSelected.map(Number).filter(id => !Number.isNaN(id));
-        if (itemIds.length === 0) {
-            setStatus({
+	async function submitAuction() {
+		const itemIds = productsSelected.map(Number).filter(id => !Number.isNaN(id));
+		if (itemIds.length === 0) {
+			setStatus({
 				type: "error",
 				label: "Please select at least one auction item."
 			});
-            return;
-        }
+			return;
+		}
 
 		// combine startingDate and startingTime into an ISO datetime
 		let startingTimeMillis: number | null = null;
@@ -62,72 +62,72 @@ export default function CreateAuctions() {
 			plannerId: null
 		} as any;
 
-        try {
-            setStatus({
+		try {
+			setStatus({
 				type: "progress",
 				label: "Creating auction..."
 			});
-            const resp = await fetch(API_URL + "/auction", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            });
+			const resp = await fetch(API_URL + "/auction", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(payload)
+			});
 
-            if (!resp.ok) {
-                const text = await resp.text();
-                setStatus({
+			if (!resp.ok) {
+				const text = await resp.text();
+				setStatus({
 					type: "error",
 					label: `Failed to create auction: ${resp.status} ${text}`
 				});
-                return;
-            }
+				return;
+			}
 
-            const data = await resp.json();
-            const createdId = data?.id ?? data?.Id ?? null;
-            setStatus({
+			const data = await resp.json();
+			const createdId = data?.id ?? data?.Id ?? null;
+			setStatus({
 				type: "success",
 				label: `Created auction id=${createdId ?? "(unknown)"}`
 			});
 
-            // create auction-entry records linking this auction to selected auction-items
-            if (createdId) {
-                const auctionId = Number(createdId);
-                setStatus({
+			// create auction-entry records linking this auction to selected auction-items
+			if (createdId) {
+				const auctionId = Number(createdId);
+				setStatus({
 					type: "progress",
 					label: "Creating auction entries..."
 				});
-                try {
-                    const promises = itemIds.map(async itemId => {
-                        const r = await fetch(API_URL + "/auction-entry", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ auctionId: auctionId, itemId: Number(itemId) })
-                        });
-                        if (!r.ok) {
-                            const text = await r.text();
-                            throw new Error(`Failed to create auction entry for item ${itemId}: ${r.status} ${text}`);
-                        }
-                    });
+				try {
+					const promises = itemIds.map(async itemId => {
+						const r = await fetch(API_URL + "/auction-entry", {
+							method: "POST",
+							headers: { "Content-Type": "application/json" },
+							body: JSON.stringify({ auctionId: auctionId, itemId: Number(itemId) })
+						});
+						if (!r.ok) {
+							const text = await r.text();
+							throw new Error(`Failed to create auction entry for item ${itemId}: ${r.status} ${text}`);
+						}
+					});
 
-                    await Promise.all(promises);
-                    setStatus({
+					await Promise.all(promises);
+					setStatus({
 						type: "success",
 						label: "Created auction entries."
 					});
-                } catch (err) {
-                    setStatus({
+				} catch (err) {
+					setStatus({
 						type: "error",
 						label: String(err)
 					});
-                }
-            }
-        } catch (err) {
-            setStatus({
+				}
+			}
+		} catch (err) {
+			setStatus({
 				type: "error",
 				label: String(err)
 			});
-        }
-    }
+		}
+	}
 
 	return (
 		<>
@@ -190,15 +190,15 @@ export default function CreateAuctions() {
 					onChange={e => (startingTimeRef.current = e.target.value)}
 				/>
 
-                <Button variant="contained" color="brand" onClick={submitAuction}>Create Auction</Button>
-                <Typography heading={2}>
-                    Selected Auction Item ID:
-                </Typography>
-                <Typography heading={3}>
-                    {productsSelected.length ? productsSelected.join(", ") : "(none selected)"}
-                </Typography>
-                <StatusDisplay status={status}/>
-            </div>
-        </>
-    );
+				<Button variant="contained" color="brand" onClick={submitAuction}>Create Auction</Button>
+				<Typography heading={2}>
+					Selected Auction Item ID:
+				</Typography>
+				<Typography heading={3}>
+					{productsSelected.length ? productsSelected.join(", ") : "(none selected)"}
+				</Typography>
+				<StatusDisplay status={status}/>
+			</div>
+		</>
+	);
 }
