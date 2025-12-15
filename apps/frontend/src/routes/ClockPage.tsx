@@ -6,8 +6,8 @@ import Clock from "../components/Clock";
 import EndedAuction from "../components/EndedAuction";
 import ProductView from "../components/ProductView";
 import Throbber from "../components/Throbber";
-import { API_URL, Auction, AuctionItem, useAPI } from "../lib/api";
-import { useTime } from "../lib/util";
+import { API_URL, Auction, AuctionItem, useAPI, PublicUser } from "../lib/api";
+import { useTime, usePromise } from "../lib/util";
 import styles from "./ClockPage.module.scss";
 import NotFound from "./NotFound";
 import { Routes } from "./Routes";
@@ -35,12 +35,32 @@ function formatStartCountDown(startingTime: number, currentTime: number) {
 
 const BUFFER_LEN = 5000;
 
+async function PostSale(purchaser: number, auctionId: number, amount: number, price: number) {
+  await fetch(API_URL + Routes.Sale.Post, {
+    method: "POST",
+		headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      purchaser: purchaser,
+      purchasedAuctionId: auctionId,
+      amount: amount,
+      price: price,
+      isPaid: false
+    })
+  });
+}
+
 /* TODO: contemplate if timed out auctions should be added to the back of the items stack being sold */
 export default function ClockPage() {
 	/* Main state holders */
 	const { auctionId } = useParams();
 	const auction = useAPI<Auction>(Routes.Auction.Get(auctionId ?? ""));
 	const [items, setItems] = useState<AuctionItem[] | null>(null);
+  const currentUser = usePromise<PublicUser>(() => {
+      return fetch(API_URL + Routes.User.GetCurrent)
+      .then(response => response.json())
+      .then(data => data as PublicUser)
+      .then(user => user);
+  }, [])
 
 	const currentItem = items ? items[0] : null;
 
@@ -97,6 +117,10 @@ export default function ClockPage() {
 	const onPurchase = (count: number) => {
 		currentItem?.count && (currentItem.count -= count);
 		if (currentItem && currentItem.count <= 0) doShift();
+
+    const shouldWait = auctionId == null || currentUser.isLoading || currentUser === null || currentUser.value == null;
+    while (shouldWait) {}
+    PostSale(currentUser.value!.id!, Number(auctionId)!, count, Number(currentPrice));
 	};
 
 	if (items === null) return <Throbber/>;
