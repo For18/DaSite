@@ -50,6 +50,18 @@ public class ProductController : ControllerBase {
 		}
 	}
 
+	[HttpGet("/products/batch")]
+	public async Task<ActionResult<ProductExternal[]>> BatchGet([FromBody] ulong[] ids) {
+		using (var db = new DatabaseContext()) {
+			return await db.Products
+				.Include(product => product.Owner)
+				.Include(product => product.ThumbnailImage)
+				.Where(product => ids.Contains(product.Id))
+				.Select(product => ProductExternal.ToExternal(product))
+				.ToArrayAsync();
+		}
+	}
+
 	[HttpGet("/products")]
 	[Authorize]
 	public async Task<ActionResult<ProductExternal[]>> GetAll() {
