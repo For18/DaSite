@@ -42,13 +42,13 @@ public class UserController : ControllerBase {
 		}
 	}
 
-	[HttpGet("/private-user/current")]
+	[HttpGet("/private/current")]
 	[Authorize]
 	public Task<ActionResult<User>> GetCurrent() {
 		return GetPrivate(Convert.ToUInt64(User.FindFirstValue(ClaimTypes.NameIdentifier)));
 	}
 
-	[HttpGet("/private-user/{id}")]
+	[HttpGet("private/{id}")]
 	public async Task<ActionResult<User>> GetPrivate(ulong id) {
 		using (var db = new DatabaseContext())
 		{
