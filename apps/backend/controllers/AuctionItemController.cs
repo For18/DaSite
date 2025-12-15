@@ -120,7 +120,7 @@ public class AuctionItemController : ControllerBase {
 		}
 	}
 
-  [HttpPost("auction-items/batch")]
+  [HttpPost("/auction-items/batch")]
   public async Task<ActionResult> BatchPost([FromBody] AuctionItemExternal[] itemsData) {
     using (var db = new DatabaseContext()) {
       FailedBatchEntry<AuctionItemExternal>[] failedPosts = [];
@@ -165,6 +165,33 @@ public class AuctionItemController : ControllerBase {
 			return NoContent();
 		}
 	}
+
+  [HttpDelete("/auction-items/batch")]
+  public async Task<ActionResult> BatchDelete(ulong[] ids) {
+    using (var db = new DatabaseContext()) {
+      FailedBatchEntry<ulong>[] failedDeletes = [];
+
+      AuctionItem[] existingItems = await db.AuctionItems
+        .Where(item => ids.Contains(item.Id))
+        .ToArrayAsync();
+
+      ulong[] existingItemIds = existingItems.Select(item => item.Id).ToArray();
+      foreach(ulong id in ids) {
+        if (!existingItemIds.Contains(id)) {
+          failedDeletes.Append(new FailedBatchEntry<ulong>(id, "Item not found"));
+        }
+      }
+
+      foreach(AuctionItem item in existingItems) {
+        db.AuctionItems.Remove(item);
+      }
+
+      await db.SaveChangesAsync();
+
+      if (failedDeletes.Length > 0) return StatusCode(207, new {DeletedItems = existingItemIds, FailedDeletes = failedDeletes});
+      return Ok(existingItemIds);
+    }
+  }
 
 	[HttpPatch("{id}")]
 	public async Task<ActionResult> Update(ulong id, [FromBody] JsonPatchDocument<AuctionItem> patchdoc) {
