@@ -11,7 +11,8 @@ export interface ButtonProps extends PropsWithChildren {
 }
 
 export default function Button(
-	{ onClick, children: content, disabled = false, variant = "text", color = "brand", className, labelledby }: ButtonProps
+	{ onClick, children: content, disabled = false, variant = "text", color = "brand", className, labelledby }:
+		ButtonProps
 ): JSX.Element {
 	return (
 		<button className={[

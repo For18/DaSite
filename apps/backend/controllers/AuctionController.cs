@@ -97,7 +97,7 @@ public class AuctionController : ControllerBase {
 	[Authorize]
 	public async Task<ActionResult> Delete(ulong id) {
 		if (!(User.IsInRole("AuctionMaster") || User.IsInRole("Admin"))) return Forbid();
-		
+
 		using (var db = new DatabaseContext()) {
 			Auction? auction = await db.Auctions.Where(auc => auc.Id == id).Include(auc => auc.Planner).FirstOrDefaultAsync();
 			if (auction == null) return NotFound();

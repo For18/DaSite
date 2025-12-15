@@ -126,9 +126,9 @@ export default function ClockPage() {
 	return (
 		<div className={styles.baseContainer}>
 			<div className={styles.clockContainer}>
-				{ isAuctionOver ? <EndedAuction id={auction.id}/> :
-
-        isBuffered ?
+				{isAuctionOver ?
+					<EndedAuction id={auction.id}/> :
+					isBuffered ?
 					(
 						<>
 							<BeforeAuction startingPoint={formatStartCountDown(currentItemStartTime!, currentTime)}/>

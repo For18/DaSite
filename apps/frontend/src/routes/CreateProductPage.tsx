@@ -1,53 +1,54 @@
-import { Dispatch, SetStateAction, useEffect, useState, useRef } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import Accordion from "../components/Accordion";
 import Button from "../components/Button";
 import Image from "../components/Image";
 import Input from "../components/Input";
-import { Select, Option } from "../components/Select";
+import { Option, Select } from "../components/Select";
 import Typography from "../components/Typography";
 import { API_URL, ProductImage, User } from "../lib/api";
 import styles from "./CreateProductPage.module.scss";
 
 // TODO: add visual status for user
 async function PostProduct(name: string, description: string, images: string[], owner: User | null) {
-    const productId: number = await fetch(API_URL + "/product", {
-		            method: "POST",
-		            headers: { "Content-Type": "application/json" },
-		            body: JSON.stringify({
-		          	name: name,
-		          	description: description,
-		          	ownerId: owner?.id,
-		          	thumbnailImageId: null})
-	            })
-              .then(response => response.json())
-              .then(data => data as number)
-              .then(id => id);
+	const productId: number = await fetch(API_URL + "/product", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({
+			name: name,
+			description: description,
+			ownerId: owner?.id,
+			thumbnailImageId: null
+		})
+	})
+		.then(response => response.json())
+		.then(data => data as number)
+		.then(id => id);
 
-    await fetch(API_URL + "/product-image/batch", {
-      method: "POST",
-      headers: { "Content-Type": "application/json"},
-      body: JSON.stringify(images.map(url => JSON.stringify({parent: productId, url: url})))
-    })
+	await fetch(API_URL + "/product-image/batch", {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(images.map(url => JSON.stringify({ parent: productId, url: url })))
+	});
 
-    const imageIds: number[] = await fetch(API_URL + "/product/from/" + productId, {
-		  method: "GET",
-		  headers: { "Content-Type": "application/json" },
-    })
-    .then(response => response.json())
-    .then(data => data as ProductImage[])
-    .then(images => images.map(image => image.id));
+	const imageIds: number[] = await fetch(API_URL + "/product/from/" + productId, {
+		method: "GET",
+		headers: { "Content-Type": "application/json" }
+	})
+		.then(response => response.json())
+		.then(data => data as ProductImage[])
+		.then(images => images.map(image => image.id));
 
-    if (imageIds.length >= 1) {
-      await fetch(API_URL + "/product/" + productId, {
-		    method: "PATCH",
-		    headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          op: "replace",
-          path: "thumbnailImage",
-          value: imageIds[0]
-        })
-      }) 
-    }
+	if (imageIds.length >= 1) {
+		await fetch(API_URL + "/product/" + productId, {
+			method: "PATCH",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				op: "replace",
+				path: "thumbnailImage",
+				value: imageIds[0]
+			})
+		});
+	}
 }
 
 export default function CreateProductPage() {
@@ -58,17 +59,17 @@ export default function CreateProductPage() {
 	const [description, setDescription] = useState<string>("");
 	const [batchSize, setBatchSize] = useState<number>(0);
 
-  const [ownerSearchValue, setOwnerSearchValue] = useState<string>("");
-  const foundUsersIndexRef = useRef<number>(0);
+	const [ownerSearchValue, setOwnerSearchValue] = useState<string>("");
+	const foundUsersIndexRef = useRef<number>(0);
 	const [owner, setOwner] = useState<User | null>(null);
-  const [foundUsers, setFoundUsers] = useState<User[]>([]);
+	const [foundUsers, setFoundUsers] = useState<User[]>([]);
 
-  useEffect(() => {
-    fetch(API_URL + "/users/by-name/" + ownerSearchValue)
-    .then(response => response.json())
-    .then(data => data as User[])
-    .then(users => setFoundUsers(users))
-  }, [ownerSearchValue]);
+	useEffect(() => {
+		fetch(API_URL + "/users/by-name/" + ownerSearchValue)
+			.then(response => response.json())
+			.then(data => data as User[])
+			.then(users => setFoundUsers(users));
+	}, [ownerSearchValue]);
 
 	return (
 		<div className={styles.container}>
@@ -109,22 +110,27 @@ export default function CreateProductPage() {
 				/>
 
 				<Typography className={styles.inputTitle}>Owner</Typography>
-        <div>
-				  <Input
-				  	className={styles.inputBasic}
-            placeholder="Search for Users"
-				  	value={ownerSearchValue}
-				  	type="text"
-				  	onChange={value => setOwnerSearchValue(value)}
-				  />
-          <Select 
-            value={owner?.userName.length == 0 ? null : owner?.userName ?? null} 
-            onChange={(value: string) => {
-              foundUsersIndexRef.current = Number(value) ; setOwner(foundUsers[foundUsersIndexRef.current])}}
-            placeholder="Select a User">
-            {foundUsers.map((entry, index) => <Option key={entry.id} value={String(index)}> {entry.userName} </Option>)}
-          </Select>
-        </div>
+				<div>
+					<Input
+						className={styles.inputBasic}
+						placeholder="Search for Users"
+						value={ownerSearchValue}
+						type="text"
+						onChange={value => setOwnerSearchValue(value)}
+					/>
+					<Select
+						value={owner?.userName.length == 0 ? null : owner?.userName ?? null}
+						onChange={(value: string) => {
+							foundUsersIndexRef.current = Number(value);
+							setOwner(foundUsers[foundUsersIndexRef.current]);
+						}}
+						placeholder="Select a User"
+					>
+						{foundUsers.map((entry, index) => (
+							<Option key={entry.id} value={String(index)}>{entry.userName}</Option>
+						))}
+					</Select>
+				</div>
 
 				<Typography className={styles.inputTitle}>Image Link</Typography>
 				<Input
@@ -178,8 +184,8 @@ export default function CreateProductPage() {
 }
 
 function AccordionEntry(
-    { index, imageUrl, name, setImages }:
-    { index: number, imageUrl: string, name: string, setImages: Dispatch<SetStateAction<string[]>> }
+	{ index, imageUrl, name, setImages }: { index: number, imageUrl: string, name: string,
+		setImages: Dispatch<SetStateAction<string[]>> }
 ) {
 	return (
 		<div className={styles.card}>
@@ -205,7 +211,7 @@ function ProductPreview(
 	return (
 		<div className={styles.productPreview}>
 			<div>
-				<Typography heading={1}>{name == '' ? "Product Name" : name}</Typography>
+				<Typography heading={1}>{name == "" ? "Product Name" : name}</Typography>
 				<Typography className={styles.seller}>
 					Seller: {owner ? owner : "Seller not found"}
 				</Typography>
@@ -225,7 +231,7 @@ function ProductPreview(
 			<hr className={styles.horizontalRule}/>
 
 			<div>
-				<Typography>{description == '' ? "Description" : description}</Typography>
+				<Typography>{description == "" ? "Description" : description}</Typography>
 			</div>
 
 			{images[0] && showThumbnail ?

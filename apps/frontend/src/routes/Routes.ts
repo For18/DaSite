@@ -17,7 +17,7 @@ export default {
 	"/auctions": Auctions,
 	"/auctions/pending": PendingAuction,
 	"/profile/:userId": Profile,
-  "/auctions/create": CreateAuction,
+	"/auctions/create": CreateAuction,
 	"/create-product": CreateProduct,
 	"/test": Test,
 	"/login": Login,

@@ -3,7 +3,7 @@ import Checkbox from "./Checkbox";
 describe("<Checkbox/>", () => {
 	it("renders", () => {
 		cy.mount(<Checkbox checked={false} onClick={() => {}}/>);
-	})
+	});
 
 	it("can be toggled", () => {
 		let value = false;
@@ -11,5 +11,5 @@ describe("<Checkbox/>", () => {
 		cy.get("[role=checkbox]").click().then(() => {
 			expect(value).to.be.true;
 		});
-	})
+	});
 });
