@@ -1,4 +1,4 @@
-import { type Auction, type AuctionItem, type Product, type ProductImage, useAPI, type User } from "../lib/api";
+import { type Auction, type AuctionItem, type Product, type ProductImage, useAPI, type PublicUser } from "../lib/api";
 import NotFound from "../routes/NotFound";
 import Image from "./Image";
 import styles from "./PendingAuctionCard.module.scss";
@@ -8,7 +8,7 @@ import { Routes } from "../routes/Routes"
 
 export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 	const item = useAPI<AuctionItem>(Routes.AuctionItem.GetByAuction(auction.id));
-	const user = useAPI<User>(Routes.User.GetPrivate(auction.plannerId));
+	const user = useAPI<PublicUser>(Routes.User.GetPublic(auction.plannerId));
 	const product = useAPI<Product>(item ? Routes.Product.Get(item.productId) : null);
 	const thumbnailImage = useAPI<ProductImage[]>(product ? Routes.ProductImage.FromParent(product.id) : null);
 	const thumbnailUrl = thumbnailImage && thumbnailImage[0] && thumbnailImage[0].url ?
