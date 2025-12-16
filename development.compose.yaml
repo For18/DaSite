@@ -1,3 +1,5 @@
+name: for18
+
 services:
   frontend:
     build: ./apps/frontend
