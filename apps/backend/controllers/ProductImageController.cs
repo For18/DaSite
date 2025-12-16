@@ -44,6 +44,19 @@ public class ProductImageController : ControllerBase {
 		}
 	}
 
+	[HttpGet("batch")]
+	public async Task<ActionResult<ProductImageExternal[]>> BatchGet([FromBody] ulong[] ids)
+	{
+		using (var db = new DatabaseContext())
+		{
+			return await db.ProductImages
+			.Include(prodImage => prodImage.Parent)
+			.Where(prodImage => ids.Contains(prodImage.Id))
+			.Select(prodImage => ProductImageExternal.ToExternal(prodImage))
+			.ToArrayAsync();
+		}
+	}
+
 	[HttpGet("from/{id}")]
 	public async Task<ActionResult<ProductImageExternal[]>> GetByParent(ulong id) {
 		using (var db = new DatabaseContext()) {
