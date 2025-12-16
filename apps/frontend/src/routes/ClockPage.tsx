@@ -53,7 +53,7 @@ async function PostSale(purchaser: number, auctionId: number, amount: number, pr
 export default function ClockPage() {
 	/* Main state holders */
 	const { auctionId } = useParams();
-	const auction = useAPI<Auction>(Routes.Auction.Get(auctionId ?? ""));
+	const auction = useAPI<Auction>(auctionId != null ? Routes.Auction.Get(auctionId) : null);
 	const [items, setItems] = useState<AuctionItem[] | null>(null);
 	const currentUser = usePromise<PublicUser>(() => {
 		return fetch(API_URL + Routes.User.GetCurrent)
