@@ -18,45 +18,25 @@ export interface InputProps {
 
 export default function Input(
 	{ type, placeholder, disabled, labelledby, value, onChange, onEnter, inputRef, className }: InputProps
-) {
-	// NOTE: using a ternary to decide which type to cast 'inputRef' does not work for TypeScript's
-	// it still complains hence the big and ugly code duplication
-	if (type === "textfield") {
-		return (
-			<textarea
-				ref={inputRef as Ref<HTMLTextAreaElement>}
-				placeholder={placeholder}
-				className={styles.input + (className ? " " + className : "")}
-				disabled={disabled}
-				aria-labelledby={labelledby}
-				value={value}
-				onChange={e => onChange?.(e.target.value)}
-				onKeyDown={e => {
-					if (e.key === "Enter") {
-						e.preventDefault();
-						onEnter?.();
-					}
-				}}
-			/>
-		);
-	}
-
-	return (
-		<input
-			ref={inputRef as Ref<HTMLInputElement>}
-			type={type}
-			placeholder={placeholder}
-			className={styles.input + (className ? " " + className : "")}
-			disabled={disabled}
-			aria-labelledby={labelledby}
-			value={value}
-			onChange={e => onChange?.(e.target.value)}
-			onKeyDown={e => {
-				if (e.key === "Enter") {
-					e.preventDefault();
-					onEnter?.();
-				}
-			}}
-		/>
-	);
+) {	
+  const Element = type === "textfield" ? "textarea" : "input";
+  	if (type === "textfield") type = "text";
+  	return (
+  		<Element 
+        ref={inputRef as any}
+        type={type}
+        placeholder={placeholder}
+  			className={styles.input + (className != null ? " " + className : "")}
+        disabled={disabled}
+  			aria-labelledby={labelledby}
+        value={value}
+        onChange={e => onChange?.(e.target.value)}
+        onKeyDown={e => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            onEnter?.();
+          }
+        }}
+        />
+  	);
 }
