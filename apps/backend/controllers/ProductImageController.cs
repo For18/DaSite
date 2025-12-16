@@ -131,10 +131,10 @@ public class ProductImageController : ControllerBase {
 
 			await db.SaveChangesAsync();
 
-			return Ok(new {
-				AddedImages = newImageIds.Select(id => new IdReference<ulong>(id)).ToArray(),
-				FailedImages = failedPosts
-			});
+      if (failedPosts.Length > 0) {
+        return StatusCode(208, new {AddedImages = newImageIds, FailedPosts = failedPosts});
+      }
+      return Ok(newImageIds);
 		}
 	}
 
