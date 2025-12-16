@@ -1,4 +1,4 @@
-import { MouseEvent, PropsWithChildren, useCallback, useEffect } from "react";
+import { PropsWithChildren, useEffect } from "react";
 
 export interface ClickAwayDetectorProps extends PropsWithChildren {
 	onClickAway: () => void;

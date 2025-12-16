@@ -1,4 +1,3 @@
-import { createElement } from "react";
 import Button from "./Button";
 
 describe("<Button/>", () => {

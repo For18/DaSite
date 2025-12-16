@@ -2,7 +2,6 @@ import { useRef, useState } from "react";
 import Button from "../components/Button";
 import ProductView from "../components/ProductView";
 import { Status, StatusDisplay } from "../components/StatusDisplay";
-import Throbber from "../components/Throbber";
 import Typography from "../components/Typography";
 import { API_URL, AuctionItem, useAPI } from "../lib/api";
 import styles from "./CreateAuction.module.scss";

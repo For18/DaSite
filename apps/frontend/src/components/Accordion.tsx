@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { PropsWithChildren, useId, useLayoutEffect, useRef, useState } from "react";
 import { useScreenSize } from "../lib/util";
 import styles from "./Accordion.module.scss";
 import Typography from "./Typography";

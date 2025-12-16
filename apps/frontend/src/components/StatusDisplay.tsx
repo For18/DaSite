@@ -1,5 +1,4 @@
 import styles from "./StatusDisplay.module.scss";
-import Typography from "./Typography";
 
 // TODO: Add warning status?
 export type StatusType = "none" | "progress" | "success" | "error";
