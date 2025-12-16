@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router";
 import Button from "../components/Button";
 import Input from "../components/Input";
@@ -30,6 +30,7 @@ export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
+  const passwordRef = useRef<HTMLInputElement>(null);
 
   async function handleSubmit() {
     const { works, httpStatus, data } = await login(email, password);
@@ -52,8 +53,8 @@ export default function Login() {
       <div className={styles.imageBackground}>
         <div className={styles.container}>
           <Typography heading={1}>Login</Typography>
-          <Input type="email" placeholder="email" value={email} onChange={setEmail} />
-          <Input type="password" placeholder="password" value={password} onChange={setPassword} />
+          <Input type="email" placeholder="email" value={email} onChange={setEmail} onEnter={() => passwordRef.current?.focus()}/>
+          <Input type="password" placeholder="password" value={password} onChange={setPassword} inputRef={passwordRef} onEnter={() => login(email, password)}/>
           <Button onClick={handleSubmit}>Login</Button>
           <Typography href="/forgotpassword">Forgot password?</Typography>
           <Typography href={Routes.Pages.Register}>Don't have an account yet?</Typography>
