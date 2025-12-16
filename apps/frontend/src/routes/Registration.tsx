@@ -41,7 +41,7 @@ export default function Registration() {
 		}
 
 		console.log("Registration successful:", httpStatus, data);
-		navigate(Routes.Identity.PostLogin);
+		navigate(Routes.Pages.Login);
 	}
 
 	useEffect(() => {
