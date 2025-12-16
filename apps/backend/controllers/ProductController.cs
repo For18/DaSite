@@ -50,6 +50,18 @@ public class ProductController : ControllerBase {
 		}
 	}
 
+	[HttpGet("/products/batch")]
+	public async Task<ActionResult<ProductExternal[]>> BatchGet([FromBody] ulong[] ids) {
+		using (var db = new DatabaseContext()) {
+			return await db.Products
+				.Include(product => product.Owner)
+				.Include(product => product.ThumbnailImage)
+				.Where(product => ids.Contains(product.Id))
+				.Select(product => ProductExternal.ToExternal(product))
+				.ToArrayAsync();
+		}
+	}
+
 	[HttpGet("/products")]
 	[Authorize]
 	public async Task<ActionResult<ProductExternal[]>> GetAll() {
@@ -81,6 +93,48 @@ public class ProductController : ControllerBase {
 			  .Where(item => ids.Contains(item.Id))
 			  .Select(item => ProductExternal.ToExternal(item.Product))
 			  .ToArrayAsync();
+		}
+	}
+
+	[HttpPost("/products/batch")]
+	public async Task<ActionResult> BatchPost(ProductExternal[] productsData) {
+		using (var db = new DatabaseContext())
+		{
+			FailedBatchEntry<ProductExternal>[] failedPost = [];
+
+			Product[] products = productsData.Select(product => product.ToProduct(db)).ToArray();
+
+			ulong[] productIds = productsData.Select(product => product.Id).ToArray();
+			ProductExternal[] existingProducts = await db.Products
+				.Where(product => productIds.Contains(product.Id))
+				.Select(product => ProductExternal.ToExternal(product))
+				.ToArrayAsync();
+
+			IdReference<ulong>[] newProducts = [];
+
+			foreach (ProductExternal entry in productsData)
+			{
+				if (existingProducts.Contains(entry))
+				{
+					failedPost.Append(new FailedBatchEntry<ProductExternal>(entry, "Conflict, product already exists"));
+				} else 
+				{
+					db.Add(entry);
+					newProducts.Append(new IdReference<ulong>(entry.Id));
+				}
+			}
+
+			await db.SaveChangesAsync();
+
+			if (failedPost.Length > 0)
+			{
+				return StatusCode(207, new {
+					AddedProducts = newProducts,
+					FailedProducts = failedPost
+				});
+			}
+
+			return Ok(newProducts);
 		}
 	}
 

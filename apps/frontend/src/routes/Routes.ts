@@ -75,8 +75,11 @@ export const Routes = {
     GetOfUser:       (userId: number | string) => `/products/user/${userId}`,
     GetContainedIn:  (ids: (number | string)[]) =>
                         `/batch?${ids.map(id => `ids=${id}`).join("&")}`,
+    BatchGet:        `/products/batch`,
     Post:            `/product`,
+    BatchPost:       `/product/batch`,
     Delete:          (id: number | string) => `/product/${id}`,
+    BatchDelete:     `/products/batch`,
     Patch:           (id: number | string) => `/product/${id}`,
   },
 
