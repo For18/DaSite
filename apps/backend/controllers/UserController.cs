@@ -26,7 +26,7 @@ public class PublicUser {
 [Route("user")]
 public class UserController : ControllerBase {
 	[HttpGet("{id}")]
-	public async Task<ActionResult<PublicUser>> GetPublic(ulong id) {
+	public async Task<ActionResult<PublicUser>> GetPublic(string id) {
 		using (var db = new DatabaseContext())
 		{
 			User? user = await db.Users.FindAsync(id);
@@ -45,11 +45,11 @@ public class UserController : ControllerBase {
 	[HttpGet("/private/current")]
 	[Authorize]
 	public Task<ActionResult<User>> GetCurrent() {
-		return GetPrivate(Convert.ToUInt64(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+		return GetPrivate(Convert.ToString(User.FindFirstValue(ClaimTypes.NameIdentifier)!));
 	}
 
 	[HttpGet("private/{id}")]
-	public async Task<ActionResult<User>> GetPrivate(ulong id) {
+	public async Task<ActionResult<User>> GetPrivate(string id) {
 		using (var db = new DatabaseContext())
 		{
 			User? user = await db.Users.FindAsync(id);
@@ -117,7 +117,7 @@ public class UserController : ControllerBase {
 	}
 
 	[HttpPatch("{id}")]
-	public async Task<ActionResult> Update(ulong id, [FromBody] JsonPatchDocument<User> patchdoc) {
+	public async Task<ActionResult> Update(string id, [FromBody] JsonPatchDocument<User> patchdoc) {
 		using (var db = new DatabaseContext()) {
 			User? user = await db.Users.FindAsync(id);
 			if (user == null) return NotFound();
