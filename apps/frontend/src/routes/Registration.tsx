@@ -6,6 +6,7 @@ import Typography from "../components/Typography";
 import { API_URL } from "../lib/api";
 import styles from "./AuthForm.module.scss";
 import { Routes } from "./Routes";
+import { login } from "./Login";
 
 export default function Registration() {
 	const [email, setEmail] = useState<string>("");
@@ -41,7 +42,8 @@ export default function Registration() {
 		}
 
 		console.log("Registration successful:", httpStatus, data);
-		navigate(Routes.Pages.Login);
+    login(email, password);
+		navigate(Routes.Pages.Home);
 	}
 
 	useEffect(() => {
