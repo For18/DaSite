@@ -1,4 +1,4 @@
-import { Ref } from "react";
+import { Ref, useCallback } from "react";
 import styles from "./Input.module.scss";
 
 export type InputType = "text" | "textfield" | "password" | "date" | "datetime-local" | "email" | "number" | "password"
@@ -19,6 +19,22 @@ export interface InputProps {
 export default function Input(
 	{ type, placeholder, disabled, labelledby, value, onChange, onEnter, inputRef, className }: InputProps
 ) {	
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      onChange?.(e.target.value);
+    },
+    [onChange]
+  );
+  
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        onEnter?.();
+      }
+    },
+    [onEnter]
+  );
   const Element = type === "textfield" ? "textarea" : "input";
   	if (type === "textfield") type = "text";
   	return (
@@ -30,13 +46,8 @@ export default function Input(
         disabled={disabled}
   			aria-labelledby={labelledby}
         value={value}
-        onChange={e => onChange?.(e.target.value)}
-        onKeyDown={e => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            onEnter?.();
-          }
-        }}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
         />
   	);
 }
