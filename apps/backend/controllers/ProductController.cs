@@ -155,6 +155,36 @@ public class ProductController : ControllerBase {
 		}
 	}
 
+	[HttpDelete("/products/batch")]
+	public async Task<ActionResult> BatchDelete([FromBody] ulong[] ids) {
+		using (var db = new DatabaseContext()) {
+			FailedBatchEntry<ulong>[] failedProducts = [];
+
+			Product[] products = await db.Products.Where(products => ids.Contains(products.Id)).Select(products => products).ToArrayAsync();
+
+			foreach (ulong productId in ids)
+			{
+				Product? product = products.FirstOrDefault(p => p.Id == productId);
+				if (product == null) 
+				{
+					failedProducts.Append(new FailedBatchEntry<ulong>(productId, "Corresponding Product does not exist"));
+				} else
+				{
+					db.Products.Remove(product);
+				}
+			}
+
+			await db.SaveChangesAsync();
+			if (failedProducts.Length > 0)
+			{
+				return StatusCode(207, new {FailedDeletes = failedProducts});
+			}
+
+			return NoContent();
+		}
+	}
+
+
 	[HttpDelete("{id}")]
 	[Authorize]
 	public async Task<ActionResult> Delete(ulong id) {
