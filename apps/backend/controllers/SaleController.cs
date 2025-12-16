@@ -81,6 +81,20 @@ public class SaleController : ControllerBase {
 		}
 	}
 
+	[HttpGet("/sales/batch")]
+	public async Task<ActionResult<SaleExternal[]>> GetBatch([FromBody] ulong[] ids)
+	{
+		using (var db = new DatabaseContext())
+		{
+			return await db.Sales
+			.Include(sale => sale.PurchasedAuction)
+			.Include(sale => sale.Purchaser)
+			.Where(sale => ids.Contains(sale.Id))
+			.Select(sale => SaleExternal.ToExternal(sale))
+			.ToArrayAsync();
+		}	
+	}
+
 	[HttpPost]
 	[Authorize]
 	public async Task<ActionResult> Post(SaleExternal saleData) {

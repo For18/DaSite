@@ -59,6 +59,7 @@ export const Routes = {
     Get:             (id: number | string) => `/sale/${id}`,
     GetByAuction:    (auctionId: number | string) => `/sale/by-auction/${auctionId}`,
     GetAll:          `/sales`,
+    GetBatch:        `/sales/batch`,
     Post:            `/sale`,
     Delete:          (id: number | string) => `/sale/${id}`,
     Patch:           (id: number | string) => `/sale/${id}`,
@@ -67,9 +68,11 @@ export const Routes = {
   ProductImage: {
     Get:             (id: number | string) => `/product-image/${id}`,
     FromParent:      (parentId: number | string) => `/product-image/from/${parentId}`,
+    BatchGet:        `/product-image/batch`,
     Post:            `/product-image`,
     BatchPost:       `/product-image/batch`,
     Delete:          (id: number | string) => `/product-image/${id}`,
+    BatchDelete:     `/product-image/batch`,
     Patch:           (id: number | string) => `/product-image/${id}`,
   },
 
