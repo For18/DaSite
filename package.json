@@ -1,5 +1,10 @@
 {
 	"dependencies": {
 		"dprint": "^0.50.2"
+	},
+	"scripts": {
+		"up:dev": "docker compose -f development.compose.yaml up --build -w",
+		"up:prod": "docker compose -f production.compose.yaml up --build",
+		"format": "npx dprint fmt"
 	}
 }
