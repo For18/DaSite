@@ -8,18 +8,20 @@ export interface InputProps {
 	placeholder?: string;
 	disabled?: boolean;
 	labelledby?: string;
+	id?: string;
 	value?: string;
 	onChange?: (value: string) => void;
 	className?: string;
 }
 
 export default function Input(
-	{ type, placeholder, disabled, labelledby, value, onChange, className }: InputProps
+	{ type, placeholder, disabled, labelledby, id, value, onChange, className }: InputProps
 ) {
 	const Element = type === "textfield" ? "textarea" : "input";
 	if (type === "textfield") type = "text";
 	return (
 		<Element type={type} placeholder={placeholder}
+			id={id}
 			className={styles.input + (className != null ? " " + className : "")} disabled={disabled}
 			aria-labelledby={labelledby} value={value} onChange={e => onChange?.(e.target.value)}/>
 	);
