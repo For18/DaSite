@@ -172,16 +172,18 @@ export default function CreateAuctions() {
 					) :
 					null}
 
-				<Typography heading={3}>Starting date:</Typography>
+				<label htmlFor="startingDate" className={styles.inputLabel}>Starting date</label>
 				<input
+					id="startingDate"
 					className={styles.input}
 					name="startingDate"
 					type="date"
 					defaultValue={startingDateRef.current}
 					onChange={e => (startingDateRef.current = e.target.value)}
 				/>
-				<Typography heading={3}>Starting time:</Typography>
+				<label htmlFor="startingTime" className={styles.inputLabel}>Starting time</label>
 				<input
+					id="startingTime"
 					className={styles.input}
 					name="startingTime"
 					type="time"
