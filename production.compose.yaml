@@ -1,0 +1,37 @@
+services:
+  frontend:
+    restart: always
+    build:
+      context: apps/frontend
+      dockerfile: production.Dockerfile
+    environment:
+      VITE_API_URL: "/api/v1"
+  backend:
+    restart: always
+    build: ./apps/backend
+    environment:
+      DOTNET_ENVIRONMENT: Development
+      MYSQL_CONNECTION_STRING: server=db;database=for18;user=for18;password=bVSFogXKSd1q3pVc
+      DB_RETRY_DELAY: 3000
+      DB_RETRY_COUNT: 10
+      AUTH0_DOMAIN: dev-sgosh6ob4ol3bdpq.us.auth0.com
+      AUTH0_CLIENTID: BTpnrucZXi23g7Pur3gIa0Umo4XNXay3
+      API_SERVER_URL: /api/v1
+  db:
+    restart: always
+    image: mysql:lts
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: yes
+      MYSQL_DATABASE: for18
+      MYSQL_USER: for18
+      MYSQL_PASSWORD: bVSFogXKSd1q3pVc
+    volumes:
+      - db:/var/lib/mysql
+  proxy:
+    restart: always
+    build: ./apps/proxy
+    ports:
+      - 80:80
+
+volumes:
+  db:
