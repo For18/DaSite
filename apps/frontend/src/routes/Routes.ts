@@ -57,6 +57,7 @@ export const Routes = {
     GetAll:          `/sales`,
     GetBatch:        `/sales/batch`,
     Post:            `/sale`,
+    PostBatch:       `/sales/batch`,
     Delete:          (id: number | string) => `/sale/${id}`,
     Patch:           (id: number | string) => `/sale/${id}`,
   },

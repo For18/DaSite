@@ -87,11 +87,11 @@ public class SaleController : ControllerBase {
 		using (var db = new DatabaseContext())
 		{
 			return await db.Sales
-			.Include(sale => sale.PurchasedAuction)
-			.Include(sale => sale.Purchaser)
-			.Where(sale => ids.Contains(sale.Id))
-			.Select(sale => SaleExternal.ToExternal(sale))
-			.ToArrayAsync();
+				.Include(sale => sale.PurchasedAuction)
+				.Include(sale => sale.Purchaser)
+				.Where(sale => ids.Contains(sale.Id))
+				.Select(sale => SaleExternal.ToExternal(sale))
+				.ToArrayAsync();
 		}	
 	}
 
@@ -109,6 +109,49 @@ public class SaleController : ControllerBase {
 			await db.SaveChangesAsync();
 
 			return Ok(new IdReference<ulong>(sale.Id));
+		}
+	}
+
+	[HttpPost("sales/batch")]
+	public async Task<ActionResult> BatchPost(SaleExternal[] saleData)
+	{
+		using (var db = new DatabaseContext())
+		{
+			FailedBatchEntry<SaleExternal>[] failedPost = [];
+			Sale[] sales = saleData.Select(sale => sale.ToSale(db)).ToArray();
+
+			ulong[] saleIds = saleData.Select(sale => sale.Id).ToArray();
+			SaleExternal[] existingSales = await db.Sales
+				.Where(sale => saleIds.Contains(sale.Id))
+				.Select(sale => SaleExternal.ToExternal(sale))
+				.ToArrayAsync();
+
+			IdReference<ulong>[] newSales = [];
+
+			foreach (SaleExternal entry in saleData)
+			{
+				if (existingSales.Contains(entry))
+				{
+					failedPost.Append(new FailedBatchEntry<SaleExternal>(entry, "Conflict, sale already exists"));
+				} else
+				{
+					db.Add(entry);
+					newSales.Append(new IdReference<ulong>(entry.Id));
+				}
+			}
+
+			await db.SaveChangesAsync();
+
+			if (failedPost.Length > 0)
+			{
+				return StatusCode(207, new
+				{
+					AddedSales = newSales,
+					FailedSales = failedPost
+				});
+			}
+
+			return Ok(newSales);
 		}
 	}
 
