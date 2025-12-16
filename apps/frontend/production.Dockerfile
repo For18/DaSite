@@ -6,7 +6,7 @@ COPY ./package.json .
 COPY ./package-lock.json .
 RUN npm install
 
-COPY ./[^production.nginx.conf] .
+COPY . .
 
 RUN npx vite build --outDir ./dist
 
