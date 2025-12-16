@@ -56,7 +56,7 @@ export default function Login() {
 					<Input type="email" placeholder="email" value={email} onChange={setEmail}
 						onEnter={() => passwordRef.current?.focus()}/>
 					<Input type="password" placeholder="password" value={password} onChange={setPassword}
-						inputRef={passwordRef} onEnter={() => login(email, password)}/>
+						inputRef={passwordRef} onEnter={handleSubmit}/>
 					<Button onClick={handleSubmit}>Login</Button>
 					<Typography href="/forgotpassword">Forgot password?</Typography>
 					<Typography href={Routes.Pages.Register}>Don't have an account yet?</Typography>
