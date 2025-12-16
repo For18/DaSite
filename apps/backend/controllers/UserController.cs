@@ -172,6 +172,33 @@ public class UserController : ControllerBase {
 		}
 	}
 
+  [HttpDelete("/users/batch")]
+  public async Task<ActionResult> BatchDelete([FromBody] string ids) {
+    using (var db = new DatabaseContext()) {
+      FailedBatchEntry<string>[] failedDeletes = [];
+      User[] existingUsers = await db.Users
+        .Where(user => ids.Contains(user.Id))
+        .Select(user => user)
+        .ToArrayAsync();
+
+      string[] existingUserIds = existingUsers.Select(user => user.Id).ToArray();
+      foreach(string id in existingUserIds) {
+        if (!ids.Contains(id)) {
+          failedDeletes.Append(new FailedBatchEntry<string>(id, "User does not exist"));
+        }
+      }
+
+      foreach(User user in existingUsers) {
+        db.Users.Remove(user);
+      }
+
+      await db.SaveChangesAsync();
+
+      if (failedDeletes.Length > 0) return StatusCode(207, new {DeletedUsers = existingUserIds, failedDeletes = failedDeletes});
+      return NoContent();
+    }
+  }
+
 	[HttpPatch("{id}")]
 	public async Task<ActionResult> Update(string id, [FromBody] JsonPatchDocument<User> patchdoc) {
 		using (var db = new DatabaseContext()) {

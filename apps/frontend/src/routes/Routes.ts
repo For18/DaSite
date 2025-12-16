@@ -51,6 +51,7 @@ export const Routes = {
     Post:             `/user`,
     BatchPost:        `/users/batch`,
     Delete:           (id: number | string) => `/user/${id}`,
+    BatchDelete:      `/users/batch`,
     Patch:            (id: number | string) => `/user/${id}`,
   },
 
