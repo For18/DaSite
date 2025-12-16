@@ -44,7 +44,7 @@ public class ProductImageController : ControllerBase {
 		}
 	}
 
-	[HttpGet("batch")]
+	[HttpGet("/product-images/batch")]
 	public async Task<ActionResult<ProductImageExternal[]>> BatchGet([FromBody] ulong[] ids)
 	{
 		using (var db = new DatabaseContext())
@@ -90,7 +90,7 @@ public class ProductImageController : ControllerBase {
 		}
 	}
 
-	[HttpPost("batch")]
+	[HttpPost("/product-images/batch")]
 	public async Task<ActionResult> BatchPost([FromBody] ProductImageExternal[] images) {
 		using (var db = new DatabaseContext()) {
 			FailedBatchEntry<ProductImageExternal>[] failedPosts = [];
@@ -131,10 +131,10 @@ public class ProductImageController : ControllerBase {
 
 			await db.SaveChangesAsync();
 
-			return Ok(new {
-				AddedImages = newImageIds.Select(id => new IdReference<ulong>(id)).ToArray(),
-				FailedImages = failedPosts
-			});
+      if (failedPosts.Length > 0) {
+        return StatusCode(208, new {AddedImages = newImageIds, FailedPosts = failedPosts});
+      }
+      return Ok(newImageIds);
 		}
 	}
 
@@ -174,6 +174,7 @@ public class ProductImageController : ControllerBase {
 			}
 
 			await db.SaveChangesAsync();
+
 			if (failedProductImages.Length > 0)
 			{
 				return StatusCode(207, new {FailedDeletes = failedProductImages});
