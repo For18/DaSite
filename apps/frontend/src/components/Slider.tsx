@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useRef, useState } from "react";
+import { type ReactElement, useEffect, useRef, useState } from "react";
 import { useMousePosition } from "../lib/util";
 import styles from "./Slider.module.scss";
 

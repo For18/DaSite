@@ -7,7 +7,7 @@ import Input from "../components/Input";
 import LabeledContainer from "../components/LabeledContainer";
 import { Option, Select } from "../components/Select";
 import Slider from "../components/Slider";
-import { Status, StatusDisplay } from "../components/StatusDisplay";
+import { type Status, StatusDisplay } from "../components/StatusDisplay";
 import { Switch } from "../components/Switch";
 import Typography from "../components/Typography";
 import { pickRandom, range, sleep } from "../lib/util";

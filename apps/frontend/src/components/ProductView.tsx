@@ -1,6 +1,5 @@
 import Throbber from "../components/Throbber";
-import { type ProductImage, useAPI, type User } from "../lib/api";
-import { AuctionItem, Product } from "../lib/api";
+import { type ProductImage, useAPI, type User, type AuctionItem, type Product } from "../lib/api";
 import NotFound from "../routes/NotFound";
 import Image from "./Image";
 import styles from "./ProductView.module.scss";

@@ -3,7 +3,7 @@ import ProductView from "../components/ProductView";
 import Section from "../components/Section";
 import Throbber from "../components/Throbber";
 import Typography from "../components/Typography";
-import { API_URL, Auction, AuctionEntry, AuctionItem, useAPI } from "../lib/api";
+import { API_URL, type Auction, type AuctionEntry, type AuctionItem, useAPI } from "../lib/api";
 import { formatEuros, usePromise } from "../lib/util";
 
 /* TODO: update

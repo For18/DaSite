@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect } from "react";
+import { type PropsWithChildren, useEffect } from "react";
 
 export interface ClickAwayDetectorProps extends PropsWithChildren {
 	onClickAway: () => void;

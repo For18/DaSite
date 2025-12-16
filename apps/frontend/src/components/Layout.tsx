@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { type PropsWithChildren } from "react";
 import { useLocation } from "react-router";
 import Footer from "./Footer";
 import styles from "./Layout.module.scss";

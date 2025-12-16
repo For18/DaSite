@@ -1,11 +1,11 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { type Dispatch, type SetStateAction, useEffect, useRef, useState } from "react";
 import Accordion from "../components/Accordion";
 import Button from "../components/Button";
 import Image from "../components/Image";
 import Input from "../components/Input";
 import { Option, Select } from "../components/Select";
 import Typography from "../components/Typography";
-import { API_URL, ProductImage, User } from "../lib/api";
+import { API_URL, type ProductImage, type User } from "../lib/api";
 import styles from "./CreateProductPage.module.scss";
 
 // TODO: add visual status for user

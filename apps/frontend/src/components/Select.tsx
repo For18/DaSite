@@ -1,4 +1,4 @@
-import { createContext, Key, PropsWithChildren, useCallback, useContext, useId, useLayoutEffect, useRef,
+import { createContext, type Key, type PropsWithChildren, useCallback, useContext, useId, useLayoutEffect, useRef,
 	useState } from "react";
 import ClickAwayDetector from "./ClickAwayDetector";
 import styles from "./Select.module.scss";
