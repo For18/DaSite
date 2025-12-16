@@ -59,6 +59,7 @@ export const Routes = {
     Post:            `/sale`,
     PostBatch:       `/sales/batch`,
     Delete:          (id: number | string) => `/sale/${id}`,
+    DeleteSale:      `/sales/delete`,
     Patch:           (id: number | string) => `/sale/${id}`,
   },
 

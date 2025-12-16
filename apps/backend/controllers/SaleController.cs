@@ -171,6 +171,37 @@ public class SaleController : ControllerBase {
 		}
 	}
 
+	[HttpDelete("/sales/batch")]
+	public async Task<ActionResult> BatchDelete([FromBody] ulong[] ids)
+	{
+		using (var db = new DatabaseContext())
+		{
+			FailedBatchEntry<ulong>[] failedSales = [];
+
+			Sale[] sales = await db.Sales.Where(sales => ids.Contains(sales.Id)).Select(sales => sales).ToArrayAsync();
+			
+			foreach (ulong salesId in ids)
+			{
+				Sale? sale = sales.FirstOrDefault(s => s.Id == salesId);
+				if (sale == null)
+				{
+					failedSales.Append(new FailedBatchEntry<ulong>(salesId, "Corresponding sale does not exist"));
+				}else
+				{
+					db.Sales.Remove(sale);
+				}
+			}
+
+			await db.SaveChangesAsync();
+			if (failedSales.Length > 0)
+			{
+				return StatusCode(207, new {FailedDeletes = failedSales});
+			}
+
+			return NoContent();
+		}
+	}
+
 	[HttpPatch("{id}")]
 	[Authorize]
 	public async Task<ActionResult> Update(ulong id, [FromBody] JsonPatchDocument<Sale> patchdoc) {
