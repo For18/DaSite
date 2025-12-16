@@ -172,8 +172,11 @@ public class SaleController : ControllerBase {
 	}
 
 	[HttpDelete("/sales/batch")]
+  [Authorize]
 	public async Task<ActionResult> BatchDelete([FromBody] ulong[] ids)
 	{
+		if (!(User.IsInRole("AuctionMaster") || User.IsInRole("Admin"))) return Forbid();
+
 		using (var db = new DatabaseContext())
 		{
 			FailedBatchEntry<ulong>[] failedSales = [];

@@ -91,7 +91,10 @@ public class ProductImageController : ControllerBase {
 	}
 
 	[HttpPost("/product-images/batch")]
+  [Authorize]
 	public async Task<ActionResult> BatchPost([FromBody] ProductImageExternal[] images) {
+		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+
 		using (var db = new DatabaseContext()) {
 			FailedBatchEntry<ProductImageExternal>[] failedPosts = [];
 
@@ -155,7 +158,10 @@ public class ProductImageController : ControllerBase {
 	}
 
 	[HttpDelete("batch")]
+  [Authorize]
 	public async Task<ActionResult> BatchDelete([FromBody] ulong[] ids){
+		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+
 		using (var db = new DatabaseContext()) {
 			FailedBatchEntry<ulong>[] failedProductImages = [];
 		

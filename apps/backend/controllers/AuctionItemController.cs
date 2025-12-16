@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
+using System;
+using Microsoft.AspNetCore.Authorization;
 
 [DisplayName(nameof(AuctionItem))]
 public class AuctionItemExternal {
@@ -106,7 +108,10 @@ public class AuctionItemController : ControllerBase {
 	}
 
 	[HttpPost]
+  [Authorize]
 	public async Task<ActionResult> Post(AuctionItemExternal auctionItemData) {
+ 		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+
 		using (var db = new DatabaseContext()) {
 
 			if (await db.AuctionItems.AnyAsync(auc => auc.Id == auctionItemData.Id)) return Conflict("Already exists");
@@ -121,7 +126,10 @@ public class AuctionItemController : ControllerBase {
 	}
 
   [HttpPost("/auction-items/batch")]
+  [Authorize]
   public async Task<ActionResult> BatchPost([FromBody] AuctionItemExternal[] itemsData) {
+ 		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+
     using (var db = new DatabaseContext()) {
       FailedBatchEntry<AuctionItemExternal>[] failedPosts = [];
 
@@ -154,7 +162,10 @@ public class AuctionItemController : ControllerBase {
   }
 
 	[HttpDelete("{id}")]
+  [Authorize]
 	public async Task<ActionResult> Delete(ulong id) {
+ 		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+
 		using (var db = new DatabaseContext()) {
 			AuctionItem? item = await db.AuctionItems.FindAsync(id);
 			if (item == null) return NotFound();
@@ -167,7 +178,10 @@ public class AuctionItemController : ControllerBase {
 	}
 
   [HttpDelete("/auction-items/batch")]
+  [Authorize]
   public async Task<ActionResult> BatchDelete(ulong[] ids) {
+ 		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+
     using (var db = new DatabaseContext()) {
       FailedBatchEntry<ulong>[] failedDeletes = [];
 

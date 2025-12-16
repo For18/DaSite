@@ -49,7 +49,10 @@ public class UserController : ControllerBase {
 	}
 
   [HttpGet("/users/private/batch")]
+  [Authorize]
   public async Task<ActionResult<User[]>> BatchGetPrivate([FromBody] string[] ids) {
+		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+    
     using (var db = new DatabaseContext())
     {
       return await db.Users
@@ -77,7 +80,10 @@ public class UserController : ControllerBase {
   }
 
 	[HttpGet("private/{id}")]
+  [Authorize]
 	public async Task<ActionResult<User>> GetPrivate(string id) {
+		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+
 		using (var db = new DatabaseContext())
 		{
 			User? user = await db.Users.FindAsync(id);
@@ -88,7 +94,10 @@ public class UserController : ControllerBase {
 	}
 
 	[HttpGet("/users/private")]
+  [Authorize]
 	public async Task<ActionResult<User[]>> GetAllPrivate() {
+		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+
 		using (var db = new DatabaseContext()) {
 			User[] users = await db.Users.ToArrayAsync();
 
@@ -129,7 +138,10 @@ public class UserController : ControllerBase {
 	}
 
   [HttpPost("/users/batch")]
+  [Authorize]
   public async Task<ActionResult> BatchPost([FromBody] User[] users) {
+ 		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+
     using (var db = new DatabaseContext()) {
       FailedBatchEntry<string>[] failedPosts = [];
       string[] userIds = users.Select(user => user.Id).ToArray();
@@ -173,7 +185,10 @@ public class UserController : ControllerBase {
 	}
 
   [HttpDelete("/users/batch")]
+  [Authorize]
   public async Task<ActionResult> BatchDelete([FromBody] string ids) {
+		if (User.IsInRole("Admin")) return Forbid();
+
     using (var db = new DatabaseContext()) {
       FailedBatchEntry<string>[] failedDeletes = [];
       User[] existingUsers = await db.Users

@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
+using Microsoft.AspNetCore.Authorization;
+
 
 [DisplayName(nameof(AuctionEntry))]
 public class AuctionEntryExternal {
@@ -117,7 +119,10 @@ public class AuctionEntryController : ControllerBase {
 	}
 
 	[HttpPost]
+  [Authorize]
 	public async Task<ActionResult> Post(AuctionEntryExternal auctionEntryData) {
+ 		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+
 		using (var db = new DatabaseContext()) {
 
 			bool isConflicting = await db.AuctionEntries
@@ -138,7 +143,10 @@ public class AuctionEntryController : ControllerBase {
 	}
 
   [HttpPost("/auction-entries/batch")]
+  [Authorize]
   public async Task<ActionResult> BatchPost([FromBody] AuctionEntryExternal[] entriesData) {
+ 		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+
     using (var db = new DatabaseContext())
     {
       FailedBatchEntry<AuctionEntryExternal>[] failedPosts = [];
@@ -170,7 +178,10 @@ public class AuctionEntryController : ControllerBase {
   }
 
 	[HttpDelete("{auctionId}/{itemId}")]
+  [Authorize]
 	public async Task<ActionResult> Delete(ulong auctionId, ulong itemId) {
+ 		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+
 		using (var db = new DatabaseContext()) {
 			AuctionEntry? entry = await db.AuctionEntries
         .Include(entry => entry.Auction)
@@ -193,7 +204,10 @@ public class AuctionEntryController : ControllerBase {
    * For now tuple.Item1 = auctionId, tuple.Item2 = itemId
    */
   [HttpDelete("/auction-entries/batch")]
+  [Authorize]
   public async Task<ActionResult> BatchDelete([FromBody] Tuple<ulong, ulong>[] ids) {
+ 		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+
     using (var db = new DatabaseContext())
     {
       FailedBatchEntry<Tuple<ulong, ulong>>[] failedDeletes = []; 

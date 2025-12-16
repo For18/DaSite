@@ -88,7 +88,10 @@ public class AuctionController : ControllerBase {
 	}
 
   [HttpPost("/auctions/batch")]
+  [Authorize]
   public async Task<ActionResult> BatchPost(AuctionExternal[] auctionsData) {
+		if (!(User.IsInRole("AuctionMaster") || User.IsInRole("Admin"))) return Forbid();
+
     using (var db = new DatabaseContext()) {
       FailedBatchEntry<AuctionExternal>[] failedPost = [];
 
@@ -142,7 +145,10 @@ public class AuctionController : ControllerBase {
 	}
 
   [HttpDelete("/auctions/batch")]
+  [Authorize]
   public async Task<ActionResult> BatchDelete([FromBody] ulong[] ids) {
+		if (!(User.IsInRole("AuctionMaster") || User.IsInRole("Admin"))) return Forbid();
+
     using (var db = new DatabaseContext()) {
       FailedBatchEntry<ulong>[] failedDeletes = [];
 

@@ -83,7 +83,10 @@ public class ProductController : ControllerBase {
 	}
 
 	[HttpPost("/products/batch")]
+  [Authorize]
 	public async Task<ActionResult> BatchPost(ProductExternal[] productsData) {
+ 		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+
 		using (var db = new DatabaseContext())
 		{
 			FailedBatchEntry<ProductExternal>[] failedPost = [];
@@ -142,7 +145,10 @@ public class ProductController : ControllerBase {
 	}
 
 	[HttpDelete("/products/batch")]
+  [Authorize]
 	public async Task<ActionResult> BatchDelete([FromBody] ulong[] ids) {
+		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+
 		using (var db = new DatabaseContext()) {
 			FailedBatchEntry<ulong>[] failedProducts = [];
 
