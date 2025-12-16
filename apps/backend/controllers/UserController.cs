@@ -48,6 +48,34 @@ public class UserController : ControllerBase {
 		return GetPrivate(Convert.ToString(User.FindFirstValue(ClaimTypes.NameIdentifier)!));
 	}
 
+  [HttpGet("/users/private/batch")]
+  public async Task<ActionResult<User[]>> BatchGetPrivate([FromBody] string[] ids) {
+    using (var db = new DatabaseContext())
+    {
+      return await db.Users
+        .Where(user => ids.Contains(user.Id))
+        .ToArrayAsync();
+    }
+  }
+
+  [HttpGet("/users/batch")]
+  public async Task<ActionResult<PublicUser[]>> BatchGetPublic([FromBody] string[] ids) {
+    ActionResult<User[]> privateUsersResult = await BatchGetPrivate(ids);
+    if (privateUsersResult.Result is OkObjectResult okResult
+        && okResult.Value is User[] privateUsers
+        ) {
+      return privateUsers
+        .Select(user => new PublicUser{
+            Id = user.Id,
+            UserName = user.UserName,
+            TelephoneNumber = user.PhoneNumber,
+            AvatarImageUrl = user.AvatarImageUrl,
+            Email = user.Email
+        }).ToArray();
+    }
+    return privateUsersResult.Result!;
+  }
+
 	[HttpGet("private/{id}")]
 	public async Task<ActionResult<User>> GetPrivate(string id) {
 		using (var db = new DatabaseContext())
@@ -59,7 +87,7 @@ public class UserController : ControllerBase {
 		}
 	}
 
-	[HttpGet("users/private")]
+	[HttpGet("/users/private")]
 	public async Task<ActionResult<User[]>> GetAllPrivate() {
 		using (var db = new DatabaseContext()) {
 			User[] users = await db.Users.ToArrayAsync();
