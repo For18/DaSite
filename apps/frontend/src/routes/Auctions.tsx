@@ -27,7 +27,7 @@ export default function Auctions() {
 		).then(entryArrays => entryArrays.flat()), [auctions]);
 
 	const auctionItemIds = useMemo(() => {
-		const ids = new Set();
+		const ids = new Set<number>();
 		auctionEntries?.forEach(entry => ids.add(entry.itemId));
 		return Array.from(ids);
 	}, [auctionEntries]);
@@ -36,7 +36,7 @@ export default function Auctions() {
 		() =>
 			Promise.all(
 				auctionItemIds.map(auctionItemId =>
-					fetch(API_URL + Routes.AuctionItem.Get(auctionItemId as number) + auctionItemId)
+					fetch(API_URL + Routes.AuctionItem.Get(auctionItemId) + auctionItemId)
 						.then(response => response.json())
 				)
 			),
