@@ -1,10 +1,10 @@
-import { type Auction, type AuctionItem, type Product, type ProductImage, useAPI, type PublicUser } from "../lib/api";
+import { type Auction, type AuctionItem, type Product, type ProductImage, type PublicUser, useAPI } from "../lib/api";
 import NotFound from "../routes/NotFound";
+import { Routes } from "../routes/Routes";
 import Image from "./Image";
 import styles from "./PendingAuctionCard.module.scss";
 import Throbber from "./Throbber";
 import Typography from "./Typography";
-import { Routes } from "../routes/Routes"
 
 export default function PendingAuctionCard({ auction }: { auction: Auction }) {
 	const item = useAPI<AuctionItem>(Routes.AuctionItem.GetByAuction(auction.id));

@@ -1,16 +1,18 @@
 import Throbber from "../components/Throbber";
-import { type ProductImage, useAPI, type PublicUser } from "../lib/api";
+import { type ProductImage, type PublicUser, useAPI } from "../lib/api";
 import { AuctionItem, Product } from "../lib/api";
 import NotFound from "../routes/NotFound";
+import { Routes } from "../routes/Routes";
 import Image from "./Image";
 import styles from "./ProductView.module.scss";
 import Typography from "./Typography";
-import { Routes } from "../routes/Routes"
 
 export default function ProductView({ auctionItem }: { auctionItem: AuctionItem }) {
 	const product = useAPI<Product>(Routes.Product.Get(auctionItem.productId));
 	const owner = useAPI<PublicUser>(product?.id ? Routes.User.GetPublic(product.ownerId) : null);
-	const prodImages = useAPI<ProductImage[]>(product?.id ? Routes.ProductImage.FromParent(product.id) + product.id : null);
+	const prodImages = useAPI<ProductImage[]>(
+		product?.id ? Routes.ProductImage.FromParent(product.id) + product.id : null
+	);
 	// const thumbnailImage = useAPI<ProductImage>(
 	// 	product && showThumbnail ? "/product-image/from/" + product.thumbnailImageId : null
 	// );

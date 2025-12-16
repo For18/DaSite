@@ -5,7 +5,7 @@ import Throbber from "../components/Throbber";
 import Typography from "../components/Typography";
 import { API_URL, Auction, AuctionEntry, AuctionItem, useAPI } from "../lib/api";
 import { formatEuros, usePromise } from "../lib/util";
-import { Routes } from "./Routes"
+import { Routes } from "./Routes";
 
 /* TODO: update
  * each card should hold title of auction and have a list of links or hover-able text or similar
@@ -34,10 +34,12 @@ export default function Auctions() {
 
 	const { value: auctionItems } = usePromise<AuctionItem[]>(
 		() =>
-			Promise.all(auctionItemIds.map(auctionItemId =>
-				fetch(API_URL + Routes.AuctionItem.Get(auctionItemId as number) + auctionItemId)
-					.then(response => response.json())
-			)),
+			Promise.all(
+				auctionItemIds.map(auctionItemId =>
+					fetch(API_URL + Routes.AuctionItem.Get(auctionItemId as number) + auctionItemId)
+						.then(response => response.json())
+				)
+			),
 		[auctionItemIds]
 	);
 

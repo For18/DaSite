@@ -7,48 +7,49 @@ import { Option, Select } from "../components/Select";
 import Typography from "../components/Typography";
 import { API_URL, ProductImage, PublicUser } from "../lib/api";
 import styles from "./CreateProductPage.module.scss";
-import { Routes } from "./Routes"
+import { Routes } from "./Routes";
 
 // TODO: add visual status for user
 async function PostProduct(name: string, description: string, images: string[], owner: PublicUser | null) {
-    const productId: number = await fetch(API_URL + Routes.Product.Post, {
-		            method: "POST",
-		            headers: { "Content-Type": "application/json" },
-		            body: JSON.stringify({
-		          	name: name,
-		          	description: description,
-		          	ownerId: owner?.id,
-		          	thumbnailImageId: null})
-	            })
-              .then(response => response.json())
-              .then(data => data as number)
-              .then(id => id);
+	const productId: number = await fetch(API_URL + Routes.Product.Post, {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({
+			name: name,
+			description: description,
+			ownerId: owner?.id,
+			thumbnailImageId: null
+		})
+	})
+		.then(response => response.json())
+		.then(data => data as number)
+		.then(id => id);
 
-    await fetch(API_URL + Routes.ProductImage.BatchPost, {
-      method: "POST",
-      headers: { "Content-Type": "application/json"},
-      body: JSON.stringify(images.map(url => JSON.stringify({parent: productId, url: url})))
-    })
+	await fetch(API_URL + Routes.ProductImage.BatchPost, {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(images.map(url => JSON.stringify({ parent: productId, url: url })))
+	});
 
-    const imageIds: number[] = await fetch(API_URL + Routes.ProductImage.FromParent(productId), {
-		  method: "GET",
-		  headers: { "Content-Type": "application/json" },
-    })
-    .then(response => response.json())
-    .then(data => data as ProductImage[])
-    .then(images => images.map(image => image.id));
+	const imageIds: number[] = await fetch(API_URL + Routes.ProductImage.FromParent(productId), {
+		method: "GET",
+		headers: { "Content-Type": "application/json" }
+	})
+		.then(response => response.json())
+		.then(data => data as ProductImage[])
+		.then(images => images.map(image => image.id));
 
-    if (imageIds.length >= 1) {
-      await fetch(API_URL + Routes.Product.Patch(productId), {
-		    method: "PATCH",
-		    headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          op: "replace",
-          path: "thumbnailImage",
-          value: imageIds[0]
-        })
-      }) 
-    }
+	if (imageIds.length >= 1) {
+		await fetch(API_URL + Routes.Product.Patch(productId), {
+			method: "PATCH",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				op: "replace",
+				path: "thumbnailImage",
+				value: imageIds[0]
+			})
+		});
+	}
 }
 
 export default function CreateProductPage() {
@@ -64,12 +65,12 @@ export default function CreateProductPage() {
 	const [owner, setOwner] = useState<PublicUser | null>(null);
 	const [foundUsers, setFoundUsers] = useState<PublicUser[]>([]);
 
-  useEffect(() => {
-    fetch(API_URL + Routes.User.GetAllByName(ownerSearchValue))
-    .then(response => response.json())
-    .then(data => data as PublicUser[])
-    .then(users => setFoundUsers(users))
-  }, [ownerSearchValue]);
+	useEffect(() => {
+		fetch(API_URL + Routes.User.GetAllByName(ownerSearchValue))
+			.then(response => response.json())
+			.then(data => data as PublicUser[])
+			.then(users => setFoundUsers(users));
+	}, [ownerSearchValue]);
 
 	return (
 		<div className={styles.container}>

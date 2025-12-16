@@ -45,10 +45,8 @@ public class ProductImageController : ControllerBase {
 	}
 
 	[HttpGet("/product-images/batch")]
-	public async Task<ActionResult<ProductImageExternal[]>> BatchGet([FromBody] ulong[] ids)
-	{
-		using (var db = new DatabaseContext())
-		{
+	public async Task<ActionResult<ProductImageExternal[]>> BatchGet([FromBody] ulong[] ids) {
+		using (var db = new DatabaseContext()) {
 			return await db.ProductImages
 			.Include(prodImage => prodImage.Parent)
 			.Where(prodImage => ids.Contains(prodImage.Id))
@@ -91,7 +89,7 @@ public class ProductImageController : ControllerBase {
 	}
 
 	[HttpPost("/product-images/batch")]
-  [Authorize]
+	[Authorize]
 	public async Task<ActionResult> BatchPost([FromBody] ProductImageExternal[] images) {
 		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
 
@@ -134,10 +132,10 @@ public class ProductImageController : ControllerBase {
 
 			await db.SaveChangesAsync();
 
-      if (failedPosts.Length > 0) {
-        return StatusCode(208, new {AddedImages = newImageIds, FailedPosts = failedPosts});
-      }
-      return Ok(newImageIds);
+			if (failedPosts.Length > 0) {
+				return StatusCode(208, new { AddedImages = newImageIds, FailedPosts = failedPosts });
+			}
+			return Ok(newImageIds);
 		}
 	}
 
@@ -158,37 +156,33 @@ public class ProductImageController : ControllerBase {
 	}
 
 	[HttpDelete("batch")]
-  [Authorize]
-	public async Task<ActionResult> BatchDelete([FromBody] ulong[] ids){
+	[Authorize]
+	public async Task<ActionResult> BatchDelete([FromBody] ulong[] ids) {
 		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
 
 		using (var db = new DatabaseContext()) {
 			FailedBatchEntry<ulong>[] failedProductImages = [];
-		
+
 			ProductImage[] productImages = await db.ProductImages.Where(prodImages => ids.Contains(prodImages.Id)).ToArrayAsync();
 
-			foreach (var productImageId in ids)
-			{
+			foreach (var productImageId in ids) {
 				ProductImage? prodImage = productImages.FirstOrDefault(pi => productImageId == pi.Id);
-				if (prodImage == null)
-				{
+				if (prodImage == null) {
 					failedProductImages.Append(new FailedBatchEntry<ulong>(productImageId, "Corresponding Product does not exist"));
-				} else
-				{
+				} else {
 					db.ProductImages.Remove(prodImage);
 				}
 			}
 
 			await db.SaveChangesAsync();
 
-			if (failedProductImages.Length > 0)
-			{
-				return StatusCode(207, new {FailedDeletes = failedProductImages});
+			if (failedProductImages.Length > 0) {
+				return StatusCode(207, new { FailedDeletes = failedProductImages });
 			}
-			
+
 			return NoContent();
 		}
-	}	
+	}
 
 	[HttpPatch("{id}")]
 	[Authorize]

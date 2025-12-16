@@ -5,7 +5,7 @@ import Typography from "../components/Typography";
 import { type Auction, useAPI } from "../lib/api";
 import { useScreenSize } from "../lib/util";
 import styles from "./PendingAuction.module.scss";
-import { Routes } from "./Routes"
+import { Routes } from "./Routes";
 
 /* TODO:
  * Add pure text page of pending auctions

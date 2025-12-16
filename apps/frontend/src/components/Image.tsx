@@ -5,7 +5,7 @@ export interface ImageProps {
 	alt: string;
 	width?: number;
 	height?: number;
-  onClick?: React.MouseEventHandler<HTMLImageElement>;
+	onClick?: React.MouseEventHandler<HTMLImageElement>;
 	className?: string;
 	style?: React.CSSProperties;
 }
@@ -19,10 +19,10 @@ export default function Image({ src, alt, width, height, onClick, className, sty
 	const [imageIndex, setImageIndex] = useState<number>(0);
 
 	return (
-		<img src={src[imageIndex]} alt={alt} width={width} height={height} onClick={onClick} className={className} style={style}
-			onError={() => {
-				if (imageIndex >= src.length - 1) return;
-				setImageIndex(imageIndex + 1);
-			}}/>
+		<img src={src[imageIndex]} alt={alt} width={width} height={height} onClick={onClick} className={className}
+			style={style} onError={() => {
+			if (imageIndex >= src.length - 1) return;
+			setImageIndex(imageIndex + 1);
+		}}/>
 	);
 }

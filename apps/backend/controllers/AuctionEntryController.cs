@@ -42,48 +42,45 @@ public class AuctionEntryExternal {
 [Route("auction-entry")]
 public class AuctionEntryController : ControllerBase {
 	[HttpGet("{auctionId}")]
-		public async Task<ActionResult<AuctionEntryExternal[]>> Get(ulong auctionId) {
-			using (var db = new DatabaseContext())
-			{
-				AuctionEntryExternal[] entries = await db.AuctionEntries
-					.Where(entry => entry.Auction.Id == auctionId)
-					.Select(entry => new AuctionEntryExternal(entry.Auction.Id, entry.AuctionItem.Id))
-					.ToArrayAsync();
+	public async Task<ActionResult<AuctionEntryExternal[]>> Get(ulong auctionId) {
+		using (var db = new DatabaseContext()) {
+			AuctionEntryExternal[] entries = await db.AuctionEntries
+				.Where(entry => entry.Auction.Id == auctionId)
+				.Select(entry => new AuctionEntryExternal(entry.Auction.Id, entry.AuctionItem.Id))
+				.ToArrayAsync();
 
 			return entries;
 		}
 	}
 
-  [HttpGet("/auction-entries/batch")]
-  public async Task<ActionResult<AuctionEntryExternal[][]>> BatchGet([FromBody] ulong[] auctionIds) {
-    using (var db = new DatabaseContext())
-    {
-      AuctionEntry[] entries = await db.AuctionEntries
-        .Include(entry => entry.Auction)
-        .ThenInclude(auc => auc.Planner)
-        .Include(entry => entry.AuctionItem)
-        .ThenInclude(item => item.Product)
-        .ThenInclude(prod => prod.ThumbnailImage)
-        .Where(entry => auctionIds.Contains(entry.Auction.Id))
-        .Select(entry => entry)
-        .ToArrayAsync();
+	[HttpGet("/auction-entries/batch")]
+	public async Task<ActionResult<AuctionEntryExternal[][]>> BatchGet([FromBody] ulong[] auctionIds) {
+		using (var db = new DatabaseContext()) {
+			AuctionEntry[] entries = await db.AuctionEntries
+			  .Include(entry => entry.Auction)
+			  .ThenInclude(auc => auc.Planner)
+			  .Include(entry => entry.AuctionItem)
+			  .ThenInclude(item => item.Product)
+			  .ThenInclude(prod => prod.ThumbnailImage)
+			  .Where(entry => auctionIds.Contains(entry.Auction.Id))
+			  .Select(entry => entry)
+			  .ToArrayAsync();
 
-      AuctionEntryExternal[][] groupedEntries = entries
-        .GroupBy(entry => entry.Auction.Id)
-        .Select(group =>
-            group.Select(AuctionEntryExternal.ToExternal)
-            .ToArray()
-        )
-        .ToArray();
+			AuctionEntryExternal[][] groupedEntries = entries
+			  .GroupBy(entry => entry.Auction.Id)
+			  .Select(group =>
+				  group.Select(AuctionEntryExternal.ToExternal)
+				  .ToArray()
+			  )
+			  .ToArray();
 
-      return Ok(groupedEntries);
-    }
-  }
+			return Ok(groupedEntries);
+		}
+	}
 
 	[HttpGet("from-auction/{auctionId}")]
 	public async Task<ActionResult<AuctionEntryExternal[]>> GetFromAuction(ulong auctionId) {
-		using (var db = new DatabaseContext())
-		{
+		using (var db = new DatabaseContext()) {
 
 			AuctionEntryExternal[] entries = await db.AuctionEntries
 		.Include(entry => entry.AuctionItem)
@@ -101,8 +98,7 @@ public class AuctionEntryController : ControllerBase {
 
 	[HttpGet("from-item/{itemId}")]
 	public async Task<ActionResult<AuctionEntryExternal[]>> GetFromItem(ulong itemId) {
-		using (var db = new DatabaseContext())
-		{
+		using (var db = new DatabaseContext()) {
 
 			AuctionEntryExternal[] entries = await db.AuctionEntries
 		.Include(entry => entry.AuctionItem)
@@ -119,9 +115,9 @@ public class AuctionEntryController : ControllerBase {
 	}
 
 	[HttpPost]
-  [Authorize]
+	[Authorize]
 	public async Task<ActionResult> Post(AuctionEntryExternal auctionEntryData) {
- 		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
 
 		using (var db = new DatabaseContext()) {
 
@@ -142,53 +138,52 @@ public class AuctionEntryController : ControllerBase {
 		}
 	}
 
-  [HttpPost("/auction-entries/batch")]
-  [Authorize]
-  public async Task<ActionResult> BatchPost([FromBody] AuctionEntryExternal[] entriesData) {
- 		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+	[HttpPost("/auction-entries/batch")]
+	[Authorize]
+	public async Task<ActionResult> BatchPost([FromBody] AuctionEntryExternal[] entriesData) {
+		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
 
-    using (var db = new DatabaseContext())
-    {
-      FailedBatchEntry<AuctionEntryExternal>[] failedPosts = [];
-      ulong[] auctionIds = entriesData.Select(entry => entry.AuctionId).ToArray();
-      ulong[] itemIds = entriesData.Select(entry => entry.ItemId).ToArray();
-      ulong[] foundAuctionIds = await db.Auctions.Where(auc => auctionIds.Contains(auc.Id)).Select(auc => auc.Id).ToArrayAsync();
-      ulong[] foundItemIds = await db.AuctionItems.Where(item => itemIds.Contains(item.Id)).Select(item => item.Id).ToArrayAsync();
+		using (var db = new DatabaseContext()) {
+			FailedBatchEntry<AuctionEntryExternal>[] failedPosts = [];
+			ulong[] auctionIds = entriesData.Select(entry => entry.AuctionId).ToArray();
+			ulong[] itemIds = entriesData.Select(entry => entry.ItemId).ToArray();
+			ulong[] foundAuctionIds = await db.Auctions.Where(auc => auctionIds.Contains(auc.Id)).Select(auc => auc.Id).ToArrayAsync();
+			ulong[] foundItemIds = await db.AuctionItems.Where(item => itemIds.Contains(item.Id)).Select(item => item.Id).ToArrayAsync();
 
-      AuctionEntryExternal[] validEntries = [];
-      foreach(AuctionEntryExternal entry in entriesData) {
-        if (!foundAuctionIds.Contains(entry.AuctionId)) {
-          failedPosts.Append(new FailedBatchEntry<AuctionEntryExternal>(entry, "Invalid auctionId"));
-        } else if (!foundItemIds.Contains(entry.ItemId)) {
-          failedPosts.Append(new FailedBatchEntry<AuctionEntryExternal>(entry, "Invalid itemId"));
-        } else {
-          validEntries.Append(entry);
-        }
-      }
+			AuctionEntryExternal[] validEntries = [];
+			foreach (AuctionEntryExternal entry in entriesData) {
+				if (!foundAuctionIds.Contains(entry.AuctionId)) {
+					failedPosts.Append(new FailedBatchEntry<AuctionEntryExternal>(entry, "Invalid auctionId"));
+				} else if (!foundItemIds.Contains(entry.ItemId)) {
+					failedPosts.Append(new FailedBatchEntry<AuctionEntryExternal>(entry, "Invalid itemId"));
+				} else {
+					validEntries.Append(entry);
+				}
+			}
 
-      foreach(AuctionEntryExternal entry in validEntries) {
-        db.Add(entry);
-      }
+			foreach (AuctionEntryExternal entry in validEntries) {
+				db.Add(entry);
+			}
 
-      await db.SaveChangesAsync();
+			await db.SaveChangesAsync();
 
-      if (failedPosts.Length > 0) return StatusCode(207, new {AddedEntries = validEntries, FailedPosts = failedPosts});
-      return Ok(validEntries);
-    }
-  }
+			if (failedPosts.Length > 0) return StatusCode(207, new { AddedEntries = validEntries, FailedPosts = failedPosts });
+			return Ok(validEntries);
+		}
+	}
 
 	[HttpDelete("{auctionId}/{itemId}")]
-  [Authorize]
+	[Authorize]
 	public async Task<ActionResult> Delete(ulong auctionId, ulong itemId) {
- 		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
 
 		using (var db = new DatabaseContext()) {
 			AuctionEntry? entry = await db.AuctionEntries
-        .Include(entry => entry.Auction)
-        .Include(entry => entry.AuctionItem)
-        .Where(entry => entry.Auction.Id == auctionId && entry.AuctionItem.Id == itemId)
-        .Select(entry => entry)
-        .FirstAsync();
+		.Include(entry => entry.Auction)
+		.Include(entry => entry.AuctionItem)
+		.Where(entry => entry.Auction.Id == auctionId && entry.AuctionItem.Id == itemId)
+		.Select(entry => entry)
+		.FirstAsync();
 			if (entry == null) return NotFound();
 
 			db.AuctionEntries.Remove(entry);
@@ -198,44 +193,43 @@ public class AuctionEntryController : ControllerBase {
 		}
 	}
 
-  /* TODO: decide if tuple should be split into two argument
-   * increasing clarity on which ulong is which FK in the composite key
-   *  
-   * For now tuple.Item1 = auctionId, tuple.Item2 = itemId
-   */
-  [HttpDelete("/auction-entries/batch")]
-  [Authorize]
-  public async Task<ActionResult> BatchDelete([FromBody] Tuple<ulong, ulong>[] ids) {
- 		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+	/* TODO: decide if tuple should be split into two argument
+	 * increasing clarity on which ulong is which FK in the composite key
+	 *  
+	 * For now tuple.Item1 = auctionId, tuple.Item2 = itemId
+	 */
+	[HttpDelete("/auction-entries/batch")]
+	[Authorize]
+	public async Task<ActionResult> BatchDelete([FromBody] Tuple<ulong, ulong>[] ids) {
+		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
 
-    using (var db = new DatabaseContext())
-    {
-      FailedBatchEntry<Tuple<ulong, ulong>>[] failedDeletes = []; 
-      ulong[] auctionIds = ids.Select(entry => entry.Item1).ToArray();
-      ulong[] itemIds = ids.Select(entry => entry.Item2).ToArray();
-      ulong[] foundAuctionIds = await db.Auctions.Where(auc => auctionIds.Contains(auc.Id)).Select(auc => auc.Id).ToArrayAsync();
-      ulong[] foundItemIds = await db.AuctionItems.Where(item => itemIds.Contains(item.Id)).Select(item => item.Id).ToArrayAsync();
+		using (var db = new DatabaseContext()) {
+			FailedBatchEntry<Tuple<ulong, ulong>>[] failedDeletes = [];
+			ulong[] auctionIds = ids.Select(entry => entry.Item1).ToArray();
+			ulong[] itemIds = ids.Select(entry => entry.Item2).ToArray();
+			ulong[] foundAuctionIds = await db.Auctions.Where(auc => auctionIds.Contains(auc.Id)).Select(auc => auc.Id).ToArrayAsync();
+			ulong[] foundItemIds = await db.AuctionItems.Where(item => itemIds.Contains(item.Id)).Select(item => item.Id).ToArrayAsync();
 
-      Tuple<ulong, ulong>[] validIds = [];
-      foreach(Tuple<ulong, ulong> key in ids) {
-        if (!foundAuctionIds.Contains(key.Item1)) {
-          failedDeletes.Append(new FailedBatchEntry<Tuple<ulong, ulong>>(key, "Invalid auctionId"));
-        } else if (!foundItemIds.Contains(key.Item2)) {
-          failedDeletes.Append(new FailedBatchEntry<Tuple<ulong, ulong>>(key, "Invalid itemId"));
-        } else {
-          validIds.Append(key);
-        }
-      }
+			Tuple<ulong, ulong>[] validIds = [];
+			foreach (Tuple<ulong, ulong> key in ids) {
+				if (!foundAuctionIds.Contains(key.Item1)) {
+					failedDeletes.Append(new FailedBatchEntry<Tuple<ulong, ulong>>(key, "Invalid auctionId"));
+				} else if (!foundItemIds.Contains(key.Item2)) {
+					failedDeletes.Append(new FailedBatchEntry<Tuple<ulong, ulong>>(key, "Invalid itemId"));
+				} else {
+					validIds.Append(key);
+				}
+			}
 
-      foreach(Tuple<ulong, ulong> key in ids) {
-        db.Remove(key);
-      }
-      await db.SaveChangesAsync();
+			foreach (Tuple<ulong, ulong> key in ids) {
+				db.Remove(key);
+			}
+			await db.SaveChangesAsync();
 
-      if (failedDeletes.Length > 0) return StatusCode(207, new {DeletedEntries = validIds, FailedDeletes = failedDeletes});
-      return Ok(validIds);
-    }
-  }
+			if (failedDeletes.Length > 0) return StatusCode(207, new { DeletedEntries = validIds, FailedDeletes = failedDeletes });
+			return Ok(validIds);
+		}
+	}
 
 	[HttpPatch("{id}")]
 	public async Task<ActionResult> Update(ulong id, [FromBody] JsonPatchDocument<AuctionEntry> patchdoc) {

@@ -41,8 +41,7 @@ public class AuctionExternal {
 public class AuctionController : ControllerBase {
 	[HttpGet("{id}")]
 	public async Task<ActionResult<AuctionExternal>> Get(ulong id) {
-		using (var db = new DatabaseContext())
-		{
+		using (var db = new DatabaseContext()) {
 
 			Auction? auction = await db.Auctions.Include(auc => auc.Planner).Where(auc => auc.Id == id).FirstOrDefaultAsync();
 			if (auction == null) return NotFound();
@@ -51,16 +50,16 @@ public class AuctionController : ControllerBase {
 		}
 	}
 
-  [HttpGet("/auctions/batch")]
-  public async Task<ActionResult<AuctionExternal[]>> BatchGet([FromBody] ulong[] ids) {
-    using (var db = new DatabaseContext()) {
-      return await db.Auctions
-        .Include(auc => auc.Planner)
-        .Where(auc => ids.Contains(auc.Id))
-        .Select(auc => AuctionExternal.ToExternal(auc))
-        .ToArrayAsync();
-    }
-  }
+	[HttpGet("/auctions/batch")]
+	public async Task<ActionResult<AuctionExternal[]>> BatchGet([FromBody] ulong[] ids) {
+		using (var db = new DatabaseContext()) {
+			return await db.Auctions
+			  .Include(auc => auc.Planner)
+			  .Where(auc => ids.Contains(auc.Id))
+			  .Select(auc => AuctionExternal.ToExternal(auc))
+			  .ToArrayAsync();
+		}
+	}
 
 	[HttpGet("/auctions")]
 	public async Task<ActionResult<AuctionExternal[]>> GetNormal() {
@@ -87,45 +86,45 @@ public class AuctionController : ControllerBase {
 		}
 	}
 
-  [HttpPost("/auctions/batch")]
-  [Authorize]
-  public async Task<ActionResult> BatchPost(AuctionExternal[] auctionsData) {
+	[HttpPost("/auctions/batch")]
+	[Authorize]
+	public async Task<ActionResult> BatchPost(AuctionExternal[] auctionsData) {
 		if (!(User.IsInRole("AuctionMaster") || User.IsInRole("Admin"))) return Forbid();
 
-    using (var db = new DatabaseContext()) {
-      FailedBatchEntry<AuctionExternal>[] failedPost = [];
+		using (var db = new DatabaseContext()) {
+			FailedBatchEntry<AuctionExternal>[] failedPost = [];
 
-      Auction[] auctions = auctionsData.Select(auc => auc.ToAuction(db)).ToArray();
+			Auction[] auctions = auctionsData.Select(auc => auc.ToAuction(db)).ToArray();
 
-      ulong[] auctionIds = auctionsData.Select(auc => auc.Id).ToArray();
-      AuctionExternal[] existingAuctions = await db.Auctions
-        .Where(auc => auctionIds.Contains(auc.Id))
-        .Select(auc => AuctionExternal.ToExternal(auc))
-        .ToArrayAsync();
+			ulong[] auctionIds = auctionsData.Select(auc => auc.Id).ToArray();
+			AuctionExternal[] existingAuctions = await db.Auctions
+			  .Where(auc => auctionIds.Contains(auc.Id))
+			  .Select(auc => AuctionExternal.ToExternal(auc))
+			  .ToArrayAsync();
 
-      IdReference<ulong>[] newAuctions = [];
+			IdReference<ulong>[] newAuctions = [];
 
-      foreach(AuctionExternal entry in auctionsData) {
-        if (existingAuctions.Contains(entry)) {
-          failedPost.Append(new FailedBatchEntry<AuctionExternal>(entry, "Conflict, auction already exists"));
-        } else {
-          db.Add(entry);
-          newAuctions.Append(new IdReference<ulong>(entry.Id));
-        }
-      }
+			foreach (AuctionExternal entry in auctionsData) {
+				if (existingAuctions.Contains(entry)) {
+					failedPost.Append(new FailedBatchEntry<AuctionExternal>(entry, "Conflict, auction already exists"));
+				} else {
+					db.Add(entry);
+					newAuctions.Append(new IdReference<ulong>(entry.Id));
+				}
+			}
 
-      await db.SaveChangesAsync();
+			await db.SaveChangesAsync();
 
-      if (failedPost.Length > 0) {
-          return StatusCode(207, new {
-          AddedAuctions = newAuctions,
-          FailedAuctions = failedPost
-        });
-      }
+			if (failedPost.Length > 0) {
+				return StatusCode(207, new {
+					AddedAuctions = newAuctions,
+					FailedAuctions = failedPost
+				});
+			}
 
-      return Ok(newAuctions);
-    }
-  }
+			return Ok(newAuctions);
+		}
+	}
 
 	[HttpPost]
 	[Authorize]
@@ -144,26 +143,26 @@ public class AuctionController : ControllerBase {
 		}
 	}
 
-  [HttpDelete("/auctions/batch")]
-  [Authorize]
-  public async Task<ActionResult> BatchDelete([FromBody] ulong[] ids) {
+	[HttpDelete("/auctions/batch")]
+	[Authorize]
+	public async Task<ActionResult> BatchDelete([FromBody] ulong[] ids) {
 		if (!(User.IsInRole("AuctionMaster") || User.IsInRole("Admin"))) return Forbid();
 
-    using (var db = new DatabaseContext()) {
-      FailedBatchEntry<ulong>[] failedDeletes = [];
+		using (var db = new DatabaseContext()) {
+			FailedBatchEntry<ulong>[] failedDeletes = [];
 
-      Auction[] auctions = await db.Auctions.Where(auc => ids.Contains(auc.Id)).Select(auc => auc).ToArrayAsync();
-      ulong[] foundIds = auctions.Select(auc => auc.Id).ToArray();
-      foreach(ulong aucId in ids) {
-        if (!foundIds.Contains(aucId)) failedDeletes.Append(new FailedBatchEntry<ulong>(aucId, "Corresponding Auction does not exist"));
-      }
+			Auction[] auctions = await db.Auctions.Where(auc => ids.Contains(auc.Id)).Select(auc => auc).ToArrayAsync();
+			ulong[] foundIds = auctions.Select(auc => auc.Id).ToArray();
+			foreach (ulong aucId in ids) {
+				if (!foundIds.Contains(aucId)) failedDeletes.Append(new FailedBatchEntry<ulong>(aucId, "Corresponding Auction does not exist"));
+			}
 
-      await db.SaveChangesAsync();
+			await db.SaveChangesAsync();
 
-      if (failedDeletes.Length > 0) return StatusCode(207, new {FailedDeletes = failedDeletes});
-      return NoContent();
-    }
-  }
+			if (failedDeletes.Length > 0) return StatusCode(207, new { FailedDeletes = failedDeletes });
+			return NoContent();
+		}
+	}
 
 	[HttpDelete("{id}")]
 	[Authorize]

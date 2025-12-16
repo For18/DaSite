@@ -83,12 +83,11 @@ public class ProductController : ControllerBase {
 	}
 
 	[HttpPost("/products/batch")]
-  [Authorize]
+	[Authorize]
 	public async Task<ActionResult> BatchPost(ProductExternal[] productsData) {
- 		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
 
-		using (var db = new DatabaseContext())
-		{
+		using (var db = new DatabaseContext()) {
 			FailedBatchEntry<ProductExternal>[] failedPost = [];
 
 			Product[] products = productsData.Select(product => product.ToProduct(db)).ToArray();
@@ -101,13 +100,10 @@ public class ProductController : ControllerBase {
 
 			IdReference<ulong>[] newProducts = [];
 
-			foreach (ProductExternal entry in productsData)
-			{
-				if (existingProducts.Contains(entry))
-				{
+			foreach (ProductExternal entry in productsData) {
+				if (existingProducts.Contains(entry)) {
 					failedPost.Append(new FailedBatchEntry<ProductExternal>(entry, "Conflict, product already exists"));
-				} else 
-				{
+				} else {
 					db.Add(entry);
 					newProducts.Append(new IdReference<ulong>(entry.Id));
 				}
@@ -115,8 +111,7 @@ public class ProductController : ControllerBase {
 
 			await db.SaveChangesAsync();
 
-			if (failedPost.Length > 0)
-			{
+			if (failedPost.Length > 0) {
 				return StatusCode(207, new {
 					AddedProducts = newProducts,
 					FailedProducts = failedPost
@@ -145,7 +140,7 @@ public class ProductController : ControllerBase {
 	}
 
 	[HttpDelete("/products/batch")]
-  [Authorize]
+	[Authorize]
 	public async Task<ActionResult> BatchDelete([FromBody] ulong[] ids) {
 		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
 
@@ -154,22 +149,18 @@ public class ProductController : ControllerBase {
 
 			Product[] products = await db.Products.Where(products => ids.Contains(products.Id)).Select(products => products).ToArrayAsync();
 
-			foreach (ulong productId in ids)
-			{
+			foreach (ulong productId in ids) {
 				Product? product = products.FirstOrDefault(p => p.Id == productId);
-				if (product == null) 
-				{
+				if (product == null) {
 					failedProducts.Append(new FailedBatchEntry<ulong>(productId, "Corresponding Product does not exist"));
-				} else
-				{
+				} else {
 					db.Products.Remove(product);
 				}
 			}
 
 			await db.SaveChangesAsync();
-			if (failedProducts.Length > 0)
-			{
-				return StatusCode(207, new {FailedDeletes = failedProducts});
+			if (failedProducts.Length > 0) {
+				return StatusCode(207, new { FailedDeletes = failedProducts });
 			}
 
 			return NoContent();

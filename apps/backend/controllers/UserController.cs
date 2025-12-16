@@ -27,8 +27,7 @@ public class PublicUser {
 public class UserController : ControllerBase {
 	[HttpGet("{id}")]
 	public async Task<ActionResult<PublicUser>> GetPublic(string id) {
-		using (var db = new DatabaseContext())
-		{
+		using (var db = new DatabaseContext()) {
 			User? user = await db.Users.FindAsync(id);
 			if (user == null) return NotFound();
 
@@ -48,44 +47,42 @@ public class UserController : ControllerBase {
 		return GetPrivate(Convert.ToString(User.FindFirstValue(ClaimTypes.NameIdentifier)!));
 	}
 
-  [HttpGet("/users/private/batch")]
-  [Authorize]
-  public async Task<ActionResult<User[]>> BatchGetPrivate([FromBody] string[] ids) {
+	[HttpGet("/users/private/batch")]
+	[Authorize]
+	public async Task<ActionResult<User[]>> BatchGetPrivate([FromBody] string[] ids) {
 		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
-    
-    using (var db = new DatabaseContext())
-    {
-      return await db.Users
-        .Where(user => ids.Contains(user.Id))
-        .ToArrayAsync();
-    }
-  }
 
-  [HttpGet("/users/batch")]
-  public async Task<ActionResult<PublicUser[]>> BatchGetPublic([FromBody] string[] ids) {
-    ActionResult<User[]> privateUsersResult = await BatchGetPrivate(ids);
-    if (privateUsersResult.Result is OkObjectResult okResult
-        && okResult.Value is User[] privateUsers
-        ) {
-      return privateUsers
-        .Select(user => new PublicUser{
-            Id = user.Id,
-            UserName = user.UserName,
-            TelephoneNumber = user.PhoneNumber,
-            AvatarImageUrl = user.AvatarImageUrl,
-            Email = user.Email
-        }).ToArray();
-    }
-    return privateUsersResult.Result!;
-  }
+		using (var db = new DatabaseContext()) {
+			return await db.Users
+			  .Where(user => ids.Contains(user.Id))
+			  .ToArrayAsync();
+		}
+	}
+
+	[HttpGet("/users/batch")]
+	public async Task<ActionResult<PublicUser[]>> BatchGetPublic([FromBody] string[] ids) {
+		ActionResult<User[]> privateUsersResult = await BatchGetPrivate(ids);
+		if (privateUsersResult.Result is OkObjectResult okResult
+			&& okResult.Value is User[] privateUsers
+			) {
+			return privateUsers
+			  .Select(user => new PublicUser {
+				  Id = user.Id,
+				  UserName = user.UserName,
+				  TelephoneNumber = user.PhoneNumber,
+				  AvatarImageUrl = user.AvatarImageUrl,
+				  Email = user.Email
+			  }).ToArray();
+		}
+		return privateUsersResult.Result!;
+	}
 
 	[HttpGet("private/{id}")]
-  [Authorize]
+	[Authorize]
 	public async Task<ActionResult<User>> GetPrivate(string id) {
 		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
 
-		using (var db = new DatabaseContext())
-		{
+		using (var db = new DatabaseContext()) {
 			User? user = await db.Users.FindAsync(id);
 			if (user == null) return NotFound();
 
@@ -94,7 +91,7 @@ public class UserController : ControllerBase {
 	}
 
 	[HttpGet("/users/private")]
-  [Authorize]
+	[Authorize]
 	public async Task<ActionResult<User[]>> GetAllPrivate() {
 		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
 
@@ -137,36 +134,36 @@ public class UserController : ControllerBase {
 		}
 	}
 
-  [HttpPost("/users/batch")]
-  [Authorize]
-  public async Task<ActionResult> BatchPost([FromBody] User[] users) {
- 		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+	[HttpPost("/users/batch")]
+	[Authorize]
+	public async Task<ActionResult> BatchPost([FromBody] User[] users) {
+		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
 
-    using (var db = new DatabaseContext()) {
-      FailedBatchEntry<string>[] failedPosts = [];
-      string[] userIds = users.Select(user => user.Id).ToArray();
-      string[] existingUserIds = await db.Users
-        .Where(user => userIds.Contains(user.Id))
-        .Select(user => user.Id)
-        .ToArrayAsync();
+		using (var db = new DatabaseContext()) {
+			FailedBatchEntry<string>[] failedPosts = [];
+			string[] userIds = users.Select(user => user.Id).ToArray();
+			string[] existingUserIds = await db.Users
+			  .Where(user => userIds.Contains(user.Id))
+			  .Select(user => user.Id)
+			  .ToArrayAsync();
 
-      foreach(string id in existingUserIds) {
-        failedPosts.Append(new FailedBatchEntry<string>(id, "Conflict user already exists"));
-      }
+			foreach (string id in existingUserIds) {
+				failedPosts.Append(new FailedBatchEntry<string>(id, "Conflict user already exists"));
+			}
 
-      User[] newUsers = users.Where(user => !existingUserIds.Contains(user.Id)).Select(user => user).ToArray();
+			User[] newUsers = users.Where(user => !existingUserIds.Contains(user.Id)).Select(user => user).ToArray();
 
-      foreach(User user in newUsers) {
-        db.Users.Add(user);
-      }
+			foreach (User user in newUsers) {
+				db.Users.Add(user);
+			}
 
-      await db.SaveChangesAsync();
+			await db.SaveChangesAsync();
 
-      string[] newUserIds = newUsers.Select(user => user.Id).ToArray();
-      if (failedPosts.Length > 0) return StatusCode(207, new {Posts = newUserIds, FailedPosts = failedPosts});
-      return Ok(newUserIds);
-    }
-  }
+			string[] newUserIds = newUsers.Select(user => user.Id).ToArray();
+			if (failedPosts.Length > 0) return StatusCode(207, new { Posts = newUserIds, FailedPosts = failedPosts });
+			return Ok(newUserIds);
+		}
+	}
 
 	[HttpDelete("{id}")]
 	[Authorize]
@@ -184,35 +181,35 @@ public class UserController : ControllerBase {
 		}
 	}
 
-  [HttpDelete("/users/batch")]
-  [Authorize]
-  public async Task<ActionResult> BatchDelete([FromBody] string ids) {
+	[HttpDelete("/users/batch")]
+	[Authorize]
+	public async Task<ActionResult> BatchDelete([FromBody] string ids) {
 		if (User.IsInRole("Admin")) return Forbid();
 
-    using (var db = new DatabaseContext()) {
-      FailedBatchEntry<string>[] failedDeletes = [];
-      User[] existingUsers = await db.Users
-        .Where(user => ids.Contains(user.Id))
-        .Select(user => user)
-        .ToArrayAsync();
+		using (var db = new DatabaseContext()) {
+			FailedBatchEntry<string>[] failedDeletes = [];
+			User[] existingUsers = await db.Users
+			  .Where(user => ids.Contains(user.Id))
+			  .Select(user => user)
+			  .ToArrayAsync();
 
-      string[] existingUserIds = existingUsers.Select(user => user.Id).ToArray();
-      foreach(string id in existingUserIds) {
-        if (!ids.Contains(id)) {
-          failedDeletes.Append(new FailedBatchEntry<string>(id, "User does not exist"));
-        }
-      }
+			string[] existingUserIds = existingUsers.Select(user => user.Id).ToArray();
+			foreach (string id in existingUserIds) {
+				if (!ids.Contains(id)) {
+					failedDeletes.Append(new FailedBatchEntry<string>(id, "User does not exist"));
+				}
+			}
 
-      foreach(User user in existingUsers) {
-        db.Users.Remove(user);
-      }
+			foreach (User user in existingUsers) {
+				db.Users.Remove(user);
+			}
 
-      await db.SaveChangesAsync();
+			await db.SaveChangesAsync();
 
-      if (failedDeletes.Length > 0) return StatusCode(207, new {DeletedUsers = existingUserIds, failedDeletes = failedDeletes});
-      return NoContent();
-    }
-  }
+			if (failedDeletes.Length > 0) return StatusCode(207, new { DeletedUsers = existingUserIds, failedDeletes = failedDeletes });
+			return NoContent();
+		}
+	}
 
 	[HttpPatch("{id}")]
 	public async Task<ActionResult> Update(string id, [FromBody] JsonPatchDocument<User> patchdoc) {
