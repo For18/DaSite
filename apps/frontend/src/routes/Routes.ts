@@ -68,9 +68,9 @@ export const Routes = {
   ProductImage: {
     Get:             (id: number | string) => `/product-image/${id}`,
     FromParent:      (parentId: number | string) => `/product-image/from/${parentId}`,
-    BatchGet:        `/product-image/batch`,
+    BatchGet:        `/product-images/batch`,
     Post:            `/product-image`,
-    BatchPost:       `/product-image/batch`,
+    BatchPost:       `/product-images/batch`,
     Delete:          (id: number | string) => `/product-image/${id}`,
     BatchDelete:     `/product-image/batch`,
     Patch:           (id: number | string) => `/product-image/${id}`,
