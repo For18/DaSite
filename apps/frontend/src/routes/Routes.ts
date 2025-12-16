@@ -11,19 +11,6 @@ const CreateAuction = lazy(() => import("./CreateAuction"));
 const Login = lazy(() => import("./Login"));
 const Registration = lazy(() => import("./Registration"));
 
-export default {
-	"/": Home,
-	"/clock/:auctionId": Clock,
-	"/auctions": Auctions,
-	"/auctions/pending": PendingAuction,
-	"/profile/:userId": Profile,
-	"/auctions/create": CreateAuction,
-	"/products/create": CreateProduct,
-	"/test": Test,
-	"/login": Login,
-	"/register": Registration
-} as { [path: string]: LazyExoticComponent<() => JSX.Element> };
-
 export const Routes = {
 	Pages: {
 		Home: `/`,
@@ -139,3 +126,16 @@ export const Routes = {
 		PostManageInfo: `/identity/manage/info`
 	}
 } as const;
+
+export default {
+	[Routes.Pages.Home]: Home,
+	[Routes.Pages.Clock(":auctionId")]: Clock,
+	[Routes.Pages.Auctions.Base]: Auctions,
+	[Routes.Pages.Auctions.Pending]: PendingAuction,
+	[Routes.Pages.Profile(":userId")]: Profile,
+	[Routes.Pages.Auctions.Create]: CreateAuction,
+	[Routes.Pages.CreateProduct]: CreateProduct,
+	[Routes.Pages.Test]: Test,
+	[Routes.Pages.Login]: Login,
+	[Routes.Pages.Register]: Registration
+} as { [path: string]: LazyExoticComponent<() => JSX.Element> };
