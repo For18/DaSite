@@ -85,33 +85,37 @@ export default function CreateProductPage() {
 			<div className={styles.seperator}/>
 
 			<div className={styles.inputs}>
-				<Typography className={styles.inputTitle}>Name</Typography>
+				<label htmlFor="product-name" className={styles.inputTitle}>Name</label>
 				<Input
+					id="product-name"
 					className={styles.inputBasic}
 					type="text"
 					value={name}
 					onChange={value => setName(String(value))}
 				/>
 
-				<Typography className={styles.inputTitle}>Description</Typography>
+				<label htmlFor="product-description" className={styles.inputTitle}>Description</label>
 				<Input
+					id="product-description"
 					type="textfield"
 					value={description}
 					className={styles.inputDescription}
 					onChange={value => setDescription(String(value))}
 				/>
 
-				<Typography className={styles.inputTitle}>Batch size</Typography>
+				<label htmlFor="product-batchsize" className={styles.inputTitle}>Batch size</label>
 				<Input
+					id="product-batchsize"
 					className={styles.inputBasic}
 					value={String(batchSize)}
 					type="number"
 					onChange={value => setBatchSize(Number(value))}
 				/>
 
-				<Typography className={styles.inputTitle}>Owner</Typography>
+				<label htmlFor="product-owner-search" className={styles.inputTitle}>Owner</label>
 				<div>
 					<Input
+						id="product-owner-search"
 						className={styles.inputBasic}
 						placeholder="Search for Users"
 						value={ownerSearchValue}
@@ -119,6 +123,7 @@ export default function CreateProductPage() {
 						onChange={value => setOwnerSearchValue(value)}
 					/>
 					<Select
+						aria-labelledby="product-owner-search"
 						value={owner?.userName.length == 0 ? null : owner?.userName ?? null}
 						onChange={(value: string) => {
 							foundUsersIndexRef.current = Number(value);
@@ -132,8 +137,9 @@ export default function CreateProductPage() {
 					</Select>
 				</div>
 
-				<Typography className={styles.inputTitle}>Image Link</Typography>
+				<label htmlFor="product-imagelink" className={styles.inputTitle}>Image Link</label>
 				<Input
+					id="product-imagelink"
 					className={styles.inputBasic}
 					value={linkText}
 					type="text"
