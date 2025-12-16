@@ -128,6 +128,34 @@ public class UserController : ControllerBase {
 		}
 	}
 
+  [HttpPost("/users/batch")]
+  public async Task<ActionResult> BatchPost([FromBody] User[] users) {
+    using (var db = new DatabaseContext()) {
+      FailedBatchEntry<string>[] failedPosts = [];
+      string[] userIds = users.Select(user => user.Id).ToArray();
+      string[] existingUserIds = await db.Users
+        .Where(user => userIds.Contains(user.Id))
+        .Select(user => user.Id)
+        .ToArrayAsync();
+
+      foreach(string id in existingUserIds) {
+        failedPosts.Append(new FailedBatchEntry<string>(id, "Conflict user already exists"));
+      }
+
+      User[] newUsers = users.Where(user => !existingUserIds.Contains(user.Id)).Select(user => user).ToArray();
+
+      foreach(User user in newUsers) {
+        db.Users.Add(user);
+      }
+
+      await db.SaveChangesAsync();
+
+      string[] newUserIds = newUsers.Select(user => user.Id).ToArray();
+      if (failedPosts.Length > 0) return StatusCode(207, new {Posts = newUserIds, FailedPosts = failedPosts});
+      return Ok(newUserIds);
+    }
+  }
+
 	[HttpDelete("{id}")]
 	[Authorize]
 	public async Task<ActionResult> Delete(string id) {

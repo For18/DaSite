@@ -49,6 +49,7 @@ export const Routes = {
     GetAllByName:     (name: string) => `/users/by-name/${name}`,
     GetCurrent:       `/private/current`,
     Post:             `/user`,
+    BatchPost:        `/users/batch`,
     Delete:           (id: number | string) => `/user/${id}`,
     Patch:            (id: number | string) => `/user/${id}`,
   },
