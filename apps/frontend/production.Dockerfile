@@ -14,4 +14,4 @@ RUN npx vite build --outDir ./dist
 FROM nginx
 
 COPY ./production.nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /build/dist/* /app
+COPY --from=build /build/dist /app
