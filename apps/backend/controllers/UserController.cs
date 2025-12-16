@@ -80,7 +80,7 @@ public class UserController : ControllerBase {
 	[HttpGet("private/{id}")]
 	[Authorize]
 	public async Task<ActionResult<User>> GetPrivate(string id) {
-		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+		if (!User.IsInRole("Admin") || User.FindFirstValue(ClaimTypes.NameIdentifier) != id) return Forbid();
 
 		using (var db = new DatabaseContext()) {
 			User? user = await db.Users.FindAsync(id);
@@ -93,7 +93,7 @@ public class UserController : ControllerBase {
 	[HttpGet("/users/private")]
 	[Authorize]
 	public async Task<ActionResult<User[]>> GetAllPrivate() {
-		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+		if (!User.IsInRole("Admin")) return Forbid();
 
 		using (var db = new DatabaseContext()) {
 			User[] users = await db.Users.ToArrayAsync();
@@ -137,7 +137,7 @@ public class UserController : ControllerBase {
 	[HttpPost("/users/batch")]
 	[Authorize]
 	public async Task<ActionResult> BatchPost([FromBody] User[] users) {
-		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+		if (!User.IsInRole("Admin")) return Forbid();
 
 		using (var db = new DatabaseContext()) {
 			FailedBatchEntry<string>[] failedPosts = [];
@@ -184,7 +184,7 @@ public class UserController : ControllerBase {
 	[HttpDelete("/users/batch")]
 	[Authorize]
 	public async Task<ActionResult> BatchDelete([FromBody] string ids) {
-		if (User.IsInRole("Admin")) return Forbid();
+		if (!User.IsInRole("Admin")) return Forbid();
 
 		using (var db = new DatabaseContext()) {
 			FailedBatchEntry<string>[] failedDeletes = [];
@@ -212,7 +212,9 @@ public class UserController : ControllerBase {
 	}
 
 	[HttpPatch("{id}")]
+  [Authorize]
 	public async Task<ActionResult> Update(string id, [FromBody] JsonPatchDocument<User> patchdoc) {
+    if (!User.IsInRole("Admin") || User.FindFirstValue(ClaimTypes.NameIdentifier) != id) return Forbid();
 		using (var db = new DatabaseContext()) {
 			User? user = await db.Users.FindAsync(id);
 			if (user == null) return NotFound();

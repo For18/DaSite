@@ -110,46 +110,10 @@ public class SaleController : ControllerBase {
 		}
 	}
 
-	[HttpPost("sales/batch")]
-	public async Task<ActionResult> BatchPost(SaleExternal[] saleData) {
-		using (var db = new DatabaseContext()) {
-			FailedBatchEntry<SaleExternal>[] failedPost = [];
-			Sale[] sales = saleData.Select(sale => sale.ToSale(db)).ToArray();
-
-			ulong[] saleIds = saleData.Select(sale => sale.Id).ToArray();
-			SaleExternal[] existingSales = await db.Sales
-				.Where(sale => saleIds.Contains(sale.Id))
-				.Select(sale => SaleExternal.ToExternal(sale))
-				.ToArrayAsync();
-
-			IdReference<ulong>[] newSales = [];
-
-			foreach (SaleExternal entry in saleData) {
-				if (existingSales.Contains(entry)) {
-					failedPost.Append(new FailedBatchEntry<SaleExternal>(entry, "Conflict, sale already exists"));
-				} else {
-					db.Add(entry);
-					newSales.Append(new IdReference<ulong>(entry.Id));
-				}
-			}
-
-			await db.SaveChangesAsync();
-
-			if (failedPost.Length > 0) {
-				return StatusCode(207, new {
-					AddedSales = newSales,
-					FailedSales = failedPost
-				});
-			}
-
-			return Ok(newSales);
-		}
-	}
-
 	[HttpDelete("{id}")]
 	[Authorize]
 	public async Task<ActionResult> Delete(ulong id) {
-		if (!(User.IsInRole("AuctionMaster") || User.IsInRole("Admin"))) return Forbid();
+		if (!User.IsInRole("Admin")) return Forbid();
 
 		using (var db = new DatabaseContext()) {
 			Sale? sale = await db.Sales.FindAsync(id);
@@ -165,7 +129,7 @@ public class SaleController : ControllerBase {
 	[HttpDelete("/sales/batch")]
 	[Authorize]
 	public async Task<ActionResult> BatchDelete([FromBody] ulong[] ids) {
-		if (!(User.IsInRole("AuctionMaster") || User.IsInRole("Admin"))) return Forbid();
+		if (!User.IsInRole("Admin")) return Forbid();
 
 		using (var db = new DatabaseContext()) {
 			FailedBatchEntry<ulong>[] failedSales = [];

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using System.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 [DisplayName(nameof(ProductImage))]
 public class ProductImageExternal {
@@ -91,8 +92,6 @@ public class ProductImageController : ControllerBase {
 	[HttpPost("/product-images/batch")]
 	[Authorize]
 	public async Task<ActionResult> BatchPost([FromBody] ProductImageExternal[] images) {
-		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
-
 		using (var db = new DatabaseContext()) {
 			FailedBatchEntry<ProductImageExternal>[] failedPosts = [];
 
@@ -158,20 +157,27 @@ public class ProductImageController : ControllerBase {
 	[HttpDelete("batch")]
 	[Authorize]
 	public async Task<ActionResult> BatchDelete([FromBody] ulong[] ids) {
-		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+		bool isNormalUser = !(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"));
+    string? currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
 		using (var db = new DatabaseContext()) {
 			FailedBatchEntry<ulong>[] failedProductImages = [];
 
-			ProductImage[] productImages = await db.ProductImages.Where(prodImages => ids.Contains(prodImages.Id)).ToArrayAsync();
+			ProductImage[] productImages = await db.ProductImages
+        .Include(prodImage => prodImage.Parent)
+        .ThenInclude(prod => prod.Owner)
+        .Where(prodImages => ids.Contains(prodImages.Id))
+        .ToArrayAsync();
 
 			foreach (var productImageId in ids) {
 				ProductImage? prodImage = productImages.FirstOrDefault(pi => productImageId == pi.Id);
 				if (prodImage == null) {
 					failedProductImages.Append(new FailedBatchEntry<ulong>(productImageId, "Corresponding Product does not exist"));
-				} else {
+				} else if (!isNormalUser || prodImage.Parent.Owner.Id == currentUserId) {
 					db.ProductImages.Remove(prodImage);
-				}
+				} else {
+          failedProductImages.Append(new FailedBatchEntry<ulong>(productImageId, "Unauthorized deletion attempt"));
+        }
 			}
 
 			await db.SaveChangesAsync();

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
 using System.ComponentModel;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 [DisplayName(nameof(Product))]
 public class ProductExternal {
@@ -85,8 +86,6 @@ public class ProductController : ControllerBase {
 	[HttpPost("/products/batch")]
 	[Authorize]
 	public async Task<ActionResult> BatchPost(ProductExternal[] productsData) {
-		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
-
 		using (var db = new DatabaseContext()) {
 			FailedBatchEntry<ProductExternal>[] failedPost = [];
 
@@ -142,20 +141,26 @@ public class ProductController : ControllerBase {
 	[HttpDelete("/products/batch")]
 	[Authorize]
 	public async Task<ActionResult> BatchDelete([FromBody] ulong[] ids) {
-		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+		bool isNormalUser = (User.IsInRole("Admin") || User.IsInRole("AuctionMaster"));
+    string? currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
 		using (var db = new DatabaseContext()) {
 			FailedBatchEntry<ulong>[] failedProducts = [];
 
-			Product[] products = await db.Products.Where(products => ids.Contains(products.Id)).Select(products => products).ToArrayAsync();
+			Product[] products = await db.Products
+        .Include(product => product.Owner)
+        .Where(product => ids.Contains(product.Id))
+        .Select(product => product).ToArrayAsync();
 
 			foreach (ulong productId in ids) {
 				Product? product = products.FirstOrDefault(p => p.Id == productId);
 				if (product == null) {
 					failedProducts.Append(new FailedBatchEntry<ulong>(productId, "Corresponding Product does not exist"));
-				} else {
+				} else if (!isNormalUser || product.Owner.Id == currentUserId) {
 					db.Products.Remove(product);
-				}
+				} else {
+          failedProducts.Append(new FailedBatchEntry<ulong>(productId, "Unauthorized deletion attempt"));
+        }
 			}
 
 			await db.SaveChangesAsync();
