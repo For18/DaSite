@@ -154,6 +154,35 @@ public class ProductImageController : ControllerBase {
 		}
 	}
 
+	[HttpDelete("batch")]
+	public async Task<ActionResult> BatchDelete([FromBody] ulong[] ids){
+		using (var db = new DatabaseContext()) {
+			FailedBatchEntry<ulong>[] failedProductImages = [];
+		
+			ProductImage[] productImages = await db.ProductImages.Where(prodImages => ids.Contains(prodImages.Id)).ToArrayAsync();
+
+			foreach (var productImageId in ids)
+			{
+				ProductImage? prodImage = productImages.FirstOrDefault(pi => productImageId == pi.Id);
+				if (prodImage == null)
+				{
+					failedProductImages.Append(new FailedBatchEntry<ulong>(productImageId, "Corresponding Product does not exist"));
+				} else
+				{
+					db.ProductImages.Remove(prodImage);
+				}
+			}
+
+			await db.SaveChangesAsync();
+			if (failedProductImages.Length > 0)
+			{
+				return StatusCode(207, new {FailedDeletes = failedProductImages});
+			}
+			
+			return NoContent();
+		}
+	}	
+
 	[HttpPatch("{id}")]
 	[Authorize]
 	public async Task<ActionResult> Patch(ulong id, [FromBody] JsonPatchDocument<ProductImage> patchdoc) {
