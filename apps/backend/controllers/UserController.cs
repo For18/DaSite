@@ -214,7 +214,7 @@ public class UserController : ControllerBase {
 	[HttpPatch("{id}")]
 	[Authorize]
 	public async Task<ActionResult> Update(string id, [FromBody] JsonPatchDocument<User> patchdoc) {
-		if (!User.IsInRole("Admin") || User.FindFirstValue(ClaimTypes.NameIdentifier) != id) return Forbid();
+		if (!User.IsInRole("Admin") && User.FindFirstValue(ClaimTypes.NameIdentifier) != id) return Forbid();
 		using (var db = new DatabaseContext()) {
 			User? user = await db.Users.FindAsync(id);
 			if (user == null) return NotFound();

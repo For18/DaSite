@@ -157,7 +157,7 @@ public class ProductImageController : ControllerBase {
 	[HttpDelete("batch")]
 	[Authorize]
 	public async Task<ActionResult> BatchDelete([FromBody] ulong[] ids) {
-		bool isNormalUser = !(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"));
+		bool isAdmin = User.IsInRole("Admin");
 		string? currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
 		using (var db = new DatabaseContext()) {
@@ -173,7 +173,7 @@ public class ProductImageController : ControllerBase {
 				ProductImage? prodImage = productImages.FirstOrDefault(pi => productImageId == pi.Id);
 				if (prodImage == null) {
 					failedProductImages.Append(new FailedBatchEntry<ulong>(productImageId, "Corresponding Product does not exist"));
-				} else if (!isNormalUser || prodImage.Parent.Owner.Id == currentUserId) {
+				} else if (isAdmin || prodImage.Parent.Owner.Id == currentUserId) {
 					db.ProductImages.Remove(prodImage);
 				} else {
 					failedProductImages.Append(new FailedBatchEntry<ulong>(productImageId, "Unauthorized deletion attempt"));
