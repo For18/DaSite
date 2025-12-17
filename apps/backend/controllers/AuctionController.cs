@@ -155,6 +155,11 @@ public class AuctionController : ControllerBase {
 			ulong[] foundIds = auctions.Select(auc => auc.Id).ToArray();
 			foreach (ulong aucId in ids) {
 				if (!foundIds.Contains(aucId)) failedDeletes.Append(new FailedBatchEntry<ulong>(aucId, "Corresponding Auction does not exist"));
+        else {
+          db.Auctions.Remove(
+              auctions.Where(auc => auc.Id == aucId).First()
+          );
+        }
 			}
 
 			await db.SaveChangesAsync();
