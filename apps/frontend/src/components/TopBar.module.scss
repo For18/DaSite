@@ -13,4 +13,8 @@
 	border-radius: 50%;
 	position: absolute;
 	right: 50px;
+  &:hover {
+    cursor: pointer;
+    filter: brightness(0.85);
+  }
 }
