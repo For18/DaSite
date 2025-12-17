@@ -6,9 +6,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,7 +41,9 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapGroup("identity").MapIdentityApi<User>();
+var identityGroup = app.MapGroup("identity");
+identityGroup.MapIdentityApi<User>();
+identityGroup.MapIdentityApiAdditionalEndpoints<User>();
 app.MapControllers();
 
 using (var scope = app.Services.CreateScope()) {
