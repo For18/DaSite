@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router";
+import useAuth from "../AuthProvider";
 import BeforeAuction from "../components/BeforeAuction";
 import Button from "../components/Button";
 import Clock from "../components/Clock";
@@ -11,7 +12,6 @@ import { usePromise, useTime } from "../lib/util";
 import styles from "./ClockPage.module.scss";
 import NotFound from "./NotFound";
 import { Routes } from "./Routes";
-import useAuth from "../AuthProvider";
 
 function lerp(from: number, to: number, t: number): number {
 	return from + t * (to - from);
@@ -57,8 +57,8 @@ export default function ClockPage() {
 	const auction = useAPI<Auction>(auctionId != null ? Routes.Auction.Get(auctionId) : null);
 	const [items, setItems] = useState<AuctionItem[] | null>(null);
 	const authState = useAuth();
-  if (authState == null) throw new Error("Clockpage component rendered outside of AuthContext");
-  const {user} = authState;
+	if (authState == null) throw new Error("Clockpage component rendered outside of AuthContext");
+	const { user } = authState;
 	const currentItem = items ? items[0] : null;
 
 	const buyCountRef = useRef<number>(0);
@@ -110,12 +110,12 @@ export default function ClockPage() {
 		}
 	}, [progress]);
 
-  // TODO: add visual indicator to see if purchase was successful
+	// TODO: add visual indicator to see if purchase was successful
 	const onPurchase = (count: number) => {
 		currentItem?.count && (currentItem.count -= count);
 		if (currentItem && currentItem.count <= 0) doShift();
 
-    if (user === undefined) return;
+		if (user === undefined) return;
 		PostSale(user.id!, Number(auctionId)!, count, Number(currentPrice));
 	};
 

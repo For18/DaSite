@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router";
+import useAuth from "../AuthProvider";
 import { Routes } from "../routes/Routes";
 import Button from "./Button";
 import Image from "./Image";
 import styles from "./TopBar.module.scss";
-import useAuth from "../AuthProvider";
 
 export default function TopBar({
 	links
@@ -12,11 +12,12 @@ export default function TopBar({
 }) {
 	const navigate = useNavigate();
 	const authState = useAuth();
-  if (authState == null) throw new Error("Clockpage component rendered outside of AuthContext");
-  const { user } = authState;
+	if (authState == null) throw new Error("Clockpage component rendered outside of AuthContext");
+	const { user } = authState;
 
 	// TODO: find better placeholder (built in <Image> placeholder doesn't work)
-	const pfpUrl = user?.avatarImageUrl ?? "https://www.shutterstock.com/image-vector/highresolution-default-profile-avatar-icon-260nw-2600268263.jpg";
+	const pfpUrl = user?.avatarImageUrl ??
+		"https://www.shutterstock.com/image-vector/highresolution-default-profile-avatar-icon-260nw-2600268263.jpg";
 
 	return (
 		<header className={styles.header}>

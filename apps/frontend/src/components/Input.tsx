@@ -18,36 +18,36 @@ export interface InputProps {
 
 export default function Input(
 	{ type, placeholder, disabled, labelledby, value, onChange, onEnter, inputRef, className }: InputProps
-) {	
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      onChange?.(e.target.value);
-    },
-    [onChange]
-  );
-  
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        onEnter?.();
-      }
-    },
-    [onEnter]
-  );
-  const Element = type === "textfield" ? "textarea" : "input";
-  	if (type === "textfield") type = "text";
-  	return (
-  		<Element 
-        ref={inputRef as any}
-        type={type}
-        placeholder={placeholder}
-  			className={styles.input + (className != null ? " " + className : "")}
-        disabled={disabled}
-  			aria-labelledby={labelledby}
-        value={value}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        />
-  	);
+) {
+	const handleChange = useCallback(
+		(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+			onChange?.(e.target.value);
+		},
+		[onChange]
+	);
+
+	const handleKeyDown = useCallback(
+		(e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+			if (e.key === "Enter") {
+				e.preventDefault();
+				onEnter?.();
+			}
+		},
+		[onEnter]
+	);
+	const Element = type === "textfield" ? "textarea" : "input";
+	if (type === "textfield") type = "text";
+	return (
+		<Element
+			ref={inputRef as any}
+			type={type}
+			placeholder={placeholder}
+			className={styles.input + (className != null ? " " + className : "")}
+			disabled={disabled}
+			aria-labelledby={labelledby}
+			value={value}
+			onChange={handleChange}
+			onKeyDown={handleKeyDown}
+		/>
+	);
 }

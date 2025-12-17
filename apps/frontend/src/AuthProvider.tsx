@@ -1,94 +1,92 @@
-import { createContext, useState, useCallback, useContext, useMemo } from "react";
-import { User, API_URL } from "./lib/api";
+import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import { API_URL, User } from "./lib/api";
 import { Routes } from "./routes/Routes";
 
-export type AuthContext = AuthState & AuthFunctions
+export type AuthContext = AuthState & AuthFunctions;
 const AuthContext = createContext<AuthContext | null>(null);
 
-export interface AuthState{
-  user?: User;
-  isLoading: boolean;
-  error?: Error;
+export interface AuthState {
+	user?: User;
+	isLoading: boolean;
+	error?: Error;
 }
 
 export interface AuthFunctions {
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => Promise<void>;
+	login: (email: string, password: string) => Promise<void>;
+	logout: () => Promise<void>;
 }
 
 export default function useAuth() {
-  return useContext(AuthContext);
+	return useContext(AuthContext);
 }
 
 export function AuthProvider() {
+	const [authState, setAuthState] = useState<AuthState>({
+		user: undefined,
+		isLoading: true,
+		error: undefined
+	});
 
-  const [authState, setAuthState] =  useState<AuthState>({
-    user: undefined,
-    isLoading: true,
-    error: undefined
-  });
+	const login = useCallback(async (email: string, password: string) => {
+		setAuthState({
+			user: undefined,
+			isLoading: true,
+			error: undefined
+		});
 
-  const login = useCallback(async (email: string, password: string) => {
-      setAuthState({
-        user: undefined,
-        isLoading: true,
-        error: undefined
-      });
+		const response = await fetch(API_URL + Routes.Identity.PostLogin + "?useCookies=true", {
+			method: "POST",
+			body: JSON.stringify({ email, password })
+		});
 
-      const response =await fetch(API_URL + Routes.Identity.PostLogin + "?useCookies=true", {
-        method: "POST",
-        body: JSON.stringify({email, password})
-      })
+		if (!response.ok) {
+			setAuthState({
+				user: undefined,
+				isLoading: false,
+				error: new Error(String(response.status))
+			});
+			return;
+		}
 
-      if (!response.ok) {
-         setAuthState({
-            user: undefined,
-            isLoading: false,
-            error: new Error(String(response.status))
-         });
-         return;
-      }
+		await fetch(API_URL + Routes.User.GetCurrent)
+			.then(response => response.json())
+			.then(data => data as User)
+			.then(user => {
+				setAuthState({
+					user: user,
+					isLoading: false,
+					error: undefined
+				});
+			})
+			.catch(error => {
+				setAuthState({
+					user: undefined,
+					isLoading: false,
+					error: error
+				});
+			});
+	}, []);
+	const logout = useCallback(async () => {
+		await fetch(API_URL + Routes.Identity.PostLogout, {
+			method: "POST",
+			credentials: "include"
+		})
+			.then(_response => {
+				setAuthState({
+					user: undefined,
+					isLoading: false,
+					error: undefined
+				});
+			})
+			.catch(console.error);
+	}, []);
 
-      await fetch(API_URL + Routes.User.GetCurrent)
-           .then(response => response.json())
-           .then(data => data as User)
-           .then(user => {
-               setAuthState({
-                 user: user,
-                 isLoading: false,
-                 error: undefined
-               })
-           })
-           .catch(error => {
-               setAuthState({
-                 user: undefined,
-                 isLoading: false,
-                 error: error 
-               })
-           })
-
-  }, [])
-  const logout = useCallback(async () => {
-      await fetch(API_URL + Routes.Identity.PostLogout, {
-        method: "POST",
-        credentials: "include",
-      })
-      .then(_response => {
-          setAuthState({
-            user: undefined,
-            isLoading: false,
-            error: undefined
-          })
-      })
-      .catch(console.error)
-  }, [])
-
-  const currentUserData: AuthContext  = useMemo(() => {
-      return {...authState, login, logout}
-  }, [login, logout, authState])
-  return (
-      <>
-        <AuthContext.Provider value={currentUserData}/>
-      </>
-  );
+	const currentUserData: AuthContext = useMemo(() => {
+		return { ...authState, login, logout };
+	}, [login, logout, authState]);
+	return (
+		<>
+			<AuthContext.Provider value={currentUserData}/>
+		</>
+	);
 }

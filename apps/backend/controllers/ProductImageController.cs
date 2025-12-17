@@ -158,16 +158,16 @@ public class ProductImageController : ControllerBase {
 	[Authorize]
 	public async Task<ActionResult> BatchDelete([FromBody] ulong[] ids) {
 		bool isNormalUser = !(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"));
-    string? currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+		string? currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
 		using (var db = new DatabaseContext()) {
 			FailedBatchEntry<ulong>[] failedProductImages = [];
 
 			ProductImage[] productImages = await db.ProductImages
-        .Include(prodImage => prodImage.Parent)
-        .ThenInclude(prod => prod.Owner)
-        .Where(prodImages => ids.Contains(prodImages.Id))
-        .ToArrayAsync();
+		.Include(prodImage => prodImage.Parent)
+		.ThenInclude(prod => prod.Owner)
+		.Where(prodImages => ids.Contains(prodImages.Id))
+		.ToArrayAsync();
 
 			foreach (var productImageId in ids) {
 				ProductImage? prodImage = productImages.FirstOrDefault(pi => productImageId == pi.Id);
@@ -176,8 +176,8 @@ public class ProductImageController : ControllerBase {
 				} else if (!isNormalUser || prodImage.Parent.Owner.Id == currentUserId) {
 					db.ProductImages.Remove(prodImage);
 				} else {
-          failedProductImages.Append(new FailedBatchEntry<ulong>(productImageId, "Unauthorized deletion attempt"));
-        }
+					failedProductImages.Append(new FailedBatchEntry<ulong>(productImageId, "Unauthorized deletion attempt"));
+				}
 			}
 
 			await db.SaveChangesAsync();

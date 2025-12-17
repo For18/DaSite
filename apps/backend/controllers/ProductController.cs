@@ -142,15 +142,15 @@ public class ProductController : ControllerBase {
 	[Authorize]
 	public async Task<ActionResult> BatchDelete([FromBody] ulong[] ids) {
 		bool isNormalUser = (User.IsInRole("Admin") || User.IsInRole("AuctionMaster"));
-    string? currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+		string? currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
 		using (var db = new DatabaseContext()) {
 			FailedBatchEntry<ulong>[] failedProducts = [];
 
 			Product[] products = await db.Products
-        .Include(product => product.Owner)
-        .Where(product => ids.Contains(product.Id))
-        .Select(product => product).ToArrayAsync();
+		.Include(product => product.Owner)
+		.Where(product => ids.Contains(product.Id))
+		.Select(product => product).ToArrayAsync();
 
 			foreach (ulong productId in ids) {
 				Product? product = products.FirstOrDefault(p => p.Id == productId);
@@ -159,8 +159,8 @@ public class ProductController : ControllerBase {
 				} else if (!isNormalUser || product.Owner.Id == currentUserId) {
 					db.Products.Remove(product);
 				} else {
-          failedProducts.Append(new FailedBatchEntry<ulong>(productId, "Unauthorized deletion attempt"));
-        }
+					failedProducts.Append(new FailedBatchEntry<ulong>(productId, "Unauthorized deletion attempt"));
+				}
 			}
 
 			await db.SaveChangesAsync();

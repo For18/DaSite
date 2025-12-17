@@ -124,7 +124,7 @@ export const Routes = {
 		PostManage2fa: `/identity/manage/2fa`,
 		GetManageInfo: `/identity/manage/info`,
 		PostManageInfo: `/identity/manage/info`,
-    PostLogout:   `/identity/account/logout`
+		PostLogout: `/identity/account/logout`
 	}
 } as const;
 

@@ -13,25 +13,25 @@ export default function Login() {
 	const navigate = useNavigate();
 	const passwordRef = useRef<HTMLInputElement>(null);
 
-  async function login(email: string, password: string) {
-  	const res = await fetch(API_URL + Routes.Identity.PostLogin + "?useCookies=true", {
-  		method: "POST",
-  		credentials: "include",
-  		headers: { "Content-Type": "application/json" },
-  		body: JSON.stringify({ email, password })
-  	});
-  
-  	const text = await res.text();
-  	let data;
-  
-  	try {
-  		data = JSON.parse(text);
-  	} catch {
-  		data = text;
-  	}
-  
-  	return { works: res.ok, httpStatus: res.status, data };
-  }
+	async function login(email: string, password: string) {
+		const res = await fetch(API_URL + Routes.Identity.PostLogin + "?useCookies=true", {
+			method: "POST",
+			credentials: "include",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({ email, password })
+		});
+
+		const text = await res.text();
+		let data;
+
+		try {
+			data = JSON.parse(text);
+		} catch {
+			data = text;
+		}
+
+		return { works: res.ok, httpStatus: res.status, data };
+	}
 	async function handleSubmit() {
 		const { works, httpStatus, data } = await login(email, password);
 
