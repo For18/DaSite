@@ -20,7 +20,7 @@ export default function useAuth() {
 	return useContext(AuthContext);
 }
 
-export function AuthProvider() {
+export function AuthProvider({children} : {children: React.ReactNode}) {
 	const [authState, setAuthState] = useState<AuthState>({
 		user: undefined,
 		isLoading: true,
@@ -36,6 +36,8 @@ export function AuthProvider() {
 
 		const response = await fetch(API_URL + Routes.Identity.PostLogin + "?useCookies=true", {
 			method: "POST",
+      credentials: "include",
+      headers: {"Content-Type" : "applications/json"},
 			body: JSON.stringify({ email, password })
 		});
 
@@ -86,7 +88,9 @@ export function AuthProvider() {
 	}, [login, logout, authState]);
 	return (
 		<>
-			<AuthContext.Provider value={currentUserData}/>
+			<AuthContext.Provider value={currentUserData}>
+        {children}
+      </AuthContext.Provider>
 		</>
 	);
 }

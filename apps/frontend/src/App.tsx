@@ -7,25 +7,28 @@ import NotFound from "./routes/NotFound";
 import routes from "./routes/Routes";
 import { DarkTheme } from "./themes/Dark";
 import ThemeCSSProvider from "./themes/ThemeCSSProvider";
+import { AuthProvider } from "./AuthProvider";
 
 export default function App() {
 	return (
 		<ThemeCSSProvider theme={DarkTheme}>
-			<BrowserRouter>
-				<Layout>
-					<Routes>
-						{Object.entries(routes).map(([path, component]) => (
-							<Route key={path} path={path} element={
-								<Suspense fallback={<Throbber/>}>
-									{createElement(component)}
-								</Suspense>
-							}/>
-						))}
+      <AuthProvider>
+		  	<BrowserRouter>
+		  		<Layout>
+		  			<Routes>
+		  				{Object.entries(routes).map(([path, component]) => (
+		  					<Route key={path} path={path} element={
+		  						<Suspense fallback={<Throbber/>}>
+		  							{createElement(component)}
+		  						</Suspense>
+		  					}/>
+		  				))}
 
-						<Route path="*" element={<NotFound/>}/>
-					</Routes>
-				</Layout>
-			</BrowserRouter>
+		  				<Route path="*" element={<NotFound/>}/>
+		  			</Routes>
+		  		</Layout>
+		  	</BrowserRouter>
+      </AuthProvider>
 		</ThemeCSSProvider>
 	);
 }
