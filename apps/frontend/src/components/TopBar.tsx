@@ -1,10 +1,9 @@
 import { useNavigate } from "react-router";
-import { API_URL, PublicUser } from "../lib/api";
-import { usePromise } from "../lib/util";
 import { Routes } from "../routes/Routes";
 import Button from "./Button";
 import Image from "./Image";
 import styles from "./TopBar.module.scss";
+import useAuth from "../AuthProvider";
 
 export default function TopBar({
 	links
@@ -12,25 +11,12 @@ export default function TopBar({
 	links: { [name: string]: string };
 }) {
 	const navigate = useNavigate();
-	const currentUserPromise = usePromise<PublicUser>(async () => {
-		return fetch(API_URL + Routes.User.GetCurrent)
-			.then(response => {
-				if (response.status == 401) throw new Error("No logged user");
-				else if (response.status != 200) throw new Error("Error: " + response.status);
+	const authState = useAuth();
+  if (authState == null) throw new Error("Clockpage component rendered outside of AuthContext");
+  const { user } = authState;
 
-				return response.json();
-			})
-			.then(data => data as PublicUser)
-			.then(user => user);
-	}, []);
-
-	// TODO: find better placeholder (build in <Image> placeholder doesn't work)
-	let pfpUrl =
-		"https://www.shutterstock.com/image-vector/highresolution-default-profile-avatar-icon-260nw-2600268263.jpg";
-	if (currentUserPromise.error) console.error(currentUserPromise.error);
-	else if (currentUserPromise.value != null && currentUserPromise.value.avatarImageUrl != null) {
-		pfpUrl = currentUserPromise.value.avatarImageUrl;
-	}
+	// TODO: find better placeholder (built in <Image> placeholder doesn't work)
+	const pfpUrl = user?.avatarImageUrl ?? "https://www.shutterstock.com/image-vector/highresolution-default-profile-avatar-icon-260nw-2600268263.jpg";
 
 	return (
 		<header className={styles.header}>
@@ -53,8 +39,8 @@ export default function TopBar({
 				width={50}
 				height={50}
 				onClick={() => {
-					if (currentUserPromise.value) {
-						navigate(Routes.Pages.Profile(currentUserPromise.value.id));
+					if (user) {
+						navigate(Routes.Pages.Profile(user.id));
 					} else {
 						navigate(Routes.Pages.Login);
 					}

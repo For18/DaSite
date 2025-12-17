@@ -11,6 +11,7 @@ import { usePromise, useTime } from "../lib/util";
 import styles from "./ClockPage.module.scss";
 import NotFound from "./NotFound";
 import { Routes } from "./Routes";
+import useAuth from "../AuthProvider";
 
 function lerp(from: number, to: number, t: number): number {
 	return from + t * (to - from);
@@ -55,13 +56,9 @@ export default function ClockPage() {
 	const { auctionId } = useParams();
 	const auction = useAPI<Auction>(auctionId != null ? Routes.Auction.Get(auctionId) : null);
 	const [items, setItems] = useState<AuctionItem[] | null>(null);
-	const currentUser = usePromise<PublicUser>(() => {
-		return fetch(API_URL + Routes.User.GetCurrent)
-			.then(response => response.json())
-			.then(data => data as PublicUser)
-			.then(user => user);
-	}, []);
-
+	const authState = useAuth();
+  if (authState == null) throw new Error("Clockpage component rendered outside of AuthContext");
+  const {user} = authState;
 	const currentItem = items ? items[0] : null;
 
 	const buyCountRef = useRef<number>(0);
@@ -113,16 +110,13 @@ export default function ClockPage() {
 		}
 	}, [progress]);
 
-	/* TODO: add entry to 'sale' db table if onPurchase is called */
+  // TODO: add visual indicator to see if purchase was successful
 	const onPurchase = (count: number) => {
 		currentItem?.count && (currentItem.count -= count);
 		if (currentItem && currentItem.count <= 0) doShift();
 
-		const shouldWait = auctionId == null || currentUser.isLoading || currentUser === null ||
-			currentUser.value == null;
-		while (shouldWait) {
-		}
-		PostSale(currentUser.value!.id!, Number(auctionId)!, count, Number(currentPrice));
+    if (user === undefined) return;
+		PostSale(user.id!, Number(auctionId)!, count, Number(currentPrice));
 	};
 
 	if (items === null) return <Throbber/>;
