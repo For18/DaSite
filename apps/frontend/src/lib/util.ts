@@ -1,4 +1,4 @@
-import { type DependencyList, useCallback, useEffect, useRef, useState } from "react";
+import { type DependencyList, useCallback, useDebugValue, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 
 const RANDOM_CHARACTER_SET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -48,6 +48,7 @@ export function useTime() {
 	useAnimationFrame(() => {
 		setTime(Date.now());
 	});
+	useDebugValue(time);
 	return time;
 }
 
