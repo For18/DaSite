@@ -83,6 +83,8 @@ export function useRenderCount(): number {
 		countRef.current++;
 	});
 
+	useDebugValue(countRef);
+
 	return countRef.current;
 }
 
