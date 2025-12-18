@@ -1,4 +1,4 @@
-import { createContext, type JSX, type PropsWithChildren, useContext, useState } from "react";
+import { createContext, type JSX, type PropsWithChildren, useContext, useDebugValue, useState } from "react";
 import type { Theme } from "./Themes";
 import { SetState } from "../lib/util";
 
@@ -9,6 +9,7 @@ export interface ThemeState {
 const ThemeStateContext = createContext<ThemeState | null>(null);
 export function useTheme(): ThemeState {
 	const themeState = useContext(ThemeStateContext);
+	useDebugValue(themeState?.theme?.id);
 	if (themeState == null) throw new Error("Hook used outside of Theme context");
 	return themeState;
 }
