@@ -158,6 +158,8 @@ export function usePromise<T>(createPromise: () => Promise<T> | null,
 			.finally(() => setIsLoading(false));
 	}, dependencies);
 
+	useDebugValue(isLoading ? "Loading..." : error != null ? error : value);
+
 	return {
 		isLoading,
 		value,
