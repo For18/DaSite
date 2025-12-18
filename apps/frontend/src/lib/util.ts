@@ -67,6 +67,8 @@ export function useScreenSize(): [number, number] {
 		return () => window.removeEventListener("resize", update);
 	}, []);
 
+	useDebugValue(screenSize);
+
 	return screenSize;
 }
 
