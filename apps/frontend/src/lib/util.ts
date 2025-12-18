@@ -179,6 +179,8 @@ export function useMousePosition(): [number, number] {
 		return () => window.removeEventListener("mousemove", listener);
 	}, []);
 
+	useDebugValue(mousePosition);
+
 	return mousePosition;
 }
 
