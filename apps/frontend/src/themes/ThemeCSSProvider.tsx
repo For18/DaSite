@@ -1,8 +1,17 @@
-import { createContext, type JSX, type PropsWithChildren, useState } from "react";
+import { createContext, type JSX, type PropsWithChildren, useContext, useState } from "react";
 import type { Theme } from "./Themes";
+import { SetState } from "../lib/util";
 
-export const SetThemeContext = createContext<(theme: Theme) => void>(() => {});
-export const ThemeContext = createContext<Theme | null>(null);
+export interface ThemeState {
+	theme: Theme;
+	setTheme: SetState<Theme>;
+}
+const ThemeStateContext = createContext<ThemeState | null>(null);
+export function useTheme(): ThemeState {
+	const themeState = useContext(ThemeStateContext);
+	if (themeState == null) throw new Error("Hook used outside of Theme context");
+	return themeState;
+}
 
 export default function ThemeCSSProvider({ children, theme }: {
 	theme: Theme;
@@ -33,11 +42,12 @@ export default function ThemeCSSProvider({ children, theme }: {
 
 			fontWeight: currentTheme.typography.fontWeight
 		} as React.CSSProperties}>
-			<SetThemeContext.Provider value={setCurrentTheme}>
-				<ThemeContext.Provider value={currentTheme}>
-					{children}
-				</ThemeContext.Provider>
-			</SetThemeContext.Provider>
+			<ThemeStateContext.Provider value={{
+				theme: currentTheme,
+				setTheme: setCurrentTheme
+			}}>
+				{children}
+			</ThemeStateContext.Provider>
 		</div>
 	);
 }
