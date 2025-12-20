@@ -7,8 +7,8 @@ import Clock from "../components/Clock";
 import EndedAuction from "../components/EndedAuction";
 import ProductView from "../components/ProductView";
 import Throbber from "../components/Throbber";
-import { API_URL, Auction, AuctionItem, PublicUser, useAPI } from "../lib/api";
-import { usePromise, useTime } from "../lib/util";
+import { API_URL, Auction, AuctionItem, useAPI } from "../lib/api";
+import { useTime } from "../lib/util";
 import styles from "./ClockPage.module.scss";
 import NotFound from "./NotFound";
 import { Routes } from "./Routes";
@@ -56,9 +56,7 @@ export default function ClockPage() {
 	const { auctionId } = useParams();
 	const auction = useAPI<Auction>(auctionId != null ? Routes.Auction.Get(auctionId) : null);
 	const [items, setItems] = useState<AuctionItem[] | null>(null);
-	const authState = useAuth();
-	if (authState == null) throw new Error("Clockpage component rendered outside of AuthContext");
-	const { user } = authState;
+	const {user} = useAuth();
 	const currentItem = items ? items[0] : null;
 
 	const buyCountRef = useRef<number>(0);
