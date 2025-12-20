@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useMemo, useState, useEffect } from "react";
 import { API_URL, User } from "./lib/api";
 import { Routes } from "./routes/Routes";
 
@@ -32,6 +32,30 @@ export function AuthProvider({children} : {children: React.ReactNode}) {
 		error: undefined
 	});
 
+  useEffect(() => {
+    fetch(API_URL + Routes.User.GetCurrent, {
+      credentials: "include"
+    })
+      .then(response => {
+        if (!response.ok) throw new Error("Not authenticated");
+        return response.json();
+      })
+      .then(user => {
+        setAuthState({
+          user: user,
+          isLoading: false,
+          error: undefined
+        });
+      })
+      .catch(error => {
+        setAuthState({
+          user: undefined,
+          isLoading: false,
+          error: error
+        });
+      });
+  }, []);
+
 	const login = useCallback(async (email: string, password: string) => {
 		setAuthState({
 			user: undefined,
@@ -55,7 +79,9 @@ export function AuthProvider({children} : {children: React.ReactNode}) {
 			return;
 		}
 
-		await fetch(API_URL + Routes.User.GetCurrent)
+		await fetch(API_URL + Routes.User.GetCurrent, {
+        credentials: "include"
+      })
 			.then(response => response.json())
 			.then(data => data as User)
 			.then(user => {
