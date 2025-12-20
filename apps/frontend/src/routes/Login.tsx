@@ -1,29 +1,29 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
+import useAuth from "../AuthProvider";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import Typography from "../components/Typography";
 import styles from "./AuthForm.module.scss";
 import { Routes } from "./Routes";
-import useAuth from "../AuthProvider";
 
 export default function Login() {
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const navigate = useNavigate();
 	const passwordRef = useRef<HTMLInputElement>(null);
-  const { login, user } = useAuth();
+	const { login, user } = useAuth();
 
 	async function handleSubmit() {
-    await login(email, password)
+		await login(email, password);
 	}
 
-  useEffect(() => {
-      if (user) {
-        console.log("Login successful!: ", user);
-        navigate(Routes.Pages.Home);
-      }
-  }, [user])
+	useEffect(() => {
+		if (user) {
+			console.log("Login successful!: ", user);
+			navigate(Routes.Pages.Home);
+		}
+	}, [user]);
 
 	useEffect(() => {
 		document.title = "For18 - Login";

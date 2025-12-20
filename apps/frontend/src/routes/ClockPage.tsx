@@ -56,7 +56,7 @@ export default function ClockPage() {
 	const { auctionId } = useParams();
 	const auction = useAPI<Auction>(auctionId != null ? Routes.Auction.Get(auctionId) : null);
 	const [items, setItems] = useState<AuctionItem[] | null>(null);
-	const {user} = useAuth();
+	const { user } = useAuth();
 	const currentItem = items ? items[0] : null;
 
 	const buyCountRef = useRef<number>(0);

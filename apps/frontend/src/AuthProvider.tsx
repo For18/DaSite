@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo, useState, useEffect } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { API_URL, User } from "./lib/api";
 import { Routes } from "./routes/Routes";
 
@@ -18,43 +18,43 @@ export interface AuthFunctions {
 
 export default function useAuth() {
 	const context = useContext(AuthContext);
-  if (!context) {
-  		throw new Error("useAuth must be used within an AuthProvider");
+	if (!context) {
+		throw new Error("useAuth must be used within an AuthProvider");
 	}
-  
- 	return context;
+
+	return context;
 }
 
-export function AuthProvider({children} : {children: React.ReactNode}) {
+export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [authState, setAuthState] = useState<AuthState>({
 		user: undefined,
 		isLoading: true,
 		error: undefined
 	});
 
-  useEffect(() => {
-    fetch(API_URL + Routes.User.GetCurrent, {
-      credentials: "include"
-    })
-      .then(response => {
-        if (!response.ok) throw new Error("Not authenticated");
-        return response.json();
-      })
-      .then(user => {
-        setAuthState({
-          user: user,
-          isLoading: false,
-          error: undefined
-        });
-      })
-      .catch(error => {
-        setAuthState({
-          user: undefined,
-          isLoading: false,
-          error: error
-        });
-      });
-  }, []);
+	useEffect(() => {
+		fetch(API_URL + Routes.User.GetCurrent, {
+			credentials: "include"
+		})
+			.then(response => {
+				if (!response.ok) throw new Error("Not authenticated");
+				return response.json();
+			})
+			.then(user => {
+				setAuthState({
+					user: user,
+					isLoading: false,
+					error: undefined
+				});
+			})
+			.catch(error => {
+				setAuthState({
+					user: undefined,
+					isLoading: false,
+					error: error
+				});
+			});
+	}, []);
 
 	const login = useCallback(async (email: string, password: string) => {
 		setAuthState({
@@ -65,8 +65,8 @@ export function AuthProvider({children} : {children: React.ReactNode}) {
 
 		const response = await fetch(API_URL + Routes.Identity.PostLogin + "?useCookies=true", {
 			method: "POST",
-      credentials: "include",
-      headers: {"Content-Type" : "applications/json"},
+			credentials: "include",
+			headers: { "Content-Type": "applications/json" },
 			body: JSON.stringify({ email, password })
 		});
 
@@ -80,8 +80,8 @@ export function AuthProvider({children} : {children: React.ReactNode}) {
 		}
 
 		await fetch(API_URL + Routes.User.GetCurrent, {
-        credentials: "include"
-      })
+			credentials: "include"
+		})
 			.then(response => response.json())
 			.then(data => data as User)
 			.then(user => {
@@ -120,8 +120,8 @@ export function AuthProvider({children} : {children: React.ReactNode}) {
 	return (
 		<>
 			<AuthContext.Provider value={currentUserData}>
-        {children}
-      </AuthContext.Provider>
+				{children}
+			</AuthContext.Provider>
 		</>
 	);
 }
