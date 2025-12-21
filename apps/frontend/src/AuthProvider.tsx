@@ -32,7 +32,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		error: undefined
 	});
 
-	useEffect(() => {
+  const fetchUser = useCallback(() => {
 		fetch(API_URL + Routes.User.GetCurrent, {
 			credentials: "include"
 		})
@@ -40,6 +40,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 				if (!response.ok) throw new Error("Not authenticated");
 				return response.json();
 			})
+      .then(data => data as User)
 			.then(user => {
 				setAuthState({
 					user: user,
@@ -56,6 +57,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			});
 	}, []);
 
+  useEffect(() => { fetchUser(); }, [fetchUser])
+
 	const login = useCallback(async (email: string, password: string) => {
 		setAuthState({
 			user: undefined,
@@ -66,7 +69,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		const response = await fetch(API_URL + Routes.Identity.PostLogin + "?useCookies=true", {
 			method: "POST",
 			credentials: "include",
-			headers: { "Content-Type": "applications/json" },
+			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ email, password })
 		});
 
@@ -79,26 +82,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			return;
 		}
 
-		await fetch(API_URL + Routes.User.GetCurrent, {
-			credentials: "include"
-		})
-			.then(response => response.json())
-			.then(data => data as User)
-			.then(user => {
-				setAuthState({
-					user: user,
-					isLoading: false,
-					error: undefined
-				});
-			})
-			.catch(error => {
-				setAuthState({
-					user: undefined,
-					isLoading: false,
-					error: error
-				});
-			});
-	}, []);
+    fetchUser();
+	}, [fetchUser]);
 	const logout = useCallback(async () => {
 		await fetch(API_URL + Routes.Identity.PostLogout, {
 			method: "POST",
