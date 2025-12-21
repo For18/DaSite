@@ -5,6 +5,7 @@ import Throbber from "../components/Throbber";
 import Typography from "../components/Typography";
 import { API_URL, type Auction, type AuctionEntry, type AuctionItem, useAPI } from "../lib/api";
 import { formatEuros, usePromise } from "../lib/util";
+import { Routes } from "./Routes";
 
 /* TODO: update
  * each card should hold title of auction and have a list of links or hover-able text or similar
@@ -15,28 +16,30 @@ export default function Auctions() {
 		document.title = "For18 - auctions";
 	});
 
-	const auctions = useAPI<Auction[]>("/auctions/upcoming");
+	const auctions = useAPI<Auction[]>(Routes.Auction.GetUpcoming);
 
 	const { value: auctionEntries, isLoading: auctionEntriesLoading } = usePromise<AuctionEntry[]>(() =>
 		Promise.all(
 			auctions?.map(auction =>
-				fetch(API_URL + "/auction-entry/from-auction/" + auction.id)
+				fetch(API_URL + Routes.AuctionEntry.GetFromAuction(auction.id))
 					.then(response => response.json())
 			) ?? []
 		).then(entryArrays => entryArrays.flat()), [auctions]);
 
 	const auctionItemIds = useMemo(() => {
-		const ids = new Set();
+		const ids = new Set<number>();
 		auctionEntries?.forEach(entry => ids.add(entry.itemId));
 		return Array.from(ids);
 	}, [auctionEntries]);
 
 	const { value: auctionItems } = usePromise<AuctionItem[]>(
 		() =>
-			Promise.all(auctionItemIds.map(auctionItemId =>
-				fetch(API_URL + "/auction-item/" + auctionItemId)
-					.then(response => response.json())
-			)),
+			Promise.all(
+				auctionItemIds.map(auctionItemId =>
+					fetch(API_URL + Routes.AuctionItem.Get(auctionItemId) + auctionItemId)
+						.then(response => response.json())
+				)
+			),
 		[auctionItemIds]
 	);
 

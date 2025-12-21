@@ -1,14 +1,17 @@
 import Throbber from "../components/Throbber";
-import { type ProductImage, useAPI, type User, type AuctionItem, type Product } from "../lib/api";
+import { type ProductImage, type Product, type PublicUser, type AuctionItem, useAPI } from "../lib/api";
 import NotFound from "../routes/NotFound";
+import { Routes } from "../routes/Routes";
 import Image from "./Image";
 import styles from "./ProductView.module.scss";
 import Typography from "./Typography";
 
 export default function ProductView({ auctionItem }: { auctionItem: AuctionItem }) {
-	const product = useAPI<Product>("/product/" + auctionItem.productId);
-	const owner = useAPI<User>(product?.id ? "/private-user/" + product.ownerId : null);
-	const prodImages = useAPI<ProductImage[]>(product?.id ? "/product-image/from/" + product.id : null);
+	const product = useAPI<Product>(Routes.Product.Get(auctionItem.productId));
+	const owner = useAPI<PublicUser>(product?.id ? Routes.User.GetPublic(product.ownerId) : null);
+	const prodImages = useAPI<ProductImage[]>(
+		product?.id ? Routes.ProductImage.FromParent(product.id) + product.id : null
+	);
 	// const thumbnailImage = useAPI<ProductImage>(
 	// 	product && showThumbnail ? "/product-image/from/" + product.thumbnailImageId : null
 	// );
@@ -36,7 +39,7 @@ export default function ProductView({ auctionItem }: { auctionItem: AuctionItem 
 		<div className={styles.productView}>
 			<div>
 				<Typography heading={1}>{product.name}</Typography>
-				<Typography className={styles.seller} href={`/profile/${ownerId}`}>
+				<Typography className={styles.seller} href={Routes.Pages.Profile(ownerId ?? 1)}>
 					Seller: {owner ? owner.userName : "Seller not found"}
 				</Typography>
 			</div>

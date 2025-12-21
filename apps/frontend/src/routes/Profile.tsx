@@ -3,17 +3,18 @@ import Image from "../components/Image";
 import Section from "../components/Section";
 import Throbber from "../components/Throbber";
 import Typography from "../components/Typography";
-import { type Product, useAPI, type User } from "../lib/api";
+import { type Product, type PublicUser, useAPI } from "../lib/api";
 import NotFound from "./NotFound";
 import styles from "./Profile.module.scss";
+import { Routes } from "./Routes";
 
 export default function Profile() {
 	const { userId: userIdString } = useParams();
 	if (!userIdString) return <NotFound/>;
 	const userId = parseInt(userIdString);
 
-	const user = useAPI<User>("/private-user/" + userId);
-	const userProducts = useAPI<Product[]>("/products/user/" + userId);
+	const user = useAPI<PublicUser>(Routes.User.GetPublic(userId));
+	const userProducts = useAPI<Product[]>(Routes.Product.GetOfUser(userId));
 
 	if (user === undefined) return <NotFound/>;
 

@@ -81,6 +81,18 @@ public class SaleController : ControllerBase {
 		}
 	}
 
+	[HttpGet("/sales/batch")]
+	public async Task<ActionResult<SaleExternal[]>> GetBatch([FromBody] ulong[] ids) {
+		using (var db = new DatabaseContext()) {
+			return await db.Sales
+				.Include(sale => sale.PurchasedAuction)
+				.Include(sale => sale.Purchaser)
+				.Where(sale => ids.Contains(sale.Id))
+				.Select(sale => SaleExternal.ToExternal(sale))
+				.ToArrayAsync();
+		}
+	}
+
 	[HttpPost]
 	[Authorize]
 	public async Task<ActionResult> Post(SaleExternal saleData) {
@@ -101,7 +113,7 @@ public class SaleController : ControllerBase {
 	[HttpDelete("{id}")]
 	[Authorize]
 	public async Task<ActionResult> Delete(ulong id) {
-		if (!(User.IsInRole("AuctionMaster") || User.IsInRole("Admin"))) return Forbid();
+		if (!User.IsInRole("Admin")) return Forbid();
 
 		using (var db = new DatabaseContext()) {
 			Sale? sale = await db.Sales.FindAsync(id);
@@ -111,6 +123,34 @@ public class SaleController : ControllerBase {
 			await db.SaveChangesAsync();
 
 			return NotFound();
+		}
+	}
+
+	[HttpDelete("/sales/batch")]
+	[Authorize]
+	public async Task<ActionResult> BatchDelete([FromBody] ulong[] ids) {
+		if (!User.IsInRole("Admin")) return Forbid();
+
+		using (var db = new DatabaseContext()) {
+			FailedBatchEntry<ulong>[] failedSales = [];
+
+			Sale[] sales = await db.Sales.Where(sales => ids.Contains(sales.Id)).Select(sales => sales).ToArrayAsync();
+
+			foreach (ulong salesId in ids) {
+				Sale? sale = sales.FirstOrDefault(s => s.Id == salesId);
+				if (sale == null) {
+					failedSales.Append(new FailedBatchEntry<ulong>(salesId, "Corresponding sale does not exist"));
+				} else {
+					db.Sales.Remove(sale);
+				}
+			}
+
+			await db.SaveChangesAsync();
+			if (failedSales.Length > 0) {
+				return StatusCode(207, new { FailedDeletes = failedSales });
+			}
+
+			return NoContent();
 		}
 	}
 

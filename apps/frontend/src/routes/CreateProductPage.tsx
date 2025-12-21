@@ -5,12 +5,13 @@ import Image from "../components/Image";
 import Input from "../components/Input";
 import { Option, Select } from "../components/Select";
 import Typography from "../components/Typography";
-import { API_URL, type ProductImage, type User } from "../lib/api";
+import { API_URL, type ProductImage, type PublicUser } from "../lib/api";
 import styles from "./CreateProductPage.module.scss";
+import { Routes } from "./Routes";
 
 // TODO: add visual status for user
-async function PostProduct(name: string, description: string, images: string[], owner: User | null) {
-	const productId: number = await fetch(API_URL + "/product", {
+async function PostProduct(name: string, description: string, images: string[], owner: PublicUser | null) {
+	const productId: number = await fetch(API_URL + Routes.Product.Post, {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify({
@@ -24,13 +25,13 @@ async function PostProduct(name: string, description: string, images: string[], 
 		.then(data => data as number)
 		.then(id => id);
 
-	await fetch(API_URL + "/product-image/batch", {
+	await fetch(API_URL + Routes.ProductImage.BatchPost, {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify(images.map(url => JSON.stringify({ parent: productId, url: url })))
 	});
 
-	const imageIds: number[] = await fetch(API_URL + "/product/from/" + productId, {
+	const imageIds: number[] = await fetch(API_URL + Routes.ProductImage.FromParent(productId), {
 		method: "GET",
 		headers: { "Content-Type": "application/json" }
 	})
@@ -39,7 +40,7 @@ async function PostProduct(name: string, description: string, images: string[], 
 		.then(images => images.map(image => image.id));
 
 	if (imageIds.length >= 1) {
-		await fetch(API_URL + "/product/" + productId, {
+		await fetch(API_URL + Routes.Product.Patch(productId), {
 			method: "PATCH",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -61,13 +62,13 @@ export default function CreateProductPage() {
 
 	const [ownerSearchValue, setOwnerSearchValue] = useState<string>("");
 	const foundUsersIndexRef = useRef<number>(0);
-	const [owner, setOwner] = useState<User | null>(null);
-	const [foundUsers, setFoundUsers] = useState<User[]>([]);
+	const [owner, setOwner] = useState<PublicUser | null>(null);
+	const [foundUsers, setFoundUsers] = useState<PublicUser[]>([]);
 
 	useEffect(() => {
-		fetch(API_URL + "/users/by-name/" + ownerSearchValue)
+		fetch(API_URL + Routes.User.GetAllByName(ownerSearchValue))
 			.then(response => response.json())
-			.then(data => data as User[])
+			.then(data => data as PublicUser[])
 			.then(users => setFoundUsers(users));
 	}, [ownerSearchValue]);
 
@@ -124,7 +125,7 @@ export default function CreateProductPage() {
 					/>
 					<Select
 						aria-labelledby="product-owner-search"
-						value={owner?.userName.length == 0 ? null : owner?.userName ?? null}
+						value={owner?.userName?.length == 0 ? null : owner?.userName ?? null}
 						onChange={(value: string) => {
 							foundUsersIndexRef.current = Number(value);
 							setOwner(foundUsers[foundUsersIndexRef.current]);

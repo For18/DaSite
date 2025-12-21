@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.JsonPatch;
 using System.ComponentModel;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 [DisplayName(nameof(Product))]
 public class ProductExternal {
@@ -50,6 +51,18 @@ public class ProductController : ControllerBase {
 		}
 	}
 
+	[HttpGet("/products/batch")]
+	public async Task<ActionResult<ProductExternal[]>> BatchGet([FromBody] ulong[] ids) {
+		using (var db = new DatabaseContext()) {
+			return await db.Products
+				.Include(product => product.Owner)
+				.Include(product => product.ThumbnailImage)
+				.Where(product => ids.Contains(product.Id))
+				.Select(product => ProductExternal.ToExternal(product))
+				.ToArrayAsync();
+		}
+	}
+
 	[HttpGet("/products")]
 	[Authorize]
 	public async Task<ActionResult<ProductExternal[]>> GetAll() {
@@ -70,17 +83,41 @@ public class ProductController : ControllerBase {
 		}
 	}
 
-	[HttpGet("/get-batched")]
-	public async Task<ActionResult<ProductExternal[]>> GetContainedIn([FromQuery] ulong[] ids) {
+	[HttpPost("/products/batch")]
+	[Authorize]
+	public async Task<ActionResult> BatchPost(ProductExternal[] productsData) {
 		using (var db = new DatabaseContext()) {
-			return await db.AuctionItems
-			  .Include(item => item.Product)
-			  .ThenInclude(prod => prod.ThumbnailImage)
-			  .Include(item => item.Product)
-			  .ThenInclude(prod => prod.Owner)
-			  .Where(item => ids.Contains(item.Id))
-			  .Select(item => ProductExternal.ToExternal(item.Product))
-			  .ToArrayAsync();
+			FailedBatchEntry<ProductExternal>[] failedPost = [];
+
+			Product[] products = productsData.Select(product => product.ToProduct(db)).ToArray();
+
+			ulong[] productIds = productsData.Select(product => product.Id).ToArray();
+			ProductExternal[] existingProducts = await db.Products
+				.Where(product => productIds.Contains(product.Id))
+				.Select(product => ProductExternal.ToExternal(product))
+				.ToArrayAsync();
+
+			IdReference<ulong>[] newProducts = [];
+
+			foreach (ProductExternal entry in productsData) {
+				if (existingProducts.Contains(entry)) {
+					failedPost.Append(new FailedBatchEntry<ProductExternal>(entry, "Conflict, product already exists"));
+				} else {
+					db.Add(entry);
+					newProducts.Append(new IdReference<ulong>(entry.Id));
+				}
+			}
+
+			await db.SaveChangesAsync();
+
+			if (failedPost.Length > 0) {
+				return StatusCode(207, new {
+					AddedProducts = newProducts,
+					FailedProducts = failedPost
+				});
+			}
+
+			return Ok(newProducts);
 		}
 	}
 
@@ -100,6 +137,41 @@ public class ProductController : ControllerBase {
 			return Ok(new IdReference<ulong>(product.Id));
 		}
 	}
+
+	[HttpDelete("/products/batch")]
+	[Authorize]
+	public async Task<ActionResult> BatchDelete([FromBody] ulong[] ids) {
+		bool isAdmin = User.IsInRole("Admin");
+		string? currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+		using (var db = new DatabaseContext()) {
+			FailedBatchEntry<ulong>[] failedProducts = [];
+
+			Product[] products = await db.Products
+		.Include(product => product.Owner)
+		.Where(product => ids.Contains(product.Id))
+		.Select(product => product).ToArrayAsync();
+
+			foreach (ulong productId in ids) {
+				Product? product = products.FirstOrDefault(p => p.Id == productId);
+				if (product == null) {
+					failedProducts.Append(new FailedBatchEntry<ulong>(productId, "Corresponding Product does not exist"));
+				} else if (isAdmin || product.Owner.Id == currentUserId) {
+					db.Products.Remove(product);
+				} else {
+					failedProducts.Append(new FailedBatchEntry<ulong>(productId, "Unauthorized deletion attempt"));
+				}
+			}
+
+			await db.SaveChangesAsync();
+			if (failedProducts.Length > 0) {
+				return StatusCode(207, new { FailedDeletes = failedProducts });
+			}
+
+			return NoContent();
+		}
+	}
+
 
 	[HttpDelete("{id}")]
 	[Authorize]

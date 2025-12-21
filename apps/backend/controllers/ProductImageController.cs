@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using System.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 [DisplayName(nameof(ProductImage))]
 public class ProductImageExternal {
@@ -44,6 +45,17 @@ public class ProductImageController : ControllerBase {
 		}
 	}
 
+	[HttpGet("/product-images/batch")]
+	public async Task<ActionResult<ProductImageExternal[]>> BatchGet([FromBody] ulong[] ids) {
+		using (var db = new DatabaseContext()) {
+			return await db.ProductImages
+			.Include(prodImage => prodImage.Parent)
+			.Where(prodImage => ids.Contains(prodImage.Id))
+			.Select(prodImage => ProductImageExternal.ToExternal(prodImage))
+			.ToArrayAsync();
+		}
+	}
+
 	[HttpGet("from/{id}")]
 	public async Task<ActionResult<ProductImageExternal[]>> GetByParent(ulong id) {
 		using (var db = new DatabaseContext()) {
@@ -77,7 +89,8 @@ public class ProductImageController : ControllerBase {
 		}
 	}
 
-	[HttpPost("batch")]
+	[HttpPost("/product-images/batch")]
+	[Authorize]
 	public async Task<ActionResult> BatchPost([FromBody] ProductImageExternal[] images) {
 		using (var db = new DatabaseContext()) {
 			FailedBatchEntry<ProductImageExternal>[] failedPosts = [];
@@ -118,10 +131,10 @@ public class ProductImageController : ControllerBase {
 
 			await db.SaveChangesAsync();
 
-			return Ok(new {
-				AddedImages = newImageIds.Select(id => new IdReference<ulong>(id)).ToArray(),
-				FailedImages = failedPosts
-			});
+			if (failedPosts.Length > 0) {
+				return StatusCode(208, new { AddedImages = newImageIds, FailedPosts = failedPosts });
+			}
+			return Ok(newImageIds);
 		}
 	}
 
@@ -136,6 +149,42 @@ public class ProductImageController : ControllerBase {
 
 			db.ProductImages.Remove(prodImage);
 			await db.SaveChangesAsync();
+
+			return NoContent();
+		}
+	}
+
+	[HttpDelete("batch")]
+	[Authorize]
+	public async Task<ActionResult> BatchDelete([FromBody] ulong[] ids) {
+		bool isAdmin = User.IsInRole("Admin");
+		string? currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+		using (var db = new DatabaseContext()) {
+			FailedBatchEntry<ulong>[] failedProductImages = [];
+
+			ProductImage[] productImages = await db.ProductImages
+		.Include(prodImage => prodImage.Parent)
+		.ThenInclude(prod => prod.Owner)
+		.Where(prodImages => ids.Contains(prodImages.Id))
+		.ToArrayAsync();
+
+			foreach (var productImageId in ids) {
+				ProductImage? prodImage = productImages.FirstOrDefault(pi => productImageId == pi.Id);
+				if (prodImage == null) {
+					failedProductImages.Append(new FailedBatchEntry<ulong>(productImageId, "Corresponding Product does not exist"));
+				} else if (isAdmin || prodImage.Parent.Owner.Id == currentUserId) {
+					db.ProductImages.Remove(prodImage);
+				} else {
+					failedProductImages.Append(new FailedBatchEntry<ulong>(productImageId, "Unauthorized deletion attempt"));
+				}
+			}
+
+			await db.SaveChangesAsync();
+
+			if (failedProductImages.Length > 0) {
+				return StatusCode(207, new { FailedDeletes = failedProductImages });
+			}
 
 			return NoContent();
 		}

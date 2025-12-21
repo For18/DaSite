@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router";
+import useAuth from "../AuthProvider";
 import BeforeAuction from "../components/BeforeAuction";
 import Button from "../components/Button";
 import Clock from "../components/Clock";
@@ -10,6 +11,7 @@ import { API_URL, type Auction, type AuctionItem, useAPI } from "../lib/api";
 import { useTime } from "../lib/util";
 import styles from "./ClockPage.module.scss";
 import NotFound from "./NotFound";
+import { Routes } from "./Routes";
 
 function lerp(from: number, to: number, t: number): number {
 	return from + t * (to - from);
@@ -34,13 +36,27 @@ function formatStartCountDown(startingTime: number, currentTime: number) {
 
 const BUFFER_LEN = 5000;
 
+async function PostSale(purchaser: number, auctionId: number, amount: number, price: number) {
+	await fetch(API_URL + Routes.Sale.Post, {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({
+			purchaser: purchaser,
+			purchasedAuctionId: auctionId,
+			amount: amount,
+			price: price,
+			isPaid: false
+		})
+	});
+}
+
 /* TODO: contemplate if timed out auctions should be added to the back of the items stack being sold */
 export default function ClockPage() {
 	/* Main state holders */
 	const { auctionId } = useParams();
-	const auction = useAPI<Auction>("/auction/" + auctionId);
+	const auction = useAPI<Auction>(auctionId != null ? Routes.Auction.Get(auctionId) : null);
 	const [items, setItems] = useState<AuctionItem[] | null>(null);
-
+	const { user } = useAuth();
 	const currentItem = items ? items[0] : null;
 
 	const buyCountRef = useRef<number>(0);
@@ -52,7 +68,7 @@ export default function ClockPage() {
 
 	useEffect(() => {
 		if (!auctionId) return;
-		fetch(API_URL + "/auction-item/get-by-auction/" + auctionId)
+		fetch(API_URL + Routes.AuctionItem.GetByAuction(auctionId))
 			.then(response => response.json())
 			.then(data => data as AuctionItem[])
 			.then(items => {
@@ -79,7 +95,7 @@ export default function ClockPage() {
    */
 	useEffect(() => {
 		if (!auction) return;
-		fetch(API_URL + "/auction/" + auction?.id, {
+		fetch(API_URL + Routes.Auction.Get(auction?.id), {
 			method: "PATCH",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify([{ op: "replace", path: "/startingTime", value: Math.round(Date.now() + BUFFER_LEN) }])
@@ -92,10 +108,13 @@ export default function ClockPage() {
 		}
 	}, [progress]);
 
-	/* TODO: add entry to 'sale' db table if onPurchase is called */
+	// TODO: add visual indicator to see if purchase was successful
 	const onPurchase = (count: number) => {
 		currentItem?.count && (currentItem.count -= count);
 		if (currentItem && currentItem.count <= 0) doShift();
+
+		if (user === undefined) return;
+		PostSale(user.id!, Number(auctionId)!, count, Number(currentPrice));
 	};
 
 	if (items === null) return <Throbber/>;
