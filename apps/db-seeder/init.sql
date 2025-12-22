@@ -22,6 +22,26 @@ VALUES
 ('a3ef4c50-9a82-4922-aada-b32c3e594248', 'Thijmen Weening', 22450, 'https://media.licdn.com/dms/image/D4E22AQFIp_NIUQ1TNw/feedshare-shrink_800/0/1689671627197?e=2147483647&v=beta&t=LeRJwHti1AGLuNVboxNY7RN82QNZXbNSINIswOsRtkg', 'Thijmen.ween.2001@live.nl', 1, 8678675654, 1, 1, 1, 0),
 ('8fd5b74f-34d1-4028-b2e4-8be2f081c69b', 'Hans Anders', 88760, 'https://media.licdn.com/dms/image/D4E03AQEr-eBEB30FvQ/profile-displayphoto-shrink_800_800/0/1697558265625?e=2147483647&v=beta&t=lGipnIlcV5JEh1AEwNdzY0Vc11hw_Be8Po7ALIcV4VM', 'Hans@hotmail.com', 1, 876548, 1, 1, 1, 0);
 
+-- Testing Users
+-- All passwords are Test123!
+-- Log in as such:
+-- email: Admin password: Test123!
+-- email: AuctionMaster password: Test123!
+-- email: Customer password: Test123!
+INSERT INTO AspNetUsers (Id, UserName, NormalizedUserName, Email, NormalizedEmail, EmailConfirmed, PhoneNumber, PhoneNumberConfirmed, TwoFactorEnabled, LockoutEnabled, AccessFailedCount, PasswordHash, SecurityStamp, ConcurrencyStamp, AuctionDebt, AvatarImageUrl)
+VALUES
+('c2a9f1e6-7b8a-4f3c-9d2e-6a5f0b1d8c47', 'Admin', 'ADMIN', 'admin@test', 'ADMIN@TEST', 1, '111111111', 0, 0, 0, 0,
+ 'AQAAAAIAAYagAAAAEO90XEz5Jsiyc/HkzQh8o4fpo9WPI0fSsQd/ADBe6KIC0ZJkivrKlWCVD0YbBO3cJw==',
+ UUID(), UUID(), 0, 'https://i.pravatar.cc/300?img=1'),
+
+('9a3d7f52-1c84-4e6b-b0a9-2f5c8d1e47ab', 'AuctionMaster', 'AUCTIONMASTER', 'auctionmaster@test', 'AUCTIONMASTER@TEST', 1, '222222222', 1, 1, 0, 0,
+ 'AQAAAAIAAYagAAAAEO90XEz5Jsiyc/HkzQh8o4fpo9WPI0fSsQd/ADBe6KIC0ZJkivrKlWCVD0YbBO3cJw==',
+ UUID(), UUID(), 15000, 'https://i.pravatar.cc/300?img=2'),
+
+('4e8b2c9f-6a3d-47f1-9b0e-1c5d7a82f3ab', 'Customer', 'CUSTOMER', 'customer@test', 'CUSTOMER@TEST', 0, '333333333', 0, 0, 0, 2,
+ 'AQAAAAIAAYagAAAAEO90XEz5Jsiyc/HkzQh8o4fpo9WPI0fSsQd/ADBe6KIC0ZJkivrKlWCVD0YbBO3cJw==',
+ UUID(), UUID(), 250, 'https://i.pravatar.cc/300?img=3');
+
 -- Variables for RoleIds
 SET @AdminId = (SELECT Id FROM AspNetRoles WHERE Name="Admin" LIMIT 1);
 SET @AuctionMasterId = (SELECT Id FROM AspNetRoles WHERE Name="AuctionMaster" LIMIT 1);
@@ -30,13 +50,18 @@ SET @CustomerId = (SELECT Id FROM AspNetRoles WHERE Name="Customer" LIMIT 1);
 -- Bind Roles to users
 INSERT INTO AspNetUserRoles(UserId, RoleId)
 VALUES
+-- Filler users
 ('c2afc4ca-0c53-4f0f-8edf-89bb991640f2', @AuctionMasterId),
 ('ce971fe1-727a-486a-88dd-117b8fd6592b', @AdminId),
 ('6ec13e7a-55fe-4091-93bb-f08d776b3572', @CustomerId),
 ('f63baa9d-f109-4fe1-a5a8-8c5ab0bc0a1a', @CustomerId),
 ('05a3f581-8b97-4f74-852b-f8dfe3dd1961', @CustomerId),
 ('a3ef4c50-9a82-4922-aada-b32c3e594248', @CustomerId),
-('8fd5b74f-34d1-4028-b2e4-8be2f081c69b', @CustomerId);
+('8fd5b74f-34d1-4028-b2e4-8be2f081c69b', @CustomerId),
+-- Manual Test Users
+('c2a9f1e6-7b8a-4f3c-9d2e-6a5f0b1d8c47', @AdminId),
+('9a3d7f52-1c84-4e6b-b0a9-2f5c8d1e47ab', @AuctionMasterId),
+('4e8b2c9f-6a3d-47f1-9b0e-1c5d7a82f3ab', @CustomerId);
 
 -- PRODUCTS
 INSERT INTO Products(Id, Name, Description, ThumbnailImageId, OwnerId)
