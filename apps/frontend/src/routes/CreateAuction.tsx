@@ -1,11 +1,11 @@
+import Button from "@component/Button";
+import ProductView from "@component/ProductView";
+import Typography from "@component/Typography";
 import { useRef, useState } from "react";
-import Button from "../components/Button";
-import ProductView from "../components/ProductView";
-import { type Status, StatusDisplay } from "../components/StatusDisplay";
-import Typography from "../components/Typography";
-import { API_URL, AuctionItem, useAPI } from "../lib/api";
+import { type Status, StatusDisplay } from "@component/StatusDisplay";
+import { API_URL, AuctionItem, useAPI } from "@lib/api";
 import styles from "./CreateAuction.module.scss";
-import { Routes } from "./Routes";
+import { Routes } from "@route/Routes";
 
 const pad = (n: number) => (n < 10 ? `0${n}` : String(n));
 
@@ -29,7 +29,7 @@ export default function CreateAuctions() {
 	const startingDateRef = useRef<string>(getDefaultDate());
 	const startingTimeRef = useRef<string>(getDefaultTime());
 
-  const auctionItems = useAPI<AuctionItem[]>(Routes.AuctionItem.GetAll);
+	const auctionItems = useAPI<AuctionItem[]>(Routes.AuctionItem.GetAll);
 	const [status, setStatus] = useState<Status>({ type: "none", label: "" });
 
 	async function submitAuction() {

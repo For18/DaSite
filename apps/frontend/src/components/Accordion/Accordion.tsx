@@ -1,7 +1,7 @@
 import { type PropsWithChildren, useId, useLayoutEffect, useRef, useState } from "react";
-import { useScreenSize } from "../../lib/util";
+import { useScreenSize } from "@lib/util";
 import styles from "./Accordion.module.scss";
-import Typography from "../Typography";
+import Typography from "@component/Typography";
 
 export interface AccordionProps extends PropsWithChildren {
 	title: string;

@@ -1,5 +1,5 @@
 import styles from "./Footer.module.scss";
-import Typography from "../Typography";
+import Typography from "@component/Typography";
 
 export default function Footer() {
 	return (

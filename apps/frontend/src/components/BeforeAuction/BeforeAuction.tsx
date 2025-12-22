@@ -1,5 +1,5 @@
 import styles from "./BeforeAuction.module.scss";
-import Typography from "../Typography";
+import Typography from "@component/Typography";
 
 export default function BeforeAuction({ startingPoint }: { startingPoint?: string }) {
 	return (

@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { API_URL, User } from "./lib/api";
-import { Routes } from "./routes/Routes";
+import { API_URL, User } from "@lib/api";
+import { Routes } from "@route/Routes";
 
 export type AuthContext = AuthState & AuthFunctions;
 const AuthContext = createContext<AuthContext | null>(null);

@@ -1,11 +1,11 @@
 import { createElement, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router";
-import Layout from "./components/Layout";
-import Throbber from "./components/Throbber";
-import NotFound from "./routes/NotFound";
+import Layout from "@component/Layout";
+import Throbber from "@component/Throbber";
+import NotFound from "@route/NotFound";
 
 import { AuthProvider } from "./AuthProvider";
-import routes from "./routes/Routes";
+import routes from "@route/Routes";
 import { DarkTheme } from "./themes/Dark";
 import ThemeCSSProvider from "./themes/ThemeCSSProvider";
 

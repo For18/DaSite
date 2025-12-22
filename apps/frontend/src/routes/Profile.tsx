@@ -1,12 +1,12 @@
+import Image from "@component/Image";
+import Section from "@component/Section";
+import Throbber from "@component/Throbber";
+import Typography from "@component/Typography";
 import { useParams } from "react-router";
-import Image from "../components/Image";
-import Section from "../components/Section";
-import Throbber from "../components/Throbber";
-import Typography from "../components/Typography";
-import { type Product, type PublicUser, useAPI } from "../lib/api";
-import NotFound from "./NotFound";
+import { type Product, type PublicUser, useAPI } from "@lib/api";
+import NotFound from "@route/NotFound";
 import styles from "./Profile.module.scss";
-import { Routes } from "./Routes";
+import { Routes } from "@route/Routes";
 
 export default function Profile() {
 	const { userId: userIdString } = useParams();

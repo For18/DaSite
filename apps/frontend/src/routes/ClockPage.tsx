@@ -1,17 +1,17 @@
+import BeforeAuction from "@component/BeforeAuction";
+import Button from "@component/Button";
+import Clock from "@component/Clock";
+import EndedAuction from "@component/EndedAuction";
+import ProductView from "@component/ProductView";
+import Throbber from "@component/Throbber";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router";
-import useAuth from "../AuthProvider";
-import BeforeAuction from "../components/BeforeAuction";
-import Button from "../components/Button";
-import Clock from "../components/Clock";
-import EndedAuction from "../components/EndedAuction";
-import ProductView from "../components/ProductView";
-import Throbber from "../components/Throbber";
-import { API_URL, type Auction, type AuctionItem, useAPI } from "../lib/api";
-import { useTime } from "../lib/util";
+import useAuth from "@/AuthProvider";
+import { API_URL, type Auction, type AuctionItem, useAPI } from "@lib/api";
+import { useTime } from "@lib/util";
 import styles from "./ClockPage.module.scss";
-import NotFound from "./NotFound";
-import { Routes } from "./Routes";
+import NotFound from "@route/NotFound";
+import { Routes } from "@route/Routes";
 
 function lerp(from: number, to: number, t: number): number {
 	return from + t * (to - from);

@@ -1,5 +1,5 @@
+import Typography from "@component/Typography";
 import { useEffect } from "react";
-import Typography from "../components/Typography";
 import styles from "./Home.module.scss";
 
 export default function Home() {

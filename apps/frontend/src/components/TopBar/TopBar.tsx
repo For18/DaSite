@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router";
-import useAuth from "../../AuthProvider";
-import { Routes } from "../../routes/Routes";
-import Button from "../Button";
-import Image from "../Image";
+import useAuth from "@/AuthProvider";
+import { Routes } from "@route/Routes";
+import Button from "@component/Button";
+import Image from "@component/Image";
 import styles from "./TopBar.module.scss";
 
 export default function TopBar({

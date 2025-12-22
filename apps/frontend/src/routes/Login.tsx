@@ -1,11 +1,11 @@
+import Button from "@component/Button";
+import Input from "@component/Input";
+import Typography from "@component/Typography";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
-import useAuth from "../AuthProvider";
-import Button from "../components/Button";
-import Input from "../components/Input";
-import Typography from "../components/Typography";
+import useAuth from "@/AuthProvider";
 import styles from "./AuthForm.module.scss";
-import { Routes } from "./Routes";
+import { Routes } from "@route/Routes";
 
 export default function Login() {
 	const [email, setEmail] = useState<string>("");

@@ -1,9 +1,9 @@
 import { type PropsWithChildren } from "react";
 import { useLocation } from "react-router";
-import { Routes } from "../../routes/Routes";
-import Footer from "../Footer";
+import { Routes } from "@route/Routes";
+import Footer from "@component/Footer";
 import styles from "./Layout.module.scss";
-import TopBar from "../TopBar";
+import TopBar from "@component/TopBar";
 
 export default function Layout({ children }: PropsWithChildren) {
 	const location = useLocation();

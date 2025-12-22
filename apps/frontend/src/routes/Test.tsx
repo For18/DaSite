@@ -1,16 +1,16 @@
+import Accordion from "@component/Accordion";
+import Button from "@component/Button";
+import Checkbox from "@component/Checkbox";
+import Divider from "@component/Divider";
+import Input from "@component/Input";
+import LabeledContainer from "@component/LabeledContainer";
+import Slider from "@component/Slider";
+import Typography from "@component/Typography";
 import { useCallback, useEffect, useState } from "react";
-import Accordion from "../components/Accordion";
-import Button from "../components/Button";
-import Checkbox from "../components/Checkbox";
-import Divider from "../components/Divider";
-import Input from "../components/Input";
-import LabeledContainer from "../components/LabeledContainer";
-import { Option, Select } from "../components/Select";
-import Slider from "../components/Slider";
-import { type Status, StatusDisplay } from "../components/StatusDisplay";
-import { Switch } from "../components/Switch";
-import Typography from "../components/Typography";
-import { pickRandom, range, sleep } from "../lib/util";
+import { Option, Select } from "@component/Select";
+import { type Status, StatusDisplay } from "@component/StatusDisplay";
+import { Switch } from "@component/Switch";
+import { pickRandom, range, sleep } from "@lib/util";
 
 export default function Test() {
 	useEffect(() => {

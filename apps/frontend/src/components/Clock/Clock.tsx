@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import styles from "./Clock.module.scss";
-import Typography from "../Typography";
+import Typography from "@component/Typography";
 
 const currencyType = "100 cent";
 
