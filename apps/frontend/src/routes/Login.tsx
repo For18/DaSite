@@ -20,7 +20,7 @@ export default function Login() {
 
 	useEffect(() => {
 		if (user) {
-			console.log("Login successful!: ", user);
+			console.log("Login successful!");
 			navigate(Routes.Pages.Home);
 		}
 	}, [user]);
