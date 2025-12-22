@@ -1,4 +1,4 @@
-import { useState, useEffect, useDebugValue, type DependencyList } from "react";
+import { type DependencyList, useDebugValue, useEffect, useState } from "react";
 
 export interface PromiseHookResponse<T> {
 	isLoading: boolean;

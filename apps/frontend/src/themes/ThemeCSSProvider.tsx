@@ -1,6 +1,6 @@
+import { SetState } from "@lib/util";
 import { createContext, type JSX, type PropsWithChildren, useContext, useDebugValue, useState } from "react";
 import type { Theme } from "./Themes";
-import { SetState } from "@lib/util";
 
 export interface ThemeState {
 	theme: Theme;

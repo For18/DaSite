@@ -3,11 +3,11 @@ import Button from "@component/Button";
 import Image from "@component/Image";
 import Input from "@component/Input";
 import Typography from "@component/Typography";
+import { API_URL, type ProductImage, type PublicUser } from "@lib/api";
+import { Routes } from "@route/Routes";
 import { type Dispatch, type SetStateAction, useEffect, useRef, useState } from "react";
 import { Option, Select } from "../components/Select";
-import { API_URL, type ProductImage, type PublicUser } from "@lib/api";
 import styles from "./CreateProductPage.module.scss";
-import { Routes } from "@route/Routes";
 
 // TODO: add visual status for user
 async function PostProduct(name: string, description: string, images: string[], owner: PublicUser | null) {

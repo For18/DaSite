@@ -4,13 +4,13 @@ import Checkbox from "@component/Checkbox";
 import Divider from "@component/Divider";
 import Input from "@component/Input";
 import LabeledContainer from "@component/LabeledContainer";
-import Slider from "@component/Slider";
-import Typography from "@component/Typography";
-import { useCallback, useEffect, useState } from "react";
 import { Option, Select } from "@component/Select";
+import Slider from "@component/Slider";
 import { type Status, StatusDisplay } from "@component/StatusDisplay";
 import { Switch } from "@component/Switch";
+import Typography from "@component/Typography";
 import { pickRandom, range, sleep } from "@lib/util";
+import { useCallback, useEffect, useState } from "react";
 
 export default function Test() {
 	useEffect(() => {

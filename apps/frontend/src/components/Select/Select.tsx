@@ -1,8 +1,8 @@
+import ClickAwayDetector from "@component/ClickAwayDetector";
+import Typography from "@component/Typography";
 import { createContext, type Key, type PropsWithChildren, useCallback, useContext, useId, useLayoutEffect, useRef,
 	useState } from "react";
-import ClickAwayDetector from "@component/ClickAwayDetector";
 import styles from "./Select.module.scss";
-import Typography from "@component/Typography";
 
 // TODO: Add checkmark next to selected option
 // TODO: Add opening arrow to head

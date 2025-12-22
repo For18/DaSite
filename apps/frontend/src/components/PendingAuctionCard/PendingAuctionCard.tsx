@@ -1,10 +1,9 @@
-import { type Auction, type AuctionItem, type Product, type ProductImage, type PublicUser,
-	useAPI } from "@lib/api";
-import NotFound from "@route/NotFound";
-import { Routes } from "@route/Routes";
 import Image from "@component/Image";
 import Throbber from "@component/Throbber";
 import Typography from "@component/Typography";
+import { type Auction, type AuctionItem, type Product, type ProductImage, type PublicUser, useAPI } from "@lib/api";
+import NotFound from "@route/NotFound";
+import { Routes } from "@route/Routes";
 import styles from "./PendingAuctionCard.module.scss";
 
 export default function PendingAuctionCard({ auction }: { auction: Auction }) {

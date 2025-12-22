@@ -1,4 +1,4 @@
-import { useState, useEffect, useDebugValue } from "react";
+import { useDebugValue, useEffect, useState } from "react";
 
 export default function useScreenSize(): [number, number] {
 	const [screenSize, setScreenSize] = useState<[number, number]>([window.innerWidth, window.innerHeight]);

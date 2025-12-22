@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router";
 import { useCallback } from "react";
+import { useNavigate } from "react-router";
 import { isInternalHref } from "../util";
 
 export default function useGoto() {

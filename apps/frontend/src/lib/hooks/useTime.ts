@@ -1,5 +1,5 @@
+import { useDebugValue, useState } from "react";
 import useAnimationFrame from "./useAnimationFrame";
-import { useState, useDebugValue } from "react";
 
 export default function useTime() {
 	const [time, setTime] = useState(Date.now());

@@ -1,4 +1,4 @@
-import { useState, useEffect, useDebugValue } from "react";
+import { useDebugValue, useEffect, useState } from "react";
 
 export default function useMousePosition(): [number, number] {
 	const [mousePosition, setMousePosition] = useState<[number, number]>([0, 0]);

@@ -2,11 +2,11 @@ import Image from "@component/Image";
 import Section from "@component/Section";
 import Throbber from "@component/Throbber";
 import Typography from "@component/Typography";
-import { useParams } from "react-router";
 import { type Product, type PublicUser, useAPI } from "@lib/api";
 import NotFound from "@route/NotFound";
-import styles from "./Profile.module.scss";
 import { Routes } from "@route/Routes";
+import { useParams } from "react-router";
+import styles from "./Profile.module.scss";
 
 export default function Profile() {
 	const { userId: userIdString } = useParams();

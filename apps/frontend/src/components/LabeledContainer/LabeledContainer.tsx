@@ -1,6 +1,6 @@
+import Typography from "@component/Typography";
 import { type ReactNode } from "react";
 import styles from "./LabeledContainer.module.scss";
-import Typography from "@component/Typography";
 
 export interface LabeledContainerProps {
 	color?: "primary" | "secondary";

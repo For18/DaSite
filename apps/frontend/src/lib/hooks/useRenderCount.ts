@@ -1,4 +1,4 @@
-import { useEffect, useRef, useDebugValue } from "react";
+import { useDebugValue, useEffect, useRef } from "react";
 
 export default function useRenderCount(): number {
 	const countRef = useRef<number>(0);

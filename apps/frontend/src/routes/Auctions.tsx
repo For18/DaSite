@@ -1,12 +1,12 @@
+import usePromise from "@/lib/hooks/usePromise";
 import ProductView from "@component/ProductView";
 import Section from "@component/Section";
 import Throbber from "@component/Throbber";
 import Typography from "@component/Typography";
-import { useEffect, useMemo } from "react";
 import { API_URL, type Auction, type AuctionEntry, type AuctionItem, useAPI } from "@lib/api";
 import { formatEuros } from "@lib/util";
-import usePromise from "@/lib/hooks/usePromise";
 import { Routes } from "@route/Routes";
+import { useEffect, useMemo } from "react";
 
 /* TODO: update
  * each card should hold title of auction and have a list of links or hover-able text or similar

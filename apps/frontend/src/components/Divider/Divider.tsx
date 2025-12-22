@@ -1,5 +1,5 @@
-import styles from "./Divider.module.scss";
 import Typography from "@component/Typography";
+import styles from "./Divider.module.scss";
 
 export interface DividerProps {
 	inset?: boolean;

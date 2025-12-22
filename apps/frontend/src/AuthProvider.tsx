@@ -1,6 +1,6 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { API_URL, User } from "@lib/api";
 import { Routes } from "@route/Routes";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 export type AuthContext = AuthState & AuthFunctions;
 const AuthContext = createContext<AuthContext | null>(null);
@@ -32,7 +32,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		error: undefined
 	});
 
-  const fetchUser = useCallback(() => {
+	const fetchUser = useCallback(() => {
 		fetch(API_URL + Routes.User.GetCurrent, {
 			credentials: "include"
 		})
@@ -40,7 +40,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 				if (!response.ok) throw new Error("Not authenticated");
 				return response.json();
 			})
-      .then(data => data as User)
+			.then(data => data as User)
 			.then(user => {
 				setAuthState({
 					user: user,
@@ -57,7 +57,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			});
 	}, []);
 
-  useEffect(() => { fetchUser(); }, [fetchUser])
+	useEffect(() => {
+		fetchUser();
+	}, [fetchUser]);
 
 	const login = useCallback(async (email: string, password: string) => {
 		setAuthState({
@@ -82,7 +84,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			return;
 		}
 
-    fetchUser();
+		fetchUser();
 	}, [fetchUser]);
 	const logout = useCallback(async () => {
 		await fetch(API_URL + Routes.Identity.PostLogout, {

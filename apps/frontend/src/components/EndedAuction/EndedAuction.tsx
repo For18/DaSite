@@ -1,8 +1,8 @@
-import { useNavigate } from "react-router";
-import { Routes } from "@route/Routes";
 import Button from "@component/Button";
-import styles from "./EndedAuction.module.scss";
 import Typography from "@component/Typography";
+import { Routes } from "@route/Routes";
+import { useNavigate } from "react-router";
+import styles from "./EndedAuction.module.scss";
 
 export default function EndedAuction({ id }: { id: number }) {
 	// TODO: add 'nextAuction' endpoint
