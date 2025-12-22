@@ -16,6 +16,7 @@ export default defineConfig({
 	},
 	resolve: {
 		alias: {
+			"@": "/src",
 			"@component": "/src/components",
 			"@route": "/src/routes",
 			"@lib": "/src/lib"
