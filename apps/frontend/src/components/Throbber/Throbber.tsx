@@ -1,4 +1,5 @@
-import { range, useTime } from "@lib/util";
+import { range } from "@lib/util";
+import useTime from "@/lib/hooks/useTime";
 import styles from "./Throbber.module.scss";
 
 function animation(t: number): number {

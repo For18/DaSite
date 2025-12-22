@@ -1,5 +1,5 @@
 import { type ReactElement, useEffect, useRef, useState } from "react";
-import { useMousePosition } from "@lib/util";
+import useMousePosition from "@lib/hooks/useMousePosition";
 import styles from "./Slider.module.scss";
 
 export interface SliderProps { // TODO: Add direction prop (aria-direction, keybinds & CSS adjustments)

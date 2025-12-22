@@ -1,5 +1,5 @@
 import { createElement, type JSX, type PropsWithChildren, useCallback } from "react";
-import { useGoto } from "@lib/util";
+import useGoto from "@lib/hooks/useGoto";
 import styles from "./Typography.module.scss";
 
 export interface TypographyProps extends PropsWithChildren {

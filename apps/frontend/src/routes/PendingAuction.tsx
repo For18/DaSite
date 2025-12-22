@@ -3,7 +3,7 @@ import Section from "@component/Section";
 import Throbber from "@component/Throbber";
 import Typography from "@component/Typography";
 import { type Auction, useAPI } from "@lib/api";
-import { useScreenSize } from "@lib/util";
+import useScreenSize from "@lib/hooks/useScreenSize";
 import styles from "./PendingAuction.module.scss";
 import { Routes } from "@route/Routes";
 

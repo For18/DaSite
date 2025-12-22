@@ -8,7 +8,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router";
 import useAuth from "@/AuthProvider";
 import { API_URL, type Auction, type AuctionItem, useAPI } from "@lib/api";
-import { useTime } from "@lib/util";
+import useTime from "@lib/hooks/useTime";
 import styles from "./ClockPage.module.scss";
 import NotFound from "@route/NotFound";
 import { Routes } from "@route/Routes";

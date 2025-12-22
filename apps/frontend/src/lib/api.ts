@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 
 import { useDebugValue } from "react";
-import { usePromise } from "@lib/util";
+import usePromise from "@lib/hooks/usePromise";
 
 export const API_URL: string = import.meta.env.VITE_API_URL;
 

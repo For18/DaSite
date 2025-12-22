@@ -4,7 +4,8 @@ import Throbber from "@component/Throbber";
 import Typography from "@component/Typography";
 import { useEffect, useMemo } from "react";
 import { API_URL, type Auction, type AuctionEntry, type AuctionItem, useAPI } from "@lib/api";
-import { formatEuros, usePromise } from "@lib/util";
+import { formatEuros } from "@lib/util";
+import usePromise from "@/lib/hooks/usePromise";
 import { Routes } from "@route/Routes";
 
 /* TODO: update
