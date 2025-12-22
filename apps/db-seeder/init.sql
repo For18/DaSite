@@ -15,13 +15,28 @@ DELETE FROM AspNetUsers;
 INSERT INTO AspNetUsers(Id, UserName, AuctionDebt, AvatarImageUrl, Email, EmailConfirmed, PhoneNumber, PhoneNumberConfirmed, TwoFactorEnabled, LockOutEnabled, AccessFailedCount)
 VALUES
 ('c2afc4ca-0c53-4f0f-8edf-89bb991640f2', 'Robbert Young', 0, 'https://i.redd.it/g28z3ezfxqm51.jpg', 'HS@maestro.flora.nl', 1, 987654374, 1, 1, 2, 0),
-('ce971fe1-727a-486a-88dd-117b8fd6592b', 'Hán Zhì', 0, 'https://imgur.com/a/XazVj4C', 'HZ@admin.flora.nl', 1, 876556789, 1, 1, 1, 0),
+('ce971fe1-727a-486a-88dd-117b8fd6592b', 'Han Zhi', 0, 'https://imgur.com/a/XazVj4C', 'HZ@admin.flora.nl', 1, 876556789, 1, 1, 1, 0),
 ('6ec13e7a-55fe-4091-93bb-f08d776b3572', 'Maria de Vries', 0, 'https://media.licdn.com/dms/image/v2/D5603AQFVPGrisNSyuQ/profile-displayphoto-shrink_200_200/B56ZWa8r1_GQAY-/0/1742061355032?e=2147483647&v=beta&t=Cw8eo8Snvn8nphEkLqW2kRHMHVM6OKKSyM3akYe81ks', 'Maria.deVries@live.nl', 1, 8798000, 1, 1, 1, 0),
 ('f63baa9d-f109-4fe1-a5a8-8c5ab0bc0a1a', 'Joris van den Berg', 0, 'https://www.hevo.nl/application/files/cache/thumbnails/hevo-joris-van-den-berg-0a83fb5ddae97038540dbc5d1966978a.jpg', 'Joris.vanBerg@live.nl', 1, 345678, 1, 1, 1, 0),
 ('05a3f581-8b97-4f74-852b-f8dfe3dd1961', 'Casper van de Molen', 500, 'https://i.pinimg.com/originals/59/af/9c/59af9cd100daf9aa154cc753dd58316d.jpg', 'Casper.Molen@gmail.com', 1, 9876587, 1, 1, 1, 0),
 ('a3ef4c50-9a82-4922-aada-b32c3e594248', 'Thijmen Weening', 22450, 'https://media.licdn.com/dms/image/D4E22AQFIp_NIUQ1TNw/feedshare-shrink_800/0/1689671627197?e=2147483647&v=beta&t=LeRJwHti1AGLuNVboxNY7RN82QNZXbNSINIswOsRtkg', 'Thijmen.ween.2001@live.nl', 1, 8678675654, 1, 1, 1, 0),
 ('8fd5b74f-34d1-4028-b2e4-8be2f081c69b', 'Hans Anders', 88760, 'https://media.licdn.com/dms/image/D4E03AQEr-eBEB30FvQ/profile-displayphoto-shrink_800_800/0/1697558265625?e=2147483647&v=beta&t=lGipnIlcV5JEh1AEwNdzY0Vc11hw_Be8Po7ALIcV4VM', 'Hans@hotmail.com', 1, 876548, 1, 1, 1, 0);
 
+-- Variables for RoleIds
+SET @AdminId = (SELECT Id FROM AspNetRoles WHERE Name="Admin" LIMIT 1);
+SET @AuctionMasterId = (SELECT Id FROM AspNetRoles WHERE Name="AuctionMaster" LIMIT 1);
+SET @CustomerId = (SELECT Id FROM AspNetRoles WHERE Name="Customer" LIMIT 1);
+
+-- Bind Roles to users
+INSERT INTO AspNetUserRoles(UserId, RoleId)
+VALUES
+('c2afc4ca-0c53-4f0f-8edf-89bb991640f2', @AuctionMasterId),
+('ce971fe1-727a-486a-88dd-117b8fd6592b', @AdminId),
+('6ec13e7a-55fe-4091-93bb-f08d776b3572', @CustomerId),
+('f63baa9d-f109-4fe1-a5a8-8c5ab0bc0a1a', @CustomerId),
+('05a3f581-8b97-4f74-852b-f8dfe3dd1961', @CustomerId),
+('a3ef4c50-9a82-4922-aada-b32c3e594248', @CustomerId),
+('8fd5b74f-34d1-4028-b2e4-8be2f081c69b', @CustomerId);
 
 -- PRODUCTS
 INSERT INTO Products(Id, Name, Description, ThumbnailImageId, OwnerId)
