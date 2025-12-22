@@ -5,6 +5,7 @@
 			"@component": ["src/components"],
 			"@route": ["src/routes"],
 			"@lib": ["src/lib"]
-		}
+		},
+		"jsx": "react-jsx" // Re-enable JSX
 	}
 }
