@@ -13,5 +13,12 @@ export default defineConfig({
 				autoprefixer({})
 			]
 		}
+	},
+	resolve: {
+		alias: {
+			"@component": "/src/components",
+			"@route": "/src/routes",
+			"@lib": "/src/lib"
+		}
 	}
 });
