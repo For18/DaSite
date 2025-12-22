@@ -6,6 +6,8 @@
 			"@route": ["src/routes"],
 			"@lib": ["src/lib"]
 		},
-		"jsx": "react-jsx" // Re-enable JSX
+		"jsx": "react-jsx", // Re-enable JSX
+		"moduleResolution": "nodenext",
+		"module": "nodenext"
 	}
 }
