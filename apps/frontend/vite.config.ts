@@ -3,7 +3,7 @@ import autoprefixer from "autoprefixer";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-	plugins: [react()],
+	plugins: [react({})],
 	css: {
 		modules: {
 			localsConvention: "camelCase"
