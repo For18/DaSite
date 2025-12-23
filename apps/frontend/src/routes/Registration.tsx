@@ -64,8 +64,8 @@ export default function Registration() {
 					<Input type="email" placeholder="email" value={email} onChange={setEmail}
 						onEnter={() => passwordRef.current?.focus()}/>
 					<Input type="password" placeholder="password" value={password} onChange={setPassword}
-						inputRef={passwordRef} onEnter={() => handleSubmit()}/>
-					<Input type="password" placeholder="confirm password" value={confirmPassword} onChange={setConfirmPassword}/>
+						inputRef={passwordRef}/>
+					<Input type="password" placeholder="confirm password" value={confirmPassword} onChange={setConfirmPassword} onEnter={() => handleSubmit()}/>
 					<Button onClick={handleSubmit}>Register</Button>
 					<Typography href={Routes.Pages.Login}>Already have an account?</Typography>
 				</div>
