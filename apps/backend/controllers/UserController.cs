@@ -58,7 +58,7 @@ public class UserController : ControllerBase {
     if (fullRole == null) return Unauthorized("No logged in user");
     string fmtedRole = fullRole.Substring(fullRole.IndexOf(" ") + 1);
 
-    return Ok(fmtedRole);
+    return new JsonResult(fmtedRole) {StatusCode = 200};
   }
 
 	[HttpGet("/users/private/batch")]
