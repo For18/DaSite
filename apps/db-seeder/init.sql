@@ -34,7 +34,7 @@ VALUES
  'AQAAAAIAAYagAAAAEO90XEz5Jsiyc/HkzQh8o4fpo9WPI0fSsQd/ADBe6KIC0ZJkivrKlWCVD0YbBO3cJw==',
  UUID(), UUID(), 0, 'https://i.pravatar.cc/300?img=1'),
 
-('9a3d7f52-1c84-4e6b-b0a9-2f5c8d1e47ab', 'AuctionMaster', 'AUCTIONMASTER', 'auctionmaster@test', 'AUCTIONMASTER@TEST', 1, '222222222', 1, 1, 0, 0,
+('9a3d7f52-1c84-4e6b-b0a9-2f5c8d1e47ab', 'AuctionMaster', 'AUCTIONMASTER', 'auctionmaster@test', 'AUCTIONMASTER@TEST', 1, '222222222', 1, 0, 0, 0,
  'AQAAAAIAAYagAAAAEO90XEz5Jsiyc/HkzQh8o4fpo9WPI0fSsQd/ADBe6KIC0ZJkivrKlWCVD0YbBO3cJw==',
  UUID(), UUID(), 15000, 'https://i.pravatar.cc/300?img=2'),
 
