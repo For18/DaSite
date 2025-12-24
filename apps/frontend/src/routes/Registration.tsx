@@ -11,8 +11,10 @@ import styles from "./AuthForm.module.scss";
 export default function Registration() {
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
+	const [confirmPassword, setConfirmPassword] = useState<string>("");
 	const navigate = useNavigate();
 	const passwordRef = useRef<HTMLInputElement>(null);
+	const confirmPasswordRef = useRef<HTMLInputElement>(null);
 
 	const register = async (email: string, password: string) => {
 		const res = await fetch(API_URL + Routes.Identity.PostRegister, {
@@ -35,6 +37,11 @@ export default function Registration() {
 	};
 
 	async function handleSubmit() {
+		if (password !== confirmPassword) {
+			console.error("Password does not match confirm password");
+			return;
+		}
+
 		const { works, httpStatus, data } = await register(email, password);
 
 		if (!works) {
@@ -58,7 +65,8 @@ export default function Registration() {
 					<Input type="email" placeholder="email" value={email} onChange={setEmail}
 						onEnter={() => passwordRef.current?.focus()}/>
 					<Input type="password" placeholder="password" value={password} onChange={setPassword}
-						inputRef={passwordRef} onEnter={() => handleSubmit()}/>
+						inputRef={passwordRef} onEnter={() => confirmPasswordRef.current?.focus()}/>
+					<Input type="password" placeholder="confirm password" value={confirmPassword} onChange={setConfirmPassword} onEnter={() => handleSubmit()} inputRef={confirmPasswordRef}/>
 					<Button onClick={handleSubmit}>Register</Button>
 					<Typography href={Routes.Pages.Login}>Already have an account?</Typography>
 				</div>
