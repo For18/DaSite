@@ -21,7 +21,7 @@ function getDefaultTime() {
 }
 
 export default function CreateAuctions() {
-	const [productsSelected, setProductsSelected] = useState<string[]>([]);
+	const [productsSelected, setProductsSelected] = useState<Set<number>>(new Set());
 	const startingDateRef = useRef<string>(getDefaultDate());
 	const startingTimeRef = useRef<string>(getDefaultTime());
 
@@ -29,7 +29,7 @@ export default function CreateAuctions() {
 	const [status, setStatus] = useState<Status>({ type: "none", label: "" });
 
 	async function submitAuction() {
-		const itemIds = productsSelected.map(Number).filter(id => !Number.isNaN(id));
+		const itemIds = Array.from(productsSelected);
 		if (itemIds.length === 0) {
 			setStatus({
 				type: "error",
@@ -135,17 +135,17 @@ export default function CreateAuctions() {
 										<label
 											key={item.id}
 											className={styles.product +
-												(productsSelected.includes(String(item.id)) ?
+												(productsSelected.has(item.id) ?
 													` ${styles.selected}` :
 													"")}
 										>
-											<Checkbox checked={productsSelected.includes(String(item.id))} onClick={() => {
-												const val = String(item.id);
-													setProductsSelected(prev =>
-														prev.includes(val) ?
-															prev.filter(x => x !== val) :
-															[...prev, val]
-													);
+											<Checkbox checked={productsSelected.has(item.id)} onClick={() => {
+												const val = item.id;
+													setProductsSelected(prev => {
+														if (prev.has(val)) prev.delete(val);
+														else prev.add(val);
+														return prev;
+													});
 											}}/>
 											<ProductView auctionItem={item}/>
 										</label>
@@ -180,7 +180,7 @@ export default function CreateAuctions() {
 					Selected Auction Item ID:
 				</Typography>
 				<Typography heading={3}>
-					{productsSelected.length ? productsSelected.join(", ") : "(none selected)"}
+					{productsSelected.size ? Array.from(productsSelected).join(", ") : "(none selected)"}
 				</Typography>
 				<StatusDisplay status={status}/>
 			</div>
