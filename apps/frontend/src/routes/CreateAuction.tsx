@@ -7,6 +7,7 @@ import { Routes } from "@route/Routes";
 import { useRef, useState } from "react";
 import styles from "./CreateAuction.module.scss";
 import Checkbox from "@/components/Checkbox";
+import Input from "@/components/Input";
 
 const pad = (n: number) => (n < 10 ? `0${n}` : String(n));
 
@@ -22,8 +23,8 @@ function getDefaultTime() {
 
 export default function CreateAuctions() {
 	const [productsSelected, setProductsSelected] = useState<Set<number>>(new Set());
-	const startingDateRef = useRef<string>(getDefaultDate());
-	const startingTimeRef = useRef<string>(getDefaultTime());
+	const [startingDate, setStartingDate] = useState<string>(getDefaultDate());
+	const [startingTime, setStartingTime] = useState<string>(getDefaultTime());
 
 	const auctionItems = useAPI<AuctionItem[]>(Routes.AuctionItem.GetAll);
 	const [status, setStatus] = useState<Status>({ type: "none", label: "" });
@@ -40,8 +41,8 @@ export default function CreateAuctions() {
 
 		// combine startingDate and startingTime into an ISO datetime
 		let startingTimeMillis: number | null = null;
-		if (startingDateRef.current && startingTimeRef.current) {
-			const iso = `${startingDateRef.current}T${startingTimeRef.current}:00`;
+		if (startingDate && startingTime) {
+			const iso = `${startingDate}T${startingTime}:00`;
 			const parsed = Date.parse(iso);
 			startingTimeMillis = Number.isNaN(parsed) ? null : Math.round(parsed);
 		}
@@ -155,22 +156,18 @@ export default function CreateAuctions() {
 					null}
 
 				<label htmlFor="startingDate" className={styles.inputLabel}>Starting date</label>
-				<input
+				<Input
 					id="startingDate"
-					className={styles.input}
-					name="startingDate"
 					type="date"
-					defaultValue={startingDateRef.current}
-					onChange={e => (startingDateRef.current = e.target.value)}
+					value={startingDate}
+					onChange={setStartingDate}
 				/>
 				<label htmlFor="startingTime" className={styles.inputLabel}>Starting time</label>
-				<input
+				<Input
 					id="startingTime"
-					className={styles.input}
-					name="startingTime"
 					type="time"
-					defaultValue={startingTimeRef.current}
-					onChange={e => (startingTimeRef.current = e.target.value)}
+					value={startingTime}
+					onChange={setStartingTime}
 				/>
 
 				<Button variant="contained" color="brand" onClick={submitAuction}>Create Auction</Button>
