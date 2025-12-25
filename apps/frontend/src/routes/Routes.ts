@@ -70,7 +70,6 @@ export const Routes = {
 		Get: (id: Product["id"]) => `/product/${id}`,
 		GetAll: `/products`,
 		GetOfUser: (userId: User["id"]) => `/products/user/${userId}`,
-		GetContainedIn: (ids: Product["id"][]) => `/batch?${ids.map(id => `ids=${id}`).join("&")}`,
 		BatchGet: `/products/batch`,
 		Post: `/product`,
 		BatchPost: `/product/batch`,
