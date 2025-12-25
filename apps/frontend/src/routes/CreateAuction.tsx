@@ -140,10 +140,9 @@ export default function CreateAuctions() {
 													"")}
 										>
 											<Checkbox checked={productsSelected.has(item.id)} onClick={() => {
-												const val = item.id;
 													setProductsSelected(prev => {
-														if (prev.has(val)) prev.delete(val);
-														else prev.add(val);
+														if (prev.has(item.id)) prev.delete(item.id);
+														else prev.add(item.id);
 														return prev;
 													});
 											}}/>
