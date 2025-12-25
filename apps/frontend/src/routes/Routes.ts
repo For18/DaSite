@@ -23,7 +23,7 @@ export const Routes = {
 		CreateProduct: `/products/create`,
 		Profile: (id: number | string) => `/profile/${id}`,
 		Test: `/test`,
-		Login: `/Login`,
+		Login: `/login`,
 		Register: `/register`
 	},
 	User: {
