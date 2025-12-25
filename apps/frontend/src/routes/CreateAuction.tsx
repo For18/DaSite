@@ -145,7 +145,7 @@ export default function CreateAuctions() {
 												else next.add(item.id);
 												return next;
 											})}/>
-											<ProductView auctionItem={item}/>
+											<Typography>{item.id}</Typography> {/* TODO: Make better component */}
 										</label>
 									))}
 								</div>
