@@ -21,11 +21,6 @@ function getDefaultTime() {
 
 export default function CreateAuctions() {
 	const [productsSelected, setProductsSelected] = useState<string[]>([]);
-	const [count, setCount] = useState(1);
-	const [batchSize, setBatchSize] = useState(1);
-	const [startingPrice, setStartingPrice] = useState(0);
-	const [minimumPrice, setMinimumPrice] = useState(0);
-	const [durationSeconds, setDurationSeconds] = useState(120);
 	const startingDateRef = useRef<string>(getDefaultDate());
 	const startingTimeRef = useRef<string>(getDefaultTime());
 
@@ -51,12 +46,7 @@ export default function CreateAuctions() {
 		}
 
 		const payload = {
-			count: Number(count),
-			batchSize: Number(batchSize),
-			startingPrice: Number(startingPrice),
-			minimumPrice: Number(minimumPrice),
 			startingTime: startingTimeMillis, // milliseconds since epoch or null
-			length: Number(durationSeconds),
 			// send selected auction-item ids in the legacy productIds field
 			productIds: itemIds,
 			plannerId: null
