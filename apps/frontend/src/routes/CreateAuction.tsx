@@ -4,7 +4,7 @@ import { type Status, StatusDisplay } from "@component/StatusDisplay";
 import Typography from "@component/Typography";
 import { API_URL, AuctionItem, useAPI } from "@lib/api";
 import { Routes } from "@route/Routes";
-import { useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 import styles from "./CreateAuction.module.scss";
 import Checkbox from "@/components/Checkbox";
 import Input from "@/components/Input";
@@ -25,6 +25,7 @@ export default function CreateAuctions() {
 	const [productsSelected, setProductsSelected] = useState<Set<number>>(new Set());
 	const [startingDate, setStartingDate] = useState<string>(getDefaultDate());
 	const [startingTime, setStartingTime] = useState<string>(getDefaultTime());
+	const id = useId();
 
 	const auctionItems = useAPI<AuctionItem[]>(Routes.AuctionItem.GetAll);
 	const [status, setStatus] = useState<Status>({ type: "none", label: "" });
@@ -155,16 +156,16 @@ export default function CreateAuctions() {
 					) :
 					null}
 
-				<label htmlFor="startingDate" className={styles.inputLabel}>Starting date</label>
+				<Typography id={id + "startingDate"}>Starting date</Typography>
 				<Input
-					id="startingDate"
+					labelledby={id + "startingDate"}
 					type="date"
 					value={startingDate}
 					onChange={setStartingDate}
 				/>
-				<label htmlFor="startingTime" className={styles.inputLabel}>Starting time</label>
+				<Typography id={id + "startingTime"}>Starting time</Typography>
 				<Input
-					id="startingTime"
+					labelledby={id + "startingTime"}
 					type="time"
 					value={startingTime}
 					onChange={setStartingTime}
