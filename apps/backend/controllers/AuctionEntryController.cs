@@ -41,18 +41,6 @@ public class AuctionEntryExternal {
 [ApiController]
 [Route("auction-entry")]
 public class AuctionEntryController : ControllerBase {
-	[HttpGet("{auctionId}")]
-	public async Task<ActionResult<AuctionEntryExternal[]>> Get(ulong auctionId) {
-		using (var db = new DatabaseContext()) {
-			AuctionEntryExternal[] entries = await db.AuctionEntries
-				.Where(entry => entry.Auction.Id == auctionId)
-				.Select(entry => new AuctionEntryExternal(entry.Auction.Id, entry.AuctionItem.Id))
-				.ToArrayAsync();
-
-			return entries;
-		}
-	}
-
 	[HttpGet("/auction-entries/batch")]
 	public async Task<ActionResult<AuctionEntryExternal[][]>> BatchGet([FromBody] ulong[] auctionIds) {
 		using (var db = new DatabaseContext()) {
@@ -228,23 +216,6 @@ public class AuctionEntryController : ControllerBase {
 
 			if (failedDeletes.Length > 0) return StatusCode(207, new { DeletedEntries = validIds, FailedDeletes = failedDeletes });
 			return Ok(validIds);
-		}
-	}
-
-	[HttpPatch("{id}")]
-	public async Task<ActionResult> Update(ulong id, [FromBody] JsonPatchDocument<AuctionEntry> patchdoc) {
-		using (var db = new DatabaseContext()) {
-			AuctionEntry? entry = await db.AuctionEntries.FindAsync(id);
-			if (entry == null) return NotFound();
-
-			patchdoc.ApplyTo(entry, ModelState);
-
-			if (!ModelState.IsValid) {
-				return BadRequest(ModelState);
-			}
-
-			await db.SaveChangesAsync();
-			return Ok(entry);
 		}
 	}
 }
