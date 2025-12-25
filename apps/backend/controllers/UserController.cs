@@ -55,8 +55,7 @@ public class UserController : ControllerBase {
 		 * hence the substring I have no idea how to get only the role name
 		 */
 		string? fullRole = Convert.ToString(User.FindFirst(ClaimTypes.Role));
-		if (fullRole == null) return Unauthorized("No logged in user");
-		string fmtedRole = fullRole.Substring(fullRole.IndexOf(" ") + 1);
+		string fmtedRole = fullRole!.Substring(fullRole.IndexOf(" ") + 1);
 
 		return new JsonResult(fmtedRole) { StatusCode = 200 };
 	}
