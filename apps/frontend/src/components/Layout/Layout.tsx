@@ -11,7 +11,7 @@ export default function Layout({ children }: PropsWithChildren) {
 	const homepage = ["/"];
 	const { user, role } = useAuth();
 
-	let hyperlinksToRender: Record<string, string>[] = [
+	let hyperlinksToRender: {title: string, link: string}[] = [
 		{ title: "Home", link: Routes.Pages.Home }
 	];
 
