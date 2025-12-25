@@ -9,9 +9,8 @@ import { useParams } from "react-router";
 import styles from "./Profile.module.scss";
 
 export default function Profile() {
-	const { userId: userIdString } = useParams();
-	if (!userIdString) return <NotFound/>;
-	const userId = parseInt(userIdString);
+	const { userId } = useParams();
+	if (!userId) return <NotFound/>;
 
 	const user = useAPI<PublicUser>(Routes.User.GetPublic(userId));
 	const userProducts = useAPI<Product[]>(Routes.Product.GetOfUser(userId));
