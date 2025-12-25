@@ -6,6 +6,7 @@ import { API_URL, AuctionItem, useAPI } from "@lib/api";
 import { Routes } from "@route/Routes";
 import { useRef, useState } from "react";
 import styles from "./CreateAuction.module.scss";
+import Checkbox from "@/components/Checkbox";
 
 const pad = (n: number) => (n < 10 ? `0${n}` : String(n));
 
@@ -138,21 +139,14 @@ export default function CreateAuctions() {
 													` ${styles.selected}` :
 													"")}
 										>
-											<input
-												className={styles.checkbox}
-												type="checkbox"
-												name="auctionItemId"
-												value={String(item.id)}
-												checked={productsSelected.includes(String(item.id))}
-												onChange={e => {
-													const val = e.target.value;
+											<Checkbox checked={productsSelected.includes(String(item.id))} onClick={() => {
+												const val = String(item.id);
 													setProductsSelected(prev =>
 														prev.includes(val) ?
 															prev.filter(x => x !== val) :
 															[...prev, val]
 													);
-												}}
-											/>
+											}}/>
 											<ProductView auctionItem={item}/>
 										</label>
 									))}
