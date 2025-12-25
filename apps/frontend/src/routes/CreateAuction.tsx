@@ -171,7 +171,7 @@ export default function CreateAuctions() {
 					onChange={setStartingTime}
 				/>
 
-				<Button variant="contained" color="brand" onClick={submitAuction}>Create Auction</Button>
+				<Button variant="contained" color="brand" onClick={submitAuction}>Create Auction</Button> {/* TODO: Fix layout (Make the parent responsible for layout?) */}
 				<Typography heading={2}>
 					Selected Auction Item ID:
 				</Typography>
