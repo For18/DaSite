@@ -38,8 +38,8 @@ function ItemSelectCard({ item, selected, onToggle }: ItemSelectCardProps) {
 		<div className={styles.productContainer}>
 			<Checkbox checked={selected} onClick={onToggle}/>
 			<div className={styles.product + (selected ? ` ${styles.selected}` : "")} onClick={onToggle}>
-				{isProductLoading || product.thumbnailImageId == null ? null : <Image className={styles.productImage} src={thumbnailProductImage.url} alt={`${product.name}'s thumbnail`}/>}
-				<div>
+				{isProductLoading || product.thumbnailImageId == null ? null : <Image className={styles.productImage} src={thumbnailProductImage.url} alt={`${product.name}'s thumbnail`}/>} {/* TODO: Test */}
+				<div> {/* TODO: Improve */}
 					<Typography>{product.name}</Typography>
 					<Typography>x{item.batchSize * item.count}</Typography>
 				</div>
