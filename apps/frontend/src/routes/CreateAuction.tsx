@@ -10,6 +10,7 @@ import Checkbox from "@/components/Checkbox";
 import Input from "@/components/Input";
 import Image from "@/components/Image";
 import usePromise from "@/lib/hooks/usePromise";
+import Section from "@/components/Section";
 
 const pad = (n: number) => (n < 10 ? `0${n}` : String(n));
 
@@ -151,8 +152,9 @@ export default function CreateAuctions() {
 	return (
 		<>
 			<div className={styles.container}>
-				<Typography heading={1}>Create Auction</Typography>
+				<Typography heading={1} center>Create Auction</Typography>
 
+				<Section>
 				<Typography heading={3}>Available Auction Items:</Typography>
 
 				{Array.isArray(auctionItems) ?
@@ -175,7 +177,9 @@ export default function CreateAuctions() {
 							<Typography>No auction items available</Typography>
 					) :
 					null}
-
+				</Section>
+				
+				<Section>
 				<Typography id={id + "startingDate"}>Starting date</Typography>
 				<Input
 					labelledby={id + "startingDate"}
@@ -192,6 +196,7 @@ export default function CreateAuctions() {
 				/>
 
 				<Button variant="contained" color="brand" onClick={submitAuction}>Create Auction</Button> {/* TODO: Fix layout (Make the parent responsible for layout?) */}
+				</Section>
 				<Typography heading={2}>
 					Selected Auction Item ID:
 				</Typography>
