@@ -8,7 +8,7 @@ export const DarkTheme: Theme = {
 		background: {
 			primary: "#181818",
 			secondary: "#222222",
-			tertiary: "#3a3a3a"
+			tertiary: "#313131ff"
 		},
 
 		text: {
