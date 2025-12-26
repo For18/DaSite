@@ -2,12 +2,14 @@ import Button from "@component/Button";
 import ProductView from "@component/ProductView";
 import { type Status, StatusDisplay } from "@component/StatusDisplay";
 import Typography from "@component/Typography";
-import { API_URL, AuctionItem, useAPI } from "@lib/api";
+import { API_URL, AuctionItem, Product, ProductImage, useAPI } from "@lib/api";
 import { Routes } from "@route/Routes";
 import { useId, useRef, useState } from "react";
 import styles from "./CreateAuction.module.scss";
 import Checkbox from "@/components/Checkbox";
 import Input from "@/components/Input";
+import Image from "@/components/Image";
+import usePromise from "@/lib/hooks/usePromise";
 
 const pad = (n: number) => (n < 10 ? `0${n}` : String(n));
 
@@ -28,10 +30,20 @@ interface ItemSelectCardProps {
 }
 
 function ItemSelectCard({ item, selected, onToggle }: ItemSelectCardProps) {
+	const { value: product, isLoading: isProductLoading} = usePromise<Product>(() => fetch(API_URL + Routes.Product.Get(item.productId)).then(response => response.json()), [item.productId])
+	const { value: thumbnailProductImage } = usePromise<ProductImage>(() => isProductLoading ? null : product.thumbnailImageId === null ? undefined : fetch(Routes.ProductImage.Get(product.thumbnailImageId)).then(response => response.json()), [isProductLoading, product?.thumbnailImageId]);
+	if (product == null) return null;
+
 	return (
-		<div onClick={onToggle} className={styles.product + (selected ? ` ${styles.selected}` : "")}>
+		<div className={styles.productContainer}>
 			<Checkbox checked={selected} onClick={onToggle}/>
-			<Typography>{item.productId}</Typography>
+			<div className={styles.product + (selected ? ` ${styles.selected}` : "")} onClick={onToggle}>
+				{isProductLoading || product.thumbnailImageId == null ? null : <Image className={styles.productImage} src={thumbnailProductImage.url} alt={`${product.name}'s thumbnail`}/>}
+				<div>
+					<Typography>{product.name}</Typography>
+					<Typography>x{item.batchSize * item.count}</Typography>
+				</div>
+			</div>
 		</div>
 	);
 }

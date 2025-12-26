@@ -15,14 +15,33 @@
 	max-width: 640px;
 }
 
+.product-container {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	width: 100%;
+
+	&:not(:first-child) {
+		margin-top: calc(var(--spacing) / 2);
+	}
+}
+
 .product {
 	display: block;
 	padding: 10px;
-	margin-bottom: 10px;
 	border-radius: 8px;
 	cursor: pointer;
 	background: var(--color-background-secondary);
 	color: var(--color-text-primary);
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: stretch;
+	gap: var(--spacing);
+
+	.product-image {
+		aspect-ratio: 1/1;
+	}
 
 	&.selected {
 		background: var(--color-background-tertiary);
