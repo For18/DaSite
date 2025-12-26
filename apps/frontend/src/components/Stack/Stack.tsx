@@ -2,10 +2,10 @@ import type { JSX, PropsWithChildren } from "react";
 
 export interface StackProps extends PropsWithChildren {
 	direction: "row" | "column" | "row-reverse" | "column-reverse";
-	gap?: number;
+	gap?: number | string;
 }
 
-export default function Stack({ direction, gap = 0, children }: StackProps): JSX.Element {
+export default function Stack({ direction, gap = "var(--spacing)", children }: StackProps): JSX.Element {
 	return (
 		<div style={{
 			display: "flex",
