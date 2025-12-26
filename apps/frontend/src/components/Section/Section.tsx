@@ -16,7 +16,7 @@ export interface SectionProps extends PropsWithChildren {
 export default function Section({ children, flex, className }: SectionProps) {
 	return (
 		<section className={styles.section + (className == null || className === "" ? "" : " " + className)} style={{
-			display: flex !== null ? "flex" : undefined,
+			display: flex != null ? "flex" : undefined,
 			flexDirection: flex?.direction,
 			justifyContent: flex?.justify,
 			alignItems: flex?.align,
