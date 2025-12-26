@@ -4,6 +4,7 @@ import Image from "@component/Image";
 import { Routes } from "@route/Routes";
 import { useNavigate } from "react-router";
 import styles from "./TopBar.module.scss";
+import Stack from "@component/Stack";
 
 export default function TopBar({
 	links
@@ -22,16 +23,18 @@ export default function TopBar({
 	return (
 		<header className={styles.header}>
 			<nav>
-				{Object.entries(links).map(([name, path]) => (
-					<Button
-						key={name}
-						onClick={_ => {
-							navigate(path);
-						}}
-					>
-						{name}
-					</Button>
-				))}
+				<Stack direction="row">
+					{Object.entries(links).map(([name, path]) => (
+						<Button
+							key={name}
+							onClick={_ => {
+								navigate(path);
+							}}
+						>
+							{name}
+						</Button>
+					))}
+				</Stack>
 			</nav>
 			<Image
 				className={styles.profile}
