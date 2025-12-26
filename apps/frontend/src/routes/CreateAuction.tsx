@@ -21,6 +21,21 @@ function getDefaultTime() {
 	return `${pad(now.getHours())}:${pad(now.getMinutes())}`;
 }
 
+interface ItemSelectCardProps {
+	item: AuctionItem;
+	selected: boolean;
+	onToggle: () => void;
+}
+
+function ItemSelectCard({ item, selected, onToggle }: ItemSelectCardProps) {
+	return (
+		<div onClick={onToggle} className={styles.product + (selected ? ` ${styles.selected}` : "")}>
+			<Checkbox checked={selected} onClick={onToggle}/>
+			<Typography>{item.productId}</Typography>
+		</div>
+	);
+}
+
 export default function CreateAuctions() {
 	const [productsSelected, setProductsSelected] = useState<Set<number>>(new Set());
 	const [startingDate, setStartingDate] = useState<string>(getDefaultDate());
@@ -133,23 +148,16 @@ export default function CreateAuctions() {
 						auctionItems.length ?
 							(
 								<div className={styles.productList}>
-									{auctionItems.map(item => (
-										<label
-											key={item.id}
-											className={styles.product +
-												(productsSelected.has(item.id) ?
-													` ${styles.selected}` :
-													"")}
-										>
-											<Checkbox checked={productsSelected.has(item.id)} onClick={() => setProductsSelected(prev => {
-												const next = new Set<number>(prev);
-												if (prev.has(item.id)) next.delete(item.id);
-												else next.add(item.id);
-												return next;
-											})}/>
-											<Typography>{item.id}</Typography> {/* TODO: Make better component */}
-										</label>
-									))}
+									{auctionItems.map(item => <ItemSelectCard key={item.id}
+										item={item}
+										selected={productsSelected.has(item.id)}
+										onToggle={() => setProductsSelected(prev => {
+											const next = new Set<number>(prev);
+											if (prev.has(item.id)) next.delete(item.id);
+											else next.add(item.id);
+											return next;
+										})}
+									/>)}
 								</div>
 							) :
 							<Typography>No auction items available</Typography>
