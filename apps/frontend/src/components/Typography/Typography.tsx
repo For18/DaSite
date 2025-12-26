@@ -8,6 +8,7 @@ export interface TypographyProps extends PropsWithChildren {
 	className?: string;
 	href?: string;
 	id?: string;
+	center?: boolean;
 }
 
 export default function Typography({
@@ -16,7 +17,8 @@ export default function Typography({
 	color = "primary",
 	className,
 	href,
-	id
+	id,
+	center = false
 }: TypographyProps): JSX.Element {
 	const isHeading = headingLevel != null;
 	const isLink = href != null;
@@ -43,6 +45,7 @@ export default function Typography({
 			styles[color],
 			isHeading ? styles.bold : null,
 			isLink ? styles.link : null,
+			center ? styles.center : null,
 			className
 		].filter(v => v !== null).join(" "),
 		onClick: isLink ? click : undefined,
