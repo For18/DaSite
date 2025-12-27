@@ -47,6 +47,19 @@ public class UserController : ControllerBase {
 		return GetPrivate(Convert.ToString(User.FindFirstValue(ClaimTypes.NameIdentifier)!));
 	}
 
+	[HttpGet("private/role")]
+	[Authorize]
+	public async Task<ActionResult<string>> GetUserRole() {
+		/* NOTE: fullRole value is 
+		 *http://schemas.microsoft.com/ws/2008/06/identity/claims/role: RoleName 
+		 * hence the substring I have no idea how to get only the role name
+		 */
+		string? fullRole = Convert.ToString(User.FindFirst(ClaimTypes.Role));
+		string fmtedRole = fullRole!.Substring(fullRole.IndexOf(" ") + 1);
+
+		return new JsonResult(fmtedRole) { StatusCode = 200 };
+	}
+
 	[HttpGet("/users/private/batch")]
 	[Authorize]
 	public async Task<ActionResult<User[]>> BatchGetPrivate([FromBody] string[] ids) {

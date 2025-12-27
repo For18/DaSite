@@ -5,6 +5,8 @@ import { useDebugValue } from "react";
 
 export const API_URL: string = import.meta.env.VITE_API_URL;
 
+export type UserType = "Admin" | "AuctionMaster" | "Customer";
+
 export interface Sale {
 	id: number;
 	purchaserId: number;
