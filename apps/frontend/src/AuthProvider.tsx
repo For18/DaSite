@@ -60,7 +60,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 				});
 			});
 
-      fetch(API_URL + Routes.User.GetUserType, {
+      fetch(API_URL + Routes.User.GetUserRole, {
         credentials: "include"
       })
       .then(response => {
@@ -68,11 +68,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           return response.json();
       })
       .then(data => data as UserType)
-      .then(type => {
+      .then(role => {
           setAuthState(prev => {
               return {
                 user: prev.user,
-                role: type,
+                role: role,
                 isLoading: false,
                 error: undefined
               }
