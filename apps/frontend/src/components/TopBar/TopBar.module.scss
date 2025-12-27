@@ -7,7 +7,7 @@
 	background-color: var(--color-background-secondary);
 }
 
-.profileWrapper {
+.profile-wrapper {
   position: fixed;
   right: 50px
 }
@@ -21,7 +21,7 @@
   }
 }
 
-.selectionCard {
+.selection-card {
   position: fixed;
   top: 80px;
   right: 50px;
@@ -35,7 +35,7 @@
   z-index: 9999;
 }
 
-.menuItem {
+.menu-item {
   padding: 10px 16px;
   cursor: pointer;
 
