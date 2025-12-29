@@ -1,10 +1,10 @@
 import useAuth from "@/AuthProvider";
 import Button from "@component/Button";
 import Image from "@component/Image";
+import Stack from "@component/Stack";
 import { Routes } from "@route/Routes";
 import { useNavigate } from "react-router";
 import styles from "./TopBar.module.scss";
-import Stack from "@component/Stack";
 
 export default function TopBar({
 	links
@@ -34,7 +34,8 @@ export default function TopBar({
 			</nav>
 			<Image // TODO: Replace when not logged in
 				className={styles.profile}
-				src={[user?.avatarImageUrl, "https://www.shutterstock.com/image-vector/highresolution-default-profile-avatar-icon-260nw-2600268263.jpg"]} // TODO: Improve placeholder?
+				src={[user?.avatarImageUrl,
+					"https://www.shutterstock.com/image-vector/highresolution-default-profile-avatar-icon-260nw-2600268263.jpg"]} // TODO: Improve placeholder?
 				alt={"User Profile"}
 				width={50}
 				height={50}

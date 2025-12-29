@@ -1,3 +1,8 @@
+import Checkbox from "@/components/Checkbox";
+import Image from "@/components/Image";
+import Input from "@/components/Input";
+import Section from "@/components/Section";
+import usePromise from "@/lib/hooks/usePromise";
 import Button from "@component/Button";
 import ProductView from "@component/ProductView";
 import { type Status, StatusDisplay } from "@component/StatusDisplay";
@@ -6,11 +11,6 @@ import { API_URL, AuctionItem, Product, ProductImage, useAPI } from "@lib/api";
 import { Routes } from "@route/Routes";
 import { useId, useRef, useState } from "react";
 import styles from "./CreateAuction.module.scss";
-import Checkbox from "@/components/Checkbox";
-import Input from "@/components/Input";
-import Image from "@/components/Image";
-import usePromise from "@/lib/hooks/usePromise";
-import Section from "@/components/Section";
 
 const pad = (n: number) => (n < 10 ? `0${n}` : String(n));
 
@@ -31,16 +31,33 @@ interface ItemSelectCardProps {
 }
 
 function ItemSelectCard({ item, selected, onToggle }: ItemSelectCardProps) {
-	const { value: product, isLoading: isProductLoading} = usePromise<Product>(() => fetch(API_URL + Routes.Product.Get(item.productId)).then(response => response.json()), [item.productId])
-	const { value: thumbnailProductImage } = usePromise<ProductImage>(() => isProductLoading ? null : product.thumbnailImageId === null ? undefined : fetch(Routes.ProductImage.Get(product.thumbnailImageId)).then(response => response.json()), [isProductLoading, product?.thumbnailImageId]);
+	const { value: product, isLoading: isProductLoading } = usePromise<Product>(
+		() => fetch(API_URL + Routes.Product.Get(item.productId)).then(response => response.json()),
+		[item.productId]
+	);
+	const { value: thumbnailProductImage } = usePromise<ProductImage>(
+		() =>
+			isProductLoading ?
+				null :
+				product.thumbnailImageId === null ?
+				undefined :
+				fetch(Routes.ProductImage.Get(product.thumbnailImageId)).then(response => response.json()),
+		[isProductLoading, product?.thumbnailImageId]
+	);
 	if (product == null) return null;
 
 	return (
 		<div className={styles.productContainer}>
 			<Checkbox checked={selected} onClick={onToggle}/>
 			<div className={styles.product + (selected ? ` ${styles.selected}` : "")} onClick={onToggle}>
-				{isProductLoading || product.thumbnailImageId == null ? null : <Image className={styles.productImage} src={thumbnailProductImage.url} alt={`${product.name}'s thumbnail`}/>} {/* TODO: Test */}
-				<div> {/* TODO: Improve */}
+				{isProductLoading || product.thumbnailImageId == null ?
+					null :
+					(
+						<Image className={styles.productImage} src={thumbnailProductImage.url}
+							alt={`${product.name}'s thumbnail`}/>
+					)} {/* TODO: Test */}
+				<div>
+					{/* TODO: Improve */}
 					<Typography>{product.name}</Typography>
 					<Typography>x{item.batchSize * item.count}</Typography>
 				</div>
@@ -155,47 +172,48 @@ export default function CreateAuctions() {
 				<Typography heading={1} center>Create Auction</Typography>
 
 				<Section>
-				<Typography heading={3}>Available Auction Items:</Typography>
+					<Typography heading={3}>Available Auction Items:</Typography>
 
-				{Array.isArray(auctionItems) ?
-					(
-						auctionItems.length ?
-							(
-								<div className={styles.productList}>
-									{auctionItems.map(item => <ItemSelectCard key={item.id}
-										item={item}
-										selected={productsSelected.has(item.id)}
-										onToggle={() => setProductsSelected(prev => {
-											const next = new Set<number>(prev);
-											if (prev.has(item.id)) next.delete(item.id);
-											else next.add(item.id);
-											return next;
-										})}
-									/>)}
-								</div>
-							) :
-							<Typography>No auction items available</Typography>
-					) :
-					null}
+					{Array.isArray(auctionItems) ?
+						(
+							auctionItems.length ?
+								(
+									<div className={styles.productList}>
+										{auctionItems.map(item => (
+											<ItemSelectCard key={item.id} item={item}
+												selected={productsSelected.has(item.id)} onToggle={() =>
+												setProductsSelected(prev => {
+													const next = new Set<number>(prev);
+													if (prev.has(item.id)) next.delete(item.id);
+													else next.add(item.id);
+													return next;
+												})}/>
+										))}
+									</div>
+								) :
+								<Typography>No auction items available</Typography>
+						) :
+						null}
 				</Section>
-				
-				<Section>
-				<Typography id={id + "startingDate"}>Starting date</Typography>
-				<Input
-					labelledby={id + "startingDate"}
-					type="date"
-					value={startingDate}
-					onChange={setStartingDate}
-				/>
-				<Typography id={id + "startingTime"}>Starting time</Typography>
-				<Input
-					labelledby={id + "startingTime"}
-					type="time"
-					value={startingTime}
-					onChange={setStartingTime}
-				/>
 
-				<Button variant="contained" color="brand" onClick={submitAuction}>Create Auction</Button> {/* TODO: Fix layout (Make the parent responsible for layout?) */}
+				<Section>
+					<Typography id={id + "startingDate"}>Starting date</Typography>
+					<Input
+						labelledby={id + "startingDate"}
+						type="date"
+						value={startingDate}
+						onChange={setStartingDate}
+					/>
+					<Typography id={id + "startingTime"}>Starting time</Typography>
+					<Input
+						labelledby={id + "startingTime"}
+						type="time"
+						value={startingTime}
+						onChange={setStartingTime}
+					/>
+
+					<Button variant="contained" color="brand" onClick={submitAuction}>Create Auction</Button>{" "}
+					{/* TODO: Fix layout (Make the parent responsible for layout?) */}
 				</Section>
 				<Typography heading={2}>
 					Selected Auction Item ID:
