@@ -10,6 +10,7 @@ import { Option, Select } from "../components/Select";
 import styles from "./CreateProductPage.module.scss";
 
 // TODO: add visual status for user
+// use StatusDisplay
 async function PostProduct(name: string, description: string, images: string[], owner: PublicUser | null) {
 	const productId: number = await fetch(API_URL + Routes.Product.Post, {
 		method: "POST",
