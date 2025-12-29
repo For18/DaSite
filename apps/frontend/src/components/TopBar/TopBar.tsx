@@ -32,9 +32,9 @@ export default function TopBar({
 					))}
 				</Stack>
 			</nav>
-			<Image
+			<Image // TODO: Replace when not logged in
 				className={styles.profile}
-				src={[user?.avatarImageUrl, "https://www.shutterstock.com/image-vector/highresolution-default-profile-avatar-icon-260nw-2600268263.jpg"]}
+				src={[user?.avatarImageUrl, "https://www.shutterstock.com/image-vector/highresolution-default-profile-avatar-icon-260nw-2600268263.jpg"]} // TODO: Improve placeholder?
 				alt={"User Profile"}
 				width={50}
 				height={50}
