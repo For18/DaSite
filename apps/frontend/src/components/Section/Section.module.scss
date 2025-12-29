@@ -6,7 +6,7 @@
 	box-shadow: 0 2px 5px 1px #000000;
 	gap: var(--spacing);
 
-	&+.section {
+	&+& {
 		margin-top: var(--spacing);
 	}
 }
