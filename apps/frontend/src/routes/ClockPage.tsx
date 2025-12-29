@@ -53,7 +53,8 @@ async function PostSale(purchaser: number, auctionId: number, amount: number, pr
 /* TODO: contemplate if timed out auctions should be added to the back of the items stack being sold */
 export default function ClockPage() {
 	/* Main state holders */
-	const { auctionId } = useParams();
+	const { auctionId: auctionIdString } = useParams();
+	const auctionId = auctionIdString == null ? null : parseInt(auctionIdString);
 	const auction = useAPI<Auction>(auctionId != null ? Routes.Auction.Get(auctionId) : null);
 	const [items, setItems] = useState<AuctionItem[] | null>(null);
 	const { user } = useAuth();
