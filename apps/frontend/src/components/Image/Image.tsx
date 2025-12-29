@@ -16,7 +16,8 @@ export default function Image({ src, alt, width, height, onClick, className, sty
 
 	src.push(`https://placehold.co/${width ?? height ?? 100}x${height ?? width ?? 100}?text=${alt}`);
 
-	const [imageIndex, setImageIndex] = useState<number>(0);
+	let [imageIndex, setImageIndex] = useState<number>(0);
+	while (src[imageIndex] == null) setImageIndex(++imageIndex);
 
 	return (
 		<img src={src[imageIndex]} alt={alt} width={width} height={height} onClick={onClick} className={className}
