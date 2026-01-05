@@ -12,6 +12,7 @@ import { Routes } from "@route/Routes";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router";
 import styles from "./ClockPage.module.scss";
+import Input from "@/components/Input";
 
 function lerp(from: number, to: number, t: number): number {
 	return from + t * (to - from);
@@ -160,11 +161,11 @@ export default function ClockPage() {
 								count={currentItem.count ?? 0}/>
 						</>
 					)}
-				<input
+				<Input
 					className={styles.input}
 					type="number"
-					onChange={count => {
-						buyCountRef.current = Number(count.target.value);
+					onChange={countString => {
+						buyCountRef.current = Number(countString);
 					}}
 				/>
 
