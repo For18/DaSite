@@ -37,7 +37,9 @@ export default function ProductView({ auctionItem }: { auctionItem: AuctionItem 
 		<div className={styles.productView}>
 			<div>
 				<Typography heading={1}>{product.name}</Typography>
-				<Typography className={styles.seller} href={product.ownerId == null ? undefined : Routes.Pages.Profile(product.ownerId)}>
+				<Typography className={styles.seller}
+					href={product.ownerId == null ? undefined : Routes.Pages.Profile(product.ownerId)}
+				>
 					Seller: {owner ? owner.userName : "Seller not found"}
 				</Typography>
 			</div>

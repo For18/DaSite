@@ -1,4 +1,5 @@
 import useAuth from "@/AuthProvider";
+import Input from "@/components/Input";
 import BeforeAuction from "@component/BeforeAuction";
 import Button from "@component/Button";
 import Clock from "@component/Clock";
@@ -12,7 +13,6 @@ import { Routes } from "@route/Routes";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router";
 import styles from "./ClockPage.module.scss";
-import Input from "@/components/Input";
 
 function lerp(from: number, to: number, t: number): number {
 	return from + t * (to - from);
@@ -162,23 +162,23 @@ export default function ClockPage() {
 						</>
 					)}
 				<div className={styles.purchaseContainer}>
-<Input
-					className={styles.input}
-					type="number"
-					onChange={countString => {
-						buyCountRef.current = Number(countString);
-					}}
-				/>
-				<Button
-					variant="outlined"
-					disabled={progress < 0 || progress > 1 || isBuffered}
-					onClick={() => {
-						onPurchase(buyCountRef.current);
-						alert(`Bought ${buyCountRef.current} products for € ${currentPrice} each`);
-					}}
-				>
-					BUY
-				</Button>
+					<Input
+						className={styles.input}
+						type="number"
+						onChange={countString => {
+							buyCountRef.current = Number(countString);
+						}}
+					/>
+					<Button
+						variant="outlined"
+						disabled={progress < 0 || progress > 1 || isBuffered}
+						onClick={() => {
+							onPurchase(buyCountRef.current);
+							alert(`Bought ${buyCountRef.current} products for € ${currentPrice} each`);
+						}}
+					>
+						BUY
+					</Button>
 				</div>
 			</div>
 			<div className={styles.containerSeparator}/>

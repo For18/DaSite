@@ -13,17 +13,26 @@ export default function Clock(
 				<div className={styles.clockOverlay}>
 					{/* Top Box*/}
 					<div className={styles.clockBox}>
-						<Typography>currency<br/>{currencyType}</Typography>
+						<Typography>
+							currency<br/>
+							{currencyType}
+						</Typography>
 					</div>
 
 					{/* Middle Box*/}
 					<div className={styles.clockBox}>
-						<Typography>price<br/>{price}</Typography>
+						<Typography>
+							price<br/>
+							{price}
+						</Typography>
 					</div>
 
 					{/* Bottom Box*/}
 					<div className={styles.clockBox}>
-						<Typography>count<br/>{count}</Typography>
+						<Typography>
+							count<br/>
+							{count}
+						</Typography>
 					</div>
 				</div>
 			</div>
