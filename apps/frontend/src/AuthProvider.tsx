@@ -7,7 +7,7 @@ const AuthContext = createContext<AuthContext | null>(null);
 
 export interface AuthState {
 	user?: User;
-  role?: UserRole;
+	role?: UserRole;
 	isLoading: boolean;
 	error?: Error;
 }
@@ -29,45 +29,43 @@ export default function useAuth() {
 export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [authState, setAuthState] = useState<AuthState>({
 		user: undefined,
-    role: undefined,
+		role: undefined,
 		isLoading: true,
 		error: undefined
 	});
 
 	const fetchUserData = useCallback(() => {
 		Promise.all([
-      fetch(API_URL + Routes.User.GetCurrent, {
-		  	credentials: "include"
-		  })
-      .then(response => response.json())
-			.then(data => data as User),
+			fetch(API_URL + Routes.User.GetCurrent, {
+				credentials: "include"
+			})
+				.then(response => response.json())
+				.then(data => data as User),
 
-      fetch(API_URL + Routes.User.GetUserRole, {
-        credentials: "include"
-      })
-      .then(response => {
-          return response.json();
-      })
-      .then(data => data as UserRole)
-    ])
-    .then(([user, role])=> 
-        setAuthState({
-          user: user,
-          role: role,
-          isLoading: false,
-          error: undefined
-        })
-    )
-    .catch(error => {
-          setAuthState(() => {
-              return {
-                user: undefined,
-                role: undefined,
-                isLoading: false,
-                error: error
-              }
-          })
-    })
+			fetch(API_URL + Routes.User.GetUserRole, {
+				credentials: "include"
+			})
+				.then(response => response.json())
+				.then(data => data as UserRole)
+		])
+			.then(([user, role]) =>
+				setAuthState({
+					user: user,
+					role: role,
+					isLoading: false,
+					error: undefined
+				})
+			)
+			.catch(error => {
+				setAuthState(() => {
+					return {
+						user: undefined,
+						role: undefined,
+						isLoading: false,
+						error: error
+					};
+				});
+			});
 	}, []);
 
 	useEffect(() => {
@@ -77,7 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const login = useCallback(async (email: string, password: string) => {
 		setAuthState({
 			user: undefined,
-      role: undefined,
+			role: undefined,
 			isLoading: true,
 			error: undefined
 		});
@@ -92,7 +90,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		if (!response.ok) {
 			setAuthState({
 				user: undefined,
-        role: undefined,
+				role: undefined,
 				isLoading: false,
 				error: new Error(String(response.status))
 			});
@@ -109,7 +107,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			.then(_response => {
 				setAuthState({
 					user: undefined,
-          role: undefined,
+					role: undefined,
 					isLoading: false,
 					error: undefined
 				});
