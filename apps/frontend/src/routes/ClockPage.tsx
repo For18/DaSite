@@ -161,14 +161,14 @@ export default function ClockPage() {
 								count={currentItem.count ?? 0}/>
 						</>
 					)}
-				<Input
+				<div className={styles.purchaseContainer}>
+<Input
 					className={styles.input}
 					type="number"
 					onChange={countString => {
 						buyCountRef.current = Number(countString);
 					}}
 				/>
-
 				<Button
 					variant="outlined"
 					disabled={progress < 0 || progress > 1 || isBuffered}
@@ -179,6 +179,7 @@ export default function ClockPage() {
 				>
 					BUY
 				</Button>
+				</div>
 			</div>
 			<div className={styles.containerSeparator}/>
 
