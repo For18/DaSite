@@ -22,6 +22,15 @@ public class PublicUser {
 	public required string? TelephoneNumber { get; set; }
 }
 
+public class UserSession
+{
+	public bool IsAuthenticated { get; set; }
+
+    public PublicUser? User { get; set; }
+
+    public string[] Roles { get; set; } = [];
+}
+
 [ApiController]
 [Route("user")]
 public class UserController : ControllerBase {
@@ -119,6 +128,44 @@ public class UserController : ControllerBase {
 	public async Task<ActionResult<User[]>> GetAllByName(string name) {
 		using (var db = new DatabaseContext()) {
 			return await db.Users.Where(user => user.UserName != null && EF.Functions.Like(user.UserName.ToLower(), $"%{name.ToLower()}%")).ToArrayAsync();
+		}
+	}
+
+	[HttpGet("/session")]
+	public async Task<ActionResult<UserSession>> GetSession(){
+		if (!User.Identity?.IsAuthenticated ?? true)
+		{
+			return Ok(new UserSession{ IsAuthenticated = false });
+		}
+		
+		string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+		using (var db = new DatabaseContext())
+		{
+			User? user = await db.Users.FindAsync(userId);
+			PublicUser? publicUser = null;
+
+			if (user != null)
+			{
+				publicUser = new PublicUser
+				{
+					Id = user.Id,
+					UserName = user.UserName,
+					AvatarImageUrl = user.AvatarImageUrl,
+					Email = user.Email,
+					TelephoneNumber = user.PhoneNumber
+				};
+			}
+
+			return Ok(new UserSession
+			{
+				IsAuthenticated = true,
+				User = publicUser,
+				Roles = User.Claims
+					.Where(claim => claim.Type == ClaimTypes.Role)
+					.Select(claim => claim.Value)
+					.ToArray()
+			});
 		}
 	}
 
