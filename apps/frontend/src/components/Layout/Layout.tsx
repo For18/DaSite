@@ -2,15 +2,9 @@ import Footer from "@component/Footer";
 import TopBar from "@component/TopBar";
 import { Routes } from "@route/Routes";
 import { type PropsWithChildren } from "react";
-import { useLocation } from "react-router";
 import styles from "./Layout.module.scss";
 
 export default function Layout({ children }: PropsWithChildren) {
-	const location = useLocation();
-	const homepage = ["/"];
-
-	const isHomepage = homepage.includes(location.pathname);
-
 	return (
 		<div className={styles.container}>
 			<TopBar
@@ -23,7 +17,7 @@ export default function Layout({ children }: PropsWithChildren) {
 					Login: Routes.Pages.Login
 				}}
 			/>
-			<main className={isHomepage ? styles.homepageArticle : styles.article}>
+			<main className={styles.article}>
 				{children}
 			</main>
 			<Footer/>
