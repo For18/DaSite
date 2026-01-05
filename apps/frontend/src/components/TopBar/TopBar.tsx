@@ -22,7 +22,12 @@ export default function TopBar({
 	return (
 		<header className={styles.header}>
 			<nav>
-				{Object.entries(links).map(([name, path]) => (
+				{Object.entries(links)
+					.filter(([name]) => { 
+						if (name == "Login" && user) return false; 
+						return true; 
+					})
+					.map(([name, path]) => (
 					<Button
 						key={name}
 						onClick={_ => {
