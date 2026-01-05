@@ -7,7 +7,7 @@ const AuthContext = createContext<AuthContext | null>(null);
 
 export interface AuthState {
 	user?: User;
-  role?: UserType;
+  role?: UserRole;
 	isLoading: boolean;
 	error?: Error;
 }
@@ -35,59 +35,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	});
 
 	const fetchUserData = useCallback(() => {
-		fetch(API_URL + Routes.User.GetCurrent, {
-			credentials: "include"
-		})
-			.then(response => {
-				if (!response.ok) throw new Error("Not authenticated");
-				return response.json();
-			})
-			.then(data => data as User)
-			.then(user => {
-				setAuthState(prev => ({
-					user: user,
-          role: prev.role,
-					isLoading: false,
-					error: undefined
-				}));
-			})
-			.catch(error => {
-				setAuthState({
-					user: undefined,
-          role: undefined,
-					isLoading: false,
-					error: error
-				});
-			});
+		Promise.all([
+      fetch(API_URL + Routes.User.GetCurrent, {
+		  	credentials: "include"
+		  })
+      .then(response => response.json())
+			.then(data => data as User),
 
       fetch(API_URL + Routes.User.GetUserRole, {
         credentials: "include"
       })
       .then(response => {
-          if (!response.ok) throw new Error("Not authenticated");
           return response.json();
       })
-      .then(data => data as UserType)
-      .then(role => {
-          setAuthState(prev => {
+      .then(data => data as UserRole)
+    ])
+    .then(([user, role])=> 
+        setAuthState({
+          user: user,
+          role: role,
+          isLoading: false,
+          error: undefined
+        })
+    )
+    .catch(error => {
+          setAuthState(() => {
               return {
-                user: prev.user,
-                role: role,
-                isLoading: false,
-                error: undefined
-              }
-          })
-      })
-      .catch(error => {
-          setAuthState(prev => {
-              return {
-                user: prev.user,
+                user: undefined,
                 role: undefined,
                 isLoading: false,
                 error: error
               }
           })
-      })
+    })
 	}, []);
 
 	useEffect(() => {
