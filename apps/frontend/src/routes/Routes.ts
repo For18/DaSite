@@ -29,6 +29,7 @@ export const Routes = {
 	User: {
 		GetPublic: (id: number | string) => `/user/${id}`,
 		GetPrivate: (id: number | string) => `/user/private/${id}`,
+		GetUserRole: `/user/private/role`,
 		BatchGetPrivate: `/users/private/batch`,
 		BatchGetPublic: `/users/batch`,
 		GetAllPrivate: `/users/private`,

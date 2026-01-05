@@ -1,3 +1,4 @@
+import useAuth from "@/AuthProvider";
 import Footer from "@component/Footer";
 import TopBar from "@component/TopBar";
 import { Routes } from "@route/Routes";
@@ -8,20 +9,35 @@ import styles from "./Layout.module.scss";
 export default function Layout({ children }: PropsWithChildren) {
 	const location = useLocation();
 	const homepage = ["/"];
+	const { user, role } = useAuth();
+
+	let hyperlinksToRender: { title: string, link: string }[] = [
+		{ title: "Home", link: Routes.Pages.Home }
+	];
+
+	if (!role) hyperlinksToRender.push({ title: "Login", link: Routes.Pages.Login });
+	else {
+		hyperlinksToRender.push(
+			{ title: "Auctions", link: Routes.Pages.Auctions.Base },
+			{ title: "Profile", link: user ? Routes.Pages.Profile(user.id) : null }
+		);
+		if (role == "Admin" || role == "AuctionMaster") {
+			hyperlinksToRender.push(
+				{ title: "PendingAuctions", link: Routes.Pages.Auctions.Pending },
+				{ title: "CreateAuction", link: Routes.Pages.Auctions.Create },
+				{ title: "CreateProduct", link: Routes.Pages.CreateProduct }
+			);
+		}
+	}
 
 	const isHomepage = homepage.includes(location.pathname);
 
 	return (
 		<div className={styles.container}>
 			<TopBar
-				links={{
-					Home: Routes.Pages.Home,
-					Auctions: Routes.Pages.Auctions.Base,
-					PendingAuction: Routes.Pages.Auctions.Pending,
-					Profile: Routes.Pages.Profile(1),
-					CreateAuction: Routes.Pages.Auctions.Create,
-					Login: Routes.Pages.Login
-				}}
+				links={Object.fromEntries(
+					hyperlinksToRender.filter(link => link.link != null).map(link => [link.title, link.link])
+				)}
 			/>
 			<main className={isHomepage ? styles.homepageArticle : styles.article}>
 				{children}
