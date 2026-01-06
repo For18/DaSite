@@ -9,6 +9,7 @@
 		},
 		"jsx": "react-jsx", // Re-enable JSX
 		"moduleResolution": "bundler",
-		"module": "esnext"
+		"module": "esnext",
+		"allowImportingTsExtensions": true
 	}
 }
