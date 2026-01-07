@@ -24,6 +24,7 @@ export default function TopBar({
 
   const handleLogout = async () => {
     logout();
+    setOpen(false);
     navigate(Routes.Pages.Home);
   }
 
