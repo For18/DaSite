@@ -10,7 +10,7 @@ export type UserRole = "Admin" | "AuctionMaster" | "Customer";
 export interface Sale {
 	id: number;
 	purchaserId: number;
-	purchasedAuctionId: number;
+	purchasedProductId: number;
 	amount: number;
 	price: number;
 	isPaid: boolean;
