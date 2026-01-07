@@ -5,7 +5,7 @@ import { Routes } from "@route/Routes";
 import { useNavigate } from "react-router";
 import styles from "./TopBar.module.scss";
 import ClickAwayDetector from "../ClickAwayDetector";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Typography from "../Typography";
 
 export default function TopBar({
@@ -17,7 +17,6 @@ export default function TopBar({
 	const authState = useAuth();
 	const { user, logout } = authState;
   const [open, setOpen] = useState(false);
-  const avatarRef = useRef<HTMLDivElement>(null);
   
 	// TODO: find better placeholder (built in <Image> placeholder doesn't work)
 	const pfpUrl = user?.avatarImageUrl ??
@@ -42,7 +41,7 @@ export default function TopBar({
 					</Button>
 				))}
 			</nav>
-      <div ref={avatarRef} className={styles.profileWrapper}>
+      <div className={styles.profileWrapper}>
           <ClickAwayDetector onClickAway={() => setOpen(false)}>
             <>
               <Image
