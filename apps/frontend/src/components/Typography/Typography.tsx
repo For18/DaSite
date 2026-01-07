@@ -47,7 +47,10 @@ export default function Typography({
 			isLink ? styles.link : null,
 			className
 		].filter(v => v !== null).join(" "),
-    onClick: isLink ? click : (onClick ? onClick : undefined),
+    onClick: e => {
+      click(e);
+      onClick();
+    },
 		onKeyDown: isLink ? keydown : undefined
 	}, children);
 }
