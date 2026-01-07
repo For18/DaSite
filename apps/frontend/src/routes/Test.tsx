@@ -7,7 +7,7 @@ import LabeledContainer from "@component/LabeledContainer";
 import { Option, Select } from "@component/Select";
 import Slider from "@component/Slider";
 import { type Status, StatusDisplay } from "@component/StatusDisplay";
-import { Switch } from "@component/Switch";
+import Switch from "@component/Switch";
 import Typography from "@component/Typography";
 import { pickRandom, range, sleep } from "@lib/util";
 import { useCallback, useEffect, useState } from "react";

@@ -7,7 +7,7 @@ export interface ToggleSwitchProps {
 	labelledby?: string;
 }
 
-export function Switch({ enabled, onClick, labelledby }: ToggleSwitchProps) {
+export default function Switch({ enabled, onClick, labelledby }: ToggleSwitchProps) {
 	const onKeyDown = useCallback((e: KeyboardEvent) => {
 		if (e.key === "Enter" || e.key === " ") onClick();
 	}, [onClick]);
@@ -19,7 +19,7 @@ export function Switch({ enabled, onClick, labelledby }: ToggleSwitchProps) {
 				enabled ? styles.enabled : null
 			].filter(v => v != null).join(" ")}
 			aria-checked={enabled}
-			aria-labelledby={labelledby}
+			aria-labelledby={labelledby} // 👍
 			role="switch"
 			tabIndex={0}
 			onClick={onClick}
