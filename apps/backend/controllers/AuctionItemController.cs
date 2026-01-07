@@ -13,23 +13,25 @@ public class AuctionItemExternal {
 	 * https://stackoverflow.com/questions/76909169/required-keyword-causes-error-even-if-member-initialized-in-constructor
 	 */
 	[System.Diagnostics.CodeAnalysis.SetsRequiredMembersAttribute]
-	public AuctionItemExternal(ulong id, ushort count, uint batchSize, uint startingPrice, uint minimumPrice, uint length, ulong productId) {
+	public AuctionItemExternal(ulong id, ushort count, uint batchSize, uint startingPrice, uint minimumPrice, uint length, string ownerId, ulong productId) {
 		Id = id;
 		Count = count;
 		BatchSize = batchSize;
 		StartingPrice = startingPrice;
 		MinimumPrice = minimumPrice;
+    OwnerId = ownerId;
 		Length = length;
 		ProductId = productId;
 	}
 
 	public static AuctionItemExternal ToExternal(AuctionItem item) {
-		return new AuctionItemExternal(item.Id, item.Count, item.BatchSize, item.StartingPrice, item.MinimumPrice, item.Length, item.Product.Id);
+		return new AuctionItemExternal(item.Id, item.Count, item.BatchSize, item.StartingPrice, item.MinimumPrice, item.Length, item.Owner.Id, item.Product.Id);
 	}
 
 	public AuctionItem? ToAuctionItem(DatabaseContext db) {
 		Product? product = db.Products.Include(prod => prod.ThumbnailImage).Where(prod => prod.Id == ProductId).FirstOrDefault();
-		if (product == null) return null;
+    User? owner = db.Users.Where(user => user.Id == OwnerId).FirstOrDefault();
+		if (product == null || owner == null) return null;
 
 		return new AuctionItem {
 			Id = Id,
@@ -38,6 +40,7 @@ public class AuctionItemExternal {
 			StartingPrice = StartingPrice,
 			MinimumPrice = MinimumPrice,
 			Length = Length,
+      Owner = owner,
 			Product = product
 		};
 	}
@@ -47,6 +50,7 @@ public class AuctionItemExternal {
 	public required uint BatchSize { get; set; }
 	public required uint StartingPrice { get; set; }
 	public required uint MinimumPrice { get; set; }
+  public required string OwnerId { get; set; }
 	public required uint Length { get; set; }
 	public required ulong ProductId { get; set; }
 }

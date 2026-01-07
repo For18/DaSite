@@ -29,8 +29,4 @@ public class Product {
 
 	[ForeignKey("ThumbnailImageId")]
 	public ProductImage? ThumbnailImage { get; set; }
-
-	[Required]
-	[ForeignKey("OwnerId")]
-	public required User Owner { get; set; }
 }

@@ -9,16 +9,15 @@ using System.Security.Claims;
 
 [DisplayName(nameof(Product))]
 public class ProductExternal {
-	public ProductExternal(ulong id, string name, string? description, ulong? thumbnailImageId, string ownerId) {
+	public ProductExternal(ulong id, string name, string? description, ulong? thumbnailImageId) {
 		Id = id;
 		Name = name;
 		Description = description;
 		ThumbnailImageId = thumbnailImageId;
-		OwnerId = ownerId;
 	}
 
 	public static ProductExternal ToExternal(Product product) {
-		return new ProductExternal(product.Id, product.Name, product.Description, product.ThumbnailImage?.Id, product.Owner.Id);
+		return new ProductExternal(product.Id, product.Name, product.Description, product.ThumbnailImage?.Id);
 	}
 
 	public Product ToProduct(DatabaseContext db) {
@@ -27,14 +26,12 @@ public class ProductExternal {
 			Name = Name,
 			Description = Description,
 			ThumbnailImage = db.ProductImages.Where(i => i.Id == ThumbnailImageId).FirstOrDefault(),
-			Owner = db.Users.Where(u => u.Id == OwnerId).First()
 		};
 	}
 	public ulong Id { get; init; }
 	public string Name { get; init; }
 	public string? Description { get; init; }
 	public ulong? ThumbnailImageId { get; init; }
-	public string OwnerId { get; init; }
 }
 
 [ApiController]
@@ -43,7 +40,7 @@ public class ProductController : ControllerBase {
 	[HttpGet("{id}")]
 	public async Task<ActionResult<ProductExternal>> Get(ulong id) {
 		using (var db = new DatabaseContext()) {
-			Product? product = await db.Products.Include(product => product.Owner).Where(product => product.Id == id).FirstOrDefaultAsync();
+			Product? product = await db.Products.Where(product => product.Id == id).FirstOrDefaultAsync();
 
 			if (product == null) return NotFound();
 
@@ -55,7 +52,6 @@ public class ProductController : ControllerBase {
 	public async Task<ActionResult<ProductExternal[]>> BatchGet([FromBody] ulong[] ids) {
 		using (var db = new DatabaseContext()) {
 			return await db.Products
-				.Include(product => product.Owner)
 				.Include(product => product.ThumbnailImage)
 				.Where(product => ids.Contains(product.Id))
 				.Select(product => ProductExternal.ToExternal(product))
@@ -69,16 +65,16 @@ public class ProductController : ControllerBase {
 		if (!(User.IsInRole("AuctionMaster") || User.IsInRole("Admin"))) return Forbid();
 
 		using (var db = new DatabaseContext()) {
-			return await db.Products.Include(product => product.Owner).Select(product => ProductExternal.ToExternal(product)).ToArrayAsync();
+			return await db.Products.Select(product => ProductExternal.ToExternal(product)).ToArrayAsync();
 		}
 	}
 	[HttpGet("/products/user/{userId}")]
 	public async Task<ActionResult<ProductExternal[]>> GetOfUser(string userId) {
 		using (var db = new DatabaseContext()) {
-			return await db.Products
-				.Include(product => product.Owner)
-				.Where(product => product.Owner.Id == userId)
-				.Select(product => ProductExternal.ToExternal(product))
+			return await db.AuctionItems
+        .Include(item => item.Product)
+				.Where(item => item.Owner.Id == userId)
+				.Select(item => ProductExternal.ToExternal(item.Product))
 			.ToArrayAsync();
 		}
 	}
@@ -148,7 +144,6 @@ public class ProductController : ControllerBase {
 			FailedBatchEntry<ulong>[] failedProducts = [];
 
 			Product[] products = await db.Products
-		.Include(product => product.Owner)
 		.Where(product => ids.Contains(product.Id))
 		.Select(product => product).ToArrayAsync();
 
@@ -156,7 +151,7 @@ public class ProductController : ControllerBase {
 				Product? product = products.FirstOrDefault(p => p.Id == productId);
 				if (product == null) {
 					failedProducts.Append(new FailedBatchEntry<ulong>(productId, "Corresponding Product does not exist"));
-				} else if (isAdmin || product.Owner.Id == currentUserId) {
+				} else if (isAdmin){
 					db.Products.Remove(product);
 				} else {
 					failedProducts.Append(new FailedBatchEntry<ulong>(productId, "Unauthorized deletion attempt"));
