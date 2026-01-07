@@ -56,6 +56,20 @@ public class SaleController : ControllerBase {
 			return SaleExternal.ToExternal(sale);
 		}
 	}
+  
+  // TODO: replace with non EF core version
+  [HttpGet("history/{id}")]
+  public async Task<ActionResult<SaleExternal[]>> GetProductSaleHistory(ulong id) {
+    using (var db = new DatabaseContext()) {
+      return await db.Sales
+        .Include(sale => sale.Purchaser)
+        .Include(sale => sale.PurchasedProduct)
+        .ThenInclude(item => item.Owner)
+        .Where(sale => sale.PurchasedProduct.Id == id)
+        .Select(sale => SaleExternal.ToExternal(sale))
+        .ToArrayAsync();
+    }
+  }
 
 	[HttpGet("by-auction/{id}")]
 	[Authorize]
