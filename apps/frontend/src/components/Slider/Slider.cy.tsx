@@ -1,17 +1,19 @@
+import { DarkTheme } from "@/themes/Dark";
 import ThemeCSSProvider from "@/themes/ThemeCSSProvider";
+import { useState } from "react";
 import Slider from "./Slider";
 import styles from "./Slider.module.scss";
-import { DarkTheme } from "@/themes/Dark";
-import { useState } from "react";
 
 function TestComponent({ onChange }) {
 	const [value, setValue] = useState(0);
 
 	return (
-		<ThemeCSSProvider theme={DarkTheme}><Slider min={0} max={100} value={value} step={1} onChange={v => {
-			setValue(v);
-			onChange(v);
-		}} width="50vw"/></ThemeCSSProvider>
+		<ThemeCSSProvider theme={DarkTheme}>
+			<Slider min={0} max={100} value={value} step={1} onChange={v => {
+				setValue(v);
+				onChange(v);
+			}} width="50vw"/>
+		</ThemeCSSProvider>
 	);
 }
 

@@ -5,11 +5,11 @@ import { Routes } from "@route/Routes";
 describe("<EndedAuction/>", () => {
 	beforeEach(() => {
 		const auctionData = cy.fixture("Auction.json");
-		cy.intercept("GET", API_URL + Routes.AuctionItem.GetByAuction("*"), {fixture: "AuctionItems.json"});
+		cy.intercept("GET", API_URL + Routes.AuctionItem.GetByAuction("*"), { fixture: "AuctionItems.json" });
 		cy.intercept("GET", API_URL + Routes.User.GetUserRole, "Customer");
-		cy.intercept("GET", API_URL + Routes.User.GetPrivate("*"), {fixture: "PrivateUser.json"});
+		cy.intercept("GET", API_URL + Routes.User.GetPrivate("*"), { fixture: "PrivateUser.json" });
 		cy.intercept("GET", API_URL + Routes.Auction.Get("*"), req => {
-			req.reply({...auctionData, startingTime: Date.now() + 1000});
+			req.reply({ ...auctionData, startingTime: Date.now() + 1000 });
 		});
 	});
 
