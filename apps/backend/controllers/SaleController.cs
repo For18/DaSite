@@ -71,6 +71,20 @@ public class SaleController : ControllerBase {
     }
   }
 
+  // TODO: replace with non EF core version
+  [HttpGet("owner-history/{ownerId}/{productId}")]
+  public async Task<ActionResult<SaleExternal[]>> GetProductSaleHistoryByOwner(string ownerId, ulong productId) {
+    using (var db = new DatabaseContext()) {
+      return await db.Sales
+        .Include(sale => sale.Purchaser)
+        .Include(sale => sale.PurchasedProduct)
+        .ThenInclude(item => item.Owner)
+        .Where(sale => sale.PurchasedProduct.Id == productId && sale.PurchasedProduct.Owner.Id == ownerId)
+        .Select(sale => SaleExternal.ToExternal(sale))
+        .ToArrayAsync();
+    }
+  }
+
 	[HttpGet("by-auction/{id}")]
 	[Authorize]
 	public async Task<ActionResult<SaleExternal>> GetByAuction(ulong id) {

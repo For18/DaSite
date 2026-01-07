@@ -47,6 +47,7 @@ export const Routes = {
 	Sale: {
 		Get: (id: Sale["id"]) => `/sale/${id}`,
     GetHistory: (productId: Product["id"]) => `/sale/history/${productId}`,
+    GetOwnerHistory: (productId: Product["id"], ownerId: User["id"]) => `/sale/owner-history/${ownerId}/${productId}`,
 		GetByAuction: (auctionId: Auction["id"]) => `/sale/by-auction/${auctionId}`,
 		GetAll: `/sales`,
 		GetBatch: `/sales/batch`,
