@@ -10,11 +10,5 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding: var(--spacing);
-}
-
-.homepageArticle {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+	overflow-x: auto;
 }

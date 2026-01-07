@@ -6,7 +6,7 @@ export interface PromiseHookResponse<T> {
 	error?: Error;
 }
 
-export default function usePromise<T>(createPromise: () => Promise<T> | null,
+export default function usePromise<T>(createPromise: () => Promise<T> | null | undefined,
 	dependencies: DependencyList): PromiseHookResponse<T> {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [value, setValue] = useState<T>();
@@ -19,6 +19,12 @@ export default function usePromise<T>(createPromise: () => Promise<T> | null,
 
 		const promise = createPromise();
 
+		if (promise === undefined) {
+			setIsLoading(false);
+			setValue(undefined);
+			setError(undefined);
+			return;
+		}
 		if (promise === null) return;
 
 		promise

@@ -23,4 +23,10 @@
 			filter: brightness(0.9);
 		}
 	}
+
+	&.center {
+		width: 100%;
+		text-align: center;
+		margin-inline: 0;
+	}
 }

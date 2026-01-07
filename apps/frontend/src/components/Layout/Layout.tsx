@@ -3,7 +3,6 @@ import Footer from "@component/Footer";
 import TopBar from "@component/TopBar";
 import { Routes } from "@route/Routes";
 import { type PropsWithChildren } from "react";
-import { useLocation } from "react-router";
 import styles from "./Layout.module.scss";
 
 export default function Layout({ children }: PropsWithChildren) {
@@ -39,7 +38,7 @@ export default function Layout({ children }: PropsWithChildren) {
 					hyperlinksToRender.filter(link => link.link != null).map(link => [link.title, link.link])
 				)}
 			/>
-			<main className={isHomepage ? styles.homepageArticle : styles.article}>
+			<main className={styles.article}>
 				{children}
 			</main>
 			<Footer/>

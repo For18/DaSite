@@ -1,4 +1,5 @@
 import useAuth from "@/AuthProvider";
+import Input from "@/components/Input";
 import BeforeAuction from "@component/BeforeAuction";
 import Button from "@component/Button";
 import Clock from "@component/Clock";
@@ -53,7 +54,8 @@ async function PostSale(purchaser: number, auctionId: number, amount: number, pr
 /* TODO: contemplate if timed out auctions should be added to the back of the items stack being sold */
 export default function ClockPage() {
 	/* Main state holders */
-	const { auctionId } = useParams();
+	const { auctionId: auctionIdString } = useParams();
+	const auctionId = auctionIdString == null ? null : parseInt(auctionIdString);
 	const auction = useAPI<Auction>(auctionId != null ? Routes.Auction.Get(auctionId) : null);
 	const [items, setItems] = useState<AuctionItem[] | null>(null);
 	const { user } = useAuth();
@@ -159,25 +161,25 @@ export default function ClockPage() {
 								count={currentItem.count ?? 0}/>
 						</>
 					)}
-				<input
-					className={styles.input}
-					type="number"
-					onChange={count => {
-						buyCountRef.current = Number(count.target.value);
-					}}
-				/>
-
-				<Button
-					className={styles.button}
-					variant="outlined"
-					disabled={progress < 0 || progress > 1 || isBuffered}
-					onClick={() => {
-						onPurchase(buyCountRef.current);
-						alert(`Bought ${buyCountRef.current} products for € ${currentPrice} each`);
-					}}
-				>
-					BUY
-				</Button>
+				<div className={styles.purchaseContainer}>
+					<Input
+						className={styles.input}
+						type="number"
+						onChange={countString => {
+							buyCountRef.current = Number(countString);
+						}}
+					/>
+					<Button
+						variant="outlined"
+						disabled={progress < 0 || progress > 1 || isBuffered}
+						onClick={() => {
+							onPurchase(buyCountRef.current);
+							alert(`Bought ${buyCountRef.current} products for € ${currentPrice} each`);
+						}}
+					>
+						BUY
+					</Button>
+				</div>
 			</div>
 			<div className={styles.containerSeparator}/>
 

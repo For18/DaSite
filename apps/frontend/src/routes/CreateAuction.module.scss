@@ -1,26 +1,8 @@
-.checkbox {
-	accent-color: var(--color-text-secondary);
-	margin-right: 8px;
-}
-
 .container {
 	padding: 16px;
 }
 
-.input {
-	display: block;
-	width: 100%;
-	max-width: 480px;
-	padding: 8px 10px;
-	margin-top: 8px;
-	border: 1px solid var(--color-border);
-	border-radius: 6px;
-	background: var(--color-background-secondary);
-	color: var(--color-text-primary);
-	box-sizing: border-box;
-}
-
-.inputLabel {
+.input-label {
 	display: block;
 	color: var(--color-text-primary);
 	margin-top: 12px;
@@ -28,22 +10,40 @@
 	font-weight: 500;
 }
 
-.productList {
+.product-list {
 	margin-top: 12px;
 	max-width: 640px;
+}
+
+.product-container {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	width: 100%;
+
+	&:not(:first-child) {
+		margin-top: calc(var(--spacing) / 2);
+	}
 }
 
 .product {
 	display: block;
 	padding: 10px;
-	margin-bottom: 10px;
-	border: 1px solid var(--color-border);
 	border-radius: 8px;
 	cursor: pointer;
-	background: var(--color-background-primary);
+	background: var(--color-background-secondary);
 	color: var(--color-text-primary);
-}
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: stretch;
+	gap: var(--spacing);
 
-.product.selected {
-	border: 2px solid var(--color-text-secondary);
+	.product-image {
+		aspect-ratio: 1/1;
+	}
+
+	&.selected {
+		background: var(--color-background-tertiary);
+	}
 }

@@ -13,7 +13,7 @@ export interface SliderProps { // TODO: Add direction prop (aria-direction, keyb
 	marks?: boolean | number[] | { [value: number]: ReactElement };
 	width?: string;
 	disabled?: boolean;
-	// tooltip?: boolean | ((value: number) => string); // implement when tooltip component is added
+	// tooltip?: boolean | ((value: number) => string); // TODO: implement when tooltip component is added
 }
 
 export default function Slider(

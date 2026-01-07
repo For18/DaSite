@@ -33,13 +33,13 @@ export default function ProductView({ auctionItem }: { auctionItem: AuctionItem 
 	// if (thumbnailImage.url === null) return <Throbber/>;
 	// if (thumbnailImage.url === undefined) return <NotFound/>;
 
-	const ownerId = product.ownerId ? product.ownerId.toString() : undefined;
-
 	return (
 		<div className={styles.productView}>
 			<div>
 				<Typography heading={1}>{product.name}</Typography>
-				<Typography className={styles.seller} href={Routes.Pages.Profile(ownerId ?? 1)}>
+				<Typography className={styles.seller}
+					href={product.ownerId == null ? undefined : Routes.Pages.Profile(product.ownerId)}
+				>
 					Seller: {owner ? owner.userName : "Seller not found"}
 				</Typography>
 			</div>

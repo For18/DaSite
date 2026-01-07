@@ -1,10 +1,15 @@
+import Checkbox from "@/components/Checkbox";
+import Image from "@/components/Image";
+import Input from "@/components/Input";
+import Section from "@/components/Section";
+import usePromise from "@/lib/hooks/usePromise";
 import Button from "@component/Button";
 import ProductView from "@component/ProductView";
 import { type Status, StatusDisplay } from "@component/StatusDisplay";
 import Typography from "@component/Typography";
-import { API_URL, AuctionItem, useAPI } from "@lib/api";
+import { API_URL, AuctionItem, Product, ProductImage, useAPI } from "@lib/api";
 import { Routes } from "@route/Routes";
-import { useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 import styles from "./CreateAuction.module.scss";
 
 const pad = (n: number) => (n < 10 ? `0${n}` : String(n));
@@ -19,21 +24,59 @@ function getDefaultTime() {
 	return `${pad(now.getHours())}:${pad(now.getMinutes())}`;
 }
 
+interface ItemSelectCardProps {
+	item: AuctionItem;
+	selected: boolean;
+	onToggle: () => void;
+}
+
+function ItemSelectCard({ item, selected, onToggle }: ItemSelectCardProps) {
+	const { value: product, isLoading: isProductLoading } = usePromise<Product>(
+		() => fetch(API_URL + Routes.Product.Get(item.productId)).then(response => response.json()),
+		[item.productId]
+	);
+	const { value: thumbnailProductImage } = usePromise<ProductImage>(
+		() =>
+			isProductLoading ?
+				null :
+				product.thumbnailImageId === null ?
+				undefined :
+				fetch(Routes.ProductImage.Get(product.thumbnailImageId)).then(response => response.json()),
+		[isProductLoading, product?.thumbnailImageId]
+	);
+	if (product == null) return null;
+
+	return (
+		<div className={styles.productContainer}>
+			<Checkbox checked={selected} onClick={onToggle}/>
+			<div className={styles.product + (selected ? ` ${styles.selected}` : "")} onClick={onToggle}>
+				{isProductLoading || product.thumbnailImageId == null ?
+					null :
+					(
+						<Image className={styles.productImage} src={thumbnailProductImage.url}
+							alt={`${product.name}'s thumbnail`}/>
+					)} {/* TODO: Test */}
+				<div>
+					{/* TODO: Improve */}
+					<Typography>{product.name}</Typography>
+					<Typography>x{item.batchSize * item.count}</Typography>
+				</div>
+			</div>
+		</div>
+	);
+}
+
 export default function CreateAuctions() {
-	const [productsSelected, setProductsSelected] = useState<string[]>([]);
-	const [count, setCount] = useState(1);
-	const [batchSize, setBatchSize] = useState(1);
-	const [startingPrice, setStartingPrice] = useState(0);
-	const [minimumPrice, setMinimumPrice] = useState(0);
-	const [durationSeconds, setDurationSeconds] = useState(120);
-	const startingDateRef = useRef<string>(getDefaultDate());
-	const startingTimeRef = useRef<string>(getDefaultTime());
+	const [productsSelected, setProductsSelected] = useState<Set<number>>(new Set());
+	const [startingDate, setStartingDate] = useState<string>(getDefaultDate());
+	const [startingTime, setStartingTime] = useState<string>(getDefaultTime());
+	const id = useId();
 
 	const auctionItems = useAPI<AuctionItem[]>(Routes.AuctionItem.GetAll);
 	const [status, setStatus] = useState<Status>({ type: "none", label: "" });
 
 	async function submitAuction() {
-		const itemIds = productsSelected.map(Number).filter(id => !Number.isNaN(id));
+		const itemIds = Array.from(productsSelected);
 		if (itemIds.length === 0) {
 			setStatus({
 				type: "error",
@@ -44,19 +87,14 @@ export default function CreateAuctions() {
 
 		// combine startingDate and startingTime into an ISO datetime
 		let startingTimeMillis: number | null = null;
-		if (startingDateRef.current && startingTimeRef.current) {
-			const iso = `${startingDateRef.current}T${startingTimeRef.current}:00`;
+		if (startingDate && startingTime) {
+			const iso = `${startingDate}T${startingTime}:00`;
 			const parsed = Date.parse(iso);
 			startingTimeMillis = Number.isNaN(parsed) ? null : Math.round(parsed);
 		}
 
 		const payload = {
-			count: Number(count),
-			batchSize: Number(batchSize),
-			startingPrice: Number(startingPrice),
-			minimumPrice: Number(minimumPrice),
 			startingTime: startingTimeMillis, // milliseconds since epoch or null
-			length: Number(durationSeconds),
 			// send selected auction-item ids in the legacy productIds field
 			productIds: itemIds,
 			plannerId: null
@@ -131,72 +169,57 @@ export default function CreateAuctions() {
 	return (
 		<>
 			<div className={styles.container}>
-				<Typography heading={1}>Create Auction</Typography>
+				<Typography heading={1} center>Create Auction</Typography>
 
-				<Typography heading={3}>Available Auction Items:</Typography>
+				<Section>
+					<Typography heading={3}>Available Auction Items:</Typography>
 
-				{Array.isArray(auctionItems) ?
-					(
-						auctionItems.length ?
-							(
-								<div className={styles.productList}>
-									{auctionItems.map(item => (
-										<label
-											key={item.id}
-											className={styles.product +
-												(productsSelected.includes(String(item.id)) ?
-													` ${styles.selected}` :
-													"")}
-										>
-											<input
-												className={styles.checkbox}
-												type="checkbox"
-												name="auctionItemId"
-												value={String(item.id)}
-												checked={productsSelected.includes(String(item.id))}
-												onChange={e => {
-													const val = e.target.value;
-													setProductsSelected(prev =>
-														prev.includes(val) ?
-															prev.filter(x => x !== val) :
-															[...prev, val]
-													);
-												}}
-											/>
-											<ProductView auctionItem={item}/>
-										</label>
-									))}
-								</div>
-							) :
-							<Typography>No auction items available</Typography>
-					) :
-					null}
+					{Array.isArray(auctionItems) ?
+						(
+							auctionItems.length ?
+								(
+									<div className={styles.productList}>
+										{auctionItems.map(item => (
+											<ItemSelectCard key={item.id} item={item}
+												selected={productsSelected.has(item.id)} onToggle={() =>
+												setProductsSelected(prev => {
+													const next = new Set<number>(prev);
+													if (prev.has(item.id)) next.delete(item.id);
+													else next.add(item.id);
+													return next;
+												})}/>
+										))}
+									</div>
+								) :
+								<Typography>No auction items available</Typography>
+						) :
+						null}
+				</Section>
 
-				<label htmlFor="startingDate" className={styles.inputLabel}>Starting date</label>
-				<input
-					id="startingDate"
-					className={styles.input}
-					name="startingDate"
-					type="date"
-					defaultValue={startingDateRef.current}
-					onChange={e => (startingDateRef.current = e.target.value)}
-				/>
-				<label htmlFor="startingTime" className={styles.inputLabel}>Starting time</label>
-				<input
-					id="startingTime"
-					className={styles.input}
-					name="startingTime"
-					type="time"
-					defaultValue={startingTimeRef.current}
-					onChange={e => (startingTimeRef.current = e.target.value)}
-				/>
+				<Section>
+					<Typography id={id + "startingDate"}>Starting date</Typography>
+					<Input
+						labelledby={id + "startingDate"}
+						type="date"
+						value={startingDate}
+						onChange={setStartingDate}
+					/>
+					<Typography id={id + "startingTime"}>Starting time</Typography>
+					<Input
+						labelledby={id + "startingTime"}
+						type="time"
+						value={startingTime}
+						onChange={setStartingTime}
+					/>
 
-				<Button variant="contained" color="brand" onClick={submitAuction}>Create Auction</Button>
+					<Button variant="contained" color="brand" onClick={submitAuction}>Create Auction</Button>{" "}
+					{/* TODO: Fix layout (Make the parent responsible for layout?) */}
+				</Section>
 				<Typography heading={2}>
 					Selected Auction Item ID:
 				</Typography>
 				<Typography heading={3}>
-					{productsSelected.length ? productsSelected.join(", ") : "(none selected)"}
+					{productsSelected.size ? Array.from(productsSelected).join(", ") : "(none selected)"}
 				</Typography>
 				<StatusDisplay status={status}/>
 			</div>

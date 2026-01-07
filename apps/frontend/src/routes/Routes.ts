@@ -1,3 +1,4 @@
+import type { Auction, AuctionEntry, AuctionItem, Product, ProductImage, Sale, User } from "@lib/api";
 import { type JSX, lazy, type LazyExoticComponent } from "react";
 
 const Home = lazy(() => import("./Home"));
@@ -14,21 +15,21 @@ const Registration = lazy(() => import("./Registration"));
 export const Routes = {
 	Pages: {
 		Home: `/`,
-		Clock: (id: number | string) => `/clock/${id}`,
+		Clock: (id: Auction["id"]) => `/clock/${id}`,
 		Auctions: {
 			Base: `/auctions`,
 			Create: `/auctions/create`,
 			Pending: `/auctions/pending`
 		},
 		CreateProduct: `/products/create`,
-		Profile: (id: number | string) => `/profile/${id}`,
+		Profile: (id: User["id"]) => `/profile/${id}`,
 		Test: `/test`,
-		Login: `/Login`,
+		Login: `/login`,
 		Register: `/register`
 	},
 	User: {
-		GetPublic: (id: number | string) => `/user/${id}`,
-		GetPrivate: (id: number | string) => `/user/private/${id}`,
+		GetPublic: (id: User["id"]) => `/user/${id}`,
+		GetPrivate: (id: User["id"]) => `/user/private/${id}`,
 		GetUserRole: `/user/private/role`,
 		BatchGetPrivate: `/users/private/batch`,
 		BatchGetPublic: `/users/batch`,
@@ -38,81 +39,78 @@ export const Routes = {
 		GetCurrent: `/private/current`,
 		Post: `/user`,
 		BatchPost: `/users/batch`,
-		Delete: (id: number | string) => `/user/${id}`,
+		Delete: (id: User["id"]) => `/user/${id}`,
 		BatchDelete: `/users/batch`,
-		Patch: (id: number | string) => `/user/${id}`
+		Patch: (id: User["id"]) => `/user/${id}`
 	},
 
 	Sale: {
-		Get: (id: number | string) => `/sale/${id}`,
-		GetByAuction: (auctionId: number | string) => `/sale/by-auction/${auctionId}`,
+		Get: (id: Sale["id"]) => `/sale/${id}`,
+		GetByAuction: (auctionId: Auction["id"]) => `/sale/by-auction/${auctionId}`,
 		GetAll: `/sales`,
 		GetBatch: `/sales/batch`,
 		Post: `/sale`,
 		PostBatch: `/sales/batch`,
-		Delete: (id: number | string) => `/sale/${id}`,
+		Delete: (id: Sale["id"]) => `/sale/${id}`,
 		DeleteSale: `/sales/delete`,
-		Patch: (id: number | string) => `/sale/${id}`
+		Patch: (id: Sale["id"]) => `/sale/${id}`
 	},
 
 	ProductImage: {
-		Get: (id: number | string) => `/product-image/${id}`,
-		FromParent: (parentId: number | string) => `/product-image/from/${parentId}`,
+		Get: (id: ProductImage["id"]) => `/product-image/${id}`,
+		FromParent: (parentId: Product["id"]) => `/product-image/from/${parentId}`,
 		BatchGet: `/product-images/batch`,
 		Post: `/product-image`,
 		BatchPost: `/product-images/batch`,
-		Delete: (id: number | string) => `/product-image/${id}`,
+		Delete: (id: ProductImage["id"]) => `/product-image/${id}`,
 		BatchDelete: `/product-image/batch`,
-		Patch: (id: number | string) => `/product-image/${id}`
+		Patch: (id: ProductImage["id"]) => `/product-image/${id}`
 	},
 
 	Product: {
-		Get: (id: number | string) => `/product/${id}`,
+		Get: (id: Product["id"]) => `/product/${id}`,
 		GetAll: `/products`,
-		GetOfUser: (userId: number | string) => `/products/user/${userId}`,
-		GetContainedIn: (ids: (number | string)[]) => `/batch?${ids.map(id => `ids=${id}`).join("&")}`,
+		GetOfUser: (userId: User["id"]) => `/products/user/${userId}`,
 		BatchGet: `/products/batch`,
 		Post: `/product`,
 		BatchPost: `/product/batch`,
-		Delete: (id: number | string) => `/product/${id}`,
+		Delete: (id: Product["id"]) => `/product/${id}`,
 		BatchDelete: `/products/batch`,
-		Patch: (id: number | string) => `/product/${id}`
+		Patch: (id: Product["id"]) => `/product/${id}`
 	},
 
 	AuctionItem: {
 		GetAll: `/auction-item/all`,
-		Get: (id: number | string) => `/auction-item/${id}`,
+		Get: (id: AuctionItem["id"]) => `/auction-item/${id}`,
 		BatchGet: `/auction-items/batch`,
-		GetByAuction: (auctionId: number | string) => `/auction-item/by-auction/${auctionId}`,
+		GetByAuction: (auctionId: Auction["id"]) => `/auction-item/by-auction/${auctionId}`,
 		Post: `/auction-item`,
 		BatchPost: `/auction-item/batch`,
-		Delete: (id: number | string) => `/auction-item/${id}`,
+		Delete: (id: AuctionItem["id"]) => `/auction-item/${id}`,
 		BatchDelete: `/auction-item/batch`,
-		Patch: (id: number | string) => `/auction-item/${id}`
+		Patch: (id: AuctionItem["id"]) => `/auction-item/${id}`
 	},
 
 	AuctionEntry: {
-		Get: (auctionId: number | string) => `/auction-entry/${auctionId}`,
 		GetBatch: `/auction-entries/batch`,
-		GetFromAuction: (auctionId: number | string) => `/auction-entry/from-auction/${auctionId}`,
-		GetFromItem: (itemId: number | string) => `/auction-entry/from-item/${itemId}`,
+		GetFromAuction: (auctionId: Auction["id"]) => `/auction-entry/from-auction/${auctionId}`,
+		GetFromItem: (itemId: AuctionItem["id"]) => `/auction-entry/from-item/${itemId}`,
 		Post: `/auction-entry`,
 		BatchPost: `/auction-entries/batch`,
-		Delete: (auctionId: number | string, itemId: number | string) => `/auction-entry/${auctionId}/${itemId}`,
-		BatchDelete: `/auction-entries/batch`,
-		Patch: (id: number | string) => `/auction-entry/${id}`
+		Delete: (auctionId: Auction["id"], itemId: AuctionItem["id"]) => `/auction-entry/${auctionId}/${itemId}`,
+		BatchDelete: `/auction-entries/batch`
 	},
 
 	Auction: {
-		Get: (id: number | string) => `/auction/${id}`,
+		Get: (id: Auction["id"]) => `/auction/${id}`,
 		BatchGet: `/auctions/batch`,
 		GetAll: `/auctions`,
 		GetUpcoming: `/auctions/upcoming`,
 		Post: `/auction`,
 		BatchPost: `/auctions/batch`,
-		Delete: (id: number | string) => `/auction/${id}`,
+		Delete: (id: Auction["id"]) => `/auction/${id}`,
 		BatchDelete: `/auctions/batch`,
-		Patch: (id: number | string) => `/auction/${id}`
+		Patch: (id: Auction["id"]) => `/auction/${id}`
 	},
 	Identity: {
 		PostRegister: `/identity/register`,
@@ -131,10 +129,10 @@ export const Routes = {
 
 export default {
 	[Routes.Pages.Home]: Home,
-	[Routes.Pages.Clock(":auctionId")]: Clock,
+	[Routes.Pages.Clock(":auctionId" as any)]: Clock,
 	[Routes.Pages.Auctions.Base]: Auctions,
 	[Routes.Pages.Auctions.Pending]: PendingAuction,
-	[Routes.Pages.Profile(":userId")]: Profile,
+	[Routes.Pages.Profile(":userId" as any)]: Profile,
 	[Routes.Pages.Auctions.Create]: CreateAuction,
 	[Routes.Pages.CreateProduct]: CreateProduct,
 	[Routes.Pages.Test]: Test,

@@ -14,9 +14,10 @@ export default function Image({ src, alt, width, height, onClick, className, sty
 	if (src === null || src === undefined) src = [];
 	else if (typeof src === "string") src = [src];
 
-	src.push(`https://placehold.co/${width}x${height}?text=${alt}`);
+	src.push(`https://placehold.co/${width ?? height ?? 100}x${height ?? width ?? 100}?text=${alt}`);
 
-	const [imageIndex, setImageIndex] = useState<number>(0);
+	let [imageIndex, setImageIndex] = useState<number>(0);
+	while (src[imageIndex] == null) setImageIndex(++imageIndex);
 
 	return (
 		<img src={src[imageIndex]} alt={alt} width={width} height={height} onClick={onClick} className={className}
