@@ -6,8 +6,6 @@ import { type PropsWithChildren } from "react";
 import styles from "./Layout.module.scss";
 
 export default function Layout({ children }: PropsWithChildren) {
-	const location = useLocation();
-	const homepage = ["/"];
 	const { user, role } = useAuth();
 
 	let hyperlinksToRender: { title: string, link: string }[] = [
@@ -28,8 +26,6 @@ export default function Layout({ children }: PropsWithChildren) {
 			);
 		}
 	}
-
-	const isHomepage = homepage.includes(location.pathname);
 
 	return (
 		<div className={styles.container}>
