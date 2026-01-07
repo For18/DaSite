@@ -19,7 +19,7 @@ export default function Switch({ enabled, onClick, labelledby }: ToggleSwitchPro
 				enabled ? styles.enabled : null
 			].filter(v => v != null).join(" ")}
 			aria-checked={enabled}
-			aria-labelledby={labelledby} // 👍
+			aria-labelledby={labelledby}
 			role="switch"
 			tabIndex={0}
 			onClick={onClick}
