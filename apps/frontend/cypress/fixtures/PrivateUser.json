@@ -1,0 +1,20 @@
+{
+	"id": "id",
+	"userName": "Sjoerd Bakker",
+	"normalizedUserName": "SJOERD BAKKER",
+	"email": "sjoerd.bakker@example.com",
+	"normalizedEmail": "SJOERD.BAKKER@EXAMPLE.COM",
+	"emailConfirmed": true,
+	"passwordHash": "passwordHash",
+	"securityStamp": "securityStamp",
+	"concurrencyStamp": "concurrencyStamp",
+	"phoneNumber": "phoneNumber",
+	"phoneNumberConfirmed": false,
+	"twoFactorEnabled": false,
+	"lockoutEnd": "lockoutEnd",
+	"lockoutEnabled": false,
+	"accessFailedCount": 0,
+	"auctionDebt": 0,
+	"avatarImageUrl": "avatarImageUrl",
+	"telephoneNumber": "telephoneNumber"
+}

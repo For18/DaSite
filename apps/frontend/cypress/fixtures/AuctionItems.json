@@ -1,0 +1,11 @@
+[
+	{
+		"id": 1,
+		"count": 1,
+		"batchSize": 2,
+		"startingPrice": 5000,
+		"minimumPrice": 1000,
+		"length": 0,
+		"productId": 1
+	}
+]
