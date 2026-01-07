@@ -11,9 +11,9 @@ public class Sale {
 	[Required]
 	public required User Purchaser { get; set; }
 
-	[ForeignKey("PurchasedAuctionId")]
+	[ForeignKey("PurchasedProductId")]
 	[Required]
-	public required Auction PurchasedAuction { get; set; }
+	public required Product PurchasedProduct { get; set; }
 
 	[Required]
 	public required uint Amount { get; set; }

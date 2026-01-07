@@ -8,24 +8,24 @@ using Microsoft.AspNetCore.Authorization;
 
 [DisplayName(nameof(Sale))]
 public class SaleExternal {
-	public SaleExternal(ulong id, string purchaserId, ulong purchasedAuctionId, uint amount, uint price, bool isPaid) {
+	public SaleExternal(ulong id, string purchaserId, ulong purchasedProductId, uint amount, uint price, bool isPaid) {
 		Id = id;
 		PurchaserId = purchaserId;
-		PurchasedAuctionId = purchasedAuctionId;
+		PurchasedProductId = purchasedProductId;
 		Amount = amount;
 		Price = price;
 		IsPaid = isPaid;
 	}
 
 	public static SaleExternal ToExternal(Sale sale) {
-		return new SaleExternal(sale.Id, sale.Purchaser.Id, sale.PurchasedAuction.Id, sale.Amount, sale.Price, sale.IsPaid);
+		return new SaleExternal(sale.Id, sale.Purchaser.Id, sale.PurchasedProduct.Id, sale.Amount, sale.Price, sale.IsPaid);
 	}
 
 	public Sale ToSale(DatabaseContext db) {
 		return new Sale {
 			Id = Id,
 			Purchaser = db.Users.Where(u => u.Id == PurchaserId).First(),
-			PurchasedAuction = db.Auctions.Where(a => a.Id == PurchasedAuctionId).First(),
+			PurchasedProduct = db.Products.Where(a => a.Id == PurchasedProductId).First(),
 			Amount = Amount,
 			Price = Price,
 			IsPaid = IsPaid
@@ -33,7 +33,7 @@ public class SaleExternal {
 	}
 	public ulong Id { get; set; }
 	public string PurchaserId { get; set; }
-	public ulong PurchasedAuctionId { get; set; }
+	public ulong PurchasedProductId { get; set; }
 	public uint Amount { get; set; }
 	public uint Price { get; set; }
 	public bool IsPaid { get; set; }
@@ -48,9 +48,9 @@ public class SaleController : ControllerBase {
 	public async Task<ActionResult<SaleExternal>> Get(ulong id) {
 		if (!(User.IsInRole("AuctionMaster") || User.IsInRole("Admin"))) return Forbid();
 
-		using var db = new DatabaseContext();
+		using (var db = new DatabaseContext())
 		{
-			Sale? sale = await db.Sales.Include(sale => sale.PurchasedAuction).Include(sale => sale.Purchaser).Where(sale => sale.Id == id).FirstOrDefaultAsync();
+			Sale? sale = await db.Sales.Include(sale => sale.PurchasedProduct).Include(sale => sale.Purchaser).Where(sale => sale.Id == id).FirstOrDefaultAsync();
 			if (sale == null) return NotFound();
 
 			return SaleExternal.ToExternal(sale);
@@ -62,9 +62,9 @@ public class SaleController : ControllerBase {
 	public async Task<ActionResult<SaleExternal>> GetByAuction(ulong id) {
 		if (!(User.IsInRole("AuctionMaster") || User.IsInRole("Admin"))) return Forbid();
 
-		using var db = new DatabaseContext();
+		using (var db = new DatabaseContext())
 		{
-			Sale? sale = await db.Sales.Include(sale => sale.PurchasedAuction).Include(sale => sale.Purchaser).Where(sale => sale.PurchasedAuction.Id == id).FirstOrDefaultAsync();
+			Sale? sale = await db.Sales.Include(sale => sale.PurchasedProduct).Include(sale => sale.Purchaser).Where(sale => sale.PurchasedProduct.Id == id).FirstOrDefaultAsync();
 			if (sale == null) return NotFound();
 
 			return SaleExternal.ToExternal(sale);
@@ -85,7 +85,7 @@ public class SaleController : ControllerBase {
 	public async Task<ActionResult<SaleExternal[]>> GetBatch([FromBody] ulong[] ids) {
 		using (var db = new DatabaseContext()) {
 			return await db.Sales
-				.Include(sale => sale.PurchasedAuction)
+				.Include(sale => sale.PurchasedProduct)
 				.Include(sale => sale.Purchaser)
 				.Where(sale => ids.Contains(sale.Id))
 				.Select(sale => SaleExternal.ToExternal(sale))
