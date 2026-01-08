@@ -99,7 +99,7 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 							</div>
 						</div>
 						<Typography>
-							Average price per {currentOwnerEntries
+							Average all-time price: {currentOwnerEntries
 								.map(e => (e.price === "-" ? 0 : Number(e.price)))
 								.reduce((acc, curr) => acc + curr, 0)}
 						</Typography>
@@ -126,7 +126,7 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 							</div>
 						</div>
 						<Typography>
-							Average price per {totalEntries
+							Average all-time price: {totalEntries
 								.map(e => (e.price === "-" ? 0 : Number(e.price)))
 								.reduce((acc, curr) => acc + curr, 0)}
 						</Typography>
