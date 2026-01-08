@@ -7,7 +7,7 @@ export interface ToggleSwitchProps {
 	labelledby?: string;
 }
 
-export function Switch({ enabled, onClick, labelledby }: ToggleSwitchProps) {
+export default function Switch({ enabled, onClick, labelledby }: ToggleSwitchProps) {
 	const onKeyDown = useCallback((e: KeyboardEvent) => {
 		if (e.key === "Enter" || e.key === " ") onClick();
 	}, [onClick]);
