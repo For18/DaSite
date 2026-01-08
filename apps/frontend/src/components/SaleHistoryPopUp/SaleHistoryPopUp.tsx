@@ -61,8 +61,8 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 		return slicedHistory
 			.slice(0, 10)
 			.map((e, i) => ({
-				owner: owners[i].userName,
-				date: String(Date.now()),
+				owner: owners[i]?.userName ?? "-",
+				date: new Date(Date.now()).toLocaleDateString(),
 				price: String(e.price)
 			}));
 	}, [owners, slicedHistory]);
