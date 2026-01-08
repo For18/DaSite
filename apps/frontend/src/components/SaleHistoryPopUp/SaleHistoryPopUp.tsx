@@ -33,10 +33,8 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 	}, [totalHistory]);
 	useEffect(() => {
 		if (items == null) return;
-		fetch(API_URL + Routes.User.BatchGetPublic, {
-			credentials: "include",
-			method: "GET",
-			body: JSON.stringify(items.map(e => e.ownerId))
+		fetch(API_URL + Routes.User.BatchGetPublic(items.map(e => e.ownerId)), {
+			credentials: "include"
 		})
 			.then(response => response.json())
 			.then(data => data as PublicUser[])

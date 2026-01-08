@@ -32,7 +32,7 @@ export const Routes = {
 		GetPrivate: (id: User["id"]) => `/user/private/${id}`,
 		GetUserRole: `/user/private/role`,
 		BatchGetPrivate: `/users/private/batch`,
-		BatchGetPublic: `/users/batch`,
+		BatchGetPublic: (ids: User["id"][]) => `/users/batch?ids=${ids.join(",")}`,
 		GetAllPrivate: `/users/private`,
 		GetAllPublic: `/users`,
 		GetAllByName: (name: string) => `/users/by-name/${name}`,
