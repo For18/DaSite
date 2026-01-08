@@ -60,7 +60,7 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 			}));
 	}, [totalCurrentItemOwnerHistory]);
 
-	const totalEntries = useMemo<{ owner: string, date: string, price: string }[]>(() => {
+	const totalEntries: { owner: string, date: string, price: string }[] = useMemo(() => {
 		if (owners == null || slicedHistory == null) return [];
 		return slicedHistory
 			.slice(0, 10)
