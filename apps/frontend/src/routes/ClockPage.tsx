@@ -13,6 +13,7 @@ import { Routes } from "@route/Routes";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router";
 import styles from "./ClockPage.module.scss";
+import SaleHistoryPopUp from "@/components/SaleHistoryPopUp";
 
 function lerp(from: number, to: number, t: number): number {
 	return from + t * (to - from);
@@ -179,6 +180,7 @@ export default function ClockPage() {
 					>
 						BUY
 					</Button>
+					<SaleHistoryPopUp item={currentItem}/>
 				</div>
 			</div>
 			<div className={styles.containerSeparator}/>
