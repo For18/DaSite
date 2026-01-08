@@ -1,6 +1,6 @@
 import { API_URL, type AuctionItem, type Product, PublicUser, type Sale, useAPI } from "@/lib/api";
 import { Routes } from "@route/Routes";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import Button from "../Button";
 import ClickAwayDetector from "../ClickAwayDetector";
@@ -49,23 +49,26 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 		product ? Routes.Sale.GetOwnerHistory(product.id, item.ownerId) : null
 	);
 
-	if (slicedHistory == null) return <></>;
-	if (totalCurrentItemOwnerHistory == null) return <></>;
-
 	// TODO: replace Date.now() with actual date property of Sale when its added
-	const currentOwnerEntries: { date: string, price: string }[] = totalCurrentItemOwnerHistory
+	const currentOwnerEntries: { date: string, price: string }[] = useMemo(() => totalCurrentItemOwnerHistory
 		.slice(0, 10)
-		.map(e => {
-			return { date: new Date(Date.now()).toLocaleDateString(), price: String(e.price) };
-		});
+		.map(e => ({
+			date: new Date(Date.now()).toLocaleDateString(),
+			price: String(e.price)
+		})),
+	[totalCurrentItemOwnerHistory]);
 
-	const totalEntries: { owner: string, date: string, price: string }[] = [];
-	if (owners != null) slicedHistory
-		.slice(0, 10)
-		.forEach((e, i) => {
-			totalEntries.push({ owner: owners[i].userName, date: String(Date.now()), price: String(e.price) });
-		});
-
+	const totalEntries = useMemo<{ owner: string, date: string, price: string }[]>(() => {
+		if (owners == null) return [];
+		return slicedHistory
+			.slice(0, 10)
+			.map((e, i) => ({
+				owner: owners[i].userName,
+				date: String(Date.now()),
+				price: String(e.price)
+			}));
+	}, [owners, slicedHistory]);
+		
 	// TODO: Decide if array padding is needed bc on Brightspace it explicitly says to show the last 10 sales)
 	// but this is ooglay
 	while (currentOwnerEntries.length < 10) {
@@ -74,6 +77,9 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 	while (totalEntries.length < 10) {
 		totalEntries.push({ owner: "-", date: "-", price: "-" });
 	}
+
+	if (slicedHistory == null) return <></>;
+	if (totalCurrentItemOwnerHistory == null) return <></>;
 
 	return (
 		<>
