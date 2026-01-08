@@ -56,7 +56,7 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 	const currentOwnerEntries: { date: string, price: string }[] = totalCurrentItemOwnerHistory
 		.slice(0, 10)
 		.map(e => {
-			return { date: String(Date.now()), price: String(e.price) };
+			return { date: new Date(Date.now()).toLocaleDateString(), price: String(e.price) };
 		});
 
 	const totalEntries: { owner: string, date: string, price: string }[] = [];
