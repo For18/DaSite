@@ -1,7 +1,9 @@
 import { API_URL, type AuctionItem, type Product, PublicUser, type Sale, useAPI } from "@/lib/api";
 import { Routes } from "@route/Routes";
 import { useEffect, useState } from "react";
+import { CgClose } from "react-icons/cg";
 import Button from "../Button";
+import ClickAwayDetector from "../ClickAwayDetector";
 import Typography from "../Typography";
 import styles from "./SaleHistoryPopUp.module.scss";
 
@@ -128,6 +130,9 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 								.map(e => (e.price === "-" ? 0 : Number(e.price)))
 								.reduce((acc, curr) => acc + curr, 0)}
 						</Typography>
+						<Button className={styles.closeButton} onClick={close}>
+							<CgClose/>
+						</Button>
 					</div>
 				) :
 				null}

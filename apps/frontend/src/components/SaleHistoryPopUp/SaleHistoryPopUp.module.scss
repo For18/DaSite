@@ -107,4 +107,10 @@
 		font-size: 0.85rem;
 		color: #cbd5f5;
 	}
+
+	.close-button {
+		position: absolute;
+		top: var(--spacing);
+		right: var(--spacing);
+	}
 }
