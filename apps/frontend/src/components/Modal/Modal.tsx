@@ -4,7 +4,6 @@ import { CgClose } from "react-icons/cg";
 import Button from "@component/Button";
 import styles from "./Modal.module.scss";
 import { createPortal } from "react-dom";
-import ClickAwayDetector from "../ClickAwayDetector";
 
 export interface ModalProps extends PropsWithChildren {
 	open: boolean;
@@ -14,9 +13,10 @@ export interface ModalProps extends PropsWithChildren {
 	 * For accessibility reasons this should be provided whenever possible
 	 */
 	onClose?: () => void;
+	labelledby?: string;
 }
 
-export default function Modal({ children, open, onClose: close }: ModalProps) {
+export default function Modal({ children, open, onClose: close, labelledby }: ModalProps) {
 	const { theme } = useTheme();
 
 	const handleKeyDown = useCallback((e: KeyboardEvent) => {
@@ -40,7 +40,7 @@ export default function Modal({ children, open, onClose: close }: ModalProps) {
 				e.stopPropagation();
 				close?.();
 			}}>
-				<div className={styles.modal} onClick={e => e.stopPropagation()}>
+				<div className={styles.modal} onClick={e => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby={labelledby}>
 					{children}
 					{close && (
 						<Button onClick={close} className={styles.closeButton}><CgClose/></Button>
