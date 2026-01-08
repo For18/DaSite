@@ -78,7 +78,7 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 	return (
 		<>
 			{
-				/* TODO: extract modal to separate component? */
+				/* TODO: extract modal to separate component */
 			}
 			{open ?
 				(
