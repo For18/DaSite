@@ -33,6 +33,7 @@ export default function Test() {
 	const [selectValue, setSelectValue] = useState<string | null>(null);
 	const [statusDisplayOpen, setStatusDisplayOpen] = useState<boolean>(false);
 	const [status, setStatus] = useState<Status>({ type: "none", label: "" });
+	const [modalAccordionOpen, setModalAccordionOpen] = useState<boolean>(false);
 	const [modalOpen, setModalOpen] = useState<boolean>(false);
 
 	return (
@@ -127,7 +128,7 @@ export default function Test() {
 				</Button>
 				<StatusDisplay status={status}/>
 			</Accordion>
-			<Accordion title="Modal" open>
+			<Accordion title="Modal" open={modalAccordionOpen} onToggle={setModalAccordionOpen}>
 				<Button onClick={() => setModalOpen(true)} disabled={modalOpen}>Open modal</Button>
 				<Modal open={modalOpen} onClose={() => setModalOpen(false)}>
 					<Typography heading={3}>This is a modal</Typography>
