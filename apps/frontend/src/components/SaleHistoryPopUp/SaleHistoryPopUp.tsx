@@ -5,8 +5,12 @@ import Button from "../Button";
 import Typography from "../Typography";
 import styles from "./SaleHistoryPopUp.module.scss";
 
+export interface SaleHistoryPopUpProps {
+	item: AuctionItem;
+}
+
 /* NOTE: this this has so many problems with styling but I aint dealing with that rn*/
-export default function SaleHistoryPopUp({ item }: { item: AuctionItem }) {
+export default function SaleHistoryPopUp({ item }: SaleHistoryPopUpProps) {
 	const product = useAPI<Product>(Routes.Product.Get(item.productId));
 	const totalHistory = useAPI<Sale[]>(product ? Routes.Sale.GetHistory(product.id) : null);
 	const slicedHistory = totalHistory ? totalHistory.slice(0, 10) : null;
