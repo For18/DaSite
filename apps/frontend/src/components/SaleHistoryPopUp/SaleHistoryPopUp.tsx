@@ -50,16 +50,18 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 	);
 
 	// TODO: replace Date.now() with actual date property of Sale when its added
-	const currentOwnerEntries: { date: string, price: string }[] = useMemo(() => totalCurrentItemOwnerHistory
-		.slice(0, 10)
-		.map(e => ({
-			date: new Date(Date.now()).toLocaleDateString(),
-			price: String(e.price)
-		})),
-	[totalCurrentItemOwnerHistory]);
+	const currentOwnerEntries: { date: string, price: string }[] = useMemo(() => {
+		if (totalCurrentItemOwnerHistory == null) return [];
+		return totalCurrentItemOwnerHistory
+			.slice(0, 10)
+			.map(e => ({
+				date: new Date(Date.now()).toLocaleDateString(),
+				price: String(e.price)
+			}));
+	}, [totalCurrentItemOwnerHistory]);
 
 	const totalEntries = useMemo<{ owner: string, date: string, price: string }[]>(() => {
-		if (owners == null) return [];
+		if (owners == null || slicedHistory == null) return [];
 		return slicedHistory
 			.slice(0, 10)
 			.map((e, i) => ({
