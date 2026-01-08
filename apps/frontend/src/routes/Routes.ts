@@ -85,7 +85,7 @@ export const Routes = {
 	AuctionItem: {
 		GetAll: `/auction-item/all`,
 		Get: (id: AuctionItem["id"]) => `/auction-item/${id}`,
-		BatchGet: `/auction-items/batch`,
+		BatchGet: (ids: AuctionItem["id"][]) => `/auction-items/batch?ids=${ids.join(",")}`,
 		GetByAuction: (auctionId: Auction["id"]) => `/auction-item/by-auction/${auctionId}`,
 		Post: `/auction-item`,
 		BatchPost: `/auction-item/batch`,

@@ -24,10 +24,8 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 	/* TODO: account for possible missing items*/
 	useEffect(() => {
 		if (totalHistory == null) return;
-		fetch(API_URL + Routes.AuctionItem.BatchGet, {
-			credentials: "include",
-			method: "GET",
-			body: JSON.stringify(slicedHistory.map(e => e.purchasedItemId))
+		fetch(API_URL + Routes.AuctionItem.BatchGet(slicedHistory.map(e => e.purchasedItemId)), {
+			credentials: "include"
 		})
 			.then(response => response.json())
 			.then(data => data as AuctionItem[])
