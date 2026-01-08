@@ -1,6 +1,6 @@
 // TODO: actually use theme variables
 // I forgor where the variables were saved and was too lazy to find them problem for future me me go sleep
-.historyList {
+.history-list {
 	position: fixed;
 	right: var(--spacing);
 	bottom: var(--spacing);
@@ -40,7 +40,7 @@
 		text-align: center;
 	}
 
-	.currentOwnerHistory, .allHistory {
+	.current-owner-history, .all-history {
 		display: flex;
 		gap: 1rem;
 		flex-direction: row;
@@ -81,12 +81,12 @@
 		}
 	}
 
-	.currentOwnerHistory {}
+	.current-owner-history {}
 
-	.allHistory {
+	.all-history {
 		padding-left: 1.25rem;
 
-		.leftColumn, .middleColumn, .rightColumn {
+		.left-column, .middle-column, .right-column {
 			> :nth-child(odd) {
 				background-color: #0b0c1a;
 			}
