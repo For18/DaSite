@@ -188,7 +188,7 @@ export default function ClockPage() {
 
 			<div className={styles.productContainer}>
 				<ProductView auctionItem={currentItem}/>
-				<Button onClick={() => setHistoryOpen(true)}>History</Button>
+				<Button className={styles.historyButton} onClick={() => setHistoryOpen(true)}>History</Button>
 			</div>
 		</div>
 	);
