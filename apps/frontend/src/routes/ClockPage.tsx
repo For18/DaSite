@@ -60,6 +60,7 @@ export default function ClockPage() {
 	const auction = useAPI<Auction>(auctionId != null ? Routes.Auction.Get(auctionId) : null);
 	const [items, setItems] = useState<AuctionItem[] | null>(null);
 	const { user } = useAuth();
+	const [historyOpen, setHistoryOpen] = useState<boolean>(false);
 	const currentItem = items ? items[0] : null;
 
 	const buyCountRef = useRef<number>(0);
@@ -180,13 +181,14 @@ export default function ClockPage() {
 					>
 						BUY
 					</Button>
-					<SaleHistoryPopUp item={currentItem}/>
+					<SaleHistoryPopUp item={currentItem} open={historyOpen} onClose={() => setHistoryOpen(false)}/>
 				</div>
 			</div>
 			<div className={styles.containerSeparator}/>
 
 			<div className={styles.productContainer}>
 				<ProductView auctionItem={currentItem}/>
+				<Button onClick={() => setHistoryOpen(true)}>History</Button>
 			</div>
 		</div>
 	);

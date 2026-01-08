@@ -7,14 +7,15 @@ import styles from "./SaleHistoryPopUp.module.scss";
 
 export interface SaleHistoryPopUpProps {
 	item: AuctionItem;
+	open: boolean;
+	onClose: () => void;
 }
 
 /* NOTE: this this has so many problems with styling but I aint dealing with that rn*/
-export default function SaleHistoryPopUp({ item }: SaleHistoryPopUpProps) {
+export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHistoryPopUpProps) {
 	const product = useAPI<Product>(Routes.Product.Get(item.productId));
 	const totalHistory = useAPI<Sale[]>(product ? Routes.Sale.GetHistory(product.id) : null);
 	const slicedHistory = totalHistory ? totalHistory.slice(0, 10) : null;
-	const [open, setOpen] = useState<boolean>(false);
 
 	const [owners, setOwners] = useState<PublicUser[] | null>(null);
 	const [items, setItems] = useState<AuctionItem[] | null>(null);
@@ -77,7 +78,6 @@ export default function SaleHistoryPopUp({ item }: SaleHistoryPopUpProps) {
 			{
 				/* TODO: extract modal to separate component? */
 			}
-			<Button className={styles.button} onClick={() => setOpen(true)}>History</Button>
 			{open ?
 				(
 					<div className={styles.historyList} id="popover" popover="manual">
