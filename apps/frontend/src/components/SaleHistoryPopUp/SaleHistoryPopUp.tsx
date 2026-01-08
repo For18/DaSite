@@ -107,7 +107,7 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 						{/* All History */}
 						<div className={styles.allHistory}>
 							<div className={styles.leftColumn}>
-								<Typography>Distributer</Typography>
+								<Typography>Distributor</Typography>
 								<div className={styles.scrollContainer}>
 									{totalEntries.map((e, i) => <Typography key={i}>{e.owner}</Typography>)}
 								</div>
