@@ -89,7 +89,7 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 			}
 			<Modal open={open} onClose={close}>
 				{/* Current Owner History */}
-				<table className={styles.currentOwnerHistory}>
+				<table>
 					<thead>
 						<th>Date</th>
 						<th>Price</th>
@@ -110,7 +110,7 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 				</Typography>
 
 				{/* All History */}
-				<table className={styles.allHistory}>
+				<table>
 					<thead>
 						<th>Distributor</th>
 						<th>Date</th>
