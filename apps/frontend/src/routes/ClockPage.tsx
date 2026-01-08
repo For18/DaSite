@@ -1,5 +1,6 @@
 import useAuth from "@/AuthProvider";
 import Input from "@/components/Input";
+import SaleHistoryPopUp from "@/components/SaleHistoryPopUp";
 import BeforeAuction from "@component/BeforeAuction";
 import Button from "@component/Button";
 import Clock from "@component/Clock";
@@ -13,7 +14,6 @@ import { Routes } from "@route/Routes";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router";
 import styles from "./ClockPage.module.scss";
-import SaleHistoryPopUp from "@/components/SaleHistoryPopUp";
 
 function lerp(from: number, to: number, t: number): number {
 	return from + t * (to - from);

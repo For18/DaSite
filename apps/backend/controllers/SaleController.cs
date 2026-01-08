@@ -48,51 +48,49 @@ public class SaleController : ControllerBase {
 	public async Task<ActionResult<SaleExternal>> Get(ulong id) {
 		if (!(User.IsInRole("AuctionMaster") || User.IsInRole("Admin"))) return Forbid();
 
-		using (var db = new DatabaseContext())
-		{
+		using (var db = new DatabaseContext()) {
 			Sale? sale = await db.Sales.Include(sale => sale.PurchasedItem).Include(sale => sale.Purchaser).Where(sale => sale.Id == id).FirstOrDefaultAsync();
 			if (sale == null) return NotFound();
 
 			return SaleExternal.ToExternal(sale);
 		}
 	}
-  
-  // TODO: replace with non EF core version
-  [HttpGet("history/{id}")]
-  public async Task<ActionResult<SaleExternal[]>> GetProductSaleHistory(ulong id) {
-    using (var db = new DatabaseContext()) {
-      return await db.Sales
-        .Include(sale => sale.Purchaser)
-        .Include(sale => sale.PurchasedItem)
-        .ThenInclude(item => item.Product)
-        .Where(sale => sale.PurchasedItem.Product.Id == id)
-        .Select(sale => SaleExternal.ToExternal(sale))
-        .ToArrayAsync();
-    }
-  }
 
-  // TODO: replace with non EF core version
-  [HttpGet("owner-history/{ownerId}/{productId}")]
-  public async Task<ActionResult<SaleExternal[]>> GetProductSaleHistoryByOwner(string ownerId, ulong productId) {
-    using (var db = new DatabaseContext()) {
-      return await db.Sales
-        .Include(sale => sale.Purchaser)
-        .Include(sale => sale.PurchasedItem)
-        .ThenInclude(item => item.Owner)
-        .Include(sale => sale.PurchasedItem.Product)
-        .Where(sale => sale.PurchasedItem.Product.Id == productId && sale.PurchasedItem.Owner.Id == ownerId)
-        .Select(sale => SaleExternal.ToExternal(sale))
-        .ToArrayAsync();
-    }
-  }
+	// TODO: replace with non EF core version
+	[HttpGet("history/{id}")]
+	public async Task<ActionResult<SaleExternal[]>> GetProductSaleHistory(ulong id) {
+		using (var db = new DatabaseContext()) {
+			return await db.Sales
+			  .Include(sale => sale.Purchaser)
+			  .Include(sale => sale.PurchasedItem)
+			  .ThenInclude(item => item.Product)
+			  .Where(sale => sale.PurchasedItem.Product.Id == id)
+			  .Select(sale => SaleExternal.ToExternal(sale))
+			  .ToArrayAsync();
+		}
+	}
+
+	// TODO: replace with non EF core version
+	[HttpGet("owner-history/{ownerId}/{productId}")]
+	public async Task<ActionResult<SaleExternal[]>> GetProductSaleHistoryByOwner(string ownerId, ulong productId) {
+		using (var db = new DatabaseContext()) {
+			return await db.Sales
+			  .Include(sale => sale.Purchaser)
+			  .Include(sale => sale.PurchasedItem)
+			  .ThenInclude(item => item.Owner)
+			  .Include(sale => sale.PurchasedItem.Product)
+			  .Where(sale => sale.PurchasedItem.Product.Id == productId && sale.PurchasedItem.Owner.Id == ownerId)
+			  .Select(sale => SaleExternal.ToExternal(sale))
+			  .ToArrayAsync();
+		}
+	}
 
 	[HttpGet("by-auction/{id}")]
 	[Authorize]
 	public async Task<ActionResult<SaleExternal>> GetByAuction(ulong id) {
 		if (!(User.IsInRole("AuctionMaster") || User.IsInRole("Admin"))) return Forbid();
 
-		using (var db = new DatabaseContext())
-		{
+		using (var db = new DatabaseContext()) {
 			Sale? sale = await db.Sales.Include(sale => sale.PurchasedItem).Include(sale => sale.Purchaser).Where(sale => sale.PurchasedItem.Id == id).FirstOrDefaultAsync();
 			if (sale == null) return NotFound();
 

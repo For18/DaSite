@@ -12,7 +12,7 @@ export default function Profile() {
 	const { userId } = useParams();
 	if (!userId) return <NotFound/>;
 
-  // TODO: type fix
+	// TODO: type fix
 	const user = useAPI<PublicUser>(Routes.User.GetPublic(userId));
 	const userProducts = useAPI<Product[]>(Routes.Product.GetOfUser(userId));
 

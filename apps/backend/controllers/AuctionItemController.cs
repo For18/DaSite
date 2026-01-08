@@ -19,7 +19,7 @@ public class AuctionItemExternal {
 		BatchSize = batchSize;
 		StartingPrice = startingPrice;
 		MinimumPrice = minimumPrice;
-    OwnerId = ownerId;
+		OwnerId = ownerId;
 		Length = length;
 		ProductId = productId;
 	}
@@ -30,7 +30,7 @@ public class AuctionItemExternal {
 
 	public AuctionItem? ToAuctionItem(DatabaseContext db) {
 		Product? product = db.Products.Include(prod => prod.ThumbnailImage).Where(prod => prod.Id == ProductId).FirstOrDefault();
-    User? owner = db.Users.Where(user => user.Id == OwnerId).FirstOrDefault();
+		User? owner = db.Users.Where(user => user.Id == OwnerId).FirstOrDefault();
 		if (product == null || owner == null) return null;
 
 		return new AuctionItem {
@@ -40,7 +40,7 @@ public class AuctionItemExternal {
 			StartingPrice = StartingPrice,
 			MinimumPrice = MinimumPrice,
 			Length = Length,
-      Owner = owner,
+			Owner = owner,
 			Product = product
 		};
 	}
@@ -50,7 +50,7 @@ public class AuctionItemExternal {
 	public required uint BatchSize { get; set; }
 	public required uint StartingPrice { get; set; }
 	public required uint MinimumPrice { get; set; }
-  public required string OwnerId { get; set; }
+	public required string OwnerId { get; set; }
 	public required uint Length { get; set; }
 	public required ulong ProductId { get; set; }
 }
@@ -101,9 +101,9 @@ public class AuctionItemController : ControllerBase {
 			  .Include(entry => entry.AuctionItem)
 			  .ThenInclude(ae => ae.Product)
 			  .ThenInclude(prod => prod.ThumbnailImage)
-        .Include(entry => entry.AuctionItem.Owner)
-        .Include(entry => entry.AuctionItem)
-        .ThenInclude(item => item.Owner)
+		.Include(entry => entry.AuctionItem.Owner)
+		.Include(entry => entry.AuctionItem)
+		.ThenInclude(item => item.Owner)
 			  .Select(entry => AuctionItemExternal.ToExternal(entry.AuctionItem))
 			  .ToArrayAsync();
 		}

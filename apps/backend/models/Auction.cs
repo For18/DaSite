@@ -25,8 +25,8 @@ public class AuctionItem {
 	[ForeignKey("ProductId")]
 	public required Product Product { get; set; }
 
-  [Required]
-  public required User Owner { get; set; }
+	[Required]
+	public required User Owner { get; set; }
 
 	[Required]
 	public required uint Length { get; set; }

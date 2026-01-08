@@ -154,7 +154,7 @@ public class ProductImageController : ControllerBase {
 		}
 	}
 
-  // TODO: bind image per AuctionItem or idfk this project will be over before we can fix that faulty relationship
+	// TODO: bind image per AuctionItem or idfk this project will be over before we can fix that faulty relationship
 	[HttpDelete("batch")]
 	[Authorize]
 	public async Task<ActionResult> BatchDelete([FromBody] ulong[] ids) {

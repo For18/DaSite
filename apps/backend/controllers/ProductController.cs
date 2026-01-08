@@ -72,7 +72,7 @@ public class ProductController : ControllerBase {
 	public async Task<ActionResult<ProductExternal[]>> GetOfUser(string userId) {
 		using (var db = new DatabaseContext()) {
 			return await db.AuctionItems
-        .Include(item => item.Product)
+		.Include(item => item.Product)
 				.Where(item => item.Owner.Id == userId)
 				.Select(item => ProductExternal.ToExternal(item.Product))
 			.ToArrayAsync();
@@ -151,7 +151,7 @@ public class ProductController : ControllerBase {
 				Product? product = products.FirstOrDefault(p => p.Id == productId);
 				if (product == null) {
 					failedProducts.Append(new FailedBatchEntry<ulong>(productId, "Corresponding Product does not exist"));
-				} else if (isAdmin){
+				} else if (isAdmin) {
 					db.Products.Remove(product);
 				} else {
 					failedProducts.Append(new FailedBatchEntry<ulong>(productId, "Unauthorized deletion attempt"));

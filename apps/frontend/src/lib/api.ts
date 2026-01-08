@@ -46,7 +46,7 @@ export interface AuctionItem {
 	batchSize: number;
 	startingPrice: number;
 	minimumPrice: number;
-  ownerId: number;
+	ownerId: number;
 	length: number;
 	productId: number;
 }
