@@ -64,17 +64,17 @@ VALUES
 ('4e8b2c9f-6a3d-47f1-9b0e-1c5d7a82f3ab', @CustomerId);
 
 -- PRODUCTS
-INSERT INTO Products(Id, Name, Description, ThumbnailImageId, OwnerId)
+INSERT INTO Products(Id, Name, Description, ThumbnailImageId)
 VALUES
-(1, 'Tulpenboeket', 'Een kleurrijk boeket met verschillende soorten Nederlandse tulpen, ideaal voor elke gelegenheid en perfect voor een lente-uitstraling.', NULL, '6ec13e7a-55fe-4091-93bb-f08d776b3572'),
-(2, 'Orchideeen Arrangement', 'Een prachtig arrangement van exotische orchideeen, met een delicate geur, gepresenteerd in een handgemaakte vaas. Een luxe keuze voor elke ruimte.', NULL, '6ec13e7a-55fe-4091-93bb-f08d776b3572'),
-(3, 'Narcissen Bijeenkomst', 'Vers geplukte narcissen in een bundel, die een frisse geur en een voorjaarsgevoel naar uw huis brengen. Perfect voor in een vaas of als cadeau.', NULL, '6ec13e7a-55fe-4091-93bb-f08d776b3572'),
-(4, 'Zonnebloem Display', 'Een stralende display van zonnebloemen die elke kamer verlicht met hun heldere gele bloemblaadjes. Een symbool van vreugde en positiviteit.', NULL, 'f63baa9d-f109-4fe1-a5a8-8c5ab0bc0a1a'),
-(5, 'Hyacinten Cluster', 'Een geurige en kleurrijke cluster van hyacinten, typisch voor de Nederlandse lente, in een breed scala van kleuren, perfect voor een geurige aanvulling in uw huis.', NULL, 'f63baa9d-f109-4fe1-a5a8-8c5ab0bc0a1a'),
-(6, 'Leliebouquet', 'Een elegant boeket van witte en gekleurde lelies met een verfijnde geur, die elke ruimte een luxe uitstraling geven. Ideaal voor speciale gelegenheden.', NULL, 'f63baa9d-f109-4fe1-a5a8-8c5ab0bc0a1a'),
-(7, 'Krokus Collectie', 'Een unieke verzameling van vroege krokussen, die in het voorjaar de eerste bloemen zijn die bloeien', NULL, 'f63baa9d-f109-4fe1-a5a8-8c5ab0bc0a1a'),
-(8, 'Tulpenbollen Set', 'Een set premium tulpenbollen, zorgvuldig geselecteerd voor het kweken van de mooiste tulpen in uw tuin volgend seizoen. De bollen zijn van topkwaliteit en leveren levendige bloemen.', NULL, 'f63baa9d-f109-4fe1-a5a8-8c5ab0bc0a1a'),
-(9, 'Gerbera Daisy Arrangement', 'Een vrolijk en kleurrijk boeket van gerbera’s in diverse tinten zoals rood, geel en roze. Perfect voor het opfleuren van elke kamer of als cadeau voor een speciale gelegenheid.', NULL, '6ec13e7a-55fe-4091-93bb-f08d776b3572');
+(1, 'Tulpenboeket', 'Een kleurrijk boeket met verschillende soorten Nederlandse tulpen, ideaal voor elke gelegenheid en perfect voor een lente-uitstraling.', NULL),
+(2, 'Orchideeen Arrangement', 'Een prachtig arrangement van exotische orchideeen, met een delicate geur, gepresenteerd in een handgemaakte vaas. Een luxe keuze voor elke ruimte.', NULL),
+(3, 'Narcissen Bijeenkomst', 'Vers geplukte narcissen in een bundel, die een frisse geur en een voorjaarsgevoel naar uw huis brengen. Perfect voor in een vaas of als cadeau.', NULL),
+(4, 'Zonnebloem Display', 'Een stralende display van zonnebloemen die elke kamer verlicht met hun heldere gele bloemblaadjes. Een symbool van vreugde en positiviteit.', NULL),
+(5, 'Hyacinten Cluster', 'Een geurige en kleurrijke cluster van hyacinten, typisch voor de Nederlandse lente, in een breed scala van kleuren, perfect voor een geurige aanvulling in uw huis.', NULL),
+(6, 'Leliebouquet', 'Een elegant boeket van witte en gekleurde lelies met een verfijnde geur, die elke ruimte een luxe uitstraling geven. Ideaal voor speciale gelegenheden.', NULL),
+(7, 'Krokus Collectie', 'Een unieke verzameling van vroege krokussen, die in het voorjaar de eerste bloemen zijn die bloeien', NULL),
+(8, 'Tulpenbollen Set', 'Een set premium tulpenbollen, zorgvuldig geselecteerd voor het kweken van de mooiste tulpen in uw tuin volgend seizoen. De bollen zijn van topkwaliteit en leveren levendige bloemen.', NULL),
+(9, 'Gerbera Daisy Arrangement', 'Een vrolijk en kleurrijk boeket van gerbera’s in diverse tinten zoals rood, geel en roze. Perfect voor het opfleuren van elke kamer of als cadeau voor een speciale gelegenheid.', NULL);
 
 -- PRODUCT_IMAGES
 INSERT INTO ProductImages(Id, ParentId, Url)
@@ -162,17 +162,17 @@ VALUES
 (13, 'c2afc4ca-0c53-4f0f-8edf-89bb991640f2', UNIX_TIMESTAMP()*1000 + RAND()*900000 + 1800000);
 
 -- AUCTION_ITEMS
-INSERT INTO AuctionItems(Id, Count, BatchSize, StartingPrice, MinimumPrice, Length, ProductId)
+INSERT INTO AuctionItems(Id, Count, BatchSize, StartingPrice, MinimumPrice, Length, ProductId, OwnerId)
 VALUES
-(1, 1, 2 , 5000, 1000, 10, 1),
-(2, 2, 3 , 7000, 1500, 5 , 2),
-(3, 3, 6 , 3000, 800 , 10, 3),
-(4, 4, 7 , 4000, 1000, 15, 4),
-(5, 5, 9 , 3500, 1000, 9 , 5),
-(6, 6, 20, 2500, 600 , 10, 6),
-(7, 7, 2 , 1500, 500 , 7 , 7),
-(8, 8, 9 , 2000, 700 , 10, 8),
-(9, 9, 10, 1200, 400 , 6 , 9);
+(1, 1, 2 , 5000, 1000, 10, 1, '6ec13e7a-55fe-4091-93bb-f08d776b3572'),
+(2, 2, 3 , 7000, 1500, 5 , 2, '6ec13e7a-55fe-4091-93bb-f08d776b3572'),
+(3, 3, 6 , 3000, 800 , 10, 3, '6ec13e7a-55fe-4091-93bb-f08d776b3572'),
+(4, 4, 7 , 4000, 1000, 15, 4, 'f63baa9d-f109-4fe1-a5a8-8c5ab0bc0a1a'),
+(5, 5, 9 , 3500, 1000, 9 , 5, 'f63baa9d-f109-4fe1-a5a8-8c5ab0bc0a1a'),
+(6, 6, 20, 2500, 600 , 10, 6, 'f63baa9d-f109-4fe1-a5a8-8c5ab0bc0a1a'),
+(7, 7, 2 , 1500, 500 , 7 , 7, 'f63baa9d-f109-4fe1-a5a8-8c5ab0bc0a1a'),
+(8, 8, 9 , 2000, 700 , 10, 8, 'f63baa9d-f109-4fe1-a5a8-8c5ab0bc0a1a'),
+(9, 9, 10, 1200, 400 , 6 , 9, '6ec13e7a-55fe-4091-93bb-f08d776b3572');
 
 -- AUCTION_ENTRIES
 INSERT INTO AuctionEntries (AuctionId, AuctionItemId)
