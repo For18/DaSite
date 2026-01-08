@@ -1,3 +1,4 @@
+import Modal from "@/components/Modal/Modal";
 import Accordion from "@component/Accordion";
 import Button from "@component/Button";
 import Checkbox from "@component/Checkbox";
@@ -32,6 +33,7 @@ export default function Test() {
 	const [selectValue, setSelectValue] = useState<string | null>(null);
 	const [statusDisplayOpen, setStatusDisplayOpen] = useState<boolean>(false);
 	const [status, setStatus] = useState<Status>({ type: "none", label: "" });
+	const [modalOpen, setModalOpen] = useState<boolean>(false);
 
 	return (
 		<>
@@ -124,6 +126,13 @@ export default function Test() {
 					Test
 				</Button>
 				<StatusDisplay status={status}/>
+			</Accordion>
+			<Accordion title="Modal" open>
+				<Button onClick={() => setModalOpen(true)} disabled={modalOpen}>Open modal</Button>
+				<Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+					<Typography heading={3}>This is a modal</Typography>
+					<Button onClick={() => setModalOpen(false)}>Close modal</Button>
+				</Modal>
 			</Accordion>
 		</>
 	);
