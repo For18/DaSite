@@ -3,15 +3,14 @@ import Button from "@component/Button";
 import Image from "@component/Image";
 import Input from "@component/Input";
 import Typography from "@component/Typography";
-import { API_URL, type ProductImage, type PublicUser } from "@lib/api";
+import { API_URL, type ProductImage } from "@lib/api";
 import { Routes } from "@route/Routes";
-import { type Dispatch, type SetStateAction, useEffect, useRef, useState } from "react";
-import { Option, Select } from "../components/Select";
+import { type Dispatch, type SetStateAction, useState } from "react";
 import styles from "./CreateProductPage.module.scss";
 
 // TODO: add visual status for user
 // use StatusDisplay
-async function PostProduct(name: string, description: string, images: string[], owner: PublicUser | null) {
+async function PostProduct(name: string, description: string, images: string[]) {
 	const productId: number = await fetch(API_URL + Routes.Product.Post, {
     method: "POST",
     credentials: "include",
@@ -19,7 +18,6 @@ async function PostProduct(name: string, description: string, images: string[], 
 		body: JSON.stringify({
 			name: name,
 			description: description,
-			ownerId: owner?.id,
 			thumbnailImageId: null
 		})
 	})
@@ -65,18 +63,6 @@ export default function CreateProductPage() {
 	const [description, setDescription] = useState<string>("");
 	const [batchSize, setBatchSize] = useState<number>(0);
 
-	const [ownerSearchValue, setOwnerSearchValue] = useState<string>("");
-	const foundUsersIndexRef = useRef<number>(0);
-	const [owner, setOwner] = useState<PublicUser | null>(null);
-	const [foundUsers, setFoundUsers] = useState<PublicUser[]>([]);
-
-	useEffect(() => {
-		fetch(API_URL + Routes.User.GetAllByName(ownerSearchValue))
-			.then(response => response.json())
-			.then(data => data as PublicUser[])
-			.then(users => setFoundUsers(users));
-	}, [ownerSearchValue]);
-
 	return (
 		<div className={styles.container}>
 			<ProductPreview
@@ -85,7 +71,7 @@ export default function CreateProductPage() {
 				batchSize={batchSize}
 				showThumbnail={images.length > 0}
 				images={images}
-				owner={owner?.userName}
+        owner={"Product Owner"}
 			/>
 
 			<div className={styles.seperator}/>
@@ -114,30 +100,6 @@ export default function CreateProductPage() {
 					type="number"
 					onChange={value => setBatchSize(Number(value))}
 				/>
-
-				<Typography className={styles.inputTitle}>Owner</Typography>
-				<div>
-					<Input
-						className={styles.inputBasic}
-						placeholder="Search for Users"
-						value={ownerSearchValue}
-						type="text"
-						onChange={value => setOwnerSearchValue(value)}
-					/>
-					<Select
-						aria-Typographyledby="product-owner-search"
-						value={owner?.userName?.length == 0 ? null : owner?.userName ?? null}
-						onChange={(value: string) => {
-							foundUsersIndexRef.current = Number(value);
-							setOwner(foundUsers[foundUsersIndexRef.current]);
-						}}
-						placeholder="Select a User"
-					>
-						{foundUsers.map((entry, index) => (
-							<Option key={entry.id} value={String(index)}>{entry.userName}</Option>
-						))}
-					</Select>
-				</div>
 
 				<Typography className={styles.inputTitle}>Image Link</Typography>
 				<Input
@@ -171,14 +133,13 @@ export default function CreateProductPage() {
 					<Button
 						variant="contained"
 						onClick={() => {
-							PostProduct(name, description, images, owner);
+							PostProduct(name, description, images);
 							setImages([]);
 							setAccordionState(false);
 							setLinkText("");
 							setName("");
 							setDescription("");
 							setBatchSize(0);
-							setOwner(null);
 							alert("Product added");
 						}}
 					>
