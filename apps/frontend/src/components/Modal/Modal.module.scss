@@ -6,7 +6,7 @@
 	box-shadow: 2px 6px 12px #0004;
 	min-width: 50vw;
 	max-width: calc(100vw - var(--spacing) * 2);
-	height: 200px;
+	min-height: 200px;
 }
 
 .backdrop {
