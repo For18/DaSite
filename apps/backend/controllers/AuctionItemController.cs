@@ -101,7 +101,9 @@ public class AuctionItemController : ControllerBase {
 			  .Include(entry => entry.AuctionItem)
 			  .ThenInclude(ae => ae.Product)
 			  .ThenInclude(prod => prod.ThumbnailImage)
-			  .Where(entry => entry.Auction.Id == id)
+        .Include(entry => entry.AuctionItem.Owner)
+        .Include(entry => entry.AuctionItem)
+        .ThenInclude(item => item.Owner)
 			  .Select(entry => AuctionItemExternal.ToExternal(entry.AuctionItem))
 			  .ToArrayAsync();
 		}
