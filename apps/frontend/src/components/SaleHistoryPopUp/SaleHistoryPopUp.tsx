@@ -71,9 +71,7 @@ export default function SaleHistoryPopUp({ item }: { item: AuctionItem }) {
 	return (
 		<>
 			{
-				/* TODO: remove ternary logic to improve structure
-     * TODO: extract to separate component?
-     */
+				/* TODO: extract modal to separate component? */
 			}
 			<Button onClick={() => setOpen(true)}>History</Button>
 			{open ?
