@@ -1,0 +1,30 @@
+.modal {
+	position: relative;
+	background-color: var(--color-background-secondary);
+	border: 1px solid var(--color-border);
+	border-radius: var(--border-radius);
+	box-shadow: 2px 6px 12px #0004;
+	min-width: 50vw;
+	max-width: calc(100vw - var(--spacing) * 2);
+	height: 200px;
+}
+
+.backdrop {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: #0008;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.close-button {
+	position: absolute;
+	top: var(--spacing);
+	right: var(--spacing);
+}
