@@ -7,7 +7,7 @@ const AuthContext = createContext<AuthContext | null>(null);
 
 export interface AuthState {
 	user?: User;
-  role?: UserType;
+	role?: UserType;
 	isLoading: boolean;
 	error?: Error;
 }
@@ -29,7 +29,7 @@ export default function useAuth() {
 export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [authState, setAuthState] = useState<AuthState>({
 		user: undefined,
-    role: undefined,
+		role: undefined,
 		isLoading: true,
 		error: undefined
 	});
@@ -46,7 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			.then(user => {
 				setAuthState({
 					user: user,
-          role: undefined,
+					role: undefined,
 					isLoading: false,
 					error: undefined
 				});
@@ -54,40 +54,40 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			.catch(error => {
 				setAuthState({
 					user: undefined,
-          role: undefined,
+					role: undefined,
 					isLoading: false,
 					error: error
 				});
 			});
 
-      fetch(API_URL + Routes.User.GetUserRole, {
-        credentials: "include"
-      })
-      .then(response => {
-          if (!response.ok) throw new Error("Not authenticated");
-          return response.json();
-      })
-      .then(data => data as UserType)
-      .then(role => {
-          setAuthState(prev => {
-              return {
-                user: prev.user,
-                role: role,
-                isLoading: false,
-                error: undefined
-              }
-          })
-      })
-      .catch(error => {
-          setAuthState(prev => {
-              return {
-                user: prev.user,
-                role: undefined,
-                isLoading: false,
-                error: error
-              }
-          })
-      })
+		fetch(API_URL + Routes.User.GetUserRole, {
+			credentials: "include"
+		})
+			.then(response => {
+				if (!response.ok) throw new Error("Not authenticated");
+				return response.json();
+			})
+			.then(data => data as UserType)
+			.then(role => {
+				setAuthState(prev => {
+					return {
+						user: prev.user,
+						role: role,
+						isLoading: false,
+						error: undefined
+					};
+				});
+			})
+			.catch(error => {
+				setAuthState(prev => {
+					return {
+						user: prev.user,
+						role: undefined,
+						isLoading: false,
+						error: error
+					};
+				});
+			});
 	}, []);
 
 	useEffect(() => {
