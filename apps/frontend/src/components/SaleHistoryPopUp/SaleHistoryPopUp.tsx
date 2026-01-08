@@ -6,6 +6,7 @@ import Button from "../Button";
 import ClickAwayDetector from "../ClickAwayDetector";
 import Typography from "../Typography";
 import styles from "./SaleHistoryPopUp.module.scss";
+import Modal from "../Modal";
 
 export interface SaleHistoryPopUpProps {
 	item: AuctionItem;
@@ -84,62 +85,55 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 			{
 				/* TODO: extract modal to separate component */
 			}
-			{open ?
-				(
-					<div className={styles.historyList} id="popover" popover="manual">
-						{/* Current Owner History */}
-						<div className={styles.currentOwnerHistory}>
-							<div className={styles.leftColumn}>
-								<Typography>Date</Typography>
-								<div className={styles.scrollContainer}>
-									{currentOwnerEntries.map((e, i) => <Typography key={i}>{e.date}</Typography>)}
-								</div>
-							</div>
-							<div className={styles.rightColumn}>
-								<Typography>Price</Typography>
-								<div className={styles.scrollContainer}>
-									{currentOwnerEntries.map((e, i) => <Typography key={i}>{e.price}</Typography>)}
-								</div>
-							</div>
+			<Modal open={open} onClose={close}>
+				{/* Current Owner History */}
+				<div className={styles.currentOwnerHistory}>
+					<div className={styles.leftColumn}>
+						<Typography>Date</Typography>
+						<div className={styles.scrollContainer}>
+							{currentOwnerEntries.map((e, i) => <Typography key={i}>{e.date}</Typography>)}
 						</div>
-						<Typography>
-							Average all-time price: {currentOwnerEntries
-								.map(e => (e.price === "-" ? 0 : Number(e.price)))
-								.reduce((acc, curr) => acc + curr, 0)}
-						</Typography>
-
-						{/* All History */}
-						<div className={styles.allHistory}>
-							<div className={styles.leftColumn}>
-								<Typography>Distributor</Typography>
-								<div className={styles.scrollContainer}>
-									{totalEntries.map((e, i) => <Typography key={i}>{e.owner}</Typography>)}
-								</div>
-							</div>
-							<div className={styles.middleColumn}>
-								<Typography>Date</Typography>
-								<div className={styles.scrollContainer}>
-									{totalEntries.map((e, i) => <Typography key={i}>{e.date}</Typography>)}
-								</div>
-							</div>
-							<div className={styles.rightColumn}>
-								<Typography>Price</Typography>
-								<div className={styles.scrollContainer}>
-									{totalEntries.map((e, i) => <Typography key={i}>{e.price}</Typography>)}
-								</div>
-							</div>
-						</div>
-						<Typography>
-							Average all-time price: {totalEntries
-								.map(e => (e.price === "-" ? 0 : Number(e.price)))
-								.reduce((acc, curr) => acc + curr, 0)}
-						</Typography>
-						<Button className={styles.closeButton} onClick={close}>
-							<CgClose/>
-						</Button>
 					</div>
-				) :
-				null}
+					<div className={styles.rightColumn}>
+						<Typography>Price</Typography>
+						<div className={styles.scrollContainer}>
+							{currentOwnerEntries.map((e, i) => <Typography key={i}>{e.price}</Typography>)}
+						</div>
+					</div>
+				</div>
+				<Typography>
+					Average all-time price: {currentOwnerEntries
+						.map(e => (e.price === "-" ? 0 : Number(e.price)))
+						.reduce((acc, curr) => acc + curr, 0)}
+				</Typography>
+
+				{/* All History */}
+				<div className={styles.allHistory}>
+					<div className={styles.leftColumn}>
+						<Typography>Distributor</Typography>
+						<div className={styles.scrollContainer}>
+							{totalEntries.map((e, i) => <Typography key={i}>{e.owner}</Typography>)}
+						</div>
+					</div>
+					<div className={styles.middleColumn}>
+						<Typography>Date</Typography>
+						<div className={styles.scrollContainer}>
+							{totalEntries.map((e, i) => <Typography key={i}>{e.date}</Typography>)}
+						</div>
+					</div>
+					<div className={styles.rightColumn}>
+						<Typography>Price</Typography>
+						<div className={styles.scrollContainer}>
+							{totalEntries.map((e, i) => <Typography key={i}>{e.price}</Typography>)}
+						</div>
+					</div>
+				</div>
+				<Typography>
+					Average all-time price: {totalEntries
+						.map(e => (e.price === "-" ? 0 : Number(e.price)))
+						.reduce((acc, curr) => acc + curr, 0)}
+				</Typography>
+			</Modal>
 		</>
 	);
 }
