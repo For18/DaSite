@@ -73,7 +73,7 @@ export default function SaleHistoryPopUp({ item }: { item: AuctionItem }) {
 			{
 				/* TODO: extract modal to separate component? */
 			}
-			<Button onClick={() => setOpen(true)}>History</Button>
+			<Button className={styles.button} onClick={() => setOpen(true)}>History</Button>
 			{open ?
 				(
 					<div className={styles.historyList} id="popover" popover="manual">
