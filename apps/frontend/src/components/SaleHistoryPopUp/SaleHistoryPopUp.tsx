@@ -89,20 +89,20 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 			}
 			<Modal open={open} onClose={close}>
 				{/* Current Owner History */}
-				<div className={styles.currentOwnerHistory}>
-					<div className={styles.leftColumn}>
-						<Typography>Date</Typography>
-						<div className={styles.scrollContainer}>
-							{currentOwnerEntries.map((e, i) => <Typography key={i}>{e.date}</Typography>)}
-						</div>
-					</div>
-					<div className={styles.rightColumn}>
-						<Typography>Price</Typography>
-						<div className={styles.scrollContainer}>
-							{currentOwnerEntries.map((e, i) => <Typography key={i}>{e.price}</Typography>)}
-						</div>
-					</div>
-				</div>
+				<table className={styles.currentOwnerHistory}>
+					<thead>
+						<th>Date</th>
+						<th>Price</th>
+					</thead>
+					<tbody>
+						{currentOwnerEntries.map((entry) => (
+							<tr key={entry.id}>
+								<td>{entry.date}</td>
+								<td>{entry.price}</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
 				<Typography>
 					Average all-time price: {currentOwnerEntries
 						.map(e => (e.price === "-" ? 0 : Number(e.price)))
@@ -110,26 +110,22 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 				</Typography>
 
 				{/* All History */}
-				<div className={styles.allHistory}>
-					<div className={styles.leftColumn}>
-						<Typography>Distributor</Typography>
-						<div className={styles.scrollContainer}>
-							{totalEntries.map((e, i) => <Typography key={i}>{e.owner}</Typography>)}
-						</div>
-					</div>
-					<div className={styles.middleColumn}>
-						<Typography>Date</Typography>
-						<div className={styles.scrollContainer}>
-							{totalEntries.map((e, i) => <Typography key={i}>{e.date}</Typography>)}
-						</div>
-					</div>
-					<div className={styles.rightColumn}>
-						<Typography>Price</Typography>
-						<div className={styles.scrollContainer}>
-							{totalEntries.map((e, i) => <Typography key={i}>{e.price}</Typography>)}
-						</div>
-					</div>
-				</div>
+				<table className={styles.allHistory}>
+					<thead>
+						<th>Distributor</th>
+						<th>Date</th>
+						<th>Price</th>
+					</thead>
+					<tbody>
+						{totalEntries.map((entry) => (
+							<tr key={entry.id}>
+								<td>{entry.owner}</td>
+								<td>{entry.date}</td>
+								<td>{entry.price}</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
 				<Typography>
 					Average all-time price: {totalEntries
 						.map(e => (e.price === "-" ? 0 : Number(e.price)))
