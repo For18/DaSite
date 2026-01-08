@@ -3,22 +3,21 @@ import Button from "@component/Button";
 import Image from "@component/Image";
 import Input from "@component/Input";
 import Typography from "@component/Typography";
-import { API_URL, type ProductImage, type PublicUser } from "@lib/api";
+import { API_URL, type ProductImage } from "@lib/api";
 import { Routes } from "@route/Routes";
-import { type Dispatch, type SetStateAction, useEffect, useRef, useState } from "react";
-import { Option, Select } from "../components/Select";
+import { type Dispatch, type SetStateAction, useState } from "react";
 import styles from "./CreateProductPage.module.scss";
 
 // TODO: add visual status for user
 // use StatusDisplay
-async function PostProduct(name: string, description: string, images: string[], owner: PublicUser | null) {
+async function PostProduct(name: string, description: string, images: string[]) {
 	const productId: number = await fetch(API_URL + Routes.Product.Post, {
-		method: "POST",
+    method: "POST",
+    credentials: "include",
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify({
 			name: name,
 			description: description,
-			ownerId: owner?.id,
 			thumbnailImageId: null
 		})
 	})
@@ -28,12 +27,14 @@ async function PostProduct(name: string, description: string, images: string[], 
 
 	await fetch(API_URL + Routes.ProductImage.BatchPost, {
 		method: "POST",
+    credentials: "include",
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify(images.map(url => JSON.stringify({ parent: productId, url: url })))
 	});
 
 	const imageIds: number[] = await fetch(API_URL + Routes.ProductImage.FromParent(productId), {
 		method: "GET",
+    credentials: "include",
 		headers: { "Content-Type": "application/json" }
 	})
 		.then(response => response.json())
@@ -43,6 +44,7 @@ async function PostProduct(name: string, description: string, images: string[], 
 	if (imageIds.length >= 1) {
 		await fetch(API_URL + Routes.Product.Patch(productId), {
 			method: "PATCH",
+      credentials: "include",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				op: "replace",
@@ -61,18 +63,6 @@ export default function CreateProductPage() {
 	const [description, setDescription] = useState<string>("");
 	const [batchSize, setBatchSize] = useState<number>(0);
 
-	const [ownerSearchValue, setOwnerSearchValue] = useState<string>("");
-	const foundUsersIndexRef = useRef<number>(0);
-	const [owner, setOwner] = useState<PublicUser | null>(null);
-	const [foundUsers, setFoundUsers] = useState<PublicUser[]>([]);
-
-	useEffect(() => {
-		fetch(API_URL + Routes.User.GetAllByName(ownerSearchValue))
-			.then(response => response.json())
-			.then(data => data as PublicUser[])
-			.then(users => setFoundUsers(users));
-	}, [ownerSearchValue]);
-
 	return (
 		<div className={styles.container}>
 			<ProductPreview
@@ -81,67 +71,38 @@ export default function CreateProductPage() {
 				batchSize={batchSize}
 				showThumbnail={images.length > 0}
 				images={images}
-				owner={owner?.userName}
+        owner={"Product Owner"}
 			/>
 
 			<div className={styles.seperator}/>
 
 			<div className={styles.inputs}>
-				<label htmlFor="product-name" className={styles.inputTitle}>Name</label>
+				<Typography className={styles.inputTitle}>Name</Typography>
 				<Input
-					id="product-name"
 					className={styles.inputBasic}
 					type="text"
 					value={name}
 					onChange={value => setName(String(value))}
 				/>
 
-				<label htmlFor="product-description" className={styles.inputTitle}>Description</label>
+				<Typography className={styles.inputTitle}>Description</Typography>
 				<Input
-					id="product-description"
 					type="textfield"
 					value={description}
 					className={styles.inputDescription}
 					onChange={value => setDescription(String(value))}
 				/>
 
-				<label htmlFor="product-batchsize" className={styles.inputTitle}>Batch size</label>
+				<Typography className={styles.inputTitle}>Batch size</Typography>
 				<Input
-					id="product-batchsize"
 					className={styles.inputBasic}
 					value={String(batchSize)}
 					type="number"
 					onChange={value => setBatchSize(Number(value))}
 				/>
 
-				<label htmlFor="product-owner-search" className={styles.inputTitle}>Owner</label>
-				<div>
-					<Input
-						id="product-owner-search"
-						className={styles.inputBasic}
-						placeholder="Search for Users"
-						value={ownerSearchValue}
-						type="text"
-						onChange={value => setOwnerSearchValue(value)}
-					/>
-					<Select
-						aria-labelledby="product-owner-search"
-						value={owner?.userName?.length == 0 ? null : owner?.userName ?? null}
-						onChange={(value: string) => {
-							foundUsersIndexRef.current = Number(value);
-							setOwner(foundUsers[foundUsersIndexRef.current]);
-						}}
-						placeholder="Select a User"
-					>
-						{foundUsers.map((entry, index) => (
-							<Option key={entry.id} value={String(index)}>{entry.userName}</Option>
-						))}
-					</Select>
-				</div>
-
-				<label htmlFor="product-imagelink" className={styles.inputTitle}>Image Link</label>
+				<Typography className={styles.inputTitle}>Image Link</Typography>
 				<Input
-					id="product-imagelink"
 					className={styles.inputBasic}
 					value={linkText}
 					type="text"
@@ -172,14 +133,13 @@ export default function CreateProductPage() {
 					<Button
 						variant="contained"
 						onClick={() => {
-							PostProduct(name, description, images, owner);
+							PostProduct(name, description, images);
 							setImages([]);
 							setAccordionState(false);
 							setLinkText("");
 							setName("");
 							setDescription("");
 							setBatchSize(0);
-							setOwner(null);
 							alert("Product added");
 						}}
 					>
