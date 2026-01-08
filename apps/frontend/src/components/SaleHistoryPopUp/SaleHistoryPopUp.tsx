@@ -75,6 +75,7 @@ export default function SaleHistoryPopUp({ item }: { item: AuctionItem }) {
      * TODO: extract to separate component?
      */
 			}
+			<Button onClick={() => setOpen(true)}>History</Button>
 			{open ?
 				(
 					<div className={styles.historyList} id="popover" popover="manual">
@@ -127,7 +128,7 @@ export default function SaleHistoryPopUp({ item }: { item: AuctionItem }) {
 						</Typography>
 					</div>
 				) :
-				<Button onClick={() => setOpen(true)}>History</Button>}
+				null}
 		</>
 	);
 }
