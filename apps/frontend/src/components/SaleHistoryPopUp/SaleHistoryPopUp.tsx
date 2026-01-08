@@ -60,7 +60,7 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 		});
 
 	const totalEntries: { owner: string, date: string, price: string }[] = [];
-	slicedHistory
+	if (owners != null) slicedHistory
 		.slice(0, 10)
 		.forEach((e, i) => {
 			totalEntries.push({ owner: owners[i].userName, date: String(Date.now()), price: String(e.price) });
