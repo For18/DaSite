@@ -19,6 +19,14 @@ export default function Auctions() {
 
 	const [now, setNow] = useState(Date.now());
 
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setNow(Date.now());
+		}, 1000);
+
+		return () => clearInterval(interval);
+	}, []);
+
 	const auctions = useAPI<Auction[]>(Routes.Auction.GetUpcoming);
 
 	const { value: auctionEntries, isLoading: auctionEntriesLoading } = usePromise<AuctionEntry[]>(() =>
