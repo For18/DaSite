@@ -1,4 +1,5 @@
 import Modal from "@/components/Modal/Modal";
+import Table from "@/components/Table";
 import Accordion from "@component/Accordion";
 import Button from "@component/Button";
 import Checkbox from "@component/Checkbox";
@@ -35,6 +36,7 @@ export default function Test() {
 	const [status, setStatus] = useState<Status>({ type: "none", label: "" });
 	const [modalAccordionOpen, setModalAccordionOpen] = useState<boolean>(false);
 	const [modalOpen, setModalOpen] = useState<boolean>(false);
+	const [tableOpen, setTableOpen] = useState<boolean>(false);
 
 	return (
 		<>
@@ -134,6 +136,24 @@ export default function Test() {
 					<Typography heading={3}>This is a modal</Typography>
 					<Button onClick={() => setModalOpen(false)}>Close modal</Button>
 				</Modal>
+			</Accordion>
+			<Accordion title="Table" open={tableOpen} onToggle={setTableOpen}>
+				<Table>
+					{range(11).map(y => (
+						<tr key={y}>
+							{range(11).map(x => {
+								const nX = x;
+								const nY = y;
+
+								if (x === 0 && y === 0) return <th></th>;
+								else if (x === 0) return <th>{nY}</th>;
+								else if (y === 0) return <th>{nX}</th>;
+
+								return <td>{nX * nY}</td>
+							})}
+						</tr>
+					))}
+				</Table>
 			</Accordion>
 		</>
 	);
