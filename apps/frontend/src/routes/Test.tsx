@@ -141,7 +141,7 @@ export default function Test() {
 								else if (x === 0) return <th>{nY}</th>;
 								else if (y === 0) return <th>{nX}</th>;
 
-								return <td>{nX * nY}</td>
+								return <td>{nX * nY}</td>;
 							})}
 						</tr>
 					))}

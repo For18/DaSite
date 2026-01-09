@@ -8,7 +8,7 @@ $border: 1px solid var(--color-border);
 	overflow: hidden;
 
 	tr, thead, tbody {
-		&>th, &>td {
+		& > th, & > td {
 			padding: calc(var(--spacing) / 2);
 
 			&:not(:last-child) {
@@ -16,12 +16,12 @@ $border: 1px solid var(--color-border);
 			}
 		}
 
-		&>th {
+		& > th {
 			background-color: #ffffff13;
 		}
 
 		&:not(:last-child) {
-			&>th, &>td {
+			& > th, & > td {
 				border-bottom: $border;
 			}
 		}

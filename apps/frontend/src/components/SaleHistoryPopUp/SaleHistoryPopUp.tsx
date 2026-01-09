@@ -4,10 +4,10 @@ import { useEffect, useMemo, useState } from "react";
 import { CgClose } from "react-icons/cg";
 import Button from "../Button";
 import ClickAwayDetector from "../ClickAwayDetector";
-import Typography from "../Typography";
-import styles from "./SaleHistoryPopUp.module.scss";
 import Modal from "../Modal";
 import Table from "../Table/Table";
+import Typography from "../Typography";
+import styles from "./SaleHistoryPopUp.module.scss";
 
 export interface SaleHistoryPopUpProps {
 	item: AuctionItem;
@@ -70,7 +70,7 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 				id: e.id
 			}));
 	}, [owners, slicedHistory]);
-		
+
 	// TODO: Decide if array padding is needed bc on Brightspace it explicitly says to show the last 10 sales)
 	// but this is ooglay
 	while (currentOwnerEntries.length < 10) {
@@ -96,7 +96,7 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 						<th>Price</th>
 					</thead>
 					<tbody>
-						{currentOwnerEntries.map((entry) => (
+						{currentOwnerEntries.map(entry => (
 							<tr key={entry.id}>
 								<td>{entry.date}</td>
 								<td>{entry.price}</td>
@@ -118,7 +118,7 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 						<th>Price</th>
 					</thead>
 					<tbody>
-						{totalEntries.map((entry) => (
+						{totalEntries.map(entry => (
 							<tr key={entry.id}>
 								<td>{entry.owner}</td>
 								<td>{entry.date}</td>
