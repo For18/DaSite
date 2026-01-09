@@ -8,7 +8,7 @@ import styles from "./ProductView.module.scss";
 
 export default function ProductView({ auctionItem }: { auctionItem: AuctionItem }) {
 	const product = useAPI<Product>(Routes.Product.Get(auctionItem.productId));
-	const owner = useAPI<PublicUser>(product?.id ? Routes.User.GetPublic(product.ownerId) : null);
+	const owner = useAPI<PublicUser>(product?.id ? Routes.User.GetPublic(auctionItem.ownerId) : null);
 	const prodImages = useAPI<ProductImage[]>(
 		product?.id ? Routes.ProductImage.FromParent(product.id) + product.id : null
 	);
@@ -38,7 +38,7 @@ export default function ProductView({ auctionItem }: { auctionItem: AuctionItem 
 			<div>
 				<Typography heading={1}>{product.name}</Typography>
 				<Typography className={styles.seller}
-					href={product.ownerId == null ? undefined : Routes.Pages.Profile(product.ownerId)}
+					href={auctionItem.ownerId == null ? undefined : Routes.Pages.Profile(auctionItem.ownerId)}
 				>
 					Seller: {owner ? owner.userName : "Seller not found"}
 				</Typography>

@@ -11,7 +11,7 @@ export type UserRole = "Admin" | "AuctionMaster" | "Customer";
 export interface Sale {
 	id: number;
 	purchaserId: number;
-	purchasedAuctionId: number;
+	purchasedItemId: number;
 	amount: number;
 	price: number;
 	isPaid: boolean;
@@ -22,7 +22,6 @@ export interface Product {
 	name: string;
 	description: string;
 	thumbnailImageId: number;
-	ownerId: number;
 }
 
 export interface ProductImage {
@@ -48,6 +47,7 @@ export interface AuctionItem {
 	batchSize: number;
 	startingPrice: number;
 	minimumPrice: number;
+	ownerId: number;
 	length: number;
 	productId: number;
 }

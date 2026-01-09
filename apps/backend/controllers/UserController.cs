@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 public class PublicUser {
 	public required string Id { get; set; }
@@ -73,7 +74,7 @@ public class UserController : ControllerBase {
 	}
 
 	[HttpGet("/users/batch")]
-	public async Task<ActionResult<PublicUser[]>> BatchGetPublic([FromBody] string[] ids) {
+	public async Task<ActionResult<PublicUser[]>> BatchGetPublic([FromRoute] string[] ids) {
 		ActionResult<User[]> privateUsersResult = await BatchGetPrivate(ids);
 		if (privateUsersResult.Result is OkObjectResult okResult
 			&& okResult.Value is User[] privateUsers
@@ -87,7 +88,9 @@ public class UserController : ControllerBase {
 				  Email = user.Email
 			  }).ToArray();
 		}
-		return privateUsersResult.Result!;
+		IConvertToActionResult convertToActionResult = privateUsersResult;
+		var actionResultWithStatusCode = convertToActionResult.Convert() as IStatusCodeActionResult;
+		return StatusCode(actionResultWithStatusCode?.StatusCode ?? 500);
 	}
 
 	[HttpGet("private/{id}")]
