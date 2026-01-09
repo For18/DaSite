@@ -21,7 +21,6 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 	const totalHistory = useAPI<Sale[]>(product ? Routes.Sale.GetHistory(product.id) : null);
 	const slicedHistory = totalHistory ? totalHistory.slice(0, 10) : null;
 
-	const [owners, setOwners] = useState<PublicUser[] | null>(null);
 	const [items, setItems] = useState<AuctionItem[] | null>(null);
 	/* TODO: account for possible missing items*/
 	useEffect(() => {
@@ -29,10 +28,11 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 		fetch(API_URL + Routes.AuctionItem.BatchGet(slicedHistory.map(e => e.purchasedItemId)), {
 			credentials: "include"
 		})
-			.then(response => response.json())
-			.then(data => data as AuctionItem[])
-			.then(items => setItems(items));
+		.then(response => response.json())
+		.then(data => data as AuctionItem[])
+		.then(items => setItems(items));
 	}, [totalHistory]);
+	const [owners, setOwners] = useState<PublicUser[] | null>(null);
 	useEffect(() => {
 		if (items == null) return;
 		fetch(API_URL + Routes.User.BatchGetPublic(items.map(e => e.ownerId)), {
