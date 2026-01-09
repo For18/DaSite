@@ -55,24 +55,37 @@ export default function Auctions() {
 					<Throbber/> :
 					auctions === undefined || auctions.length === 0 ?
 					<Typography>No active auctions</Typography> :
-					auctions.map(auction => (
-						<Section key={auction.id}>
-							{auctionEntriesLoading ? <Throbber/> : auctionEntries
-								?.filter(entry => entry.auctionId === auction.id)
+
+					auctions.map(auction => {
+						const itemForAuction = 
+							auctionEntries?.filter(entry => entry.auctionId === auction.id)
 								.map(entry => auctionItems?.find(item => item.id === entry.itemId))
-								.filter(item => item !== undefined)
-								.map(item => (
-									<Section key={item.id}>
-										<ProductView auctionItem={item}/>
-										<Typography color="secondary">
-											Price: {formatEuros(item.startingPrice)} → {formatEuros(item.minimumPrice)}
-											{" "}
-											• Count: {item.count}
-										</Typography>
-									</Section>
-								))}
-						</Section>
-					))}
+								.filter((item) : item is AuctionItem => item !== undefined) ?? [];
+						
+						return (
+							<Section key={auction.id}>
+								<Typography heading={2}>
+									Auction {auction.id}
+								</Typography>
+
+								{auctionEntriesLoading ? <Throbber/> : 
+									<>
+										{itemForAuction.map(item => (
+												<Section key={item.id}>
+													<ProductView auctionItem={item}/>
+													<Typography color="secondary">
+														Price: {formatEuros(item.startingPrice)} → {formatEuros(item.minimumPrice)}
+														{" "}
+														• Count: {item.count}
+													</Typography>
+												</Section>
+											))}	
+									</>
+								}
+							</Section>
+						);
+					})
+				}
 			</Section>
 		</>
 	);
