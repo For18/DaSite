@@ -6,7 +6,7 @@ import Typography from "@component/Typography";
 import { API_URL, type Auction, type AuctionEntry, type AuctionItem, useAPI } from "@lib/api";
 import { formatEuros } from "@lib/util";
 import { Routes } from "@route/Routes";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 /* TODO: update
  * each card should hold title of auction and have a list of links or hover-able text or similar
@@ -16,6 +16,8 @@ export default function Auctions() {
 	useEffect(() => {
 		document.title = "For18 - auctions";
 	});
+
+	const [now, setNow] = useState(Date.now());
 
 	const auctions = useAPI<Auction[]>(Routes.Auction.GetUpcoming);
 
@@ -44,6 +46,17 @@ export default function Auctions() {
 		[auctionItemIds]
 	);
 
+	const timeLeft = (ms : number) => {
+		if (ms <= 0) return "Now";
+
+		const totalSeconds = Math.floor(ms / 1000);
+		const hours = Math.floor(totalSeconds / 3600);
+		const minutes = Math.floor((totalSeconds % 3600) / 60);
+		const seconds = totalSeconds % 60;
+
+		return `${hours}:${minutes}:${seconds}`;
+	}
+
 	return (
 		<>
 			<Typography heading={1}>Upcoming auctions</Typography>
@@ -66,6 +79,10 @@ export default function Auctions() {
 							<Section key={auction.id}>
 								<Typography heading={2}>
 									Auction {auction.id}
+								</Typography>
+
+								<Typography color="secondary">
+									Starts in: {timeLeft(auction.startingTime - now)}
 								</Typography>
 
 								{auctionEntriesLoading ? <Throbber/> : 
