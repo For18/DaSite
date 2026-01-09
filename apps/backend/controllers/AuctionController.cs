@@ -74,8 +74,6 @@ public class AuctionController : ControllerBase {
 	[HttpGet("/auctions/upcoming")]
 	[Authorize]
 	public async Task<ActionResult<AuctionExternal[]>> GetUpcoming() {
-		if (!(User.IsInRole("AuctionMaster") || User.IsInRole("Admin"))) return Forbid();
-
 		ulong unixTimeMillis = (ulong)DateTimeOffset.Now.ToUnixTimeMilliseconds();
 		using (var db = new DatabaseContext()) {
 			return await db.Auctions
