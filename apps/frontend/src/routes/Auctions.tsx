@@ -37,7 +37,7 @@ export default function Auctions() {
 		() =>
 			Promise.all(
 				auctionItemIds.map(auctionItemId =>
-					fetch(API_URL + Routes.AuctionItem.Get(auctionItemId) + auctionItemId)
+					fetch(API_URL + Routes.AuctionItem.Get(auctionItemId))
 						.then(response => response.json())
 				)
 			),
