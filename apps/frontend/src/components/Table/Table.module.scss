@@ -1,0 +1,29 @@
+$border: 1px solid var(--color-border);
+
+.table {
+	color: var(--color-text-primary);
+	border: $border;
+	border-radius: var(--border-radius);
+	border-spacing: 0;
+	overflow: hidden;
+
+	tr, thead, tbody {
+		&>th, &>td {
+			padding: calc(var(--spacing) / 2);
+
+			&:not(:last-child) {
+				border-right: $border;
+			}
+		}
+
+		&>th {
+			background-color: #ffffff13;
+		}
+
+		&:not(:last-child) {
+			&>th, &>td {
+				border-bottom: $border;
+			}
+		}
+	}
+}
