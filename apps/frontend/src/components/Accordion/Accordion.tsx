@@ -63,3 +63,18 @@ export default function Accordion({ title, open = false, onToggle, children }: A
 		</div>
 	);
 }
+
+export type SmartAccordionProps = Omit<AccordionProps, "open">;
+
+export function SmartAccordion({ children, title, onToggle}: SmartAccordionProps) {
+	const [open, setOpen] = useState<boolean>(false);
+
+	return (
+		<Accordion title={title} open={open} onToggle={v => {
+			setOpen(v);
+			onToggle?.(v);
+		}}>
+			{children}
+		</Accordion>
+	);
+}
