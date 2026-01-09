@@ -7,6 +7,7 @@ import ClickAwayDetector from "../ClickAwayDetector";
 import Typography from "../Typography";
 import styles from "./SaleHistoryPopUp.module.scss";
 import Modal from "../Modal";
+import Table from "../Table/Table";
 
 export interface SaleHistoryPopUpProps {
 	item: AuctionItem;
@@ -89,7 +90,7 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 			}
 			<Modal open={open} onClose={close}>
 				{/* Current Owner History */}
-				<table>
+				<Table>
 					<thead>
 						<th>Date</th>
 						<th>Price</th>
@@ -102,7 +103,7 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 							</tr>
 						))}
 					</tbody>
-				</table>
+				</Table>
 				<Typography>
 					Average all-time price: {currentOwnerEntries
 						.map(e => (e.price === "-" ? 0 : Number(e.price)))
@@ -110,7 +111,7 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 				</Typography>
 
 				{/* All History */}
-				<table>
+				<Table>
 					<thead>
 						<th>Distributor</th>
 						<th>Date</th>
@@ -125,7 +126,7 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 							</tr>
 						))}
 					</tbody>
-				</table>
+				</Table>
 				<Typography>
 					Average all-time price: {totalEntries
 						.map(e => (e.price === "-" ? 0 : Number(e.price)))
