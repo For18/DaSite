@@ -54,7 +54,7 @@ export default function Auctions() {
 		[auctionItemIds]
 	);
 
-	const timeLeft = (ms : number) => {
+	const timeLeft = (ms: number) => {
 		if (ms <= 0) return "Now";
 
 		const totalSeconds = Math.floor(ms / 1000);
@@ -62,8 +62,10 @@ export default function Auctions() {
 		const minutes = Math.floor((totalSeconds % 3600) / 60);
 		const seconds = totalSeconds % 60;
 
-		return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-	}
+		return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${
+			String(seconds).padStart(2, "0")
+		}`;
+	};
 
 	return (
 		<>
@@ -76,13 +78,11 @@ export default function Auctions() {
 					<Throbber/> :
 					auctions === undefined || auctions.length === 0 ?
 					<Typography>No active auctions</Typography> :
-
 					auctions.map(auction => {
-						const itemForAuction = 
-							auctionEntries?.filter(entry => entry.auctionId === auction.id)
-								.map(entry => auctionItems?.find(item => item.id === entry.itemId))
-								.filter((item) : item is AuctionItem => item !== undefined) ?? [];
-						
+						const itemForAuction = auctionEntries?.filter(entry => entry.auctionId === auction.id)
+							.map(entry => auctionItems?.find(item => item.id === entry.itemId))
+							.filter((item): item is AuctionItem => item !== undefined) ?? [];
+
 						return (
 							<Section key={auction.id}>
 								<Typography heading={2}>
@@ -93,24 +93,24 @@ export default function Auctions() {
 									Starts in: {timeLeft(auction.startingTime - now)}
 								</Typography>
 
-								{auctionEntriesLoading ? <Throbber/> : 
-									<>
-										{itemForAuction.map(item => (
+								{auctionEntriesLoading ?
+									<Throbber/> :
+									(
+										<>
+											{itemForAuction.map(item => (
 												<Section key={item.id}>
 													<ProductView auctionItem={item}/>
 													<Typography color="secondary">
-														Price: {formatEuros(item.startingPrice)} → {formatEuros(item.minimumPrice)}
-														{" "}
-														• Count: {item.count}
+														Price: {formatEuros(item.startingPrice)} →{" "}
+														{formatEuros(item.minimumPrice)} • Count: {item.count}
 													</Typography>
 												</Section>
-											))}	
-									</>
-								}
+											))}
+										</>
+									)}
 							</Section>
 						);
-					})
-				}
+					})}
 			</Section>
 		</>
 	);
