@@ -75,22 +75,19 @@ public class UserController : ControllerBase {
 
 	[HttpGet("/users/batch")]
 	public async Task<ActionResult<PublicUser[]>> BatchGetPublic([FromRoute] string[] ids) {
-		ActionResult<User[]> privateUsersResult = await BatchGetPrivate(ids);
-		if (privateUsersResult.Result is OkObjectResult okResult
-			&& okResult.Value is User[] privateUsers
-			) {
-			return privateUsers
-			  .Select(user => new PublicUser {
-				  Id = user.Id,
-				  UserName = user.UserName,
-				  TelephoneNumber = user.PhoneNumber,
-				  AvatarImageUrl = user.AvatarImageUrl,
-				  Email = user.Email
-			  }).ToArray();
+		using (var db = new DatabaseContext())
+		{
+			return await db.Users
+				.Where(user => ids.Contains(user.Id))
+				.Select(user => new PublicUser {
+					Id = user.Id,
+					UserName = user.UserName,
+					AvatarImageUrl = user.AvatarImageUrl,
+					Email = user.Email,
+					TelephoneNumber = user.PhoneNumber
+				})
+			.ToArrayAsync();
 		}
-		IConvertToActionResult convertToActionResult = privateUsersResult;
-		var actionResultWithStatusCode = convertToActionResult.Convert() as IStatusCodeActionResult;
-		return StatusCode(actionResultWithStatusCode?.StatusCode ?? 500);
 	}
 
 	[HttpGet("private/{id}")]
