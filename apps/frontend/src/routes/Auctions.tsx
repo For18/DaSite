@@ -78,10 +78,11 @@ export default function Auctions() {
 					<Throbber/> :
 					auctions === undefined || auctions.length === 0 ?
 					<Typography>No active auctions</Typography> :
-					auctions.map(auction => {
-						const itemForAuction = auctionEntries?.filter(entry => entry.auctionId === auction.id)
-							.map(entry => auctionItems?.find(item => item.id === entry.itemId))
-							.filter((item): item is AuctionItem => item !== undefined) ?? [];
+					auctions.sort((a, b) => a.startingTime - b.startingTime)
+						.map(auction => {
+							const itemForAuction = auctionEntries?.filter(entry => entry.auctionId === auction.id)
+								.map(entry => auctionItems?.find(item => item.id === entry.itemId))
+								.filter((item): item is AuctionItem => item !== undefined) ?? [];
 
 						return (
 							<Section key={auction.id}>
