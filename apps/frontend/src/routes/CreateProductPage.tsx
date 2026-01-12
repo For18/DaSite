@@ -5,7 +5,7 @@ import Input from "@component/Input";
 import Typography from "@component/Typography";
 import { API_URL, type ProductImage } from "@lib/api";
 import { Routes } from "@route/Routes";
-import { type Dispatch, type SetStateAction, useState } from "react";
+import { type Dispatch, type SetStateAction, useState, useId } from "react";
 import styles from "./CreateProductPage.module.scss";
 
 // TODO: add visual status for user
@@ -62,6 +62,7 @@ export default function CreateProductPage() {
 	const [name, setName] = useState<string>("");
 	const [description, setDescription] = useState<string>("");
 	const [batchSize, setBatchSize] = useState<number>(0);
+  const id = useId();
 
 	return (
 		<div className={styles.container}>
@@ -77,7 +78,7 @@ export default function CreateProductPage() {
 			<div className={styles.seperator}/>
 
 			<div className={styles.inputs}>
-				<Typography className={styles.inputTitle}>Name</Typography>
+				<Typography id={id + "name"}>Name</Typography>
 				<Input
 					className={styles.inputBasic}
 					type="text"
@@ -85,7 +86,7 @@ export default function CreateProductPage() {
 					onChange={value => setName(String(value))}
 				/>
 
-				<Typography className={styles.inputTitle}>Description</Typography>
+				<Typography id={id + "description"}>Description</Typography>
 				<Input
 					type="textfield"
 					value={description}
@@ -93,7 +94,7 @@ export default function CreateProductPage() {
 					onChange={value => setDescription(String(value))}
 				/>
 
-				<Typography className={styles.inputTitle}>Batch size</Typography>
+				<Typography id={id + "batch-size"}>Batch size</Typography>
 				<Input
 					className={styles.inputBasic}
 					value={String(batchSize)}
@@ -101,7 +102,7 @@ export default function CreateProductPage() {
 					onChange={value => setBatchSize(Number(value))}
 				/>
 
-				<Typography className={styles.inputTitle}>Image Link</Typography>
+				<Typography id={id + "image-link"}>Image Link</Typography>
 				<Input
 					className={styles.inputBasic}
 					value={linkText}
