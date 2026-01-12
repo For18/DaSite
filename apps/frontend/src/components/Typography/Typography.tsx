@@ -27,8 +27,9 @@ export default function Typography({
 	const goto = useGoto();
 
 	const click = useCallback((e: Event) => {
-		if (href == null) return;
+		if (href == null && !onClick) return;
 		e.preventDefault();
+    onClick();
 		goto(href);
 	}, [href]);
 	const keydown = useCallback((e: KeyboardEvent) => {
@@ -47,10 +48,7 @@ export default function Typography({
 			isLink ? styles.link : null,
 			className
 		].filter(v => v !== null).join(" "),
-    onClick: e => {
-      click(e);
-      onClick();
-    },
+		onClick: click,
 		onKeyDown: isLink ? keydown : undefined
 	}, children);
 }
