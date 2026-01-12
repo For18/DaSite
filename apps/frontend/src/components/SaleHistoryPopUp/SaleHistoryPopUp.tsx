@@ -8,7 +8,7 @@ import Modal from "../Modal";
 import Table from "../Table/Table";
 import Typography from "../Typography";
 import styles from "./SaleHistoryPopUp.module.scss";
-import { deduplicate } from "@/lib/util";
+import { deduplicate, range } from "@/lib/util";
 import usePromise from "@/lib/hooks/usePromise";
 
 export interface SaleHistoryPopUpProps {
@@ -19,9 +19,9 @@ export interface SaleHistoryPopUpProps {
 
 interface Row {
 	distributor?: PublicUser;
-	date: string;
+	date?: string;
 	price?: number;
-	saleId: number;
+	saleId?: number;
 }
 
 const HISTORY_LENGTH = 10;
@@ -55,10 +55,10 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 							<th>Date</th>
 							<th>Price</th>
 						</tr>
-						{currentOwnerRows.map(entry => (
+						{range(HISTORY_LENGTH).map(i => currentOwnerRows[i] ?? ({} as any)).map(entry => (
 							<tr key={entry.saleId}>
-								<td>{entry.date}</td>
-								<td>{entry.price}</td>
+								<td>{entry.date ?? "-"}</td>
+								<td>{entry.price ?? "-"}</td>
 							</tr>
 						))}
 					</tbody>
@@ -75,11 +75,11 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 							<th>Date</th>
 							<th>Price</th>
 						</tr>
-						{globalRows.map(row => (
+						{range(HISTORY_LENGTH).map(i => globalRows[i] ?? ({} as any)).map(row => (
 							<tr key={row.saleId}>
 								<td>{row.distributor == null ? "-" : (row.distributor.userName ?? "Unnamed")}</td>
-								<td>{row.date}</td>
-								<td>{row.price}</td>
+								<td>{row.date ?? "-"}</td>
+								<td>{row.price ?? "-"}</td>
 							</tr>
 						))}
 					</tbody>
