@@ -19,7 +19,10 @@ function ProductInfo({product} : {product: Product}) {
       <div className={styles.modalBody}>
         <Typography> {product.name} </Typography>
         <Typography> {product.description} </Typography>
-        {images && images.map((image, index) => <Image src={image.url} alt={product.name + index} width={100} height={100}/>)}
+        <div className={styles.separator}/>
+        <div className={styles.imageContainer}>
+          {images && images.map((image, index) => <Image src={image.url} alt={product.name + index} width={100} height={100}/>)}
+        </div>
       </div>
   );
 }
