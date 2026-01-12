@@ -40,7 +40,7 @@ public class ProductController : ControllerBase {
 	[HttpGet("{id}")]
 	public async Task<ActionResult<ProductExternal>> Get(ulong id) {
 		using (var db = new DatabaseContext()) {
-			Product? product = await db.Products.Where(product => product.Id == id).FirstOrDefaultAsync();
+			Product? product = await db.Products.Include(product => product.ThumbnailImage).Where(product => product.Id == id).FirstOrDefaultAsync();
 
 			if (product == null) return NotFound();
 
