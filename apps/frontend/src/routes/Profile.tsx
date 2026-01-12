@@ -78,7 +78,7 @@ export default function Profile() {
 					) :
 					(
            userProducts.map(product => 
-					  <Typography key={product.id} onClick={() => {setModalState({open: true, product: product})}}>
+					  <Typography className={styles.productName} key={product.id} onClick={() => {setModalState({open: true, product: product})}}>
 					  	{product.name}
 					  </Typography>
             )

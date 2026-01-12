@@ -5,6 +5,13 @@
 	gap: 16px;
 }
 
+.product-name {
+	&:hover {
+		cursor: pointer;
+		filter: brightness(0.85);
+	}
+}
+
 @mixin sectionSizing {
 	max-width: 80vw;
 	width: 1000px;
