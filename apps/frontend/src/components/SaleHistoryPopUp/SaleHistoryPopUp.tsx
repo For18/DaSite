@@ -24,6 +24,8 @@ interface Row {
 	saleId: number;
 }
 
+const HISTORY_LENGTH = 10;
+
 /* NOTE: this this has so many problems with styling but I aint dealing with that rn*/
 export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHistoryPopUpProps) {
 	const globalSales = useAPI<Sale[]>(Routes.Sale.GetHistory(item.productId));
@@ -31,13 +33,13 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 
 	const distributors = useAPI<PublicUser[]>(globalSales == null ? null : Routes.User.BatchGetPublic(deduplicate(globalSales.map(sale => sale.distributorId))));
 
-	const globalRows: Row[] = globalSales == null ? [] : globalSales.slice(0, 10).map(sale => ({
+	const globalRows: Row[] = globalSales == null ? [] : globalSales.slice(0, HISTORY_LENGTH).map(sale => ({
 		distributor: distributors?.find(user => user.id === sale.distributorId),
 		date: new Date(Date.now()).toLocaleDateString(),
 		price: sale.price,
 		saleId: sale.id
 	}));
-	const currentOwnerRows: Omit<Row, "distributor">[] = currentOwnerSales == null ? [] : currentOwnerSales.slice(0, 10).map(sale => ({
+	const currentOwnerRows: Omit<Row, "distributor">[] = currentOwnerSales == null ? [] : currentOwnerSales.slice(0, HISTORY_LENGTH).map(sale => ({
 		date: new Date(Date.now()).toLocaleDateString(),
 		price: sale.price,
 		saleId: sale.id
