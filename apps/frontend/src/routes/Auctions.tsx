@@ -98,7 +98,7 @@ export default function Auctions() {
 									Starts in: {timeLeft(auction.startingTime - now)}
 								</Typography>
 
-								<Button variant="text" onClick={() => navigate(Routes.Pages.Clock(auction.id))} labelledby={"Go to auction " + auction.id}>
+								<Button variant="text" onClick={() => navigate(Routes.Pages.Clock(auction.id))}>
 									Go to auction
 								</Button>
 
