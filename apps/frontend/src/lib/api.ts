@@ -14,6 +14,7 @@ export interface Sale {
 	amount: number;
 	price: number;
 	isPaid: boolean;
+	distributorId: string;
 }
 
 export interface Product {
