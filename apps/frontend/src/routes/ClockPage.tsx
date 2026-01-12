@@ -92,7 +92,7 @@ export default function ClockPage() {
 	const elapsedTime = currentItemStartTime != null ? currentTime - currentItemStartTime : 0;
 	const progress = auctionedItemLenMillis ? elapsedTime / auctionedItemLenMillis : 0;
 
-	const isAuctionOver = items?.length === 0 && items[0] === null;
+	const isAuctionOver = items?.length === 0 && items[0] == null;
 
 	/* Temp moving of starting time
    * TODO: remove after testing
