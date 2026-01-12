@@ -52,7 +52,7 @@ export interface AuctionItem {
 }
 
 export interface User {
-	id: number;
+	id: string;
 	userName: string;
 	normalizedUserName: string;
 	email: string;
@@ -73,7 +73,7 @@ export interface User {
 }
 
 export interface PublicUser {
-	id: number;
+	id: string;
 	userName?: string;
 	avatarImageUrl?: string;
 	email?: string;
