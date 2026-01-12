@@ -26,7 +26,6 @@ interface Row {
 
 const HISTORY_LENGTH = 10;
 
-/* NOTE: this this has so many problems with styling but I aint dealing with that rn*/
 export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHistoryPopUpProps) {
 	const globalSales = useAPI<Sale[]>(Routes.Sale.GetHistory(item.productId));
 	const currentOwnerSales = useAPI<Sale[]>(Routes.Sale.GetOwnerHistory(item.productId, item.ownerId));
