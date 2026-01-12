@@ -8,7 +8,7 @@ export interface TypographyProps extends PropsWithChildren {
 	className?: string;
 	href?: string;
 	id?: string;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export default function Typography({
