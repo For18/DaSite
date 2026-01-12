@@ -1,9 +1,9 @@
-import { type AuctionItem, PublicUser, type Sale, useAPI } from "@/lib/api";
+import { type AuctionItem, PublicUser, type Sale, useAPI } from "@lib/api";
 import { Routes } from "@route/Routes";
-import Modal from "../Modal";
-import Table from "../Table/Table";
-import Typography from "../Typography";
-import { deduplicate, range } from "@/lib/util";
+import Modal from "@component/Modal";
+import Table from "@component/Table";
+import Typography from "@component/Typography";
+import { deduplicate, range } from "@lib/util";
 
 export interface SaleHistoryPopUpProps {
 	item: AuctionItem;
