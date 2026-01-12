@@ -8,6 +8,7 @@ export interface TypographyProps extends PropsWithChildren {
 	className?: string;
 	href?: string;
 	id?: string;
+  onClick?: () => void;
 	center?: boolean;
 }
 
@@ -18,6 +19,7 @@ export default function Typography({
 	className,
 	href,
 	id,
+  onClick,
 	center = false
 }: TypographyProps): JSX.Element {
 	const isHeading = headingLevel != null;
@@ -48,7 +50,10 @@ export default function Typography({
 			center ? styles.center : null,
 			className
 		].filter(v => v !== null).join(" "),
-		onClick: isLink ? click : undefined,
+    onClick: e => {
+      click(e);
+      onClick();
+    },
 		onKeyDown: isLink ? keydown : undefined
 	}, children);
 }
