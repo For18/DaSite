@@ -8,7 +8,7 @@ export interface TypographyProps extends PropsWithChildren {
 	className?: string;
 	href?: string;
 	id?: string;
-  onClick?: () => void;
+	onClick?: () => void;
 }
 
 export default function Typography({
@@ -18,7 +18,7 @@ export default function Typography({
 	className,
 	href,
 	id,
-  onClick
+	onClick
 }: TypographyProps): JSX.Element {
 	const isHeading = headingLevel != null;
 	const isLink = href != null;
@@ -29,7 +29,7 @@ export default function Typography({
 	const click = useCallback((e: Event) => {
 		if (href == null && !onClick) return;
 		e.preventDefault();
-    onClick();
+		onClick();
 		goto(href);
 	}, [href]);
 	const keydown = useCallback((e: KeyboardEvent) => {

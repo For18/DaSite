@@ -44,38 +44,38 @@ export default function TopBar({
 			</nav>
 			<div className={styles.profileWrapper}>
 				<ClickAwayDetector onClickAway={() => setOpen(false)}>
-						<Image
-							className={styles.profile}
-							src={pfpUrl}
-							alt="User Profile"
-							width={50}
-							height={50}
-							onClick={() => {
-								if (user) setOpen(o => !o);
-								else navigate(Routes.Pages.Login);
-							}}
-						/>
+					<Image
+						className={styles.profile}
+						src={pfpUrl}
+						alt="User Profile"
+						width={50}
+						height={50}
+						onClick={() => {
+							if (user) setOpen(o => !o);
+							else navigate(Routes.Pages.Login);
+						}}
+					/>
 
-						{open && (
-							<div className={styles.selectionCard}>
-								<Typography
-									className={styles.menuItem}
-									onClick={() => navigate(Routes.Pages.Profile(user.id))}
-								>
-									Profile
-								</Typography>
+					{open && (
+						<div className={styles.selectionCard}>
+							<Typography
+								className={styles.menuItem}
+								onClick={() => navigate(Routes.Pages.Profile(user.id))}
+							>
+								Profile
+							</Typography>
 
-								<Typography
-									className={styles.menuItem}
-									onClick={async () => {
-										await handleLogout();
-										navigate(Routes.Pages.Home);
-									}}
-								>
-									Logout
-								</Typography>
-							</div>
-						)}
+							<Typography
+								className={styles.menuItem}
+								onClick={async () => {
+									await handleLogout();
+									navigate(Routes.Pages.Home);
+								}}
+							>
+								Logout
+							</Typography>
+						</div>
+					)}
 				</ClickAwayDetector>
 			</div>
 		</header>
