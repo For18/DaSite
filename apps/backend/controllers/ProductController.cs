@@ -71,11 +71,17 @@ public class ProductController : ControllerBase {
 	[HttpGet("/products/user/{userId}")]
 	public async Task<ActionResult<ProductExternal[]>> GetOfUser(string userId) {
 		using (var db = new DatabaseContext()) {
-			return await db.AuctionItems
-		.Include(item => item.Product)
+			var products = await db.AuctionItems
 				.Where(item => item.Owner.Id == userId)
-				.Select(item => ProductExternal.ToExternal(item.Product))
+				.Select(item => new ProductExternal(
+              item.Product.Id,
+              item.Product.Name,
+              item.Product.Description,
+              item.Product.ThumbnailImage != null ? item.Product.ThumbnailImage.Id : null
+        ))
 			.ToArrayAsync();
+
+      return Ok(products);
 		}
 	}
 
