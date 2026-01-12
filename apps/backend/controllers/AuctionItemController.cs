@@ -63,6 +63,7 @@ public class AuctionItemController : ControllerBase {
 	public async Task<ActionResult<AuctionItemExternal[]>> GetAll() {
 		using (var db = new DatabaseContext()) {
 			return await db.AuctionItems
+			  .Include(item => item.Owner)
 			  .Include(item => item.Product)
 			  .ThenInclude(prod => prod.ThumbnailImage)
 			  .Select(item => AuctionItemExternal.ToExternal(item))
@@ -74,7 +75,12 @@ public class AuctionItemController : ControllerBase {
 	public async Task<ActionResult<AuctionItemExternal>> Get(ulong id) {
 		using (var db = new DatabaseContext()) {
 
-			AuctionItem? item = await db.AuctionItems.Include(item => item.Product).ThenInclude(prod => prod.ThumbnailImage).Where(item => item.Id == id).FirstOrDefaultAsync();
+			AuctionItem? item = await db.AuctionItems
+				.Include(i => i.Owner)
+				.Include(i => i.Product)
+				.ThenInclude(prod => prod.ThumbnailImage)
+				.Where(i => i.Id == id)
+				.FirstOrDefaultAsync();
 			if (item == null) return NotFound();
 
 			return AuctionItemExternal.ToExternal(item);
@@ -82,12 +88,23 @@ public class AuctionItemController : ControllerBase {
 	}
 
 	[HttpGet("/auction-items/batch")]
-	public async Task<ActionResult<AuctionItemExternal[]>> BatchGet([FromRoute] ulong[] ids) {
+	public async Task<ActionResult<AuctionItemExternal[]>> BatchGet([FromQuery(Name = "ids")] string ids) {
 		using (var db = new DatabaseContext()) {
+			// Support comma-separated ids as used by the frontend (ids=1,2,3)
+			ulong[] parsedIds = Array.Empty<ulong>();
+			if (!string.IsNullOrWhiteSpace(ids)) {
+				parsedIds = ids
+					.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+					.Select(s => ulong.TryParse(s, out var v) ? v : (ulong)0)
+					.Where(v => v != 0)
+					.ToArray();
+			}
+
 			return await db.AuctionItems
+			  .Include(auc => auc.Owner)
 			  .Include(auc => auc.Product)
 			  .ThenInclude(prod => prod.ThumbnailImage)
-			  .Where(auc => ids.Contains(auc.Id))
+			  .Where(auc => parsedIds.Contains(auc.Id))
 			  .Select(auc => AuctionItemExternal.ToExternal(auc))
 			  .ToArrayAsync();
 		}
@@ -97,13 +114,12 @@ public class AuctionItemController : ControllerBase {
 	public async Task<ActionResult<AuctionItemExternal[]>> GetByAuction(ulong id) {
 		using (var db = new DatabaseContext()) {
 			return await db.AuctionEntries
-			  .Include(entry => entry.Auction)
+			  .Where(entry => entry.Auction.Id == id)
 			  .Include(entry => entry.AuctionItem)
-			  .ThenInclude(ae => ae.Product)
-			  .ThenInclude(prod => prod.ThumbnailImage)
-		.Include(entry => entry.AuctionItem.Owner)
-		.Include(entry => entry.AuctionItem)
-		.ThenInclude(item => item.Owner)
+			    .ThenInclude(item => item.Owner)
+			  .Include(entry => entry.AuctionItem)
+			    .ThenInclude(item => item.Product)
+			      .ThenInclude(prod => prod.ThumbnailImage)
 			  .Select(entry => AuctionItemExternal.ToExternal(entry.AuctionItem))
 			  .ToArrayAsync();
 		}
