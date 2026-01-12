@@ -1,3 +1,4 @@
+import Button from "@/components/Button/Button";
 import usePromise from "@/lib/hooks/usePromise";
 import ProductView from "@component/ProductView";
 import Section from "@component/Section";
@@ -7,6 +8,7 @@ import { API_URL, type Auction, type AuctionEntry, type AuctionItem, useAPI } fr
 import { formatEuros } from "@lib/util";
 import { Routes } from "@route/Routes";
 import { useEffect, useMemo, useState } from "react";
+import { Navigate, useNavigate } from "react-router";
 
 /* TODO: update
  * each card should hold title of auction and have a list of links or hover-able text or similar
@@ -67,6 +69,8 @@ export default function Auctions() {
 		}`;
 	};
 
+	const navigate = useNavigate();
+
 	return (
 		<>
 			<Typography heading={1}>Upcoming auctions</Typography>
@@ -93,6 +97,10 @@ export default function Auctions() {
 								<Typography color="secondary">
 									Starts in: {timeLeft(auction.startingTime - now)}
 								</Typography>
+
+								<Button variant="text" onClick={() => navigate(Routes.Pages.Clock(auction.id))} labelledby={"Go to auction " + auction.id}>
+									Go to auction
+								</Button>
 
 								{auctionEntriesLoading ?
 									<Throbber/> :
