@@ -44,7 +44,6 @@ export default function TopBar({
 			</nav>
 			<div className={styles.profileWrapper}>
 				<ClickAwayDetector onClickAway={() => setOpen(false)}>
-					<>
 						<Image
 							className={styles.profile}
 							src={pfpUrl}
@@ -77,7 +76,6 @@ export default function TopBar({
 								</Typography>
 							</div>
 						)}
-					</>
 				</ClickAwayDetector>
 			</div>
 		</header>
