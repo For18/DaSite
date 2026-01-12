@@ -88,38 +88,38 @@ export default function Auctions() {
 								.map(entry => auctionItems?.find(item => item.id === entry.itemId))
 								.filter((item): item is AuctionItem => item !== undefined) ?? [];
 
-						return (
-							<Section key={auction.id}>
-								<Typography heading={2}>
-									Auction {auction.id}
-								</Typography>
+							return (
+								<Section key={auction.id}>
+									<Typography heading={2}>
+										Auction {auction.id}
+									</Typography>
 
-								<Typography color="secondary">
-									Starts in: {timeLeft(auction.startingTime - now)}
-								</Typography>
+									<Typography color="secondary">
+										Starts in: {timeLeft(auction.startingTime - now)}
+									</Typography>
 
-								<Button variant="text" onClick={() => navigate(Routes.Pages.Clock(auction.id))}>
-									Go to auction
-								</Button>
+									<Button variant="text" onClick={() => navigate(Routes.Pages.Clock(auction.id))}>
+										Go to auction
+									</Button>
 
-								{auctionEntriesLoading ?
-									<Throbber/> :
-									(
-										<>
-											{itemForAuction.map(item => (
-												<Section key={item.id}>
-													<ProductView auctionItem={item}/>
-													<Typography color="secondary">
-														Price: {formatEuros(item.startingPrice)} →{" "}
-														{formatEuros(item.minimumPrice)} • Count: {item.count}
-													</Typography>
-												</Section>
-											))}
-										</>
-									)}
-							</Section>
-						);
-					})}
+									{auctionEntriesLoading ?
+										<Throbber/> :
+										(
+											<>
+												{itemForAuction.map(item => (
+													<Section key={item.id}>
+														<ProductView auctionItem={item}/>
+														<Typography color="secondary">
+															Price: {formatEuros(item.startingPrice)} →{" "}
+															{formatEuros(item.minimumPrice)} • Count: {item.count}
+														</Typography>
+													</Section>
+												))}
+											</>
+										)}
+								</Section>
+							);
+						})}
 			</Section>
 		</>
 	);
