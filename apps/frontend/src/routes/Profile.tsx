@@ -2,7 +2,7 @@ import Image from "@component/Image";
 import Section from "@component/Section";
 import Throbber from "@component/Throbber";
 import Typography from "@component/Typography";
-import { type Product, type PublicUser, type ProductImage, useAPI } from "@lib/api";
+import { type Product, type PublicUser, type ProductImage, useAPI, API_URL } from "@lib/api";
 import NotFound from "@route/NotFound";
 import { Routes } from "@route/Routes";
 import { useParams } from "react-router";
@@ -11,11 +11,9 @@ import Modal from "@/components/Modal";
 import { useEffect, useState } from "react";
 
 function ProductInfo({product} : {product: Product}) {
-  console.log("product", product);
   const thumbnail = useAPI<ProductImage>(product ? Routes.ProductImage.Get(product.thumbnailImageId) : null);
   if (thumbnail === undefined) return <NotFound/>;
   if (thumbnail === null) return <NotFound/>;
-  console.log(thumbnail.url);
 
   return (
       <div className={styles.modalBody}>
