@@ -15,6 +15,13 @@ export default function Profile() {
 	// TODO: type fix
 	const user = useAPI<PublicUser>(Routes.User.GetPublic(userId));
 	const userProducts = useAPI<Product[]>(Routes.Product.GetOfUser(userId));
+  const [modalState, setModalState] = useState<{open: boolean, product: Product | null}>({open: false, product: null});
+
+  useEffect(() => {
+    if (modalState.open && !modalState.product) {
+      setModalState({ open: false, product: null });
+    }
+  }, [modalState.open, modalState.product]);
 
 	if (user === undefined) return <NotFound/>;
 
@@ -36,12 +43,6 @@ export default function Profile() {
 								{user.userName ?? "Unnamed user"}
 							</Typography>
 						</div>
-
-						{
-							/* <Typography className={styles.profileSubtitle} color="secondary">
-						{user.subtitle}
-					</Typography> */
-						}
 					</>
 				)}
 			</Section>
@@ -57,13 +58,21 @@ export default function Profile() {
 						</Typography>
 					) :
 					(
-						userProducts.map(product => (
-							<Typography key={product.id}>
-								{product.name}
-							</Typography> // TODO: images be put later when new components can be used.
-						))
-					)}
+           userProducts.map(product => 
+					  <Typography key={product.id} onClick={() => {setModalState({open: true, product: product})}}>
+					  	{product.name}
+					  </Typography>
+            )
+          )
+				}
 			</Section>
+
+      <Modal open={modalState.open} onClose={() => setModalState({open: false, product: null})}>
+        {modalState.product && (
+          <ProductInfo product={modalState.product} />
+        )}
+      </Modal>
 		</>
 	);
 }
+
