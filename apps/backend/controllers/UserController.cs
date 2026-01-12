@@ -75,8 +75,7 @@ public class UserController : ControllerBase {
 
 	[HttpGet("/users/batch")]
 	public async Task<ActionResult<PublicUser[]>> BatchGetPublic([FromQuery] string[] ids) {
-		using (var db = new DatabaseContext())
-		{
+		using (var db = new DatabaseContext()) {
 			return await db.Users
 				.Where(user => ids.Contains(user.Id))
 				.Select(user => new PublicUser {

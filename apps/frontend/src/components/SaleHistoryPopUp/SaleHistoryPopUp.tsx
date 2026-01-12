@@ -1,9 +1,9 @@
-import { type AuctionItem, PublicUser, type Sale, useAPI } from "@lib/api";
-import { Routes } from "@route/Routes";
 import Modal from "@component/Modal";
 import Table from "@component/Table";
 import Typography from "@component/Typography";
+import { type AuctionItem, PublicUser, type Sale, useAPI } from "@lib/api";
 import { deduplicate, range } from "@lib/util";
+import { Routes } from "@route/Routes";
 
 export interface SaleHistoryPopUpProps {
 	item: AuctionItem;
@@ -24,7 +24,11 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 	const globalSales = useAPI<Sale[]>(Routes.Sale.GetHistory(item.productId));
 	const currentOwnerSales = useAPI<Sale[]>(Routes.Sale.GetOwnerHistory(item.productId, item.ownerId));
 
-	const distributors = useAPI<PublicUser[]>(globalSales == null ? null : Routes.User.BatchGetPublic(deduplicate(globalSales.map(sale => sale.distributorId))));
+	const distributors = useAPI<PublicUser[]>(
+		globalSales == null ?
+			null :
+			Routes.User.BatchGetPublic(deduplicate(globalSales.map(sale => sale.distributorId)))
+	);
 
 	const globalRows: Row[] = globalSales == null ? [] : globalSales.slice(0, HISTORY_LENGTH).map(sale => ({
 		distributor: distributors?.find(user => user.id === sale.distributorId),
@@ -32,11 +36,13 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 		price: sale.price,
 		saleId: sale.id
 	}));
-	const currentOwnerRows: Omit<Row, "distributor">[] = currentOwnerSales == null ? [] : currentOwnerSales.slice(0, HISTORY_LENGTH).map(sale => ({
-		date: new Date(Date.now()).toLocaleDateString(),
-		price: sale.price,
-		saleId: sale.id
-	}));
+	const currentOwnerRows: Omit<Row, "distributor">[] = currentOwnerSales == null ?
+		[] :
+		currentOwnerSales.slice(0, HISTORY_LENGTH).map(sale => ({
+			date: new Date(Date.now()).toLocaleDateString(),
+			price: sale.price,
+			saleId: sale.id
+		}));
 
 	return (
 		<>
@@ -57,7 +63,8 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 					</tbody>
 				</Table>
 				<Typography>
-					Average all-time price: {currentOwnerRows.reduce((acc, row) => acc + (row.price ?? 0), 0) / currentOwnerRows.reduce((acc, row) => acc + (row.price == null ? 0 : 1), 0)}
+					Average all-time price: {currentOwnerRows.reduce((acc, row) => acc + (row.price ?? 0), 0) /
+						currentOwnerRows.reduce((acc, row) => acc + (row.price == null ? 0 : 1), 0)}
 				</Typography>
 
 				{/* All History */}
@@ -78,7 +85,8 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 					</tbody>
 				</Table>
 				<Typography>
-					Average all-time price: {globalRows.reduce((acc, row) => acc + (row.price ?? 0), 0) / globalRows.reduce((acc, row) => acc + (row.price == null ? 0 : 1), 0)}
+					Average all-time price: {globalRows.reduce((acc, row) => acc + (row.price ?? 0), 0) /
+						globalRows.reduce((acc, row) => acc + (row.price == null ? 0 : 1), 0)}
 				</Typography>
 			</Modal>
 		</>
