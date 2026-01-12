@@ -1,15 +1,9 @@
-import { API_URL, type AuctionItem, type Product, PublicUser, type Sale, useAPI } from "@/lib/api";
+import { type AuctionItem, PublicUser, type Sale, useAPI } from "@/lib/api";
 import { Routes } from "@route/Routes";
-import { useEffect, useMemo, useState } from "react";
-import { CgClose } from "react-icons/cg";
-import Button from "../Button";
-import ClickAwayDetector from "../ClickAwayDetector";
 import Modal from "../Modal";
 import Table from "../Table/Table";
 import Typography from "../Typography";
-import styles from "./SaleHistoryPopUp.module.scss";
 import { deduplicate, range } from "@/lib/util";
-import usePromise from "@/lib/hooks/usePromise";
 
 export interface SaleHistoryPopUpProps {
 	item: AuctionItem;
