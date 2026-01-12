@@ -9,6 +9,7 @@ const Profile = lazy(() => import("./Profile"));
 const CreateProduct = lazy(() => import("./CreateProductPage"));
 const Test = lazy(() => import("./Test"));
 const CreateAuction = lazy(() => import("./CreateAuction"));
+const CreateAuctionItem = lazy(() => import("./CreateAuctionItem"));
 const Login = lazy(() => import("./Login"));
 const Registration = lazy(() => import("./Registration"));
 
@@ -19,7 +20,8 @@ export const Routes = {
 		Auctions: {
 			Base: `/auctions`,
 			Create: `/auctions/create`,
-			Pending: `/auctions/pending`
+			Pending: `/auctions/pending`,
+			Items: '/auctions/items/'
 		},
 		CreateProduct: `/products/create`,
 		Profile: (id: User["id"]) => `/profile/${id}`,
@@ -137,6 +139,7 @@ export default {
 	[Routes.Pages.Auctions.Pending]: PendingAuction,
 	[Routes.Pages.Profile(":userId" as any)]: Profile,
 	[Routes.Pages.Auctions.Create]: CreateAuction,
+	[Routes.Pages.Auctions.Items]: CreateAuctionItem,
 	[Routes.Pages.CreateProduct]: CreateProduct,
 	[Routes.Pages.Test]: Test,
 	[Routes.Pages.Login]: Login,
