@@ -5,15 +5,15 @@ import Input from "@component/Input";
 import Typography from "@component/Typography";
 import { API_URL, type ProductImage } from "@lib/api";
 import { Routes } from "@route/Routes";
-import { type Dispatch, type SetStateAction, useState, useId } from "react";
+import { type Dispatch, type SetStateAction, useId, useState } from "react";
 import styles from "./CreateProductPage.module.scss";
 
 // TODO: add visual status for user
 // use StatusDisplay
 async function PostProduct(name: string, description: string, images: string[]) {
 	const productId: number = await fetch(API_URL + Routes.Product.Post, {
-    method: "POST",
-    credentials: "include",
+		method: "POST",
+		credentials: "include",
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify({
 			name: name,
@@ -27,14 +27,14 @@ async function PostProduct(name: string, description: string, images: string[]) 
 
 	await fetch(API_URL + Routes.ProductImage.BatchPost, {
 		method: "POST",
-    credentials: "include",
+		credentials: "include",
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify(images.map(url => JSON.stringify({ parent: productId, url: url })))
 	});
 
 	const imageIds: number[] = await fetch(API_URL + Routes.ProductImage.FromParent(productId), {
 		method: "GET",
-    credentials: "include",
+		credentials: "include",
 		headers: { "Content-Type": "application/json" }
 	})
 		.then(response => response.json())
@@ -44,7 +44,7 @@ async function PostProduct(name: string, description: string, images: string[]) 
 	if (imageIds.length >= 1) {
 		await fetch(API_URL + Routes.Product.Patch(productId), {
 			method: "PATCH",
-      credentials: "include",
+			credentials: "include",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				op: "replace",
@@ -62,7 +62,7 @@ export default function CreateProductPage() {
 	const [name, setName] = useState<string>("");
 	const [description, setDescription] = useState<string>("");
 	const [batchSize, setBatchSize] = useState<number>(0);
-  const id = useId();
+	const id = useId();
 
 	return (
 		<div className={styles.container}>
@@ -72,7 +72,7 @@ export default function CreateProductPage() {
 				batchSize={batchSize}
 				showThumbnail={images.length > 0}
 				images={images}
-        owner={"Product Owner"}
+				owner={"Product Owner"}
 			/>
 
 			<div className={styles.seperator}/>

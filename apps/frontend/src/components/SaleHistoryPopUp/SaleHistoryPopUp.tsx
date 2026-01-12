@@ -66,7 +66,7 @@ export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHis
 				price: String(e.price)
 			}));
 	}, [owners, slicedHistory]);
-		
+
 	// TODO: Decide if array padding is needed bc on Brightspace it explicitly says to show the last 10 sales)
 	// but this is ooglay
 	while (currentOwnerEntries.length < 10) {

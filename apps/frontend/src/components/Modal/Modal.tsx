@@ -1,10 +1,10 @@
 import ThemeCSSProvider, { useTheme } from "@/themes/ThemeCSSProvider";
-import { PropsWithChildren } from "react";
-import { CgClose } from "react-icons/cg";
 import Button from "@component/Button";
-import styles from "./Modal.module.scss";
+import { PropsWithChildren } from "react";
 import { createPortal } from "react-dom";
+import { CgClose } from "react-icons/cg";
 import ClickAwayDetector from "../ClickAwayDetector";
+import styles from "./Modal.module.scss";
 
 export interface ModalProps extends PropsWithChildren {
 	open: boolean;
@@ -26,10 +26,13 @@ export default function Modal({ children, open, onClose: close }: ModalProps) {
 				<div className={styles.modal} onClick={e => e.stopPropagation()}>
 					{children}
 					{close && (
-						<Button onClick={close} className={styles.closeButton}><CgClose/></Button>
+						<Button onClick={close} className={styles.closeButton}>
+							<CgClose/>
+						</Button>
 					)}
 				</div>
 			</div>
-		</ThemeCSSProvider>
-	, document.body);
+		</ThemeCSSProvider>,
+		document.body
+	);
 }

@@ -3,7 +3,7 @@
 	background-color: var(--color-background-secondary);
 	border: 1px solid var(--color-border);
 	border-radius: var(--border-radius);
-	box-shadow: 2px 6px 12px #0004;
+	box-shadow: 2px 6px 12px #00000044;
 	min-width: 50vw;
 	max-width: calc(100vw - var(--spacing) * 2);
 	height: 200px;
@@ -17,7 +17,7 @@
 	right: 0;
 	width: 100vw;
 	height: 100vh;
-	background-color: #0008;
+	background-color: #00000088;
 	display: flex;
 	justify-content: center;
 	align-items: center;
