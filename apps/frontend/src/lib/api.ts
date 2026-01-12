@@ -46,13 +46,13 @@ export interface AuctionItem {
 	batchSize: number;
 	startingPrice: number;
 	minimumPrice: number;
-	ownerId: number;
+	ownerId: User["id"];
 	length: number;
 	productId: number;
 }
 
 export interface User {
-	id: number;
+	id: string;
 	userName: string;
 	normalizedUserName: string;
 	email: string;
@@ -73,7 +73,7 @@ export interface User {
 }
 
 export interface PublicUser {
-	id: number;
+	id: User["id"];
 	userName?: string;
 	avatarImageUrl?: string;
 	email?: string;
