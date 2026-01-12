@@ -12,8 +12,8 @@ import { useEffect, useState } from "react";
 
 function ProductInfo({product} : {product: Product}) {
   const images = useAPI<ProductImage[]>(product ? Routes.ProductImage.FromParent(product.id) : null);
+  if (images === null) return <Throbber/>;
   if (images === undefined) return <NotFound/>;
-  if (images === null) return <NotFound/>;
 
   return (
       <div className={styles.modalBody}>
