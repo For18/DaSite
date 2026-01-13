@@ -4,7 +4,8 @@ import ProductView from "@component/ProductView";
 import Section from "@component/Section";
 import Throbber from "@component/Throbber";
 import Typography from "@component/Typography";
-import { API_URL, type Auction, type AuctionEntry, type AuctionItem, useAPI } from "@lib/api";
+import Accordion from "@/components/Accordion";
+import { API_URL, type Auction, type AuctionEntry, type AuctionItem, type Product, useAPI } from "@lib/api";
 import { formatEuros } from "@lib/util";
 import { Routes } from "@route/Routes";
 import { useEffect, useMemo, useState } from "react";
@@ -20,6 +21,7 @@ export default function Auctions() {
 	});
 
 	const [now, setNow] = useState(Date.now());
+	const [openItem, setOpenItem] = useState<string | null>(null);
 
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -55,6 +57,29 @@ export default function Auctions() {
 			),
 		[auctionItemIds]
 	);
+
+	const productIds = useMemo(() => {
+		const ids = new Set<number>();
+		auctionItems?.forEach(item => ids.add(item.productId));
+		return Array.from(ids);
+	}, [auctionItems]);
+
+	const { value: products } = usePromise<Product[]>(
+		() =>
+			Promise.all(
+				productIds.map(productId =>
+					fetch(API_URL + Routes.Product.Get(productId))
+						.then(response => response.json())
+				)
+			),
+		[productIds]
+	);
+
+	const productMap = useMemo(() => {
+		const map = new Map<number, Product>();
+		products?.forEach(product => map.set(product.id, product));
+		return map;
+	}, [products]);
 
 	const timeLeft = (ms: number) => {
 		if (ms <= 0) return "Now";
@@ -98,7 +123,7 @@ export default function Auctions() {
 										Starts in: {timeLeft(auction.startingTime - now)}
 									</Typography>
 
-									<Button variant="text" onClick={() => navigate(Routes.Pages.Clock(auction.id))}>
+									<Button variant="outlined" onClick={() => navigate(Routes.Pages.Clock(auction.id))}>
 										Go to auction
 									</Button>
 
@@ -106,15 +131,22 @@ export default function Auctions() {
 										<Throbber/> :
 										(
 											<>
-												{itemForAuction.map(item => (
-													<Section key={item.id}>
-														<ProductView auctionItem={item}/>
-														<Typography color="secondary">
-															Price: {formatEuros(item.startingPrice)} →{" "}
-															{formatEuros(item.minimumPrice)} • Count: {item.count}
-														</Typography>
-													</Section>
-												))}
+												{itemForAuction.map(item => {
+													const accordionkey = `${auction.id}-item-${item.id}`;
+													return (
+														<Accordion key={item.id} title={productMap.get(item.productId)?.name} open={openItem === accordionkey} onToggle={() => setOpenItem(prev => prev === accordionkey ? null : accordionkey)}>
+															<div style={{ padding: "1rem" }}>
+																<Section key={item.id}>
+																	<ProductView auctionItem={item}/>
+																	<Typography color="secondary">
+																		Price: {formatEuros(item.startingPrice)} →{" "}
+																		{formatEuros(item.minimumPrice)} • Count: {item.count}
+																	</Typography>
+																</Section>
+															</div>
+														</Accordion>
+													);
+												})}
 											</>
 										)}
 								</Section>
