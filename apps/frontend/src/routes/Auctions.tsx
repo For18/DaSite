@@ -20,6 +20,8 @@ export default function Auctions() {
 		document.title = "For18 - auctions";
 	});
 
+	const navigate = useNavigate();
+
 	const [now, setNow] = useState(Date.now());
 	const [openItem, setOpenItem] = useState<string | null>(null);
 
@@ -93,8 +95,6 @@ export default function Auctions() {
 			String(seconds).padStart(2, "0")
 		}`;
 	};
-
-	const navigate = useNavigate();
 
 	return (
 		<>
