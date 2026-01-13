@@ -40,7 +40,7 @@ public class ProductController : ControllerBase {
 	[HttpGet("{id}")]
 	public async Task<ActionResult<ProductExternal>> Get(ulong id) {
 		using (var db = new DatabaseContext()) {
-			Product? product = await db.Products.Where(product => product.Id == id).FirstOrDefaultAsync();
+			Product? product = await db.Products.Include(product => product.ThumbnailImage).Where(product => product.Id == id).FirstOrDefaultAsync();
 
 			if (product == null) return NotFound();
 
@@ -71,11 +71,17 @@ public class ProductController : ControllerBase {
 	[HttpGet("/products/user/{userId}")]
 	public async Task<ActionResult<ProductExternal[]>> GetOfUser(string userId) {
 		using (var db = new DatabaseContext()) {
-			return await db.AuctionItems
-		.Include(item => item.Product)
+			var products = await db.AuctionItems
 				.Where(item => item.Owner.Id == userId)
-				.Select(item => ProductExternal.ToExternal(item.Product))
+				.Select(item => new ProductExternal(
+			  item.Product.Id,
+			  item.Product.Name,
+			  item.Product.Description,
+			  item.Product.ThumbnailImage != null ? item.Product.ThumbnailImage.Id : null
+		))
 			.ToArrayAsync();
+
+			return Ok(products);
 		}
 	}
 
