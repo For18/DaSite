@@ -88,7 +88,7 @@ public class AuctionItemController : ControllerBase {
 	}
 
 	[HttpGet("/auction-items/batch")]
-	public async Task<ActionResult<AuctionItemExternal[]>> BatchGet([FromQuery(Name = "ids")] string ids) {
+	public async Task<ActionResult<AuctionItemExternal[]>> BatchGet([FromQuery] ulong[] ids) {
 		using (var db = new DatabaseContext()) {
 			// Support comma-separated ids as used by the frontend (ids=1,2,3)
 			ulong[] parsedIds = Array.Empty<ulong>();
@@ -115,12 +115,16 @@ public class AuctionItemController : ControllerBase {
 		using (var db = new DatabaseContext()) {
 			return await db.AuctionEntries
 			  .Where(entry => entry.Auction.Id == id)
-			  .Include(entry => entry.AuctionItem)
-			    .ThenInclude(item => item.Owner)
-			  .Include(entry => entry.AuctionItem)
-			    .ThenInclude(item => item.Product)
-			      .ThenInclude(prod => prod.ThumbnailImage)
-			  .Select(entry => AuctionItemExternal.ToExternal(entry.AuctionItem))
+			  .Select(entry => new AuctionItemExternal(
+					entry.AuctionItem.Id,
+					entry.AuctionItem.Count,
+					entry.AuctionItem.BatchSize,
+					entry.AuctionItem.StartingPrice,
+					entry.AuctionItem.MinimumPrice,
+					entry.AuctionItem.Length,
+					entry.AuctionItem.Owner.Id,
+					entry.AuctionItem.Product.Id
+			  ))
 			  .ToArrayAsync();
 		}
 	}

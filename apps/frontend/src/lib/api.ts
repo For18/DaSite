@@ -4,6 +4,7 @@ import usePromise from "@lib/hooks/usePromise";
 import { useDebugValue } from "react";
 
 export const API_URL: string = import.meta.env.VITE_API_URL;
+if (API_URL == null) console.error("API_URL is not defined in environment variables");
 
 export type UserRole = "Admin" | "AuctionMaster" | "Customer";
 
@@ -14,6 +15,7 @@ export interface Sale {
 	amount: number;
 	price: number;
 	isPaid: boolean;
+	distributorId: string;
 }
 
 export interface Product {
@@ -46,13 +48,13 @@ export interface AuctionItem {
 	batchSize: number;
 	startingPrice: number;
 	minimumPrice: number;
-	ownerId: number;
+	ownerId: User["id"];
 	length: number;
 	productId: number;
 }
 
 export interface User {
-	id: number;
+	id: string;
 	userName: string;
 	normalizedUserName: string;
 	email: string;
@@ -73,7 +75,7 @@ export interface User {
 }
 
 export interface PublicUser {
-	id: number;
+	id: User["id"];
 	userName?: string;
 	avatarImageUrl?: string;
 	email?: string;

@@ -1,11 +1,9 @@
-import { API_URL, type AuctionItem, type Product, PublicUser, type Sale, useAPI } from "@/lib/api";
+import Modal from "@component/Modal";
+import Table from "@component/Table";
+import Typography from "@component/Typography";
+import { type AuctionItem, PublicUser, type Sale, useAPI } from "@lib/api";
+import { deduplicate, range } from "@lib/util";
 import { Routes } from "@route/Routes";
-import { useEffect, useMemo, useState } from "react";
-import { CgClose } from "react-icons/cg";
-import Button from "../Button";
-import ClickAwayDetector from "../ClickAwayDetector";
-import Typography from "../Typography";
-import styles from "./SaleHistoryPopUp.module.scss";
 
 export interface SaleHistoryPopUpProps {
 	item: AuctionItem;
@@ -13,133 +11,84 @@ export interface SaleHistoryPopUpProps {
 	onClose: () => void;
 }
 
-/* NOTE: this this has so many problems with styling but I aint dealing with that rn*/
+interface Row {
+	distributor?: PublicUser;
+	date?: string;
+	price?: number;
+	saleId?: number;
+}
+
+const HISTORY_LENGTH = 10;
+
 export default function SaleHistoryPopUp({ item, open, onClose: close }: SaleHistoryPopUpProps) {
-	const product = useAPI<Product>(Routes.Product.Get(item.productId));
-	const totalHistory = useAPI<Sale[]>(product ? Routes.Sale.GetHistory(product.id) : null);
-	const slicedHistory = totalHistory ? totalHistory.slice(0, 10) : null;
+	const globalSales = useAPI<Sale[]>(Routes.Sale.GetHistory(item.productId));
+	const currentOwnerSales = useAPI<Sale[]>(Routes.Sale.GetOwnerHistory(item.productId, item.ownerId));
 
-	const [owners, setOwners] = useState<PublicUser[] | null>(null);
-	const [items, setItems] = useState<AuctionItem[] | null>(null);
-	/* TODO: account for possible missing items*/
-	useEffect(() => {
-		if (totalHistory == null) return;
-		fetch(API_URL + Routes.AuctionItem.BatchGet(slicedHistory.map(e => e.purchasedItemId)), {
-			credentials: "include"
-		})
-			.then(response => response.json())
-			.then(data => data as AuctionItem[])
-			.then(items => setItems(items));
-	}, [totalHistory]);
-	useEffect(() => {
-		if (items == null) return;
-		fetch(API_URL + Routes.User.BatchGetPublic(items.map(e => e.ownerId)), {
-			credentials: "include"
-		})
-			.then(response => response.json())
-			.then(data => data as PublicUser[])
-			.then(owners => setOwners(owners));
-	}, [items]);
-
-	const totalCurrentItemOwnerHistory = useAPI<Sale[]>(
-		product ? Routes.Sale.GetOwnerHistory(product.id, item.ownerId) : null
+	const distributors = useAPI<PublicUser[]>(
+		globalSales == null ?
+			null :
+			Routes.User.BatchGetPublic(deduplicate(globalSales.map(sale => sale.distributorId)))
 	);
 
-	// TODO: replace Date.now() with actual date property of Sale when its added
-	const currentOwnerEntries: { date: string, price: string }[] = useMemo(() => {
-		if (totalCurrentItemOwnerHistory == null) return [];
-		return totalCurrentItemOwnerHistory
-			.slice(0, 10)
-			.map(e => ({
-				date: new Date(Date.now()).toLocaleDateString(),
-				price: String(e.price)
-			}));
-	}, [totalCurrentItemOwnerHistory]);
-
-	const totalEntries: { owner: string, date: string, price: string }[] = useMemo(() => {
-		if (owners == null || slicedHistory == null) return [];
-		return slicedHistory
-			.slice(0, 10)
-			.map((e, i) => ({
-				owner: owners[i]?.userName ?? "-",
-				date: new Date(Date.now()).toLocaleDateString(),
-				price: String(e.price)
-			}));
-	}, [owners, slicedHistory]);
-		
-	// TODO: Decide if array padding is needed bc on Brightspace it explicitly says to show the last 10 sales)
-	// but this is ooglay
-	while (currentOwnerEntries.length < 10) {
-		currentOwnerEntries.push({ date: "-", price: "-" });
-	}
-	while (totalEntries.length < 10) {
-		totalEntries.push({ owner: "-", date: "-", price: "-" });
-	}
-
-	if (slicedHistory == null) return <></>;
-	if (totalCurrentItemOwnerHistory == null) return <></>;
+	const globalRows: Row[] = globalSales == null ? [] : globalSales.slice(0, HISTORY_LENGTH).map(sale => ({
+		distributor: distributors?.find(user => user.id === sale.distributorId),
+		date: new Date(Date.now()).toLocaleDateString(),
+		price: sale.price,
+		saleId: sale.id
+	}));
+	const currentOwnerRows: Omit<Row, "distributor">[] = currentOwnerSales == null ?
+		[] :
+		currentOwnerSales.slice(0, HISTORY_LENGTH).map(sale => ({
+			date: new Date(Date.now()).toLocaleDateString(),
+			price: sale.price,
+			saleId: sale.id
+		}));
 
 	return (
 		<>
-			{
-				/* TODO: extract modal to separate component */
-			}
-			{open ?
-				(
-					<div className={styles.historyList} id="popover" popover="manual">
-						{/* Current Owner History */}
-						<div className={styles.currentOwnerHistory}>
-							<div className={styles.leftColumn}>
-								<Typography>Date</Typography>
-								<div className={styles.scrollContainer}>
-									{currentOwnerEntries.map((e, i) => <Typography key={i}>{e.date}</Typography>)}
-								</div>
-							</div>
-							<div className={styles.rightColumn}>
-								<Typography>Price</Typography>
-								<div className={styles.scrollContainer}>
-									{currentOwnerEntries.map((e, i) => <Typography key={i}>{e.price}</Typography>)}
-								</div>
-							</div>
-						</div>
-						<Typography>
-							Average all-time price: {currentOwnerEntries
-								.map(e => (e.price === "-" ? 0 : Number(e.price)))
-								.reduce((acc, curr) => acc + curr, 0)}
-						</Typography>
+			<Modal open={open} onClose={close}>
+				{/* Current Owner History */}
+				<Table>
+					<tbody>
+						<tr>
+							<th>Date</th>
+							<th>Price</th>
+						</tr>
+						{range(HISTORY_LENGTH).map(i => currentOwnerRows[i] ?? ({} as any)).map(entry => (
+							<tr key={entry.saleId}>
+								<td>{entry.date ?? "-"}</td>
+								<td>{entry.price ?? "-"}</td>
+							</tr>
+						))}
+					</tbody>
+				</Table>
+				<Typography>
+					Average all-time price: {currentOwnerRows.reduce((acc, row) => acc + (row.price ?? 0), 0) /
+						currentOwnerRows.reduce((acc, row) => acc + (row.price == null ? 0 : 1), 0)}
+				</Typography>
 
-						{/* All History */}
-						<div className={styles.allHistory}>
-							<div className={styles.leftColumn}>
-								<Typography>Distributor</Typography>
-								<div className={styles.scrollContainer}>
-									{totalEntries.map((e, i) => <Typography key={i}>{e.owner}</Typography>)}
-								</div>
-							</div>
-							<div className={styles.middleColumn}>
-								<Typography>Date</Typography>
-								<div className={styles.scrollContainer}>
-									{totalEntries.map((e, i) => <Typography key={i}>{e.date}</Typography>)}
-								</div>
-							</div>
-							<div className={styles.rightColumn}>
-								<Typography>Price</Typography>
-								<div className={styles.scrollContainer}>
-									{totalEntries.map((e, i) => <Typography key={i}>{e.price}</Typography>)}
-								</div>
-							</div>
-						</div>
-						<Typography>
-							Average all-time price: {totalEntries
-								.map(e => (e.price === "-" ? 0 : Number(e.price)))
-								.reduce((acc, curr) => acc + curr, 0)}
-						</Typography>
-						<Button className={styles.closeButton} onClick={close}>
-							<CgClose/>
-						</Button>
-					</div>
-				) :
-				null}
+				{/* All History */}
+				<Table>
+					<tbody>
+						<tr>
+							<th>Distributor</th>
+							<th>Date</th>
+							<th>Price</th>
+						</tr>
+						{range(HISTORY_LENGTH).map(i => globalRows[i] ?? ({} as any)).map(row => (
+							<tr key={row.saleId}>
+								<td>{row.distributor == null ? "-" : (row.distributor.userName ?? "Unnamed")}</td>
+								<td>{row.date ?? "-"}</td>
+								<td>{row.price ?? "-"}</td>
+							</tr>
+						))}
+					</tbody>
+				</Table>
+				<Typography>
+					Average all-time price: {globalRows.reduce((acc, row) => acc + (row.price ?? 0), 0) /
+						globalRows.reduce((acc, row) => acc + (row.price == null ? 0 : 1), 0)}
+				</Typography>
+			</Modal>
 		</>
 	);
 }

@@ -7,7 +7,7 @@ import Clock from "@component/Clock";
 import EndedAuction from "@component/EndedAuction";
 import ProductView from "@component/ProductView";
 import Throbber from "@component/Throbber";
-import { API_URL, type Auction, type AuctionItem, useAPI } from "@lib/api";
+import { API_URL, type Auction, type AuctionItem, useAPI, User } from "@lib/api";
 import useTime from "@lib/hooks/useTime";
 import NotFound from "@route/NotFound";
 import { Routes } from "@route/Routes";
@@ -38,7 +38,7 @@ function formatStartCountDown(startingTime: number, currentTime: number) {
 
 const BUFFER_LEN = 5000;
 
-async function PostSale(purchaser: number, auctionId: number, amount: number, price: number) {
+async function PostSale(purchaser: User["id"], auctionId: number, amount: number, price: number) {
 	await fetch(API_URL + Routes.Sale.Post, {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
@@ -92,7 +92,7 @@ export default function ClockPage() {
 	const elapsedTime = currentItemStartTime != null ? currentTime - currentItemStartTime : 0;
 	const progress = auctionedItemLenMillis ? elapsedTime / auctionedItemLenMillis : 0;
 
-	const isAuctionOver = items?.length === 0 && items[0] === null;
+	const isAuctionOver = items?.length === 0 && items[0] == null;
 
 	/* Temp moving of starting time
    * TODO: remove after testing

@@ -40,66 +40,6 @@
 		text-align: center;
 	}
 
-	.current-owner-history, .all-history {
-		display: flex;
-		gap: 1rem;
-		flex-direction: row;
-		max-height: 300px;
-		overflow-y: auto;
-		padding-right: 0.25rem;
-
-		.leftColumn, .middleColumn, .rightColumn {
-			display: flex;
-			flex-direction: column;
-			gap: 0.5rem;
-			min-width: 100px;
-			font-size: 0.9rem;
-			color: #e5e7eb;
-
-			text-align: left;
-
-			&.middleColumn {
-				text-align: center;
-			}
-
-			&.rightColumn {
-				text-align: right;
-			}
-		}
-
-		&::-webkit-scrollbar {
-			width: 6px;
-		}
-
-		&::-webkit-scrollbar-thumb {
-			background-color: #2c2f45;
-			border-radius: 3px;
-		}
-
-		&::-webkit-scrollbar-track {
-			background-color: transparent;
-		}
-	}
-
-	.current-owner-history {}
-
-	.all-history {
-		padding-left: 1.25rem;
-
-		.left-column, .middle-column, .right-column {
-			> :nth-child(odd) {
-				background-color: #0b0c1a;
-			}
-
-			> :nth-child(even) {
-				background-color: #121428;
-			}
-
-			padding: 0.3rem 0.6rem;
-			border-radius: 6px;
-		}
-	}
-
 	.close-button {
 		position: absolute;
 		top: var(--spacing);

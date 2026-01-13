@@ -8,17 +8,14 @@ using Microsoft.AspNetCore.Authorization;
 
 [DisplayName(nameof(Sale))]
 public class SaleExternal {
-	public SaleExternal(ulong id, string purchaserId, ulong purchasedItemId, uint amount, uint price, bool isPaid) {
+	public SaleExternal(ulong id, string purchaserId, ulong purchasedItemId, uint amount, uint price, bool isPaid, string distributorId) {
 		Id = id;
 		PurchaserId = purchaserId;
 		PurchasedItemId = purchasedItemId;
 		Amount = amount;
 		Price = price;
 		IsPaid = isPaid;
-	}
-
-	public static SaleExternal ToExternal(Sale sale) {
-		return new SaleExternal(sale.Id, sale.Purchaser.Id, sale.PurchasedItem.Id, sale.Amount, sale.Price, sale.IsPaid);
+		DistributorId = distributorId;
 	}
 
 	public Sale ToSale(DatabaseContext db) {
@@ -37,6 +34,7 @@ public class SaleExternal {
 	public uint Amount { get; set; }
 	public uint Price { get; set; }
 	public bool IsPaid { get; set; }
+	public string DistributorId { get; set; }
 }
 
 [ApiController]
@@ -52,7 +50,15 @@ public class SaleController : ControllerBase {
 			Sale? sale = await db.Sales.Include(sale => sale.PurchasedItem).Include(sale => sale.Purchaser).Where(sale => sale.Id == id).FirstOrDefaultAsync();
 			if (sale == null) return NotFound();
 
-			return SaleExternal.ToExternal(sale);
+			return new SaleExternal(
+				sale.Id,
+				sale.Purchaser.Id,
+				sale.PurchasedItem.Id,
+				sale.Amount,
+				sale.Price,
+				sale.IsPaid,
+				db.Users.Where(user => user.Id == sale.PurchasedItem.Owner.Id).First().Id
+			);
 		}
 	}
 
@@ -61,12 +67,20 @@ public class SaleController : ControllerBase {
 	public async Task<ActionResult<SaleExternal[]>> GetProductSaleHistory(ulong id) {
 		using (var db = new DatabaseContext()) {
 			return await db.Sales
-			  .Include(sale => sale.Purchaser)
-			  .Include(sale => sale.PurchasedItem)
-			  .ThenInclude(item => item.Product)
-			  .Where(sale => sale.PurchasedItem.Product.Id == id)
-			  .Select(sale => SaleExternal.ToExternal(sale))
-			  .ToArrayAsync();
+				.Include(sale => sale.Purchaser)
+				.Include(sale => sale.PurchasedItem)
+				.ThenInclude(item => item.Product)
+				.Where(sale => sale.PurchasedItem.Product.Id == id)
+				.Select(sale => new SaleExternal(
+					sale.Id,
+					sale.Purchaser.Id,
+					sale.PurchasedItem.Id,
+					sale.Amount,
+					sale.Price,
+					sale.IsPaid,
+					db.Users.Where(user => user.Id == sale.PurchasedItem.Owner.Id).First().Id
+				))
+			.ToArrayAsync();
 		}
 	}
 
@@ -75,13 +89,21 @@ public class SaleController : ControllerBase {
 	public async Task<ActionResult<SaleExternal[]>> GetProductSaleHistoryByOwner(string ownerId, ulong productId) {
 		using (var db = new DatabaseContext()) {
 			return await db.Sales
-			  .Include(sale => sale.Purchaser)
-			  .Include(sale => sale.PurchasedItem)
-			  .ThenInclude(item => item.Owner)
-			  .Include(sale => sale.PurchasedItem.Product)
-			  .Where(sale => sale.PurchasedItem.Product.Id == productId && sale.PurchasedItem.Owner.Id == ownerId)
-			  .Select(sale => SaleExternal.ToExternal(sale))
-			  .ToArrayAsync();
+				.Include(sale => sale.Purchaser)
+				.Include(sale => sale.PurchasedItem)
+				.ThenInclude(item => item.Owner)
+				.Include(sale => sale.PurchasedItem.Product)
+				.Where(sale => sale.PurchasedItem.Product.Id == productId && sale.PurchasedItem.Owner.Id == ownerId)
+				.Select(sale => new SaleExternal(
+					sale.Id,
+					sale.Purchaser.Id,
+					sale.PurchasedItem.Id,
+					sale.Amount,
+					sale.Price,
+					sale.IsPaid,
+					db.Users.Where(user => user.Id == sale.PurchasedItem.Owner.Id).First().Id
+				))
+			.ToArrayAsync();
 		}
 	}
 
@@ -91,10 +113,23 @@ public class SaleController : ControllerBase {
 		if (!(User.IsInRole("AuctionMaster") || User.IsInRole("Admin"))) return Forbid();
 
 		using (var db = new DatabaseContext()) {
-			Sale? sale = await db.Sales.Include(sale => sale.PurchasedItem).Include(sale => sale.Purchaser).Where(sale => sale.PurchasedItem.Id == id).FirstOrDefaultAsync();
+			Sale? sale = await db.Sales
+				.Include(sale => sale.PurchasedItem)
+				.ThenInclude(item => item.Owner)
+				.Include(sale => sale.Purchaser)
+				.Where(sale => sale.PurchasedItem.Id == id)
+			.FirstOrDefaultAsync();
 			if (sale == null) return NotFound();
 
-			return SaleExternal.ToExternal(sale);
+			return new SaleExternal(
+				sale.Id,
+				sale.Purchaser.Id,
+				sale.PurchasedItem.Id,
+				sale.Amount,
+				sale.Price,
+				sale.IsPaid,
+				db.Users.Where(user => user.Id == sale.PurchasedItem.Owner.Id).First().Id
+			);
 		}
 	}
 
@@ -104,7 +139,17 @@ public class SaleController : ControllerBase {
 		if (!(User.IsInRole("AuctionMaster") || User.IsInRole("Admin"))) return Forbid();
 
 		using (var db = new DatabaseContext()) {
-			return await db.Sales.Select(sale => SaleExternal.ToExternal(sale)).ToArrayAsync();
+			return await db.Sales
+				.Select(sale => new SaleExternal(
+					sale.Id,
+					sale.Purchaser.Id,
+					sale.PurchasedItem.Id,
+					sale.Amount,
+					sale.Price,
+					sale.IsPaid,
+					db.Users.Where(user => user.Id == sale.PurchasedItem.Owner.Id).First().Id
+				))
+			.ToArrayAsync();
 		}
 	}
 
@@ -115,8 +160,16 @@ public class SaleController : ControllerBase {
 				.Include(sale => sale.PurchasedItem)
 				.Include(sale => sale.Purchaser)
 				.Where(sale => ids.Contains(sale.Id))
-				.Select(sale => SaleExternal.ToExternal(sale))
-				.ToArrayAsync();
+				.Select(sale => new SaleExternal(
+					sale.Id,
+					sale.Purchaser.Id,
+					sale.PurchasedItem.Id,
+					sale.Amount,
+					sale.Price,
+					sale.IsPaid,
+					db.Users.Where(user => user.Id == sale.PurchasedItem.Owner.Id).First().Id
+				))
+			.ToArrayAsync();
 		}
 	}
 
