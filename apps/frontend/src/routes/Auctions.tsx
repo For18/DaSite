@@ -16,6 +16,18 @@ import { Navigate, useNavigate } from "react-router";
  * each card should hold title of auction and have a list of links or hover-able text or similar
  * which displays the info abt the products listed
  */
+const timeLeft = (ms: number) => {
+	if (ms <= 0) return "Now";
+
+	const totalSeconds = Math.floor(ms / 1000);
+	const days = Math.floor(totalSeconds / 86400);
+	const hours = Math.floor(totalSeconds / 3600);
+	const minutes = Math.floor((totalSeconds % 3600) / 60);
+	const seconds = totalSeconds % 60;
+
+	return `${days}d ${String(hours).padStart(2, "0")}h ${String(minutes).padStart(2, "0")}m ${String(seconds).padStart(2, "0")}s`;
+};
+
 export default function Auctions() {
 	useEffect(() => {
 		document.title = "For18 - auctions";
@@ -77,18 +89,6 @@ export default function Auctions() {
 		products?.forEach(product => map.set(product.id, product));
 		return map;
 	}, [products]);
-
-	const timeLeft = (ms: number) => {
-		if (ms <= 0) return "Now";
-
-		const totalSeconds = Math.floor(ms / 1000);
-		const days = Math.floor(totalSeconds / 86400);
-		const hours = Math.floor(totalSeconds / 3600);
-		const minutes = Math.floor((totalSeconds % 3600) / 60);
-		const seconds = totalSeconds % 60;
-
-		return `${days}d ${String(hours).padStart(2, "0")}h ${String(minutes).padStart(2, "0")}m ${String(seconds).padStart(2, "0")}s`;
-	};
 
 	return (
 		<>
