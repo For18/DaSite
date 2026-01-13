@@ -45,25 +45,25 @@
 }
 
 .modalBody {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 0 16px 16px 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	padding: 0 16px 16px 16px;
 
-  .separator {
-    background-color: var(--color-border);
-    width: calc(100% - 32px);
-    height: 1px;
-    margin: 12px auto;
-  }
+	.separator {
+		background-color: var(--color-border);
+		width: calc(100% - 32px);
+		height: 1px;
+		margin: 12px auto;
+	}
 
-  .image-container{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
+	.image-container {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
 
-  img {
-    border-radius: 4px;
-  }
+	img {
+		border-radius: 4px;
+	}
 }

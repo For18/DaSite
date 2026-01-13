@@ -74,14 +74,14 @@ public class ProductController : ControllerBase {
 			var products = await db.AuctionItems
 				.Where(item => item.Owner.Id == userId)
 				.Select(item => new ProductExternal(
-              item.Product.Id,
-              item.Product.Name,
-              item.Product.Description,
-              item.Product.ThumbnailImage != null ? item.Product.ThumbnailImage.Id : null
-        ))
+			  item.Product.Id,
+			  item.Product.Name,
+			  item.Product.Description,
+			  item.Product.ThumbnailImage != null ? item.Product.ThumbnailImage.Id : null
+		))
 			.ToArrayAsync();
 
-      return Ok(products);
+			return Ok(products);
 		}
 	}
 
