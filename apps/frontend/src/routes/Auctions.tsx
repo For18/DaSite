@@ -1,10 +1,10 @@
+import Accordion from "@/components/Accordion";
 import Button from "@/components/Button/Button";
 import usePromise from "@/lib/hooks/usePromise";
 import ProductView from "@component/ProductView";
 import Section from "@component/Section";
 import Throbber from "@component/Throbber";
 import Typography from "@component/Typography";
-import Accordion from "@/components/Accordion";
 import { API_URL, type Auction, type AuctionEntry, type AuctionItem, type Product, useAPI } from "@lib/api";
 import { formatEuros } from "@lib/util";
 import { Routes } from "@route/Routes";
@@ -134,13 +134,20 @@ export default function Auctions() {
 												{itemForAuction.map(item => {
 													const accordionkey = `${auction.id}-item-${item.id}`;
 													return (
-														<Accordion key={item.id} title={productMap.get(item.productId)?.name} open={openItem === accordionkey} onToggle={() => setOpenItem(prev => prev === accordionkey ? null : accordionkey)}>
+														<Accordion key={item.id}
+															title={productMap.get(item.productId)?.name}
+															open={openItem === accordionkey} onToggle={() =>
+															setOpenItem(prev =>
+																prev === accordionkey ? null : accordionkey
+															)}
+														>
 															<div style={{ padding: "1rem" }}>
 																<Section key={item.id}>
 																	<ProductView auctionItem={item}/>
 																	<Typography color="secondary">
 																		Price: {formatEuros(item.startingPrice)} →{" "}
-																		{formatEuros(item.minimumPrice)} • Count: {item.count}
+																		{formatEuros(item.minimumPrice)} • Count:{" "}
+																		{item.count}
 																	</Typography>
 																</Section>
 															</div>
