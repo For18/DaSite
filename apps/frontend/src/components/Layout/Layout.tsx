@@ -6,7 +6,7 @@ import { type PropsWithChildren } from "react";
 import styles from "./Layout.module.scss";
 
 export default function Layout({ children }: PropsWithChildren) {
-	const { user, role } = useAuth();
+	const { role } = useAuth();
 
 	let hyperlinksToRender: { title: string, link: string }[] = [
 		{ title: "Home", link: Routes.Pages.Home }
@@ -16,7 +16,6 @@ export default function Layout({ children }: PropsWithChildren) {
 	else {
 		hyperlinksToRender.push(
 			{ title: "Auctions", link: Routes.Pages.Auctions.Base },
-			{ title: "Profile", link: user ? Routes.Pages.Profile(user.id) : null }
 		);
 		if (role == "Admin" || role == "AuctionMaster") {
 			hyperlinksToRender.push(
