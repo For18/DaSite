@@ -4,9 +4,10 @@
 	border: 1px solid var(--color-border);
 	border-radius: var(--border-radius);
 	box-shadow: 2px 6px 12px #00000044;
-	min-width: 50vw;
-	max-width: calc(100vw - var(--spacing) * 2);
-	height: 200px;
+	width: fit-content;
+	max-width: 100%;
+	min-height: 200px;
+	margin-inline: auto;
 }
 
 .backdrop {
@@ -15,12 +16,12 @@
 	bottom: 0;
 	left: 0;
 	right: 0;
-	width: 100vw;
-	height: 100vh;
+	width: calc(100vw - var(--spacing) * 2);
+	height: calc(100vh - var(--spacing) * 2);
 	background-color: #00000088;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+	overflow-y: auto;
+	padding: var(--spacing);
+	align-content: center;
 }
 
 .close-button {

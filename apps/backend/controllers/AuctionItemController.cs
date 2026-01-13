@@ -82,7 +82,7 @@ public class AuctionItemController : ControllerBase {
 	}
 
 	[HttpGet("/auction-items/batch")]
-	public async Task<ActionResult<AuctionItemExternal[]>> BatchGet([FromRoute] ulong[] ids) {
+	public async Task<ActionResult<AuctionItemExternal[]>> BatchGet([FromQuery] ulong[] ids) {
 		using (var db = new DatabaseContext()) {
 			return await db.AuctionItems
 			  .Include(auc => auc.Product)

@@ -1,5 +1,6 @@
 import Modal from "@/components/Modal/Modal";
-import Accordion from "@component/Accordion";
+import Table from "@/components/Table";
+import { SmartAccordion } from "@component/Accordion";
 import Button from "@component/Button";
 import Checkbox from "@component/Checkbox";
 import Divider from "@component/Divider";
@@ -25,19 +26,13 @@ export default function Test() {
 	}, []);
 	const [checked, setChecked] = useState<boolean>(false);
 	const [sliderValue, setSliderValue] = useState<number>(50);
-	const [inputsOpen, setInputsOpen] = useState<boolean>(false);
-	const [buttonsOpen, setButtonsOpen] = useState<boolean>(false);
-	const [sliderOpen, setSliderOpen] = useState<boolean>(false);
-	const [textOpen, setTextOpen] = useState<boolean>(false);
-	const [selectOpen, setSelectOpen] = useState<boolean>(false);
 	const [selectValue, setSelectValue] = useState<string | null>(null);
-	const [statusDisplayOpen, setStatusDisplayOpen] = useState<boolean>(false);
 	const [status, setStatus] = useState<Status>({ type: "none", label: "" });
 	const [modalOpen, setModalOpen] = useState<boolean>(false);
 
 	return (
 		<>
-			<Accordion title="Buttons" open={buttonsOpen} onToggle={setButtonsOpen}>
+			<SmartAccordion title="Buttons">
 				<Typography heading={3}>Buttons pressed: {buttonsPressed}</Typography>
 				<table style={{
 					margin: "var(--spacing)",
@@ -65,8 +60,8 @@ export default function Test() {
 				<LabeledContainer text="Enable buttons" color={buttonsEnabled ? "primary" : "secondary"} id="switch">
 					<Switch enabled={buttonsEnabled} onClick={() => setButtonsEnabled(v => !v)} labelledby="switch"/>
 				</LabeledContainer>
-			</Accordion>
-			<Accordion title="Inputs" open={inputsOpen} onToggle={setInputsOpen}>
+			</SmartAccordion>
+			<SmartAccordion title="Inputs">
 				<LabeledContainer text="Disable fields" id="checkbox">
 					<Checkbox checked={checked} onClick={() => setChecked(v => !v)} labelledby="checkbox"/>
 				</LabeledContainer>
@@ -79,13 +74,13 @@ export default function Test() {
 								labelledby={`field-${type}`}/>
 						</LabeledContainer>
 					))}
-			</Accordion>
-			<Accordion title="Slider" open={sliderOpen} onToggle={setSliderOpen}>
+			</SmartAccordion>
+			<SmartAccordion title="Slider">
 				<Slider min={0} max={100} value={sliderValue} step={1} onChange={setSliderValue} width="500px"
 					valueText={sliderValue + "%"}/>
 				<Typography>Value: {sliderValue}</Typography>
-			</Accordion>
-			<Accordion title="Text" open={textOpen} onToggle={setTextOpen}>
+			</SmartAccordion>
+			<SmartAccordion title="Text">
 				<Typography heading={1}>Heading 1</Typography>
 				<Typography heading={2}>Heading 2</Typography>
 				<Typography heading={3}>Heading 3</Typography>
@@ -99,13 +94,13 @@ export default function Test() {
 					suscipio vapulus dolores suffragium animi. Officiis denuncio tergum appositus animadverto vero
 					excepturi veniam. Pecco supra altus similique labore aranea odit.
 				</Typography>
-			</Accordion>
-			<Accordion title="Select" open={selectOpen} onToggle={setSelectOpen}>
+			</SmartAccordion>
+			<SmartAccordion title="Select">
 				<Select value={selectValue} onChange={setSelectValue} placeholder="Choose an option">
 					{range(20).map(i => <Option key={i} value={`option${i + 1}`}>{`Option ${i + 1}`}</Option>)}
 				</Select>
-			</Accordion>
-			<Accordion title="Status display" open={statusDisplayOpen} onToggle={setStatusDisplayOpen}>
+			</SmartAccordion>
+			<SmartAccordion title="Status display">
 				<Button onClick={async () => {
 					setStatus({
 						type: "progress",
@@ -126,14 +121,32 @@ export default function Test() {
 					Test
 				</Button>
 				<StatusDisplay status={status}/>
-			</Accordion>
-			<Accordion title="Modal" open>
+			</SmartAccordion>
+			<SmartAccordion title="Modal">
 				<Button onClick={() => setModalOpen(true)} disabled={modalOpen}>Open modal</Button>
 				<Modal open={modalOpen} onClose={() => setModalOpen(false)}>
 					<Typography heading={3}>This is a modal</Typography>
 					<Button onClick={() => setModalOpen(false)}>Close modal</Button>
 				</Modal>
-			</Accordion>
+			</SmartAccordion>
+			<SmartAccordion title="Table">
+				<Table>
+					{range(11).map(y => (
+						<tr key={y}>
+							{range(11).map(x => {
+								const nX = x;
+								const nY = y;
+
+								if (x === 0 && y === 0) return <th></th>;
+								else if (x === 0) return <th>{nY}</th>;
+								else if (y === 0) return <th>{nX}</th>;
+
+								return <td>{nX * nY}</td>;
+							})}
+						</tr>
+					))}
+				</Table>
+			</SmartAccordion>
 		</>
 	);
 }
