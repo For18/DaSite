@@ -17,6 +17,12 @@
 	width: 1px;
 }
 
+.history-button {
+	position: absolute;
+	bottom: var(--spacing);
+	right: var(--spacing);
+}
+
 .product-container {
 	grid-column: 3;
 	display: flex;
@@ -26,6 +32,7 @@
 	text-align: left;
 	padding: var(--spacing);
 	min-width: fit-content;
+	position: relative;
 }
 
 .purchase-container {

@@ -61,3 +61,7 @@ export function isInternalHref(href: string): boolean {
 export function pickRandom<T>(values: T[]): T {
 	return values[Math.floor(Math.random() * values.length)];
 }
+
+export function deduplicate<T>(array: T[]) {
+	return Array.from(new Set(array));
+}

@@ -73,7 +73,7 @@ public class ProductImageController : ControllerBase {
 		using (var db = new DatabaseContext()) {
 			if (db.ProductImages.Include(img => img.Parent).Any(image => image.Id == productImageData.Id)) return Conflict("Already exists");
 
-			Product? parent = await db.Products.Include(product => product.Owner).Where(product => product.Id == (productImageData.Parent)).FirstOrDefaultAsync();
+			Product? parent = await db.Products.Where(product => product.Id == (productImageData.Parent)).FirstOrDefaultAsync();
 			if (parent == null) return NotFound();
 
 			ProductImage prodImage = new ProductImage {
@@ -154,6 +154,7 @@ public class ProductImageController : ControllerBase {
 		}
 	}
 
+	// TODO: bind image per AuctionItem or idfk this project will be over before we can fix that faulty relationship
 	[HttpDelete("batch")]
 	[Authorize]
 	public async Task<ActionResult> BatchDelete([FromBody] ulong[] ids) {
@@ -165,7 +166,6 @@ public class ProductImageController : ControllerBase {
 
 			ProductImage[] productImages = await db.ProductImages
 		.Include(prodImage => prodImage.Parent)
-		.ThenInclude(prod => prod.Owner)
 		.Where(prodImages => ids.Contains(prodImages.Id))
 		.ToArrayAsync();
 
@@ -173,7 +173,7 @@ public class ProductImageController : ControllerBase {
 				ProductImage? prodImage = productImages.FirstOrDefault(pi => productImageId == pi.Id);
 				if (prodImage == null) {
 					failedProductImages.Append(new FailedBatchEntry<ulong>(productImageId, "Corresponding Product does not exist"));
-				} else if (isAdmin || prodImage.Parent.Owner.Id == currentUserId) {
+				} else if (isAdmin) {
 					db.ProductImages.Remove(prodImage);
 				} else {
 					failedProductImages.Append(new FailedBatchEntry<ulong>(productImageId, "Unauthorized deletion attempt"));

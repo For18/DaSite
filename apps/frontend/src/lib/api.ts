@@ -11,10 +11,11 @@ export type UserRole = "Admin" | "AuctionMaster" | "Customer";
 export interface Sale {
 	id: number;
 	purchaserId: number;
-	purchasedAuctionId: number;
+	purchasedItemId: number;
 	amount: number;
 	price: number;
 	isPaid: boolean;
+	distributorId: string;
 }
 
 export interface Product {
@@ -22,7 +23,6 @@ export interface Product {
 	name: string;
 	description: string;
 	thumbnailImageId: number;
-	ownerId: number;
 }
 
 export interface ProductImage {
@@ -48,12 +48,13 @@ export interface AuctionItem {
 	batchSize: number;
 	startingPrice: number;
 	minimumPrice: number;
+	ownerId: User["id"];
 	length: number;
 	productId: number;
 }
 
 export interface User {
-	id: number;
+	id: string;
 	userName: string;
 	normalizedUserName: string;
 	email: string;
@@ -74,7 +75,7 @@ export interface User {
 }
 
 export interface PublicUser {
-	id: number;
+	id: User["id"];
 	userName?: string;
 	avatarImageUrl?: string;
 	email?: string;

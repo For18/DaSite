@@ -32,7 +32,7 @@ export const Routes = {
 		GetPrivate: (id: User["id"]) => `/user/private/${id}`,
 		GetUserRole: `/user/private/role`,
 		BatchGetPrivate: `/users/private/batch`,
-		BatchGetPublic: `/users/batch`,
+		BatchGetPublic: (ids: User["id"][]) => `/users/batch?ids=${ids.join(",")}`,
 		GetAllPrivate: `/users/private`,
 		GetAllPublic: `/users`,
 		GetAllByName: (name: string) => `/users/by-name/${name}`,
@@ -46,6 +46,9 @@ export const Routes = {
 
 	Sale: {
 		Get: (id: Sale["id"]) => `/sale/${id}`,
+		GetHistory: (productId: Product["id"]) => `/sale/history/${productId}`,
+		GetOwnerHistory: (productId: Product["id"], ownerId: User["id"]) =>
+			`/sale/owner-history/${ownerId}/${productId}`,
 		GetByAuction: (auctionId: Auction["id"]) => `/sale/by-auction/${auctionId}`,
 		GetAll: `/sales`,
 		GetBatch: `/sales/batch`,
@@ -82,7 +85,7 @@ export const Routes = {
 	AuctionItem: {
 		GetAll: `/auction-item/all`,
 		Get: (id: AuctionItem["id"]) => `/auction-item/${id}`,
-		BatchGet: `/auction-items/batch`,
+		BatchGet: (ids: AuctionItem["id"][]) => `/auction-items/batch?ids=${ids.join(",")}`,
 		GetByAuction: (auctionId: Auction["id"]) => `/auction-item/by-auction/${auctionId}`,
 		Post: `/auction-item`,
 		BatchPost: `/auction-item/batch`,
