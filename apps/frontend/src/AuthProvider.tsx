@@ -1,4 +1,4 @@
-import { API_URL, User, UserType } from "@lib/api";
+import { API_URL, User, UserRole } from "@lib/api";
 import { Routes } from "@route/Routes";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
@@ -7,7 +7,7 @@ const AuthContext = createContext<AuthContext | null>(null);
 
 export interface AuthState {
 	user?: User;
-	role?: UserType;
+	role?: UserRole;
 	isLoading: boolean;
 	error?: Error;
 }
@@ -35,53 +35,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	});
 
 	const fetchUserData = useCallback(() => {
-		fetch(API_URL + Routes.User.GetCurrent, {
-			credentials: "include"
-		})
-			.then(response => {
-				if (!response.ok) throw new Error("Not authenticated");
-				return response.json();
+		Promise.all([
+			fetch(API_URL + Routes.User.GetCurrent, {
+				credentials: "include"
 			})
-			.then(data => data as User)
-			.then(user => {
+				.then(response => response.json())
+				.then(data => data as User),
+
+			fetch(API_URL + Routes.User.GetUserRole, {
+				credentials: "include"
+			})
+				.then(response => response.json())
+				.then(data => data as UserRole)
+		])
+			.then(([user, role]) =>
 				setAuthState({
 					user: user,
-					role: undefined,
+					role: role,
 					isLoading: false,
 					error: undefined
-				});
-			})
+				})
+			)
 			.catch(error => {
-				setAuthState({
-					user: undefined,
-					role: undefined,
-					isLoading: false,
-					error: error
-				});
-			});
-
-		fetch(API_URL + Routes.User.GetUserRole, {
-			credentials: "include"
-		})
-			.then(response => {
-				if (!response.ok) throw new Error("Not authenticated");
-				return response.json();
-			})
-			.then(data => data as UserType)
-			.then(role => {
-				setAuthState(prev => {
+				setAuthState(() => {
 					return {
-						user: prev.user,
-						role: role,
-						isLoading: false,
-						error: undefined
-					};
-				});
-			})
-			.catch(error => {
-				setAuthState(prev => {
-					return {
-						user: prev.user,
+						user: undefined,
 						role: undefined,
 						isLoading: false,
 						error: error
@@ -97,6 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const login = useCallback(async (email: string, password: string) => {
 		setAuthState({
 			user: undefined,
+			role: undefined,
 			isLoading: true,
 			error: undefined
 		});
@@ -111,6 +90,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		if (!response.ok) {
 			setAuthState({
 				user: undefined,
+				role: undefined,
 				isLoading: false,
 				error: new Error(String(response.status))
 			});
@@ -127,6 +107,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			.then(_response => {
 				setAuthState({
 					user: undefined,
+					role: undefined,
 					isLoading: false,
 					error: undefined
 				});
