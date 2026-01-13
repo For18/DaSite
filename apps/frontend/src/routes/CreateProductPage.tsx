@@ -81,6 +81,7 @@ export default function CreateProductPage() {
 				<Typography id={id + "name"}>Name</Typography>
 				<Input
 					className={styles.inputBasic}
+          labelledby={id + "name"}
 					type="text"
 					value={name}
 					onChange={value => setName(String(value))}
@@ -89,6 +90,7 @@ export default function CreateProductPage() {
 				<Typography id={id + "description"}>Description</Typography>
 				<Input
 					type="textfield"
+          labelledby={id + "description"}
 					value={description}
 					className={styles.inputDescription}
 					onChange={value => setDescription(String(value))}
@@ -97,6 +99,7 @@ export default function CreateProductPage() {
 				<Typography id={id + "batch-size"}>Batch size</Typography>
 				<Input
 					className={styles.inputBasic}
+          labelledby={id + "batch-size"}
 					value={String(batchSize)}
 					type="number"
 					onChange={value => setBatchSize(Number(value))}
@@ -105,6 +108,7 @@ export default function CreateProductPage() {
 				<Typography id={id + "image-link"}>Image Link</Typography>
 				<Input
 					className={styles.inputBasic}
+          labelledby={id + "image-link"}
 					value={linkText}
 					type="text"
 					onChange={value => setLinkText(String(value))}
