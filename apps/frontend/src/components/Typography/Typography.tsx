@@ -8,7 +8,7 @@ export interface TypographyProps extends PropsWithChildren {
 	className?: string;
 	href?: string;
 	id?: string;
-	onClick?: () => void;
+	onClick?: (e: Event) => void;
 }
 
 export default function Typography({
@@ -27,10 +27,11 @@ export default function Typography({
 	const goto = useGoto();
 
 	const click = useCallback((e: Event) => {
-		if (href == null && !onClick) return;
-		e.preventDefault();
-		onClick();
-		goto(href);
+    if (onClick) onClick(e);
+    if (href) {
+      e.preventDefault();
+      goto(href);
+    }
 	}, [href]);
 	const keydown = useCallback((e: KeyboardEvent) => {
 		if (e.key === "Enter" || e.key === " ") click(e);
