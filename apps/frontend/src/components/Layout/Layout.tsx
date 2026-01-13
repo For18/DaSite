@@ -21,7 +21,8 @@ export default function Layout({ children }: PropsWithChildren) {
 			hyperlinksToRender.push(
 				{ title: "PendingAuctions", link: Routes.Pages.Auctions.Pending },
 				{ title: "CreateAuction", link: Routes.Pages.Auctions.Create },
-				{ title: "CreateProduct", link: Routes.Pages.CreateProduct }
+				{ title: "CreateProduct", link: Routes.Pages.CreateProduct },
+				{ title: "AuctionItems", link: Routes.Pages.Auctions.Items }
 			);
 		}
 	}
