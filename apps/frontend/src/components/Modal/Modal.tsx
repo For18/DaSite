@@ -1,5 +1,9 @@
 import ThemeCSSProvider, { useTheme } from "@/themes/ThemeCSSProvider";
 import Button from "@component/Button";
+import { PropsWithChildren } from "react";
+import { createPortal } from "react-dom";
+import { CgClose } from "react-icons/cg";
+import ClickAwayDetector from "../ClickAwayDetector";
 import { PropsWithChildren, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { CgClose } from "react-icons/cg";

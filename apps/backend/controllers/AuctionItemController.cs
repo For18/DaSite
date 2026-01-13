@@ -97,14 +97,18 @@ public class AuctionItemController : ControllerBase {
 	public async Task<ActionResult<AuctionItemExternal[]>> GetByAuction(ulong id) {
 		using (var db = new DatabaseContext()) {
 			return await db.AuctionEntries
-				.Include(entry => entry.Auction)
-				.Include(entry => entry.AuctionItem)
-				.ThenInclude(item => item.Product)
-				.Include(entry => entry.AuctionItem)
-				.ThenInclude(item => item.Owner)
-				.Where(entry => entry.Auction.Id == id)
-				.Select(entry => AuctionItemExternal.ToExternal(entry.AuctionItem))
-			.ToArrayAsync();
+			  .Where(entry => entry.Auction.Id == id)
+			  .Select(entry => new AuctionItemExternal(
+					entry.AuctionItem.Id,
+					entry.AuctionItem.Count,
+					entry.AuctionItem.BatchSize,
+					entry.AuctionItem.StartingPrice,
+					entry.AuctionItem.MinimumPrice,
+					entry.AuctionItem.Length,
+					entry.AuctionItem.Owner.Id,
+					entry.AuctionItem.Product.Id
+			  ))
+			  .ToArrayAsync();
 		}
 	}
 
