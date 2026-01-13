@@ -1,6 +1,7 @@
 import Accordion from "@/components/Accordion";
 import Button from "@/components/Button/Button";
 import usePromise from "@/lib/hooks/usePromise";
+import useTime from "@/lib/hooks/useTime";
 import ProductView from "@component/ProductView";
 import Section from "@component/Section";
 import Throbber from "@component/Throbber";
@@ -22,16 +23,9 @@ export default function Auctions() {
 
 	const navigate = useNavigate();
 
-	const [now, setNow] = useState(Date.now());
 	const [openItem, setOpenItem] = useState<string | null>(null);
 
-	useEffect(() => {
-		const interval = setInterval(() => {
-			setNow(Date.now());
-		}, 1000);
-
-		return () => clearInterval(interval);
-	}, []);
+	const now = useTime();
 
 	const auctions = useAPI<Auction[]>(Routes.Auction.GetUpcoming);
 
@@ -84,6 +78,7 @@ export default function Auctions() {
 	}, [products]);
 
 	const timeLeft = (ms: number) => {
+		
 		if (ms <= 0) return "Now";
 
 		const totalSeconds = Math.floor(ms / 1000);
