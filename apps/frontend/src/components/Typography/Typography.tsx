@@ -9,6 +9,7 @@ export interface TypographyProps extends PropsWithChildren {
 	href?: string;
 	id?: string;
 	center?: boolean;
+	onClick?: (e: Event) => void;
 }
 
 export default function Typography({
@@ -18,7 +19,8 @@ export default function Typography({
 	className,
 	href,
 	id,
-	center = false
+	center = false,
+	onClick
 }: TypographyProps): JSX.Element {
 	const isHeading = headingLevel != null;
 	const isLink = href != null;
@@ -27,9 +29,11 @@ export default function Typography({
 	const goto = useGoto();
 
 	const click = useCallback((e: Event) => {
-		if (href == null) return;
-		e.preventDefault();
-		goto(href);
+    if (onClick) onClick(e);
+    if (href) {
+      e.preventDefault();
+      goto(href);
+    }
 	}, [href]);
 	const keydown = useCallback((e: KeyboardEvent) => {
 		if (e.key === "Enter" || e.key === " ") click(e);
@@ -48,7 +52,7 @@ export default function Typography({
 			center ? styles.center : null,
 			className
 		].filter(v => v !== null).join(" "),
-		onClick: isLink ? click : undefined,
+		onClick: click,
 		onKeyDown: isLink ? keydown : undefined
 	}, children);
 }
