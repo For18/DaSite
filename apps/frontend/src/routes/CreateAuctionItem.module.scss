@@ -36,8 +36,9 @@
 	border-radius: 8px;
 	cursor: pointer;
 	background: var(--color-background-secondary);
+	box-shadow: 0 2px 5px 1px #000000;
 	color: var(--color-text-primary);
-	width: 100%;
+	width: 80%;
 	gap: var(--spacing);
 	border: 2px solid transparent;
 	transition: all 0.2s ease;
