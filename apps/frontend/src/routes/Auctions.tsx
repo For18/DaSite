@@ -60,6 +60,7 @@ export default function Auctions() {
 		return Array.from(ids);
 	}, [auctionItems]);
 
+	//TODO: Use/fix Routes.Product.BatchGet
 	const { value: products } = usePromise<Product[]>(
 		() =>
 			Promise.all(
@@ -78,17 +79,15 @@ export default function Auctions() {
 	}, [products]);
 
 	const timeLeft = (ms: number) => {
-		
 		if (ms <= 0) return "Now";
 
 		const totalSeconds = Math.floor(ms / 1000);
+		const days = Math.floor(totalSeconds / 86400);
 		const hours = Math.floor(totalSeconds / 3600);
 		const minutes = Math.floor((totalSeconds % 3600) / 60);
 		const seconds = totalSeconds % 60;
 
-		return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${
-			String(seconds).padStart(2, "0")
-		}`;
+		return `${days} day${days !== 1 ? "s" : ""} and ${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 	};
 
 	return (
@@ -104,7 +103,7 @@ export default function Auctions() {
 					<Typography>No active auctions</Typography> :
 					auctions.sort((a, b) => a.startingTime - b.startingTime)
 						.map(auction => {
-							const itemForAuction = auctionEntries?.filter(entry => entry.auctionId === auction.id)
+							const itemsForAuction = auctionEntries?.filter(entry => entry.auctionId === auction.id)
 								.map(entry => auctionItems?.find(item => item.id === entry.itemId))
 								.filter((item): item is AuctionItem => item !== undefined) ?? [];
 
@@ -126,7 +125,8 @@ export default function Auctions() {
 										<Throbber/> :
 										(
 											<>
-												{itemForAuction.map(item => {
+												{itemsForAuction.map(item => {
+													//TODO: make a component/funcionality for a group of accordions
 													const accordionkey = `${auction.id}-item-${item.id}`;
 													return (
 														<Accordion key={item.id}
@@ -136,15 +136,14 @@ export default function Auctions() {
 																prev === accordionkey ? null : accordionkey
 															)}
 														>
+															{/* TODO: remove this when fixing layout styles */}
 															<div style={{ padding: "1rem" }}>
-																<Section key={item.id}>
-																	<ProductView auctionItem={item}/>
-																	<Typography color="secondary">
-																		Price: {formatEuros(item.startingPrice)} →{" "}
-																		{formatEuros(item.minimumPrice)} • Count:{" "}
-																		{item.count}
-																	</Typography>
-																</Section>
+																<ProductView auctionItem={item}/>
+																<Typography color="secondary">
+																	Price: {formatEuros(item.startingPrice)} →{" "}
+																	{formatEuros(item.minimumPrice)} • Count:{" "}
+																	{item.count}
+																</Typography>
 															</div>
 														</Accordion>
 													);
