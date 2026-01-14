@@ -49,7 +49,7 @@ public class ProductController : ControllerBase {
 	}
 
 	[HttpGet("/products/batch")]
-	public async Task<ActionResult<ProductExternal[]>> BatchGet([FromBody] ulong[] ids) {
+	public async Task<ActionResult<ProductExternal[]>> BatchGet([FromQuery] ulong[] ids) {
 		using (var db = new DatabaseContext()) {
 			return await db.Products
 				.Include(product => product.ThumbnailImage)
