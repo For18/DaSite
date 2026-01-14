@@ -19,8 +19,6 @@ export default function TopBar({
 	const { user, logout } = authState;
 	const [open, setOpen] = useState(false);
 
-	// TODO: find better placeholder (built in <Image> placeholder doesn't work)
-
 	const handleLogout = async () => {
 		logout();
 		setOpen(false);
