@@ -12,10 +12,6 @@ import { Routes } from "@route/Routes";
 import { useEffect, useMemo, useState } from "react";
 import { Navigate, useNavigate } from "react-router";
 
-/* TODO: update
- * each card should hold title of auction and have a list of links or hover-able text or similar
- * which displays the info abt the products listed
- */
 const timeLeft = (ms: number) => {
 	if (ms <= 0) return "Now";
 
@@ -103,6 +99,7 @@ export default function Auctions() {
 					<Typography>No active auctions</Typography> :
 					auctions.sort((a, b) => a.startingTime - b.startingTime)
 						.map(auction => {
+							// TODO: make a component for this
 							const itemsForAuction = auctionEntries?.filter(entry => entry.auctionId === auction.id)
 								.map(entry => auctionItems?.find(item => item.id === entry.itemId))
 								.filter((item): item is AuctionItem => item !== undefined) ?? [];
