@@ -63,9 +63,9 @@ export default function Auctions() {
 	);
 
 	const productIds = useMemo(() => {
-		const ids = new Set<number>();
-		auctionItems?.forEach(item => ids.add(item.productId));
-		return Array.from(ids);
+		return Array.from(
+			new Set(auctionItems?.map(i => i.productId) ?? [])
+		);
 	}, [auctionItems]);
 
 	//TODO: Use/fix Routes.Product.BatchGet
