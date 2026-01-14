@@ -63,6 +63,7 @@ export default function Auctions() {
 	);
 
 	const productIds = useMemo(() => {
+		//TODO: Replace with deduplicate function
 		return Array.from(
 			new Set(auctionItems?.map(i => i.productId) ?? [])
 		);
