@@ -90,7 +90,7 @@ function AuctionDisplay({ auction }: AuctionDisplayProps) {
 		return map;
 	}, [products]);
 
-	const [openItem, setOpenItem] = useState<string | null>(null);
+	const [openItem, setOpenItem] = useState<number | null>(null);
 
 	const itemsForAuction = auctionEntries?.filter(entry => entry.auctionId === auction.id)
 		.map(entry => auctionItems?.find(item => item.id === entry.itemId))
@@ -114,29 +114,26 @@ function AuctionDisplay({ auction }: AuctionDisplayProps) {
 				<Throbber/> :
 				(
 					<>
-						{itemsForAuction.map(item => {
-							// TODO: make a component/funcionality for a group of accordions
-							const accordionkey = `${auction.id}-item-${item.id}`;
-							return (
-								<Accordion key={item.id}
-									title={productMap.get(item.productId)?.name}
-									open={openItem === accordionkey} onToggle={() =>
-									setOpenItem(prev =>
-										prev === accordionkey ? null : accordionkey
-									)}
-								>
-									{/* TODO: remove this when fixing layout styles */}
-									<div style={{ padding: "1rem" }}>
-										<ProductView auctionItem={item}/>
-										<Typography color="secondary">
-											Price: {formatEuros(item.startingPrice)} →{" "}
-											{formatEuros(item.minimumPrice)} • Count:{" "}
-											{item.count}
-										</Typography>
-									</div>
-								</Accordion>
-							);
-						})}
+						{/* TODO: make a component/funcionality for a group of accordions? */}
+						{itemsForAuction.map(item => (
+							<Accordion key={item.id}
+								title={productMap.get(item.productId)?.name}
+								open={openItem === item.id} onToggle={() =>
+								setOpenItem(prev =>
+									prev === item.id ? null : item.id
+								)}
+							>
+								{/* TODO: remove this when fixing layout styles */}
+								<div style={{ padding: "1rem" }}>
+									<ProductView auctionItem={item}/>
+									<Typography color="secondary">
+										Price: {formatEuros(item.startingPrice)} →{" "}
+										{formatEuros(item.minimumPrice)} • Count:{" "}
+										{item.count}
+									</Typography>
+								</div>
+							</Accordion>
+						))}
 					</>
 				)}
 		</Section>
