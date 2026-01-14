@@ -52,7 +52,6 @@ async function PostSale(purchaser: User["id"], auctionId: number, amount: number
 	});
 }
 
-/* TODO: contemplate if timed out auctions should be added to the back of the items stack being sold */
 export default function ClockPage() {
 	/* Main state holders */
 	const { auctionId: auctionIdString } = useParams();

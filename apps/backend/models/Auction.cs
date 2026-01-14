@@ -32,7 +32,6 @@ public class AuctionItem {
 	public required uint Length { get; set; }
 }
 
-// TODO: add restrict element thingy so planned in products cannot get deleted
 public class AuctionEntry {
 	[Required]
 	[ForeignKey("AuctionId")]
