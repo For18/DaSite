@@ -76,7 +76,7 @@ export const Routes = {
 		Get: (id: Product["id"]) => `/product/${id}`,
 		GetAll: `/products`,
 		GetOfUser: (userId: User["id"]) => `/products/user/${userId}`,
-		BatchGet: `/products/batch`,
+		BatchGet: (productIds: Product["id"][]) => `/products/batch?ids=${productIds.join(",")}`,
 		Post: `/product`,
 		BatchPost: `/product/batch`,
 		Delete: (id: Product["id"]) => `/product/${id}`,
