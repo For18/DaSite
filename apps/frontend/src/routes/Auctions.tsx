@@ -66,17 +66,7 @@ export default function Auctions() {
 
 	const productIds = useMemo(() => deduplicate(auctionItems?.map(i => i.productId) ?? []), [auctionItems]);
 
-	// TODO: Use/fix Routes.Product.BatchGet
-	const { value: products } = usePromise<Product[]>(
-		() =>
-			Promise.all(
-				productIds.map(productId =>
-					fetch(API_URL + Routes.Product.Get(productId))
-						.then(response => response.json())
-				)
-			),
-		[productIds]
-	);
+	const products = useAPI<Product[]>(Routes.Product.BatchGet(productIds));
 
 	const productMap = useMemo(() => {
 		const map = new Map<number, Product>();
