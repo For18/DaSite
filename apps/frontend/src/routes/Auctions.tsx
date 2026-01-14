@@ -31,21 +31,37 @@ export default function Auctions() {
 		document.title = "For18 - auctions";
 	});
 
-	const navigate = useNavigate();
-
-	const [openItem, setOpenItem] = useState<string | null>(null);
-
-	const now = useTime();
-
 	const auctions = useAPI<Auction[]>(Routes.Auction.GetUpcoming);
 
-	const { value: auctionEntries, isLoading: auctionEntriesLoading } = usePromise<AuctionEntry[]>(() =>
-		Promise.all(
-			auctions?.map(auction =>
-				fetch(API_URL + Routes.AuctionEntry.GetFromAuction(auction.id))
-					.then(response => response.json())
-			) ?? []
-		).then(entryArrays => entryArrays.flat()), [auctions]);
+	return (
+		<>
+			<Typography heading={1}>Upcoming auctions</Typography>
+
+			<Section flex={{
+				direction: "column"
+			}}>
+				{auctions === null ?
+					<Throbber/> :
+					auctions === undefined || auctions.length === 0 ?
+					<Typography>No active auctions</Typography> :
+					auctions.sort((a, b) => a.startingTime - b.startingTime)
+						.map(auction => (
+							<AuctionDisplay key={auction.id} auction={auction}/>
+						))}
+			</Section>
+		</>
+	);
+}
+
+interface AuctionDisplayProps {
+	auction: Auction;
+}
+
+function AuctionDisplay({ auction }: AuctionDisplayProps) {
+	const navigate = useNavigate();
+	const now = useTime();
+
+	const auctionEntries = useAPI<AuctionEntry[]>(Routes.AuctionEntry.GetFromAuction(auction.id));
 
 	const auctionItemIds = useMemo(() => {
 		const ids = new Set<number>();
@@ -74,71 +90,55 @@ export default function Auctions() {
 		return map;
 	}, [products]);
 
+	const [openItem, setOpenItem] = useState<string | null>(null);
+
+	const itemsForAuction = auctionEntries?.filter(entry => entry.auctionId === auction.id)
+		.map(entry => auctionItems?.find(item => item.id === entry.itemId))
+		.filter((item): item is AuctionItem => item !== undefined) ?? [];
+
 	return (
-		<>
-			<Typography heading={1}>Upcoming auctions</Typography>
+		<Section key={auction.id}>
+			<Typography heading={2}>
+				Auction {auction.id}
+			</Typography>
 
-			<Section flex={{
-				direction: "column"
-			}}>
-				{auctions === null ?
-					<Throbber/> :
-					auctions === undefined || auctions.length === 0 ?
-					<Typography>No active auctions</Typography> :
-					auctions.sort((a, b) => a.startingTime - b.startingTime)
-						.map(auction => {
-							// TODO: make a component for this
-							const itemsForAuction = auctionEntries?.filter(entry => entry.auctionId === auction.id)
-								.map(entry => auctionItems?.find(item => item.id === entry.itemId))
-								.filter((item): item is AuctionItem => item !== undefined) ?? [];
+			<Typography color="secondary">
+				Starts in: {timeLeft(auction.startingTime - now)}
+			</Typography>
 
+			<Button variant="outlined" onClick={() => navigate(Routes.Pages.Clock(auction.id))}>
+				Go to auction
+			</Button>
+
+			{auctionEntries == null ?
+				<Throbber/> :
+				(
+					<>
+						{itemsForAuction.map(item => {
+							// TODO: make a component/funcionality for a group of accordions
+							const accordionkey = `${auction.id}-item-${item.id}`;
 							return (
-								<Section key={auction.id}>
-									<Typography heading={2}>
-										Auction {auction.id}
-									</Typography>
-
-									<Typography color="secondary">
-										Starts in: {timeLeft(auction.startingTime - now)}
-									</Typography>
-
-									<Button variant="outlined" onClick={() => navigate(Routes.Pages.Clock(auction.id))}>
-										Go to auction
-									</Button>
-
-									{auctionEntriesLoading ?
-										<Throbber/> :
-										(
-											<>
-												{itemsForAuction.map(item => {
-													// TODO: make a component/funcionality for a group of accordions
-													const accordionkey = `${auction.id}-item-${item.id}`;
-													return (
-														<Accordion key={item.id}
-															title={productMap.get(item.productId)?.name}
-															open={openItem === accordionkey} onToggle={() =>
-															setOpenItem(prev =>
-																prev === accordionkey ? null : accordionkey
-															)}
-														>
-															{/* TODO: remove this when fixing layout styles */}
-															<div style={{ padding: "1rem" }}>
-																<ProductView auctionItem={item}/>
-																<Typography color="secondary">
-																	Price: {formatEuros(item.startingPrice)} →{" "}
-																	{formatEuros(item.minimumPrice)} • Count:{" "}
-																	{item.count}
-																</Typography>
-															</div>
-														</Accordion>
-													);
-												})}
-											</>
-										)}
-								</Section>
+								<Accordion key={item.id}
+									title={productMap.get(item.productId)?.name}
+									open={openItem === accordionkey} onToggle={() =>
+									setOpenItem(prev =>
+										prev === accordionkey ? null : accordionkey
+									)}
+								>
+									{/* TODO: remove this when fixing layout styles */}
+									<div style={{ padding: "1rem" }}>
+										<ProductView auctionItem={item}/>
+										<Typography color="secondary">
+											Price: {formatEuros(item.startingPrice)} →{" "}
+											{formatEuros(item.minimumPrice)} • Count:{" "}
+											{item.count}
+										</Typography>
+									</div>
+								</Accordion>
 							);
 						})}
-			</Section>
-		</>
+					</>
+				)}
+		</Section>
 	);
 }
