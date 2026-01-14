@@ -20,8 +20,6 @@ export default function TopBar({
 	const [open, setOpen] = useState(false);
 
 	// TODO: find better placeholder (built in <Image> placeholder doesn't work)
-	const pfpUrl = user?.avatarImageUrl ??
-		"https://www.shutterstock.com/image-vector/highresolution-default-profile-avatar-icon-260nw-2600268263.jpg";
 
 	const handleLogout = async () => {
 		logout();
@@ -49,7 +47,7 @@ export default function TopBar({
 				<ClickAwayDetector onClickAway={() => setOpen(false)}>
 					<Image
 						className={styles.profile}
-						src={pfpUrl}
+						src={[user?.avatarImageUrl, "https://www.shutterstock.com/image-vector/highresolution-default-profile-avatar-icon-260nw-2600268263.jpg"]}
 						alt="User Profile"
 						width={50}
 						height={50}
