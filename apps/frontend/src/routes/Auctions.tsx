@@ -64,9 +64,7 @@ export default function Auctions() {
 		[auctionItemIds]
 	);
 
-	const productIds = useMemo(() => {
-		return deduplicate(auctionItems?.map(i => i.productId) ?? []);
-	}, [auctionItems]);
+	const productIds = useMemo(() => deduplicate(auctionItems?.map(i => i.productId) ?? []), [auctionItems]);
 
 	// TODO: Use/fix Routes.Product.BatchGet
 	const { value: products } = usePromise<Product[]>(
