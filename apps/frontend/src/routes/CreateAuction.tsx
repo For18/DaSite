@@ -197,6 +197,7 @@ export default function CreateAuctions() {
 				</Section>
 
 				<Section>
+					{/* TODO: Fix layout (Make the parent responsible for layout?) */}
 					<Typography id={id + "startingDate"}>Starting date</Typography>
 					<Input
 						labelledby={id + "startingDate"}
@@ -213,7 +214,6 @@ export default function CreateAuctions() {
 					/>
 
 					<Button variant="contained" color="brand" onClick={submitAuction}>Create Auction</Button>{" "}
-					{/* TODO: Fix layout (Make the parent responsible for layout?) */}
 				</Section>
 				<Typography heading={2}>
 					Selected Auction Item ID:
