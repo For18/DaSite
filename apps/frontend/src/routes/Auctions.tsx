@@ -7,7 +7,7 @@ import Section from "@component/Section";
 import Throbber from "@component/Throbber";
 import Typography from "@component/Typography";
 import { API_URL, type Auction, type AuctionEntry, type AuctionItem, type Product, useAPI } from "@lib/api";
-import { formatEuros } from "@lib/util";
+import { deduplicate, formatEuros } from "@lib/util";
 import { Routes } from "@route/Routes";
 import { useEffect, useMemo, useState } from "react";
 import { Navigate, useNavigate } from "react-router";
@@ -65,10 +65,7 @@ export default function Auctions() {
 	);
 
 	const productIds = useMemo(() => {
-		// TODO: Replace with deduplicate function
-		return Array.from(
-			new Set(auctionItems?.map(i => i.productId) ?? [])
-		);
+		return deduplicate(auctionItems?.map(i => i.productId) ?? []);
 	}, [auctionItems]);
 
 	// TODO: Use/fix Routes.Product.BatchGet
