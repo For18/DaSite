@@ -21,7 +21,9 @@ const timeLeft = (ms: number) => {
 	const minutes = Math.floor((totalSeconds % 3600) / 60);
 	const seconds = totalSeconds % 60;
 
-	return `${days}d ${String(hours).padStart(2, "0")}h ${String(minutes).padStart(2, "0")}m ${String(seconds).padStart(2, "0")}s`;
+	return `${days}d ${String(hours).padStart(2, "0")}h ${String(minutes).padStart(2, "0")}m ${
+		String(seconds).padStart(2, "0")
+	}s`;
 };
 
 export default function Auctions() {
@@ -63,13 +65,13 @@ export default function Auctions() {
 	);
 
 	const productIds = useMemo(() => {
-		//TODO: Replace with deduplicate function
+		// TODO: Replace with deduplicate function
 		return Array.from(
 			new Set(auctionItems?.map(i => i.productId) ?? [])
 		);
 	}, [auctionItems]);
 
-	//TODO: Use/fix Routes.Product.BatchGet
+	// TODO: Use/fix Routes.Product.BatchGet
 	const { value: products } = usePromise<Product[]>(
 		() =>
 			Promise.all(
@@ -124,7 +126,7 @@ export default function Auctions() {
 										(
 											<>
 												{itemsForAuction.map(item => {
-													//TODO: make a component/funcionality for a group of accordions
+													// TODO: make a component/funcionality for a group of accordions
 													const accordionkey = `${auction.id}-item-${item.id}`;
 													return (
 														<Accordion key={item.id}
