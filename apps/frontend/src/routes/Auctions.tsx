@@ -82,11 +82,11 @@ function AuctionDisplay({ auction }: AuctionDisplayProps) {
 
 	const productIds = useMemo(() => deduplicate(auctionItems?.map(i => i.productId) ?? []), [auctionItems]);
 
-	const products = useAPI<Product[]>(Routes.Product.BatchGet(productIds));
+	const products = useAPI<Product[]>(productIds == null || productIds.length == 0 ? null : Routes.Product.BatchGet(productIds));
 
 	const productMap = useMemo(() => {
 		const map = new Map<number, Product>();
-		products?.forEach(product => map.set(product.id, product));
+		if (products != null) products.forEach(product => map.set(product.id, product));
 		return map;
 	}, [products]);
 
