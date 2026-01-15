@@ -93,18 +93,6 @@ export default function ClockPage() {
 
 	const isAuctionOver = items?.length === 0 && items[0] == null;
 
-	/* Temp moving of starting time
-   * TODO: remove after testing
-   */
-	useEffect(() => {
-		if (!auction) return;
-		fetch(API_URL + Routes.Auction.Get(auction?.id), {
-			method: "PATCH",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify([{ op: "replace", path: "/startingTime", value: Math.round(Date.now() + BUFFER_LEN) }])
-		}).then(() => console.log("patched"));
-	}, [auction]);
-
 	useEffect(() => {
 		if (progress >= 1) {
 			doShift();
