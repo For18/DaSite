@@ -23,7 +23,7 @@ export default function ItemSelectCard({ item, selected, onToggle }: ItemSelectC
 				null :
 				product.thumbnailImageId === null ?
 				undefined :
-				fetch(Routes.ProductImage.Get(product.thumbnailImageId)).then(response => response.json()),
+				fetch(API_URL + Routes.ProductImage.Get(product.thumbnailImageId)).then(response => response.json()),
 		[isProductLoading, product?.thumbnailImageId]
 	);
 	if (product == null) return null;
