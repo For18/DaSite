@@ -58,16 +58,15 @@ public class AuctionItemExternal {
 [ApiController]
 [Route("auction-item")]
 public class AuctionItemController : ControllerBase {
-
 	[HttpGet("all")]
 	public async Task<ActionResult<AuctionItemExternal[]>> GetAll() {
 		using (var db = new DatabaseContext()) {
 			return await db.AuctionItems
-			  .Include(item => item.Owner)
-			  .Include(item => item.Product)
-			  .ThenInclude(prod => prod.ThumbnailImage)
-			  .Select(item => AuctionItemExternal.ToExternal(item))
-			  .ToArrayAsync();
+				.Include(item => item.Owner)
+				.Include(item => item.Product)
+				.ThenInclude(prod => prod.ThumbnailImage)
+				.Select(item => AuctionItemExternal.ToExternal(item))
+			.ToArrayAsync();
 		}
 	}
 
@@ -93,7 +92,6 @@ public class AuctionItemController : ControllerBase {
 	[HttpGet("{id}")]
 	public async Task<ActionResult<AuctionItemExternal>> Get(ulong id) {
 		using (var db = new DatabaseContext()) {
-
 			AuctionItem? item = await db.AuctionItems
 				.Include(i => i.Owner)
 				.Include(i => i.Product)
@@ -110,12 +108,12 @@ public class AuctionItemController : ControllerBase {
 	public async Task<ActionResult<AuctionItemExternal[]>> BatchGet([FromQuery] ulong[] ids) {
 		using (var db = new DatabaseContext()) {
 			return await db.AuctionItems
-			  .Include(auc => auc.Owner)
-			  .Include(auc => auc.Product)
-			  .ThenInclude(prod => prod.ThumbnailImage)
-			  .Where(auc => ids.Contains(auc.Id))
-			  .Select(auc => AuctionItemExternal.ToExternal(auc))
-			  .ToArrayAsync();
+				.Include(auc => auc.Owner)
+				.Include(auc => auc.Product)
+				.ThenInclude(prod => prod.ThumbnailImage)
+				.Where(auc => ids.Contains(auc.Id))
+				.Select(auc => AuctionItemExternal.ToExternal(auc))
+			.ToArrayAsync();
 		}
 	}
 
@@ -123,8 +121,8 @@ public class AuctionItemController : ControllerBase {
 	public async Task<ActionResult<AuctionItemExternal[]>> GetByAuction(ulong id) {
 		using (var db = new DatabaseContext()) {
 			return await db.AuctionEntries
-			  .Where(entry => entry.Auction.Id == id)
-			  .Select(entry => new AuctionItemExternal(
+				.Where(entry => entry.Auction.Id == id)
+				.Select(entry => new AuctionItemExternal(
 					entry.AuctionItem.Id,
 					entry.AuctionItem.Count,
 					entry.AuctionItem.BatchSize,
@@ -133,8 +131,8 @@ public class AuctionItemController : ControllerBase {
 					entry.AuctionItem.Length,
 					entry.AuctionItem.Owner.Id,
 					entry.AuctionItem.Product.Id
-			  ))
-			  .ToArrayAsync();
+				))
+			.ToArrayAsync();
 		}
 	}
 
@@ -166,9 +164,9 @@ public class AuctionItemController : ControllerBase {
 
 			ulong[] itemIds = itemsData.Select(item => item.Id).ToArray();
 			ulong[] existingItems = await db.AuctionItems
-			  .Where(item => itemIds.Contains(item.Id))
-			  .Select(item => item.Id)
-			  .ToArrayAsync();
+				.Where(item => itemIds.Contains(item.Id))
+				.Select(item => item.Id)
+			.ToArrayAsync();
 
 			AuctionItem[] newItems = [];
 			foreach (AuctionItemExternal item in itemsData) {
@@ -217,8 +215,8 @@ public class AuctionItemController : ControllerBase {
 			FailedBatchEntry<ulong>[] failedDeletes = [];
 
 			AuctionItem[] existingItems = await db.AuctionItems
-			  .Where(item => ids.Contains(item.Id))
-			  .ToArrayAsync();
+				.Where(item => ids.Contains(item.Id))
+			.ToArrayAsync();
 
 			ulong[] existingItemIds = existingItems.Select(item => item.Id).ToArray();
 			foreach (ulong id in ids) {
