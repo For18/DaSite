@@ -20,10 +20,10 @@
 	top: 10px;
 }
 
-.input-basic:not(:last-child),
-.input-description:not(:last-child),
-.add-image-button:not(:last-child) {
-	margin-top: 10px;
+.input-basic, .input-description, .add-image-button {
+	&:not(:last-child) {
+		margin-top: 10px;
+	}
 }
 
 .input-basic {
