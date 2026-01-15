@@ -5,6 +5,7 @@ import { type AuctionItem, type Product, type ProductImage, type PublicUser, use
 import NotFound from "@route/NotFound";
 import { Routes } from "@route/Routes";
 import styles from "./ProductView.module.scss";
+import Divider from "@component/Divider";
 
 export default function ProductView({ auctionItem }: { auctionItem: AuctionItem }) {
 	const product = useAPI<Product>(Routes.Product.Get(auctionItem.productId));
@@ -45,12 +46,12 @@ export default function ProductView({ auctionItem }: { auctionItem: AuctionItem 
 			</div>
 
 			<div>
-				<hr className={styles.horizontalRule}/>
+				<Divider/>
 				<Typography>Item count: {auctionItem.count}</Typography>
 				<Typography>Batch size: {auctionItem.batchSize}</Typography>
 			</div>
 
-			<hr className={styles.horizontalRule}/>
+			<Divider/>
 
 			<div>
 				<Typography>{product.description}</Typography>
@@ -59,7 +60,7 @@ export default function ProductView({ auctionItem }: { auctionItem: AuctionItem 
 			{prodImages && prodImages.length > 0 ?
 				(
 					<>
-						<hr className={styles.horizontalRule}/>
+						<Divider/>
 						<Image
 							className={styles.thumbnailImage}
 							src={prodImages[0].url}
