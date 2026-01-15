@@ -98,11 +98,11 @@ export default function ClockPage() {
 
 	// TODO: add visual indicator to see if purchase was successful
 	const purchase = (count: number) => {
+		if (user === undefined) return;
 		if (count > currentItem.count) count = currentItem.count;
 		currentItem?.count && (currentItem.count -= count);
+		
 		if (currentItem && currentItem.count <= 0) doShift();
-
-		if (user === undefined) return;
 		postSale(user.id!, Number(auctionId)!, count, Number(currentPrice));
 		alert(`Bought ${count} products for € ${currentPrice} each`);
 	};
