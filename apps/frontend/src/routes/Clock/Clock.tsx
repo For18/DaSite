@@ -108,7 +108,7 @@ export default function ClockPage() {
 	if (items === null) return <Throbber/>;
 	if (items === undefined) return <NotFound/>;
 
-	if (isAuctionOver) return <EndedAuction id={Number(auctionId) ?? 0}/>;
+	if (isAuctionOver) return <EndedAuction currentAuctionId={auctionId}/>;
 	if (currentItem === null) return <Throbber/>;
 	if (currentItem === undefined) return <NotFound/>;
 

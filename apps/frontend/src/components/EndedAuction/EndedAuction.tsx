@@ -3,10 +3,10 @@ import Typography from "@component/Typography";
 import { Routes } from "@route/Routes";
 import styles from "./EndedAuction.module.scss";
 import useGoto from "@lib/hooks/useGoto";
+import { useAPI } from "@/lib/api";
 
-export default function EndedAuction({ id }: { id: number }) {
-	// TODO: add 'nextAuction' endpoint
-	const nextAuctionId = id + 1;
+export default function EndedAuction({ currentAuctionId }: { currentAuctionId?: number }) {
+	const nextAuctionId = useAPI<number>(currentAuctionId == null ? null : Routes.Auction.GetNext);
 
 	const goto = useGoto();
 	return (
@@ -29,6 +29,7 @@ export default function EndedAuction({ id }: { id: number }) {
 
 				<Button
 					onClick={() => goto(Routes.Pages.Clock(nextAuctionId))}
+					disabled={nextAuctionId == null}
 					variant="outlined"
 				>
 					Next Auction
