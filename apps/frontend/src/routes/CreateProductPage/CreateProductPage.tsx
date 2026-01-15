@@ -10,7 +10,7 @@ import styles from "./CreateProductPage.module.scss";
 
 // TODO: add visual status for user
 // use StatusDisplay
-async function PostProduct(name: string, description: string, images: string[]) {
+async function postProduct(name: string, description: string, images: string[]) {
 	const productId: number = await fetch(API_URL + Routes.Product.Post, {
 		method: "POST",
 		credentials: "include",
@@ -138,7 +138,7 @@ export default function CreateProductPage() {
 					<Button
 						variant="contained"
 						onClick={() => {
-							PostProduct(name, description, images);
+							postProduct(name, description, images);
 							setImages([]);
 							setAccordionState(false);
 							setLinkText("");

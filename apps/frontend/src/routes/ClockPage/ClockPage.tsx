@@ -38,7 +38,7 @@ function formatStartCountDown(startingTime: number, currentTime: number) {
 
 const BUFFER_LEN = 5000;
 
-async function PostSale(purchaser: User["id"], auctionId: number, amount: number, price: number) {
+async function postSale(purchaser: User["id"], auctionId: number, amount: number, price: number) {
 	await fetch(API_URL + Routes.Sale.Post, {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
@@ -117,7 +117,7 @@ export default function ClockPage() {
 		if (currentItem && currentItem.count <= 0) doShift();
 
 		if (user === undefined) return;
-		PostSale(user.id!, Number(auctionId)!, count, Number(currentPrice));
+		postSale(user.id!, Number(auctionId)!, count, Number(currentPrice));
 	};
 
 	if (items === null) return <Throbber/>;
