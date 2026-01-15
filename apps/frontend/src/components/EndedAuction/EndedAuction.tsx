@@ -24,7 +24,7 @@ export default function EndedAuction({ currentAuctionId }: { currentAuctionId?: 
 					onClick={() => goto(Routes.Pages.Auctions.Pending)}
 					variant="outlined"
 				>
-					Pending Auction
+					Pending Auctions
 				</Button>
 
 				<Button
