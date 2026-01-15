@@ -20,7 +20,7 @@ export default function EndedAuction({ currentAuctionId }: { currentAuctionId?: 
 			<div className={styles.linkContainer}>
 				{!["AuctionMaster", "Admin"].includes(role) ? null : (
 					<Button
-						onClick={() => goto(Routes.Pages.Auctions.Pending)}
+						onClick={() => goto(Routes.Pages.Auctions.PendingItems)}
 						variant="outlined"
 					>
 						Pending Auctions

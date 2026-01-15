@@ -19,7 +19,7 @@ export default function Layout({ children }: PropsWithChildren) {
 		);
 		if (role == "Admin" || role == "AuctionMaster") {
 			hyperlinksToRender.push(
-				{ title: "PendingAuctions", link: Routes.Pages.Auctions.Pending },
+				{ title: "PendingItems", link: Routes.Pages.Auctions.PendingItems },
 				{ title: "CreateAuction", link: Routes.Pages.Auctions.Create },
 				{ title: "CreateProduct", link: Routes.Pages.CreateProduct },
 				{ title: "AuctionItems", link: Routes.Pages.Auctions.Items }

@@ -1,14 +1,13 @@
 import Image from "@component/Image";
 import Throbber from "@component/Throbber";
 import Typography from "@component/Typography";
-import { type Auction, type AuctionItem, type Product, type ProductImage, type PublicUser, useAPI } from "@lib/api";
+import { type AuctionItem, type Product, type ProductImage, type PublicUser, useAPI } from "@lib/api";
 import NotFound from "@route/NotFound";
 import { Routes } from "@route/Routes";
-import styles from "./PendingAuctionCard.module.scss";
+import styles from "./PendingItemCard.module.scss";
 
-export default function PendingAuctionCard({ auction }: { auction: Auction }) {
-	const item = useAPI<AuctionItem>(Routes.AuctionItem.GetByAuction(auction.id));
-	const user = useAPI<PublicUser>(Routes.User.GetPublic(auction.plannerId));
+export default function PendingAuctionCard({ item }: { item: AuctionItem }) {
+	const user = useAPI<PublicUser>(Routes.User.GetPublic(item.ownerId));
 	const product = useAPI<Product>(item ? Routes.Product.Get(item.productId) : null);
 	const thumbnailImage = useAPI<ProductImage[]>(product ? Routes.ProductImage.FromParent(product.id) : null);
 	const thumbnailUrl = thumbnailImage && thumbnailImage[0] && thumbnailImage[0].url ?

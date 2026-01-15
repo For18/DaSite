@@ -1,20 +1,15 @@
-import PendingAuctionCard from "@component/PendingAuctionCard";
+import PendingAuctionCard from "@/components/PendingItemCard";
 import Section from "@component/Section";
 import Throbber from "@component/Throbber";
 import Typography from "@component/Typography";
-import { type Auction, useAPI } from "@lib/api";
+import { type Auction, AuctionItem, useAPI } from "@lib/api";
 import useScreenSize from "@lib/hooks/useScreenSize";
 import { Routes } from "@route/Routes";
 import { useEffect } from "react";
-import styles from "./PendingAuctions.module.scss";
+import styles from "./PendingItems.module.scss";
 
-/* TODO:
- * Add pure text page of pending auctions
- * [Auction] onClick => old PendingAuction page but only contains items that are sold in the current auction
- * optionally make every Product card clickable so it shows <ProductView>
- */
-export default function PendingAuction() {
-	const auctions = useAPI<Auction[]>(Routes.Auction.GetUpcoming);
+export default function PendingItems() {
+	const items = useAPI<AuctionItem[]>(Routes.AuctionItem.GetPending);
 
 	const [screenWidth] = useScreenSize();
 
@@ -25,17 +20,18 @@ export default function PendingAuction() {
 	return (
 		<div className={styles.main}>
 			<div className={styles.header}>
-				<Typography heading={1}>Pending auctions</Typography>
+				<Typography heading={1}>Pending items</Typography>
 			</div>
 
 			<Section>
 				<div className={styles.cardContainer} style={{
-					display: auctions != null && auctions.length > 0 ? "grid" : "flex",
+					display: items != null && items.length > 0 ? "grid" : "flex",
+					gap: "var(--spacing)",
 					gridTemplateColumns: screenWidth > 1000 ? "1fr 1fr" : "1fr"
 				}}>
-					{auctions == null ?
+					{items == null ?
 						<Throbber/> :
-						auctions.length == 0 ?
+						items.length == 0 ?
 						(
 							<div className={styles.noPendingAuctions}>
 								<Typography className={styles.text}>
@@ -43,7 +39,7 @@ export default function PendingAuction() {
 								</Typography>
 							</div>
 						) :
-						auctions.map(auction => <PendingAuctionCard auction={auction} key={auction.id}/>)}
+						items.map(item => <PendingAuctionCard item={item} key={item.id}/>)}
 				</div>
 			</Section>
 		</div>
