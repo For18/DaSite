@@ -71,6 +71,25 @@ public class AuctionItemController : ControllerBase {
 		}
 	}
 
+	[HttpGet("pending")]
+	[Authorize]
+	public async Task<ActionResult<AuctionItemExternal[]>> GetPending() {
+		if (!(User.IsInRole("Admin") || User.IsInRole("AuctionMaster"))) return Forbid();
+
+		using (var db = new DatabaseContext()) {
+			var entryItemIds = await db.AuctionEntries
+				.Select(entry => entry.AuctionItem.Id)
+			.ToArrayAsync();
+
+			return await db.AuctionItems
+				.Where(item => entryItemIds.Contains(item.Id))
+				.Include(item => item.Owner)
+				.Include(item => item.Product)
+				.Select(item => AuctionItemExternal.ToExternal(item))
+			.ToArrayAsync();
+		}
+	}
+
 	[HttpGet("{id}")]
 	public async Task<ActionResult<AuctionItemExternal>> Get(ulong id) {
 		using (var db = new DatabaseContext()) {

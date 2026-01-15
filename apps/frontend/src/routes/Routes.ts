@@ -86,6 +86,7 @@ export const Routes = {
 
 	AuctionItem: {
 		GetAll: "/auction-item/all",
+		GetPending: "/auction-item/pending",
 		Get: (id: AuctionItem["id"]) => `/auction-item/${id}`,
 		BatchGet: (ids: AuctionItem["id"][]) => `/auction-items/batch?ids=${ids.join(",")}`,
 		GetByAuction: (auctionId: Auction["id"]) => `/auction-item/by-auction/${auctionId}`,
