@@ -5,7 +5,7 @@ import { type Status, StatusDisplay } from "@component/StatusDisplay";
 import Typography from "@component/Typography";
 import { API_URL, type AuctionItem, useAPI } from "@lib/api";
 import { Routes } from "@route/Routes";
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import styles from "./CreateAuction.module.scss";
 import ItemSelectCard from "./ItemSelectCard";
 
@@ -120,6 +120,10 @@ export default function CreateAuctions() {
 			});
 		}
 	}
+
+	useEffect(() => {
+		document.title = "For18 - Create auction";
+	}, []);
 
 	return (
 		<>

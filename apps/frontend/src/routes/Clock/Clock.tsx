@@ -111,6 +111,10 @@ export default function ClockPage() {
 		});
 	};
 
+	useEffect(() => {
+		document.title = `For18 - Auction ${auction.id}`;
+	}, []);
+
 	if (items === null) return <Throbber/>;
 	if (items === undefined) return <NotFound/>;
 

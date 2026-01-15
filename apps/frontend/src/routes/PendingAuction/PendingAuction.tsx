@@ -6,6 +6,7 @@ import { type Auction, useAPI } from "@lib/api";
 import useScreenSize from "@lib/hooks/useScreenSize";
 import { Routes } from "@route/Routes";
 import styles from "./PendingAuction.module.scss";
+import { useEffect } from "react";
 
 /* TODO:
  * Add pure text page of pending auctions
@@ -16,6 +17,10 @@ export default function PendingAuction() {
 	const auctions = useAPI<Auction[]>(Routes.Auction.GetUpcoming);
 
 	const [screenWidth] = useScreenSize();
+
+	useEffect(() => {
+		document.title = "For18 - Pending items";
+	}, []);
 
 	return (
 		<div className={styles.main}>

@@ -27,6 +27,10 @@ export default function Profile() {
 		}
 	}, [modalState.open, modalState.product]);
 
+	useEffect(() => {
+		document.title = `For18 - ${user?.userName ?? "Unnamed"}'s profile`;
+	}, []);
+
 	if (user === undefined) return <NotFound/>;
 
 	return (

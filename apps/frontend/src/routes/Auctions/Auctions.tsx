@@ -8,7 +8,7 @@ import AuctionDisplay from "./AuctionDisplay";
 
 export default function Auctions() {
 	useEffect(() => {
-		document.title = "For18 - auctions";
+		document.title = "For18 - Upcoming auctions";
 	});
 
 	const auctions = useAPI<Auction[]>(Routes.Auction.GetUpcoming);

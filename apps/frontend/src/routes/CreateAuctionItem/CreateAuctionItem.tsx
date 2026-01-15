@@ -143,6 +143,10 @@ export default function CreateAuctionItem() {
 		}
 	}
 
+	useEffect(() => {
+		document.title = "For18 - Create auction item";
+	}, []);
+
 	return (
 		<div className={styles.container}>
 			<Typography heading={1} center>Create Auction Item</Typography>

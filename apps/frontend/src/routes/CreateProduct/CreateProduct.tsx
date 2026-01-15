@@ -4,7 +4,7 @@ import Input from "@component/Input";
 import Typography from "@component/Typography";
 import { API_URL, type ProductImage } from "@lib/api";
 import { Routes } from "@route/Routes";
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import styles from "./CreateProduct.module.scss";
 import ProductPreview from "./ProductPreview";
 import AccordionEntry from "./AccordionEntry";
@@ -64,6 +64,10 @@ export default function CreateProductPage() {
 	const [description, setDescription] = useState<string>("");
 	const [batchSize, setBatchSize] = useState<number>(0);
 	const id = useId();
+
+	useEffect(() => {
+		document.title = "For18 - Create product";
+	}, []);
 
 	return (
 		<div className={styles.container}>
