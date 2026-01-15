@@ -1,5 +1,5 @@
 import useAuth from "@/AuthProvider";
-import NotFound from "@/routes/NotFound/NotFound";
+import NotFound from "@route/NotFound";
 import BeforeAuction from "@component/BeforeAuction";
 import Button from "@component/Button";
 import Clock from "@component/Clock";
