@@ -5,7 +5,7 @@ import { API_URL } from "@lib/api";
 import { Routes } from "@route/Routes";
 import { useEffect, useState } from "react";
 import { useRef } from "react";
-import styles from "./AuthForm.module.scss";
+import styles from "../AuthForm.module.scss";
 import useGoto from "@lib/hooks/useGoto";
 
 export default function Registration() {
