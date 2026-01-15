@@ -29,7 +29,7 @@ export default function Profile() {
 
 	useEffect(() => {
 		document.title = `For18 - ${user?.userName ?? "Unnamed"}'s profile`;
-	}, []);
+	}, [user]);
 
 	if (user === undefined) return <NotFound/>;
 

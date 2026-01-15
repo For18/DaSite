@@ -112,8 +112,8 @@ export default function ClockPage() {
 	};
 
 	useEffect(() => {
-		document.title = `For18 - Auction ${auction.id}`;
-	}, []);
+		document.title = `For18 - Auction ${auctionId ?? "..."}`;
+	}, [auctionId]);
 
 	if (items === null) return <Throbber/>;
 	if (items === undefined) return <NotFound/>;
