@@ -10,12 +10,12 @@ export type UserRole = "Admin" | "AuctionMaster" | "Customer";
 
 export interface Sale {
 	id: number;
-	purchaserId: number;
+	purchaserId: User["id"];
 	purchasedItemId: number;
 	amount: number;
 	price: number;
 	isPaid: boolean;
-	distributorId: string;
+	distributorId: User["id"];
 }
 
 export interface Product {
@@ -33,7 +33,7 @@ export interface ProductImage {
 
 export interface Auction {
 	id: number;
-	plannerId: number;
+	plannerId: User["id"];
 	startingTime: number;
 }
 
