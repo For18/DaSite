@@ -84,6 +84,23 @@ public class AuctionController : ControllerBase {
 		}
 	}
 
+	[HttpGet("next")]
+	[Authorize]
+	public async Task<ActionResult<ulong?>> GetNext() {
+		ulong unixTimeMillis = (ulong)DateTimeOffset.Now.ToUnixTimeMilliseconds();
+		using (var db = new DatabaseContext()) {
+			try {
+				return await db.Auctions
+					.Where(auction => auction.StartingTime > unixTimeMillis)
+					.OrderBy(auction => auction.StartingTime)
+					.Select(auction => auction.Id)
+				.FirstAsync();
+			} catch (InvalidOperationException) { // FirstAsync() errors because there is no next auction
+				return Ok(null);
+			}
+		}
+	}
+
 	[HttpPost("/auctions/batch")]
 	[Authorize]
 	public async Task<ActionResult> BatchPost(AuctionExternal[] auctionsData) {

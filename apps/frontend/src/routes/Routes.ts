@@ -111,6 +111,7 @@ export const Routes = {
 		BatchGet: "/auctions/batch",
 		GetAll: "/auctions",
 		GetUpcoming: "/auctions/upcoming",
+		GetNext: "/auction/next",
 		Post: "/auction",
 		BatchPost: "/auctions/batch",
 		Delete: (id: Auction["id"]) => `/auction/${id}`,
