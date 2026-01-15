@@ -8,7 +8,8 @@ RUN npm install
 
 COPY . .
 
-RUN npx vite build --outDir ./dist
+ARG VITE_API_URL
+RUN VITE_API_URL="$VITE_API_URL" npx vite build --outDir ./dist
 
 
 FROM nginx
