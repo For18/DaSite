@@ -4,9 +4,11 @@ import { Routes } from "@route/Routes";
 import styles from "./EndedAuction.module.scss";
 import useGoto from "@lib/hooks/useGoto";
 import { useAPI } from "@/lib/api";
+import useAuth from "@/AuthProvider";
 
 export default function EndedAuction({ currentAuctionId }: { currentAuctionId?: number }) {
 	const nextAuctionId = useAPI<number>(currentAuctionId == null ? null : Routes.Auction.GetNext);
+	const { role, isLoading: isAuthLoading} = useAuth();
 
 	const goto = useGoto();
 	return (
@@ -20,12 +22,12 @@ export default function EndedAuction({ currentAuctionId }: { currentAuctionId?: 
 			</Typography>
 
 			<div className={styles.linkContainer}>
-				<Button
+				{!["AuctionMaster", "Admin"].includes(role) ? null : <Button
 					onClick={() => goto(Routes.Pages.Auctions.Pending)}
 					variant="outlined"
 				>
 					Pending Auctions
-				</Button>
+				</Button>}
 
 				<Button
 					onClick={() => goto(Routes.Pages.Clock(nextAuctionId))}
