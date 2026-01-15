@@ -11,7 +11,7 @@ import Throbber from "@component/Throbber";
 import { API_URL, type Auction, type AuctionItem, useAPI, type User } from "@lib/api";
 import useTime from "@lib/hooks/useTime";
 import { Routes } from "@route/Routes";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import styles from "./Clock.module.scss";
 
@@ -58,11 +58,6 @@ export default function ClockPage() {
 
 	const buyCountRef = useRef<number>(0);
 
-	const doShift = () => {
-		if (!items || items.length < 0) return;
-		items.shift();
-	};
-
 	useEffect(() => {
 		if (!auctionId) return;
 		fetch(API_URL + Routes.AuctionItem.GetByAuction(auctionId))
@@ -73,11 +68,13 @@ export default function ClockPage() {
 			});
 	}, [auctionId]);
 
-	const currentItemStartTime = useMemo<number | null>(() => {
-		return Date.now() + BUFFER_LEN;
-	}, [currentItem, items]);
-
 	const currentTime = useTime();
+
+	const [currentItemStartTime, setCurrentItemStartTime] = useState<number | null>(null);
+
+	useEffect(() => {
+		setCurrentItemStartTime(auction?.startingTime);
+	}, [auction]);
 
 	const auctionedItemLenMillis = currentItem && currentItem.length ?
 		currentItem.length * 1000 :
@@ -86,6 +83,12 @@ export default function ClockPage() {
 	const progress = auctionedItemLenMillis ? elapsedTime / auctionedItemLenMillis : 0;
 
 	const isAuctionOver = items?.length === 0 && items[0] == null;
+
+	const doShift = () => {
+		if (!items || items.length < 0) return;
+		items.shift();
+		setCurrentItemStartTime(Date.now() + BUFFER_LEN);
+	};
 
 	useEffect(() => {
 		if (progress >= 1) {
