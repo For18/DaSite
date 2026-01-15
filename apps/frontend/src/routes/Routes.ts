@@ -2,11 +2,11 @@ import type { Auction, AuctionItem, Product, ProductImage, Sale, User } from "@l
 import { type JSX, lazy, type LazyExoticComponent } from "react";
 
 const Home = lazy(() => import("./Home"));
-const Clock = lazy(() => import("./ClockPage"));
+const Clock = lazy(() => import("./Clock"));
 const Auctions = lazy(() => import("./Auctions"));
 const PendingAuction = lazy(() => import("./PendingAuction"));
 const Profile = lazy(() => import("./Profile"));
-const CreateProduct = lazy(() => import("./CreateProductPage"));
+const CreateProduct = lazy(() => import("./CreateProduct"));
 const Test = lazy(() => import("./Test"));
 const CreateAuction = lazy(() => import("./CreateAuction"));
 const CreateAuctionItem = lazy(() => import("./CreateAuctionItem"));
