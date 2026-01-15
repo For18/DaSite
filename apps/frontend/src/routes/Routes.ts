@@ -4,7 +4,7 @@ import { type JSX, lazy, type LazyExoticComponent } from "react";
 const Home = lazy(() => import("./Home"));
 const Clock = lazy(() => import("./Clock"));
 const Auctions = lazy(() => import("./Auctions"));
-const PendingAuction = lazy(() => import("./PendingAuction"));
+const PendingAuctions = lazy(() => import("./PendingAuctions"));
 const Profile = lazy(() => import("./Profile"));
 const CreateProduct = lazy(() => import("./CreateProduct"));
 const Test = lazy(() => import("./Test"));
@@ -137,7 +137,7 @@ export default {
 	[Routes.Pages.Home]: Home,
 	[Routes.Pages.Clock(":auctionId" as any)]: Clock,
 	[Routes.Pages.Auctions.Base]: Auctions,
-	[Routes.Pages.Auctions.Pending]: PendingAuction,
+	[Routes.Pages.Auctions.Pending]: PendingAuctions,
 	[Routes.Pages.Profile(":userId" as any)]: Profile,
 	[Routes.Pages.Auctions.Create]: CreateAuction,
 	[Routes.Pages.Auctions.Items]: CreateAuctionItem,

@@ -5,7 +5,7 @@ import Typography from "@component/Typography";
 import { type Auction, useAPI } from "@lib/api";
 import useScreenSize from "@lib/hooks/useScreenSize";
 import { Routes } from "@route/Routes";
-import styles from "./PendingAuction.module.scss";
+import styles from "./PendingAuctions.module.scss";
 import { useEffect } from "react";
 
 /* TODO:
