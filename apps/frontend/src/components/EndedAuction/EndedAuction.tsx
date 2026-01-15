@@ -8,7 +8,7 @@ import useAuth from "@/AuthProvider";
 
 export default function EndedAuction({ currentAuctionId }: { currentAuctionId?: number }) {
 	const nextAuctionId = useAPI<number>(currentAuctionId == null ? null : Routes.Auction.GetNext);
-	const { role, isLoading: isAuthLoading} = useAuth();
+	const { role } = useAuth();
 
 	const goto = useGoto();
 	return (
