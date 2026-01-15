@@ -12,7 +12,7 @@ import { deduplicate, formatEuros } from "@lib/util";
 import { Routes } from "@route/Routes";
 import { useMemo, useState } from "react";
 
-const timeLeft = (ms: number) => {
+function timeLeft(ms: number) {
 	if (ms <= 0) return "Now";
 
 	const totalSeconds = Math.floor(ms / 1000);
@@ -25,7 +25,7 @@ const timeLeft = (ms: number) => {
 	if (hours >= 1) return `${hours}h`;
 
 	return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-};
+}
 
 interface AuctionDisplayProps {
 	auction: Auction;
