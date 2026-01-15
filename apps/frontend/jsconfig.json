@@ -10,6 +10,7 @@
 		"jsx": "react-jsx", // Re-enable JSX
 		"moduleResolution": "bundler",
 		"module": "esnext",
+		"lib": ["es2021", "dom"],
 		"allowImportingTsExtensions": true
 	}
 }

@@ -16,9 +16,10 @@ export default function Error() {
 				An error occurred
 			</h1>
 
-			<p className={styles.error}>
-				{error.stack}
-			</p>
+			<pre className={styles.error}>
+				{error.name}: {error.message}<br/>
+				{"\t" + error.stack.replaceAll("\n", "\n\t")}
+			</pre>
 
 			<p className={styles.text}>Please <Button onClick={resetErrorBoundary} className={styles.retry}>Retry</Button> or if the issue persists, contact For18</p>
 		</div>
