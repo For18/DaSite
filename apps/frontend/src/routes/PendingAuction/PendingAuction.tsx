@@ -33,7 +33,7 @@ export default function PendingAuction() {
 						auctions.length == 0 ?
 						(
 							<div className={styles.noPendingAuctions}>
-								<Typography className={styles.noPendingAuctionsText}>
+								<Typography className={styles.text}>
 									No pending auctions
 								</Typography>
 							</div>
