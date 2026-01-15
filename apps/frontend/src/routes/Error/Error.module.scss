@@ -1,0 +1,39 @@
+.container {
+	position: fixed;
+	top: 50vh;
+	left: 50vw;
+	transform: translate(-50%, -50%);
+
+	background-color: color-mix(in oklab, var(--color-background-primary), var(--color-status-error) 20%);
+	border: 3px solid var(--color-status-error);
+	border-radius: var(--border-radius);
+
+	padding: var(--spacing);
+	width: fit-content;
+	max-width: 60vw;
+	max-height: calc(100vh - var(--spacing) * 2);
+
+	.title {
+		color: var(--color-text-primary);
+		text-align: center;
+		margin: 0;
+	}
+
+	.error {
+		background-color: var(--color-background-primary);
+		min-width: fit-content;
+		overflow-y: auto;
+		color: var(--color-status-error);
+		padding: var(--spacing);
+		white-space: pre-wrap;
+		border-radius: var(--border-radius);
+	}
+
+	.text {
+		color: var(--color-text-primary);
+
+		.retry {
+			display: inline;
+		}
+	}
+}

@@ -6,28 +6,32 @@ import Throbber from "@component/Throbber";
 import NotFound from "@route/NotFound";
 import routes from "@route/Routes";
 import { createElement, Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { BrowserRouter, Route, Routes } from "react-router";
+import Error from "@route/Error";
 
 export default function App() {
 	return (
 		<ThemeCSSProvider theme={DarkTheme}>
-			<AuthProvider>
-				<BrowserRouter>
-					<Layout>
-						<Routes>
-							{Object.entries(routes).map(([path, component]) => (
-								<Route key={path} path={path} element={
-									<Suspense fallback={<Throbber/>}>
-										{createElement(component)}
-									</Suspense>
-								}/>
-							))}
+			<ErrorBoundary fallback={<Error/>} onReset={() => location.reload()}>
+				<AuthProvider>
+					<BrowserRouter>
+						<Layout>
+							<Routes>
+								{Object.entries(routes).map(([path, component]) => (
+									<Route key={path} path={path} element={
+										<Suspense fallback={<Throbber/>}>
+											{createElement(component)}
+										</Suspense>
+									}/>
+								))}
 
-							<Route path="*" element={<NotFound/>}/>
-						</Routes>
-					</Layout>
-				</BrowserRouter>
-			</AuthProvider>
+								<Route path="*" element={<NotFound/>}/>
+							</Routes>
+						</Layout>
+					</BrowserRouter>
+				</AuthProvider>
+			</ErrorBoundary>
 		</ThemeCSSProvider>
 	);
 }
