@@ -24,7 +24,7 @@ export default function PendingAuction() {
 			</div>
 
 			<Section>
-				<div className={styles["card-container"]} style={{
+				<div className={styles.cardContainer} style={{
 					display: auctions != null && auctions.length > 0 ? "grid" : "flex",
 					gridTemplateColumns: screenWidth > 1000 ? "1fr 1fr" : "1fr"
 				}}>
@@ -32,8 +32,8 @@ export default function PendingAuction() {
 						<Throbber/> :
 						auctions.length == 0 ?
 						(
-							<div className={styles["no-pending-auctions"]}>
-								<Typography className={styles["no-pending-auctions-text"]}>
+							<div className={styles.noPendingAuctions}>
+								<Typography className={styles.noPendingAuctionsText}>
 									No pending auctions
 								</Typography>
 							</div>
