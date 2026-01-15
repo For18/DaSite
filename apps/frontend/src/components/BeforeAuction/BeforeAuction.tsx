@@ -6,7 +6,7 @@ function formatStartCountDown(remainingTimeMs: number) {
 	const seconds = Math.floor(remainingTimeMs / 1000) % 60;
 	const minutes = Math.floor(remainingTimeMs / 60000);
 
-	if (minutes >= 1) return `${minutes}:${String(seconds).padStart(2, "0")}`
+	if (minutes >= 1) return `${minutes}:${String(seconds).padStart(2, "0")}`;
 
 	return (remainingTimeMs / 1000).toFixed(2);
 }

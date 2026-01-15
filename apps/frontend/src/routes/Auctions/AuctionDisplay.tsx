@@ -1,16 +1,16 @@
+import Accordion from "@component/Accordion";
+import Button from "@component/Button";
+import ProductView from "@component/ProductView";
+import Section from "@component/Section";
+import Throbber from "@component/Throbber";
+import Typography from "@component/Typography";
+import { API_URL, type Auction, type AuctionEntry, type AuctionItem, type Product, useAPI } from "@lib/api";
+import useGoto from "@lib/hooks/useGoto";
+import usePromise from "@lib/hooks/usePromise";
 import useTime from "@lib/hooks/useTime";
-import { API_URL, type AuctionItem, type Product, useAPI, type Auction, type AuctionEntry } from "@lib/api";
+import { deduplicate, formatEuros } from "@lib/util";
 import { Routes } from "@route/Routes";
 import { useMemo, useState } from "react";
-import usePromise from "@lib/hooks/usePromise";
-import { deduplicate, formatEuros } from "@lib/util";
-import Section from "@component/Section";
-import Typography from "@component/Typography";
-import Button from "@component/Button";
-import Throbber from "@component/Throbber";
-import Accordion from "@component/Accordion";
-import ProductView from "@component/ProductView";
-import useGoto from "@lib/hooks/useGoto";
 
 const timeLeft = (ms: number) => {
 	if (ms <= 0) return "Now";
@@ -24,9 +24,7 @@ const timeLeft = (ms: number) => {
 	if (days >= 1) return `${days} days`;
 	if (hours >= 1) return `${hours}h`;
 
-	return `${String(minutes).padStart(2, "0")}:${
-		String(seconds).padStart(2, "0")
-	}`;
+	return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 };
 
 interface AuctionDisplayProps {

@@ -1,9 +1,9 @@
-import Typography from "@component/Typography";
 import Checkbox from "@component/Checkbox";
+import Image from "@component/Image";
+import Typography from "@component/Typography";
 import { API_URL, type AuctionItem, type Product, type ProductImage } from "@lib/api";
 import usePromise from "@lib/hooks/usePromise";
 import { Routes } from "@route/Routes";
-import Image from "@component/Image";
 import styles from "./CreateAuction.module.scss";
 
 interface ItemSelectCardProps {

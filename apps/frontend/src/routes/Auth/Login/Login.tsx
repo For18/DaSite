@@ -2,10 +2,10 @@ import useAuth from "@/AuthProvider";
 import Button from "@component/Button";
 import Input from "@component/Input";
 import Typography from "@component/Typography";
+import useGoto from "@lib/hooks/useGoto";
 import { Routes } from "@route/Routes";
 import { useEffect, useRef, useState } from "react";
 import styles from "../AuthForm.module.scss";
-import useGoto from "@lib/hooks/useGoto";
 
 export default function Login() {
 	const [email, setEmail] = useState<string>("");

@@ -1,8 +1,8 @@
+import Image from "@component/Image";
+import Typography from "@component/Typography";
 import type { Product, ProductImage } from "@lib/api";
 import usePromise from "@lib/hooks/usePromise";
-import Typography from "@component/Typography";
 import { Routes } from "@route/Routes";
-import Image from "@component/Image";
 import styles from "./CreateAuctionItem.module.scss";
 
 interface ProductSelectCardProps {

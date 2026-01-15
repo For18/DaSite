@@ -8,8 +8,8 @@ import { type Product, type PublicUser, useAPI } from "@lib/api";
 import { Routes } from "@route/Routes";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import styles from "./Profile.module.scss";
 import ProductInfo from "./ProductInfo";
+import styles from "./Profile.module.scss";
 
 export default function Profile() {
 	const { userId } = useParams();

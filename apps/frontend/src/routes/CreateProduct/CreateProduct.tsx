@@ -5,9 +5,9 @@ import Typography from "@component/Typography";
 import { API_URL, type ProductImage } from "@lib/api";
 import { Routes } from "@route/Routes";
 import { useEffect, useId, useState } from "react";
+import AccordionEntry from "./AccordionEntry";
 import styles from "./CreateProduct.module.scss";
 import ProductPreview from "./ProductPreview";
-import AccordionEntry from "./AccordionEntry";
 
 // TODO: add visual status for user
 // use StatusDisplay

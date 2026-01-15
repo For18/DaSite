@@ -1,5 +1,4 @@
 import useAuth from "@/AuthProvider";
-import NotFound from "@route/NotFound";
 import BeforeAuction from "@component/BeforeAuction";
 import Button from "@component/Button";
 import Clock from "@component/Clock";
@@ -10,6 +9,7 @@ import SaleHistoryPopUp from "@component/SaleHistoryPopUp";
 import Throbber from "@component/Throbber";
 import { API_URL, type Auction, type AuctionItem, useAPI, type User } from "@lib/api";
 import useTime from "@lib/hooks/useTime";
+import NotFound from "@route/NotFound";
 import { Routes } from "@route/Routes";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
@@ -104,7 +104,7 @@ export default function ClockPage() {
 		}
 		if (count > currentItem.count) count = currentItem.count;
 		currentItem?.count && (currentItem.count -= count);
-		
+
 		if (currentItem && currentItem.count <= 0) doShift();
 		postSale(user.id!, Number(auctionId)!, count, Number(currentPrice)).then(() => {
 			alert(`Bought ${count} products for € ${currentPrice} each`);
@@ -149,7 +149,9 @@ export default function ClockPage() {
 					(
 						<>
 							<BeforeAuction remainingTimeMs={currentItemStartTime - currentTime}/>
-							{import.meta.env.DEV ? <Button onClick={() => setCurrentItemStartTime(Date.now())}>Skip</Button> : null}
+							{import.meta.env.DEV ?
+								<Button onClick={() => setCurrentItemStartTime(Date.now())}>Skip</Button> :
+								null}
 						</>
 					) :
 					(

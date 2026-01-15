@@ -5,8 +5,8 @@ import Typography from "@component/Typography";
 import { type Auction, useAPI } from "@lib/api";
 import useScreenSize from "@lib/hooks/useScreenSize";
 import { Routes } from "@route/Routes";
-import styles from "./PendingAuctions.module.scss";
 import { useEffect } from "react";
+import styles from "./PendingAuctions.module.scss";
 
 /* TODO:
  * Add pure text page of pending auctions

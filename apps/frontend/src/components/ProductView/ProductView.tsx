@@ -1,3 +1,4 @@
+import Divider from "@component/Divider";
 import Image from "@component/Image";
 import Throbber from "@component/Throbber";
 import Typography from "@component/Typography";
@@ -5,7 +6,6 @@ import { type AuctionItem, type Product, type ProductImage, type PublicUser, use
 import NotFound from "@route/NotFound";
 import { Routes } from "@route/Routes";
 import styles from "./ProductView.module.scss";
-import Divider from "@component/Divider";
 
 export default function ProductView({ auctionItem }: { auctionItem: AuctionItem }) {
 	const product = useAPI<Product>(Routes.Product.Get(auctionItem.productId));

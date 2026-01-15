@@ -1,10 +1,10 @@
+import useAuth from "@/AuthProvider";
+import { useAPI } from "@/lib/api";
 import Button from "@component/Button";
 import Typography from "@component/Typography";
+import useGoto from "@lib/hooks/useGoto";
 import { Routes } from "@route/Routes";
 import styles from "./EndedAuction.module.scss";
-import useGoto from "@lib/hooks/useGoto";
-import { useAPI } from "@/lib/api";
-import useAuth from "@/AuthProvider";
 
 export default function EndedAuction({ currentAuctionId }: { currentAuctionId?: number }) {
 	const nextAuctionId = useAPI<number>(currentAuctionId == null ? null : Routes.Auction.GetNext);
@@ -18,12 +18,14 @@ export default function EndedAuction({ currentAuctionId }: { currentAuctionId?: 
 			</Typography>
 
 			<div className={styles.linkContainer}>
-				{!["AuctionMaster", "Admin"].includes(role) ? null : <Button
-					onClick={() => goto(Routes.Pages.Auctions.Pending)}
-					variant="outlined"
-				>
-					Pending Auctions
-				</Button>}
+				{!["AuctionMaster", "Admin"].includes(role) ? null : (
+					<Button
+						onClick={() => goto(Routes.Pages.Auctions.Pending)}
+						variant="outlined"
+					>
+						Pending Auctions
+					</Button>
+				)}
 
 				<Button
 					onClick={() => goto(Routes.Pages.Clock(nextAuctionId))}

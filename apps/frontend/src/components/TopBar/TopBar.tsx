@@ -4,10 +4,10 @@ import ClickAwayDetector from "@component/ClickAwayDetector";
 import Image from "@component/Image";
 import Stack from "@component/Stack";
 import Typography from "@component/Typography";
+import useGoto from "@lib/hooks/useGoto";
 import { Routes } from "@route/Routes";
 import { useState } from "react";
 import styles from "./TopBar.module.scss";
-import useGoto from "@lib/hooks/useGoto";
 
 export default function TopBar({
 	links
