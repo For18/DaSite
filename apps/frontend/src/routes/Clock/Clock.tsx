@@ -97,7 +97,7 @@ export default function ClockPage() {
 	}, [progress]);
 
 	// TODO: add visual indicator to see if purchase was successful
-	const onPurchase = (count: number) => {
+	const purchase = (count: number) => {
 		if (count > currentItem.count) count = currentItem.count;
 		currentItem?.count && (currentItem.count -= count);
 		if (currentItem && currentItem.count <= 0) doShift();
@@ -162,7 +162,7 @@ export default function ClockPage() {
 						variant="outlined"
 						disabled={progress < 0 || progress > 1 || isBuffered}
 						onClick={() => {
-							onPurchase(buyCountRef.current);
+							purchase(buyCountRef.current);
 						}}
 					>
 						BUY
