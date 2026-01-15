@@ -98,7 +98,10 @@ export default function ClockPage() {
 
 	// TODO: add visual indicator to see if purchase was successful
 	const purchase = (count: number) => {
-		if (user === undefined) return;
+		if (user === undefined) {
+			alert("You are not logged in!");
+			return;
+		}
 		if (count > currentItem.count) count = currentItem.count;
 		currentItem?.count && (currentItem.count -= count);
 		
