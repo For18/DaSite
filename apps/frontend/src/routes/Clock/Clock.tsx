@@ -104,6 +104,7 @@ export default function ClockPage() {
 
 		if (user === undefined) return;
 		postSale(user.id!, Number(auctionId)!, count, Number(currentPrice));
+		alert(`Bought ${count} products for € ${currentPrice} each`);
 	};
 
 	if (items === null) return <Throbber/>;
@@ -162,7 +163,6 @@ export default function ClockPage() {
 						disabled={progress < 0 || progress > 1 || isBuffered}
 						onClick={() => {
 							onPurchase(buyCountRef.current);
-							alert(`Bought ${buyCountRef.current} products for € ${currentPrice} each`);
 						}}
 					>
 						BUY
