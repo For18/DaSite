@@ -6,7 +6,7 @@ import usePromise from "@lib/hooks/usePromise";
 import Button from "@component/Button";
 import { type Status, StatusDisplay } from "@component/StatusDisplay";
 import Typography from "@component/Typography";
-import { API_URL, AuctionItem, Product, ProductImage, useAPI } from "@lib/api";
+import { API_URL, type AuctionItem, type Product, type ProductImage, useAPI } from "@lib/api";
 import { Routes } from "@route/Routes";
 import { useId, useState } from "react";
 import styles from "./CreateAuction.module.scss";

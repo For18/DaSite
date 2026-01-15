@@ -2,7 +2,7 @@ import useAuth from "@/AuthProvider";
 import Footer from "@component/Footer";
 import TopBar from "@component/TopBar";
 import { Routes } from "@route/Routes";
-import { type PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 import styles from "./Layout.module.scss";
 
 export default function Layout({ children }: PropsWithChildren) {

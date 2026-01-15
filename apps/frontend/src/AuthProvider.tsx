@@ -1,4 +1,4 @@
-import { API_URL, User, UserRole } from "@lib/api";
+import { API_URL, type User, type UserRole } from "@lib/api";
 import { Routes } from "@route/Routes";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 

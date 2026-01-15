@@ -1,6 +1,6 @@
 import ThemeCSSProvider, { useTheme } from "@/themes/ThemeCSSProvider";
 import Button from "@component/Button";
-import { PropsWithChildren, useCallback, useEffect } from "react";
+import { type PropsWithChildren, useCallback, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { CgClose } from "react-icons/cg";
 import styles from "./Modal.module.scss";

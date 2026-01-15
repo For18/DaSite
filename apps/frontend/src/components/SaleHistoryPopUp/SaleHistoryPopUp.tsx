@@ -1,7 +1,7 @@
 import Modal from "@component/Modal";
 import Table from "@component/Table";
 import Typography from "@component/Typography";
-import { type AuctionItem, PublicUser, type Sale, useAPI } from "@lib/api";
+import { type AuctionItem, type PublicUser, type Sale, useAPI } from "@lib/api";
 import { deduplicate, range } from "@lib/util";
 import { Routes } from "@route/Routes";
 

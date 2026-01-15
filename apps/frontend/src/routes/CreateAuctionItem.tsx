@@ -5,7 +5,7 @@ import Button from "@component/Button";
 import { type Status, StatusDisplay } from "@component/StatusDisplay";
 import Typography from "@component/Typography";
 import Image from "@component/Image";
-import { API_URL, Product, ProductImage, PublicUser, useAPI } from "@lib/api";
+import { API_URL, type Product, type ProductImage, type PublicUser, useAPI } from "@lib/api";
 import { Routes } from "@route/Routes";
 import { useId, useState, useEffect, useRef } from "react";
 import { Option, Select } from "@component/Select";

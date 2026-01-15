@@ -7,7 +7,7 @@ import Clock from "@component/Clock";
 import EndedAuction from "@component/EndedAuction";
 import ProductView from "@component/ProductView";
 import Throbber from "@component/Throbber";
-import { API_URL, type Auction, type AuctionItem, useAPI, User } from "@lib/api";
+import { API_URL, type Auction, type AuctionItem, useAPI, type User } from "@lib/api";
 import useTime from "@lib/hooks/useTime";
 import NotFound from "@route/NotFound";
 import { Routes } from "@route/Routes";
