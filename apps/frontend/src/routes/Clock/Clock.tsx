@@ -103,8 +103,9 @@ export default function ClockPage() {
 		currentItem?.count && (currentItem.count -= count);
 		
 		if (currentItem && currentItem.count <= 0) doShift();
-		postSale(user.id!, Number(auctionId)!, count, Number(currentPrice));
-		alert(`Bought ${count} products for € ${currentPrice} each`);
+		postSale(user.id!, Number(auctionId)!, count, Number(currentPrice)).then(() => {
+			alert(`Bought ${count} products for € ${currentPrice} each`);
+		});
 	};
 
 	if (items === null) return <Throbber/>;
