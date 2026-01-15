@@ -4,13 +4,13 @@ import Input from "@component/Input";
 import Typography from "@component/Typography";
 import { Routes } from "@route/Routes";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router";
 import styles from "../AuthForm.module.scss";
+import useGoto from "@lib/hooks/useGoto";
 
 export default function Login() {
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
-	const navigate = useNavigate();
+	const goto = useGoto();
 	const passwordRef = useRef<HTMLInputElement>(null);
 	const { login, user } = useAuth();
 
@@ -21,7 +21,7 @@ export default function Login() {
 	useEffect(() => {
 		if (user) {
 			console.log("Login successful!");
-			navigate(Routes.Pages.Home);
+			goto(Routes.Pages.Home);
 		}
 	}, [user]);
 

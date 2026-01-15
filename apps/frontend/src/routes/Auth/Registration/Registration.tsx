@@ -5,14 +5,14 @@ import { API_URL } from "@lib/api";
 import { Routes } from "@route/Routes";
 import { useEffect, useState } from "react";
 import { useRef } from "react";
-import { useNavigate } from "react-router";
 import styles from "./AuthForm.module.scss";
+import useGoto from "@lib/hooks/useGoto";
 
 export default function Registration() {
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [confirmPassword, setConfirmPassword] = useState<string>("");
-	const navigate = useNavigate();
+	const goto = useGoto();
 	const passwordRef = useRef<HTMLInputElement>(null);
 	const confirmPasswordRef = useRef<HTMLInputElement>(null);
 
@@ -50,7 +50,7 @@ export default function Registration() {
 		}
 
 		console.log("Registration successful:", httpStatus, data);
-		navigate(Routes.Pages.Login);
+		goto(Routes.Pages.Login);
 	}
 
 	useEffect(() => {

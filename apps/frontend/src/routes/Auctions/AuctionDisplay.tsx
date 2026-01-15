@@ -1,6 +1,5 @@
 import useTime from "@lib/hooks/useTime";
 import { API_URL, type AuctionItem, type Product, useAPI, type Auction, type AuctionEntry } from "@lib/api";
-import { useNavigate } from "react-router";
 import { Routes } from "@route/Routes";
 import { useMemo, useState } from "react";
 import usePromise from "@lib/hooks/usePromise";
@@ -11,6 +10,7 @@ import Button from "@component/Button";
 import Throbber from "@component/Throbber";
 import Accordion from "@component/Accordion";
 import ProductView from "@component/ProductView";
+import useGoto from "@lib/hooks/useGoto";
 
 const timeLeft = (ms: number) => {
 	if (ms <= 0) return "Now";
@@ -31,7 +31,7 @@ interface AuctionDisplayProps {
 }
 
 export default function AuctionDisplay({ auction }: AuctionDisplayProps) {
-	const navigate = useNavigate();
+	const goto = useGoto();
 	const now = useTime();
 
 	const auctionEntries = useAPI<AuctionEntry[]>(Routes.AuctionEntry.GetFromAuction(auction.id));
@@ -81,7 +81,7 @@ export default function AuctionDisplay({ auction }: AuctionDisplayProps) {
 				Starts in: {timeLeft(auction.startingTime - now)}
 			</Typography>
 
-			<Button variant="outlined" onClick={() => navigate(Routes.Pages.Clock(auction.id))}>
+			<Button variant="outlined" onClick={() => goto(Routes.Pages.Clock(auction.id))}>
 				Go to auction
 			</Button>
 

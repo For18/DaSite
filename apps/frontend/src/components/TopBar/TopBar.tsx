@@ -6,15 +6,15 @@ import Stack from "@component/Stack";
 import Typography from "@component/Typography";
 import { Routes } from "@route/Routes";
 import { useState } from "react";
-import { useNavigate } from "react-router";
 import styles from "./TopBar.module.scss";
+import useGoto from "@lib/hooks/useGoto";
 
 export default function TopBar({
 	links
 }: {
 	links: { [name: string]: string };
 }) {
-	const navigate = useNavigate();
+	const goto = useGoto();
 	const authState = useAuth();
 	const { user, logout } = authState;
 	const [open, setOpen] = useState(false);
@@ -22,7 +22,7 @@ export default function TopBar({
 	const handleLogout = async () => {
 		logout();
 		setOpen(false);
-		navigate(Routes.Pages.Home);
+		goto(Routes.Pages.Home);
 	};
 
 	return (
@@ -33,7 +33,7 @@ export default function TopBar({
 						<Button
 							key={name}
 							onClick={_ => {
-								navigate(path);
+								goto(path);
 							}}
 						>
 							{name}
@@ -52,7 +52,7 @@ export default function TopBar({
 						height={50}
 						onClick={() => {
 							if (user) setOpen(o => !o);
-							else navigate(Routes.Pages.Login);
+							else goto(Routes.Pages.Login);
 						}}
 					/>
 
@@ -60,7 +60,7 @@ export default function TopBar({
 						<div className={styles.selectionCard}>
 							<Typography
 								className={styles.menuItem}
-								onClick={() => navigate(Routes.Pages.Profile(user.id))}
+								onClick={() => goto(Routes.Pages.Profile(user.id))}
 							>
 								Profile
 							</Typography>
@@ -69,7 +69,7 @@ export default function TopBar({
 								className={styles.menuItem}
 								onClick={async () => {
 									await handleLogout();
-									navigate(Routes.Pages.Home);
+									goto(Routes.Pages.Home);
 								}}
 							>
 								Logout
