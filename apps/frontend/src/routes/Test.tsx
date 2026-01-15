@@ -1,5 +1,5 @@
-import Modal from "@/components/Modal/Modal";
-import Table from "@/components/Table";
+import Modal from "@component/Modal/Modal";
+import Table from "@component/Table";
 import { SmartAccordion } from "@component/Accordion";
 import Button from "@component/Button";
 import Checkbox from "@component/Checkbox";

@@ -1,4 +1,4 @@
-import Modal from "@/components/Modal";
+import Modal from "@component/Modal";
 import Image from "@component/Image";
 import Section from "@component/Section";
 import Throbber from "@component/Throbber";

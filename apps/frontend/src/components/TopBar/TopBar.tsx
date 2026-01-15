@@ -5,8 +5,8 @@ import Stack from "@component/Stack";
 import { Routes } from "@route/Routes";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import ClickAwayDetector from "../ClickAwayDetector";
-import Typography from "../Typography";
+import ClickAwayDetector from "@component/ClickAwayDetector";
+import Typography from "@component/Typography";
 import styles from "./TopBar.module.scss";
 
 export default function TopBar({

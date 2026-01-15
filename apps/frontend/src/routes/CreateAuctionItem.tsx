@@ -1,6 +1,6 @@
-import Input from "@/components/Input";
-import Section from "@/components/Section";
-import usePromise from "@/lib/hooks/usePromise";
+import Input from "@component/Input";
+import Section from "@component/Section";
+import usePromise from "@lib/hooks/usePromise";
 import Button from "@component/Button";
 import { type Status, StatusDisplay } from "@component/StatusDisplay";
 import Typography from "@component/Typography";
@@ -8,7 +8,7 @@ import Image from "@component/Image";
 import { API_URL, Product, ProductImage, PublicUser, useAPI } from "@lib/api";
 import { Routes } from "@route/Routes";
 import { useId, useState, useEffect, useRef } from "react";
-import { Option, Select } from "../components/Select";
+import { Option, Select } from "@component/Select";
 import useAuth from "@/AuthProvider";
 import styles from "./CreateAuctionItem.module.scss";
 

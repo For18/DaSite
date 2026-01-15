@@ -1,4 +1,4 @@
-import useTime from "@/lib/hooks/useTime";
+import useTime from "@lib/hooks/useTime";
 import { range } from "@lib/util";
 import styles from "./Throbber.module.scss";
 

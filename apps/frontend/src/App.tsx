@@ -5,9 +5,9 @@ import { createElement, Suspense } from "react";
 import { BrowserRouter, Route, Routes } from "react-router";
 
 import routes from "@route/Routes";
-import { AuthProvider } from "./AuthProvider";
-import { DarkTheme } from "./themes/Dark";
-import ThemeCSSProvider from "./themes/ThemeCSSProvider";
+import { AuthProvider } from "@/AuthProvider";
+import { DarkTheme } from "@/themes/Dark";
+import ThemeCSSProvider from "@/themes/ThemeCSSProvider";
 
 export default function App() {
 	return (

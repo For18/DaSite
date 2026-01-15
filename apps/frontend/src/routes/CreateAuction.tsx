@@ -1,8 +1,8 @@
-import Checkbox from "@/components/Checkbox";
-import Image from "@/components/Image";
-import Input from "@/components/Input";
-import Section from "@/components/Section";
-import usePromise from "@/lib/hooks/usePromise";
+import Checkbox from "@component/Checkbox";
+import Image from "@component/Image";
+import Input from "@component/Input";
+import Section from "@component/Section";
+import usePromise from "@lib/hooks/usePromise";
 import Button from "@component/Button";
 import { type Status, StatusDisplay } from "@component/StatusDisplay";
 import Typography from "@component/Typography";
