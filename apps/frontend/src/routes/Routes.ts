@@ -10,8 +10,8 @@ const CreateProduct = lazy(() => import("./CreateProductPage"));
 const Test = lazy(() => import("./Test"));
 const CreateAuction = lazy(() => import("./CreateAuction"));
 const CreateAuctionItem = lazy(() => import("./CreateAuctionItem"));
-const Login = lazy(() => import("./Login"));
-const Registration = lazy(() => import("./Registration"));
+const Login = lazy(() => import("./Auth/Login"));
+const Registration = lazy(() => import("./Auth/Registration"));
 
 export const Routes = {
 	Pages: {
