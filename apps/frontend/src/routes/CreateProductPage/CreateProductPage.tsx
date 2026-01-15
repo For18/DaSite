@@ -1,12 +1,13 @@
 import Accordion from "@component/Accordion";
 import Button from "@component/Button";
-import Image from "@component/Image";
 import Input from "@component/Input";
 import Typography from "@component/Typography";
 import { API_URL, type ProductImage } from "@lib/api";
 import { Routes } from "@route/Routes";
-import { type Dispatch, type SetStateAction, useId, useState } from "react";
+import { useId, useState } from "react";
 import styles from "./CreateProductPage.module.scss";
+import ProductPreview from "./ProductPreview";
+import AccordionEntry from "./AccordionEntry";
 
 // TODO: add visual status for user
 // use StatusDisplay
@@ -151,87 +152,6 @@ export default function CreateProductPage() {
 						CONFIRM
 					</Button>
 				</div>
-			</div>
-		</div>
-	);
-}
-
-function AccordionEntry(
-	{ index, imageUrl, name, setImages }: { index: number, imageUrl: string, name: string,
-		setImages: Dispatch<SetStateAction<string[]>> }
-) {
-	return (
-		<div className={styles.card}>
-			<Image
-				className={styles.accordionImage}
-				src={imageUrl}
-				alt={name}
-			/>
-			<Button
-				className={styles.accordionButton}
-				onClick={() => setImages(entries => entries.filter((_, i) => i != index))}
-			>
-				Remove
-			</Button>
-		</div>
-	);
-}
-
-function ProductPreview(
-	{ name, description, showThumbnail, batchSize, images, owner }: { name: string, description: string,
-		showThumbnail?: boolean, batchSize?: number, images: string[], owner?: string }
-) {
-	return (
-		<div className={styles.productPreview}>
-			<div>
-				<Typography heading={1}>{name == "" ? "Product Name" : name}</Typography>
-				<Typography className={styles.seller}>
-					Seller: {owner ? owner : "Seller not found"}
-				</Typography>
-			</div>
-
-			{batchSize == null ?
-				null :
-				(
-					<div>
-						<>
-							<hr className={styles.horizontalRule}/>
-							<Typography>Batch size: {batchSize}</Typography>
-						</>
-					</div>
-				)}
-
-			<hr className={styles.horizontalRule}/>
-
-			<div>
-				<Typography>{description == "" ? "Description" : description}</Typography>
-			</div>
-
-			{images[0] && showThumbnail ?
-				(
-					<>
-						<hr className={styles.horizontalRule}/>
-						<Image
-							className={styles.thumbnailImage}
-							src={images[0]}
-							alt={name}
-						/>
-					</>
-				) :
-				null}
-
-			<div className={styles.extraImageContainer}>
-				{images.map((url, index) => (
-					<div key={index}>
-						<a href={url}>
-							<Image
-								className={styles.extraImage}
-								src={url}
-								alt={`Product Image ${index + 1}`}
-							/>
-						</a>
-					</div>
-				))}
 			</div>
 		</div>
 	);

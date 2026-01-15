@@ -4,31 +4,12 @@ import Modal from "@component/Modal";
 import Section from "@component/Section";
 import Throbber from "@component/Throbber";
 import Typography from "@component/Typography";
-import { type Product, type ProductImage, type PublicUser, useAPI } from "@lib/api";
+import { type Product, type PublicUser, useAPI } from "@lib/api";
 import { Routes } from "@route/Routes";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import styles from "./Profile.module.scss";
-
-function ProductInfo({ product }: { product: Product }) {
-	const images = useAPI<ProductImage[]>(product ? Routes.ProductImage.FromParent(product.id) : null);
-	if (images === null) return <Throbber/>;
-	if (images === undefined) return <NotFound/>;
-
-	return (
-		<div className={styles.modalBody}>
-			<Typography>{product.name}</Typography>
-			<Typography>{product.description}</Typography>
-			<div className={styles.separator}/>
-			<div className={styles.imageContainer}>
-				{images &&
-					images.map((image, index) => (
-						<Image src={image.url} alt={product.name + index} width={100} height={100}/>
-					))}
-			</div>
-		</div>
-	);
-}
+import ProductInfo from "./ProductInfo";
 
 export default function Profile() {
 	const { userId } = useParams();

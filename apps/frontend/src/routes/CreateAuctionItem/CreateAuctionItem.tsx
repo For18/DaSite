@@ -1,52 +1,15 @@
 import useAuth from "@/AuthProvider";
 import Button from "@component/Button";
-import Image from "@component/Image";
 import Input from "@component/Input";
 import Section from "@component/Section";
 import { Option, Select } from "@component/Select";
 import { type Status, StatusDisplay } from "@component/StatusDisplay";
 import Typography from "@component/Typography";
-import { API_URL, type Product, type ProductImage, type PublicUser, useAPI } from "@lib/api";
-import usePromise from "@lib/hooks/usePromise";
+import { API_URL, type Product, type PublicUser, useAPI } from "@lib/api";
 import { Routes } from "@route/Routes";
 import { useEffect, useId, useRef, useState } from "react";
 import styles from "./CreateAuctionItem.module.scss";
-
-interface ProductSelectCardProps {
-	product: Product;
-	selected: boolean;
-	onToggle: () => void;
-}
-
-function ProductSelectCard({ product, selected, onToggle }: ProductSelectCardProps) {
-	const { value: thumbnailProductImage } = usePromise<ProductImage>(
-		() =>
-			product.thumbnailImageId === null ?
-				undefined :
-				fetch(Routes.ProductImage.Get(product.thumbnailImageId)).then(response => response.json()),
-		[product?.thumbnailImageId]
-	);
-
-	return (
-		<div
-			className={styles.product + (selected ? ` ${styles.selected}` : "")}
-			onClick={onToggle}
-			role="button"
-			tabIndex={0}
-		>
-			{product.thumbnailImageId != null && thumbnailProductImage?.url && (
-				<Image
-					className={styles.productImage}
-					src={thumbnailProductImage.url}
-					alt={`${product.name}'s thumbnail`}
-				/>
-			)}
-			<div>
-				<Typography>{product.name}</Typography>
-			</div>
-		</div>
-	);
-}
+import ProductSelectCard from "./ProductSelectCard";
 
 export default function CreateAuctionItem() {
 	const auth = useAuth();
