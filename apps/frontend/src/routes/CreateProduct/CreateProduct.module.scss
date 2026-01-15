@@ -22,8 +22,7 @@
 
 .input-basic:not(:last-child),
 .input-description:not(:last-child),
-.add-image-button:not(:last-child),
-.input-title:not(:last-child) {
+.add-image-button:not(:last-child) {
 	margin-top: 10px;
 }
 
@@ -61,11 +60,6 @@
 	line-height: 1.6;
 	width: 500px;
 	overflow: auto;
-}
-
-.product-seller {
-	text-decoration: none !important;
-	color: #555555;
 }
 
 .horizontal-rule {

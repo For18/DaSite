@@ -2,31 +2,12 @@
 	padding: 16px;
 }
 
-.input-label {
-	display: block;
-	color: var(--color-text-primary);
-	margin-top: 12px;
-	margin-bottom: 6px;
-	font-weight: 500;
-}
-
 .product-list {
 	margin-top: 12px;
 	max-width: 640px;
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 	gap: var(--spacing);
-}
-
-.product-container {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	width: 100%;
-
-	&:not(:first-child) {
-		margin-top: calc(var(--spacing) / 2);
-	}
 }
 
 .product {

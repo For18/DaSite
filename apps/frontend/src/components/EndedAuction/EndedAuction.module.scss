@@ -10,29 +10,9 @@
 	margin-bottom: 1vw;
 }
 
-.paragraph {
-	margin-bottom: 1.5vw;
-	color: #555555;
-}
-
 .link-container {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	gap: 1vw;
-}
-
-.link {
-	text-decoration: none;
-	color: white;
-	padding: 0.5vw 1vw;
-	border-radius: 0.3vw;
-}
-
-.link.next-auction {
-	background: #0ea5e9;
-}
-
-.link.pending-auctions {
-	background: #10b981;
 }
