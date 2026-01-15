@@ -139,6 +139,7 @@ export default function ClockPage() {
 					(
 						<>
 							<BeforeAuction remainingTimeMs={currentItemStartTime - currentTime}/>
+							{import.meta.env.DEV ? <Button onClick={() => setCurrentItemStartTime(Date.now())}>Skip</Button> : null}
 						</>
 					) :
 					(
