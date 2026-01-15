@@ -10,7 +10,7 @@ import { API_URL, type Auction, type AuctionEntry, type AuctionItem, type Produc
 import { deduplicate, formatEuros } from "@lib/util";
 import { Routes } from "@route/Routes";
 import { useEffect, useMemo, useState } from "react";
-import { Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 const timeLeft = (ms: number) => {
 	if (ms <= 0) return "Now";

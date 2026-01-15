@@ -1,4 +1,4 @@
-import type { Auction, AuctionEntry, AuctionItem, Product, ProductImage, Sale, User } from "@lib/api";
+import type { Auction, AuctionItem, Product, ProductImage, Sale, User } from "@lib/api";
 import { type JSX, lazy, type LazyExoticComponent } from "react";
 
 const Home = lazy(() => import("./Home"));

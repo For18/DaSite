@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.JsonPatch;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 public class PublicUser {
 	public required string Id { get; set; }

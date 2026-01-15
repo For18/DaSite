@@ -1,9 +1,6 @@
 using System;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System;
 
 public class DatabaseContext : IdentityDbContext<User> {
 	public DbSet<Product> Products { get; set; }

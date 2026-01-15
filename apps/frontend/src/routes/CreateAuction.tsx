@@ -4,12 +4,11 @@ import Input from "@/components/Input";
 import Section from "@/components/Section";
 import usePromise from "@/lib/hooks/usePromise";
 import Button from "@component/Button";
-import ProductView from "@component/ProductView";
 import { type Status, StatusDisplay } from "@component/StatusDisplay";
 import Typography from "@component/Typography";
 import { API_URL, AuctionItem, Product, ProductImage, useAPI } from "@lib/api";
 import { Routes } from "@route/Routes";
-import { useId, useRef, useState } from "react";
+import { useId, useState } from "react";
 import styles from "./CreateAuction.module.scss";
 
 const pad = (n: number) => (n < 10 ? `0${n}` : String(n));

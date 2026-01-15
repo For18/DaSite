@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using System.Linq;
 using System;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using Microsoft.AspNetCore.Authorization;
