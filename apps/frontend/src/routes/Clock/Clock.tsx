@@ -30,12 +30,6 @@ function formatDuration(duration: number): string {
 	}`;
 }
 
-function formatStartCountDown(startingTime: number, currentTime: number) {
-	if (startingTime <= 0 || currentTime <= 0) return "0.00";
-	const remainingTime = startingTime - currentTime;
-	return (remainingTime / 1000).toFixed(2);
-}
-
 const BUFFER_LEN = 5000;
 
 async function postSale(purchaser: User["id"], auctionId: number, amount: number, price: number) {
@@ -141,7 +135,7 @@ export default function ClockPage() {
 					isBuffered ?
 					(
 						<>
-							<BeforeAuction startingPoint={formatStartCountDown(currentItemStartTime!, currentTime)}/>
+							<BeforeAuction remainingTimeMs={currentItemStartTime - currentTime}/>
 						</>
 					) :
 					(
