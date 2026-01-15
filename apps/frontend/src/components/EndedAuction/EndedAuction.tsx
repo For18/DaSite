@@ -17,10 +17,6 @@ export default function EndedAuction({ currentAuctionId }: { currentAuctionId?: 
 				This Auction is Over
 			</Typography>
 
-			<Typography className={styles.paragraph}>
-				You can view the pending auction or the next one below.
-			</Typography>
-
 			<div className={styles.linkContainer}>
 				{!["AuctionMaster", "Admin"].includes(role) ? null : <Button
 					onClick={() => goto(Routes.Pages.Auctions.Pending)}
