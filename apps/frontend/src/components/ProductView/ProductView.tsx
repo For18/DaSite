@@ -11,7 +11,7 @@ export default function ProductView({ auctionItem }: { auctionItem: AuctionItem 
 	const product = useAPI<Product>(Routes.Product.Get(auctionItem.productId));
 	const owner = useAPI<PublicUser>(product?.id ? Routes.User.GetPublic(auctionItem.ownerId) : null);
 	const prodImages = useAPI<ProductImage[]>(
-		product?.id ? Routes.ProductImage.FromParent(product.id) + product.id : null
+		product?.id ? Routes.ProductImage.FromParent(product.id) : null
 	);
 	// const thumbnailImage = useAPI<ProductImage>(
 	// 	product && showThumbnail ? "/product-image/from/" + product.thumbnailImageId : null
