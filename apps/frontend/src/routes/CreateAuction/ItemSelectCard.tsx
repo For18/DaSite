@@ -35,7 +35,7 @@ export default function ItemSelectCard({ item, selected, onToggle }: ItemSelectC
 				{isProductLoading || product.thumbnailImageId == null ?
 					null :
 					(
-						<Image className={styles.productImage} src={thumbnailProductImage.url}
+						<Image className={styles.productImage} src={thumbnailProductImage?.url}
 							alt={`${product.name}'s thumbnail`}/>
 					)} {/* TODO: Test */}
 				<div>
