@@ -18,31 +18,31 @@ export const Routes = {
 		Home: `/`,
 		Clock: (id: Auction["id"]) => `/clock/${id}`,
 		Auctions: {
-			Base: `/auctions`,
-			Create: `/auctions/create`,
-			Pending: `/auctions/pending`,
-			Items: '/auctions/items/'
+			Base: "/auctions",
+			Create: "/auctions/create",
+			Pending: "/auctions/pending",
+			Items: "/auctions/items/"
 		},
-		CreateProduct: `/products/create`,
+		CreateProduct: "/products/create",
 		Profile: (id: User["id"]) => `/profile/${id}`,
-		Test: `/test`,
-		Login: `/login`,
-		Register: `/register`
+		Test: "/test",
+		Login: "/login",
+		Register: "/register"
 	},
 	User: {
 		GetPublic: (id: User["id"]) => `/user/${id}`,
 		GetPrivate: (id: User["id"]) => `/user/private/${id}`,
-		GetUserRole: `/user/private/role`,
-		BatchGetPrivate: `/users/private/batch`,
+		GetUserRole: "/user/private/role",
+		BatchGetPrivate: "/users/private/batch",
 		BatchGetPublic: (ids: User["id"][]) => `/users/batch?ids=${ids.join(",")}`,
-		GetAllPrivate: `/users/private`,
-		GetAllPublic: `/users`,
+		GetAllPrivate: "/users/private",
+		GetAllPublic: "/users",
 		GetAllByName: (name: string) => `/users/by-name/${name}`,
-		GetCurrent: `/private/current`,
-		Post: `/user`,
-		BatchPost: `/users/batch`,
+		GetCurrent: "/private/current",
+		Post: "/user",
+		BatchPost: "/users/batch",
 		Delete: (id: User["id"]) => `/user/${id}`,
-		BatchDelete: `/users/batch`,
+		BatchDelete: "/users/batch",
 		Patch: (id: User["id"]) => `/user/${id}`
 	},
 
@@ -52,83 +52,83 @@ export const Routes = {
 		GetOwnerHistory: (productId: Product["id"], ownerId: User["id"]) =>
 			`/sale/owner-history/${ownerId}/${productId}`,
 		GetByAuction: (auctionId: Auction["id"]) => `/sale/by-auction/${auctionId}`,
-		GetAll: `/sales`,
-		GetBatch: `/sales/batch`,
-		Post: `/sale`,
-		PostBatch: `/sales/batch`,
+		GetAll: "/sales",
+		GetBatch: "/sales/batch",
+		Post: "/sale",
+		PostBatch: "/sales/batch",
 		Delete: (id: Sale["id"]) => `/sale/${id}`,
-		DeleteSale: `/sales/delete`,
+		DeleteSale: "/sales/delete",
 		Patch: (id: Sale["id"]) => `/sale/${id}`
 	},
 
 	ProductImage: {
 		Get: (id: ProductImage["id"]) => `/product-image/${id}`,
 		FromParent: (parentId: Product["id"]) => `/product-image/from/${parentId}`,
-		BatchGet: `/product-images/batch`,
-		Post: `/product-image`,
-		BatchPost: `/product-images/batch`,
+		BatchGet: "/product-images/batch",
+		Post: "/product-image",
+		BatchPost: "/product-images/batch",
 		Delete: (id: ProductImage["id"]) => `/product-image/${id}`,
-		BatchDelete: `/product-image/batch`,
+		BatchDelete: "/product-image/batch",
 		Patch: (id: ProductImage["id"]) => `/product-image/${id}`
 	},
 
 	Product: {
 		Get: (id: Product["id"]) => `/product/${id}`,
-		GetAll: `/products`,
+		GetAll: "/products",
 		GetOfUser: (userId: User["id"]) => `/products/user/${userId}`,
 		BatchGet: (productIds: Product["id"][]) => `/products/batch?${productIds.map(id => `ids=${id}`).join("&")}`,
-		Post: `/product`,
-		BatchPost: `/product/batch`,
+		Post: "/product",
+		BatchPost: "/product/batch",
 		Delete: (id: Product["id"]) => `/product/${id}`,
-		BatchDelete: `/products/batch`,
+		BatchDelete: "/products/batch",
 		Patch: (id: Product["id"]) => `/product/${id}`
 	},
 
 	AuctionItem: {
-		GetAll: `/auction-item/all`,
+		GetAll: "/auction-item/all",
 		Get: (id: AuctionItem["id"]) => `/auction-item/${id}`,
 		BatchGet: (ids: AuctionItem["id"][]) => `/auction-items/batch?ids=${ids.join(",")}`,
 		GetByAuction: (auctionId: Auction["id"]) => `/auction-item/by-auction/${auctionId}`,
-		Post: `/auction-item`,
-		BatchPost: `/auction-item/batch`,
+		Post: "/auction-item",
+		BatchPost: "/auction-item/batch",
 		Delete: (id: AuctionItem["id"]) => `/auction-item/${id}`,
-		BatchDelete: `/auction-item/batch`,
+		BatchDelete: "/auction-item/batch",
 		Patch: (id: AuctionItem["id"]) => `/auction-item/${id}`
 	},
 
 	AuctionEntry: {
-		GetBatch: `/auction-entries/batch`,
+		GetBatch: "/auction-entries/batch",
 		GetFromAuction: (auctionId: Auction["id"]) => `/auction-entry/from-auction/${auctionId}`,
 		GetFromItem: (itemId: AuctionItem["id"]) => `/auction-entry/from-item/${itemId}`,
-		Post: `/auction-entry`,
-		BatchPost: `/auction-entries/batch`,
+		Post: "/auction-entry",
+		BatchPost: "/auction-entries/batch",
 		Delete: (auctionId: Auction["id"], itemId: AuctionItem["id"]) => `/auction-entry/${auctionId}/${itemId}`,
-		BatchDelete: `/auction-entries/batch`
+		BatchDelete: "/auction-entries/batch"
 	},
 
 	Auction: {
 		Get: (id: Auction["id"]) => `/auction/${id}`,
-		BatchGet: `/auctions/batch`,
-		GetAll: `/auctions`,
-		GetUpcoming: `/auctions/upcoming`,
-		Post: `/auction`,
-		BatchPost: `/auctions/batch`,
+		BatchGet: "/auctions/batch",
+		GetAll: "/auctions",
+		GetUpcoming: "/auctions/upcoming",
+		Post: "/auction",
+		BatchPost: "/auctions/batch",
 		Delete: (id: Auction["id"]) => `/auction/${id}`,
-		BatchDelete: `/auctions/batch`,
+		BatchDelete: "/auctions/batch",
 		Patch: (id: Auction["id"]) => `/auction/${id}`
 	},
 	Identity: {
-		PostRegister: `/identity/register`,
-		PostLogin: `/identity/login`,
-		PostRefresh: `/identity/refresh`,
-		GetConfirmEmail: `/identity/confirmEmail`,
-		PostResendConfirmEmail: `/identity/resendConfirmEmail`,
-		PostForgotPassword: `/identity/forgotPassword`,
-		PostResetPassword: `/identity/resetPassword`,
-		PostManage2fa: `/identity/manage/2fa`,
-		GetManageInfo: `/identity/manage/info`,
-		PostManageInfo: `/identity/manage/info`,
-		PostLogout: `/identity/account/logout`
+		PostRegister: "/identity/register",
+		PostLogin: "/identity/login",
+		PostRefresh: "/identity/refresh",
+		GetConfirmEmail: "/identity/confirmEmail",
+		PostResendConfirmEmail: "/identity/resendConfirmEmail",
+		PostForgotPassword: "/identity/forgotPassword",
+		PostResetPassword: "/identity/resetPassword",
+		PostManage2fa: "/identity/manage/2fa",
+		GetManageInfo: "/identity/manage/info",
+		PostManageInfo: "/identity/manage/info",
+		PostLogout: "/identity/account/logout"
 	}
 } as const;
 
