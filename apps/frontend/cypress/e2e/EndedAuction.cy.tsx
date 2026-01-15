@@ -16,7 +16,7 @@ describe("<EndedAuction/>", () => {
 	// TODO: Fix
 	it("navigates user to pending auction page", () => {
 		cy.visit(Routes.Pages.Clock(1));
-		cy.get(`.${styles.linkContainer}`)/*.within(() => {
+		cy.get(`.${styles.linkContainer}`); /*.within(() => {
 			cy.contains("button", "Pending Auction").click();
 			cy.url().should("include", Routes.Pages.Auctions.Pending);
 		});*/

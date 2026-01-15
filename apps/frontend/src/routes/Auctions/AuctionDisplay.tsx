@@ -81,7 +81,8 @@ export default function AuctionDisplay({ auction }: AuctionDisplayProps) {
 			</Typography>
 
 			<Typography color="secondary">
-				Starts in: {timeLeft(auction.startingTime - now)} ({auctionStartDate.toLocaleDateString()} {auctionStartDate.toLocaleTimeString()})
+				Starts in: {timeLeft(auction.startingTime - now)} ({auctionStartDate.toLocaleDateString()}{" "}
+				{auctionStartDate.toLocaleTimeString()})
 			</Typography>
 
 			<Button variant="outlined" onClick={() => goto(Routes.Pages.Clock(auction.id))}>

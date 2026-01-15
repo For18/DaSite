@@ -1,7 +1,7 @@
+import Button from "@component/Button";
 import { useContext, useEffect } from "react";
 import { ErrorBoundaryContext } from "react-error-boundary";
 import styles from "./Error.module.scss";
-import Button from "@component/Button";
 
 export default function Error() {
 	useEffect(() => {
@@ -21,7 +21,10 @@ export default function Error() {
 				{"\t" + error.stack.replaceAll("\n", "\n\t")}
 			</pre>
 
-			<p className={styles.text}>Please <Button onClick={resetErrorBoundary} className={styles.retry}>Retry</Button> or if the issue persists, contact For18</p>
+			<p className={styles.text}>
+				Please <Button onClick={resetErrorBoundary} className={styles.retry}>Retry</Button>{" "}
+				or if the issue persists, contact For18
+			</p>
 		</div>
 	);
 }
