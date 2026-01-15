@@ -4,7 +4,7 @@ import usePromise from "@lib/hooks/usePromise";
 import { useDebugValue } from "react";
 
 export const API_URL: string = import.meta.env.VITE_API_URL;
-if (API_URL == null) console.error("API_URL is not defined in environment variables");
+if (API_URL == null || API_URL === "") console.error("API_URL is not defined in environment variables");
 
 export type UserRole = "Admin" | "AuctionMaster" | "Customer";
 
