@@ -13,6 +13,7 @@
 	"devDependencies": {
 		"@types/react": "^19.1.13",
 		"autoprefixer": "^10.4.22",
+		"babel-plugin-react-compiler": "^1.0.0",
 		"cypress": "^15.7.1",
 		"cypress-vite": "^1.8.0",
 		"react-error-boundary": "^6.0.3",

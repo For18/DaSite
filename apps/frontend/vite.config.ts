@@ -3,7 +3,11 @@ import autoprefixer from "autoprefixer";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-	plugins: [react({}), {
+	plugins: [react({
+		babel: {
+			plugins: ["babel-plugin-react-compiler"]
+		}
+	}), {
 		name: "dev-elements",
 		transformIndexHtml(html: string, ctx) {
 			if (ctx?.server == null) { // Production
