@@ -1,10 +1,10 @@
+import NotFound from "@/routes/NotFound/NotFound";
 import Image from "@component/Image";
 import Modal from "@component/Modal";
 import Section from "@component/Section";
 import Throbber from "@component/Throbber";
 import Typography from "@component/Typography";
 import { type Product, type ProductImage, type PublicUser, useAPI } from "@lib/api";
-import NotFound from "@route/NotFound";
 import { Routes } from "@route/Routes";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";

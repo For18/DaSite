@@ -5,7 +5,7 @@ import Typography from "@component/Typography";
 import { Routes } from "@route/Routes";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
-import styles from "./AuthForm.module.scss";
+import styles from "../AuthForm.module.scss";
 
 export default function Login() {
 	const [email, setEmail] = useState<string>("");

@@ -1,4 +1,5 @@
 import useAuth from "@/AuthProvider";
+import NotFound from "@/routes/NotFound/NotFound";
 import BeforeAuction from "@component/BeforeAuction";
 import Button from "@component/Button";
 import Clock from "@component/Clock";
@@ -9,7 +10,6 @@ import SaleHistoryPopUp from "@component/SaleHistoryPopUp";
 import Throbber from "@component/Throbber";
 import { API_URL, type Auction, type AuctionItem, useAPI, type User } from "@lib/api";
 import useTime from "@lib/hooks/useTime";
-import NotFound from "@route/NotFound";
 import { Routes } from "@route/Routes";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router";
