@@ -1,6 +1,6 @@
 import Image from "@component/Image";
 import Typography from "@component/Typography";
-import styles from "./CreateProductPage.module.scss";
+import styles from "./CreateProduct.module.scss";
 
 export default function ProductPreview(
 	{ name, description, showThumbnail, batchSize, images, owner }: { name: string, description: string,

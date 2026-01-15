@@ -1,7 +1,7 @@
 import Button from "@component/Button";
 import Image from "@component/Image";
 import type { Dispatch, SetStateAction } from "react";
-import styles from "./CreateProductPage.module.scss";
+import styles from "./CreateProduct.module.scss";
 
 export default function AccordionEntry(
 	{ index, imageUrl, name, setImages }: { index: number, imageUrl: string, name: string,

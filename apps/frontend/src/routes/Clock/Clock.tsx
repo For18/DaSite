@@ -13,7 +13,7 @@ import useTime from "@lib/hooks/useTime";
 import { Routes } from "@route/Routes";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router";
-import styles from "./ClockPage.module.scss";
+import styles from "./Clock.module.scss";
 
 function lerp(from: number, to: number, t: number): number {
 	return from + t * (to - from);

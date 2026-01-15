@@ -5,7 +5,7 @@ import Typography from "@component/Typography";
 import { API_URL, type ProductImage } from "@lib/api";
 import { Routes } from "@route/Routes";
 import { useId, useState } from "react";
-import styles from "./CreateProductPage.module.scss";
+import styles from "./CreateProduct.module.scss";
 import ProductPreview from "./ProductPreview";
 import AccordionEntry from "./AccordionEntry";
 
