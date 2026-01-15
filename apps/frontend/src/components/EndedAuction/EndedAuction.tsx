@@ -14,7 +14,7 @@ export default function EndedAuction({ currentAuctionId }: { currentAuctionId?: 
 	return (
 		<div className={styles.endContainer}>
 			<Typography className={styles.header} heading={1}>
-				This Auction is Over
+				This auction is over
 			</Typography>
 
 			<div className={styles.linkContainer}>
