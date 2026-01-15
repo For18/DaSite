@@ -21,9 +21,12 @@ const timeLeft = (ms: number) => {
 	const minutes = Math.floor((totalSeconds % 3600) / 60);
 	const seconds = totalSeconds % 60;
 
-	return `${days}d ${String(hours).padStart(2, "0")}h ${String(minutes).padStart(2, "0")}m ${
+	if (days >= 1) return `${days} days`;
+	if (hours >= 1) return `${hours}h`;
+
+	return `${String(minutes).padStart(2, "0")}:${
 		String(seconds).padStart(2, "0")
-	}s`;
+	}`;
 };
 
 interface AuctionDisplayProps {
