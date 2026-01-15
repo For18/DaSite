@@ -1,11 +1,11 @@
 import useAuth from "@/AuthProvider";
-import Input from "@component/Input";
-import SaleHistoryPopUp from "@component/SaleHistoryPopUp";
 import BeforeAuction from "@component/BeforeAuction";
 import Button from "@component/Button";
 import Clock from "@component/Clock";
 import EndedAuction from "@component/EndedAuction";
+import Input from "@component/Input";
 import ProductView from "@component/ProductView";
+import SaleHistoryPopUp from "@component/SaleHistoryPopUp";
 import Throbber from "@component/Throbber";
 import { API_URL, type Auction, type AuctionItem, useAPI, type User } from "@lib/api";
 import useTime from "@lib/hooks/useTime";

@@ -29,11 +29,11 @@ export default function Typography({
 	const goto = useGoto();
 
 	const click = useCallback((e: Event) => {
-    if (onClick) onClick(e);
-    if (href) {
-      e.preventDefault();
-      goto(href);
-    }
+		if (onClick) onClick(e);
+		if (href) {
+			e.preventDefault();
+			goto(href);
+		}
 	}, [href]);
 	const keydown = useCallback((e: KeyboardEvent) => {
 		if (e.key === "Enter" || e.key === " ") click(e);

@@ -1,12 +1,12 @@
 import useAuth from "@/AuthProvider";
 import Button from "@component/Button";
+import ClickAwayDetector from "@component/ClickAwayDetector";
 import Image from "@component/Image";
 import Stack from "@component/Stack";
+import Typography from "@component/Typography";
 import { Routes } from "@route/Routes";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import ClickAwayDetector from "@component/ClickAwayDetector";
-import Typography from "@component/Typography";
 import styles from "./TopBar.module.scss";
 
 export default function TopBar({
@@ -45,7 +45,8 @@ export default function TopBar({
 				<ClickAwayDetector onClickAway={() => setOpen(false)}>
 					<Image
 						className={styles.profile}
-						src={[user?.avatarImageUrl, "https://www.shutterstock.com/image-vector/highresolution-default-profile-avatar-icon-260nw-2600268263.jpg"]}
+						src={[user?.avatarImageUrl,
+							"https://www.shutterstock.com/image-vector/highresolution-default-profile-avatar-icon-260nw-2600268263.jpg"]}
 						alt="User Profile"
 						width={50}
 						height={50}

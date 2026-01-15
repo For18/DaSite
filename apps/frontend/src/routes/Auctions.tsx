@@ -1,12 +1,12 @@
 import Accordion from "@component/Accordion";
 import Button from "@component/Button/Button";
-import usePromise from "@lib/hooks/usePromise";
-import useTime from "@lib/hooks/useTime";
 import ProductView from "@component/ProductView";
 import Section from "@component/Section";
 import Throbber from "@component/Throbber";
 import Typography from "@component/Typography";
 import { API_URL, type Auction, type AuctionEntry, type AuctionItem, type Product, useAPI } from "@lib/api";
+import usePromise from "@lib/hooks/usePromise";
+import useTime from "@lib/hooks/useTime";
 import { deduplicate, formatEuros } from "@lib/util";
 import { Routes } from "@route/Routes";
 import { useEffect, useMemo, useState } from "react";
@@ -45,9 +45,7 @@ export default function Auctions() {
 					auctions === undefined || auctions.length === 0 ?
 					<Typography>No active auctions</Typography> :
 					auctions.sort((a, b) => a.startingTime - b.startingTime)
-						.map(auction => (
-							<AuctionDisplay key={auction.id} auction={auction}/>
-						))}
+						.map(auction => <AuctionDisplay key={auction.id} auction={auction}/>)}
 			</Section>
 		</>
 	);
@@ -82,7 +80,9 @@ function AuctionDisplay({ auction }: AuctionDisplayProps) {
 
 	const productIds = useMemo(() => deduplicate(auctionItems?.map(i => i.productId) ?? []), [auctionItems]);
 
-	const products = useAPI<Product[]>(productIds == null || productIds.length == 0 ? null : Routes.Product.BatchGet(productIds));
+	const products = useAPI<Product[]>(
+		productIds == null || productIds.length == 0 ? null : Routes.Product.BatchGet(productIds)
+	);
 
 	const productMap = useMemo(() => {
 		const map = new Map<number, Product>();
@@ -116,20 +116,16 @@ function AuctionDisplay({ auction }: AuctionDisplayProps) {
 					<>
 						{/* TODO: make a component/funcionality for a group of accordions? */}
 						{itemsForAuction.map(item => (
-							<Accordion key={item.id}
-								title={productMap.get(item.productId)?.name}
-								open={openItem === item.id} onToggle={() =>
-								setOpenItem(prev =>
-									prev === item.id ? null : item.id
-								)}
+							<Accordion key={item.id} title={productMap.get(item.productId)?.name}
+								open={openItem === item.id}
+								onToggle={() => setOpenItem(prev => prev === item.id ? null : item.id)}
 							>
 								{/* TODO: remove this when fixing layout styles */}
 								<div style={{ padding: "1rem" }}>
 									<ProductView auctionItem={item}/>
 									<Typography color="secondary">
-										Price: {formatEuros(item.startingPrice)} →{" "}
-										{formatEuros(item.minimumPrice)} • Count:{" "}
-										{item.count}
+										Price: {formatEuros(item.startingPrice)} → {formatEuros(item.minimumPrice)}{" "}
+										• Count: {item.count}
 									</Typography>
 								</div>
 							</Accordion>

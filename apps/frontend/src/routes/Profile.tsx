@@ -1,5 +1,5 @@
-import Modal from "@component/Modal";
 import Image from "@component/Image";
+import Modal from "@component/Modal";
 import Section from "@component/Section";
 import Throbber from "@component/Throbber";
 import Typography from "@component/Typography";

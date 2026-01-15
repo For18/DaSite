@@ -1,15 +1,15 @@
+import useAuth from "@/AuthProvider";
+import Button from "@component/Button";
+import Image from "@component/Image";
 import Input from "@component/Input";
 import Section from "@component/Section";
-import usePromise from "@lib/hooks/usePromise";
-import Button from "@component/Button";
+import { Option, Select } from "@component/Select";
 import { type Status, StatusDisplay } from "@component/StatusDisplay";
 import Typography from "@component/Typography";
-import Image from "@component/Image";
 import { API_URL, type Product, type ProductImage, type PublicUser, useAPI } from "@lib/api";
+import usePromise from "@lib/hooks/usePromise";
 import { Routes } from "@route/Routes";
-import { useId, useState, useEffect, useRef } from "react";
-import { Option, Select } from "@component/Select";
-import useAuth from "@/AuthProvider";
+import { useEffect, useId, useRef, useState } from "react";
 import styles from "./CreateAuctionItem.module.scss";
 
 interface ProductSelectCardProps {
@@ -198,10 +198,7 @@ export default function CreateAuctionItem() {
 											product={product}
 											selected={selectedProductId === product.id}
 											onToggle={() =>
-												setSelectedProductId(prev =>
-													prev === product.id ? null : product.id
-												)
-											}
+												setSelectedProductId(prev => prev === product.id ? null : product.id)}
 										/>
 									))}
 								</div>

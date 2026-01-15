@@ -1,15 +1,15 @@
-import Modal from "@component/Modal/Modal";
-import Table from "@component/Table";
 import { SmartAccordion } from "@component/Accordion";
 import Button from "@component/Button";
 import Checkbox from "@component/Checkbox";
 import Divider from "@component/Divider";
 import Input from "@component/Input";
 import LabeledContainer from "@component/LabeledContainer";
+import Modal from "@component/Modal/Modal";
 import { Option, Select } from "@component/Select";
 import Slider from "@component/Slider";
 import { type Status, StatusDisplay } from "@component/StatusDisplay";
 import Switch from "@component/Switch";
+import Table from "@component/Table";
 import Typography from "@component/Typography";
 import { pickRandom, range, sleep } from "@lib/util";
 import { useCallback, useEffect, useState } from "react";

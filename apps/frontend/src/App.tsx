@@ -1,13 +1,12 @@
-import Layout from "@component/Layout";
-import Throbber from "@component/Throbber";
-import NotFound from "@route/NotFound";
-import { createElement, Suspense } from "react";
-import { BrowserRouter, Route, Routes } from "react-router";
-
-import routes from "@route/Routes";
 import { AuthProvider } from "@/AuthProvider";
 import { DarkTheme } from "@/themes/Dark";
 import ThemeCSSProvider from "@/themes/ThemeCSSProvider";
+import Layout from "@component/Layout";
+import Throbber from "@component/Throbber";
+import NotFound from "@route/NotFound";
+import routes from "@route/Routes";
+import { createElement, Suspense } from "react";
+import { BrowserRouter, Route, Routes } from "react-router";
 
 export default function App() {
 	return (

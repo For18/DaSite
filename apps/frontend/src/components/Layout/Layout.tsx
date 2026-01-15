@@ -15,7 +15,7 @@ export default function Layout({ children }: PropsWithChildren) {
 	if (!role) hyperlinksToRender.push({ title: "Login", link: Routes.Pages.Login });
 	else {
 		hyperlinksToRender.push(
-			{ title: "Auctions", link: Routes.Pages.Auctions.Base },
+			{ title: "Auctions", link: Routes.Pages.Auctions.Base }
 		);
 		if (role == "Admin" || role == "AuctionMaster") {
 			hyperlinksToRender.push(

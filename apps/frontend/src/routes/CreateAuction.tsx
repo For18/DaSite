@@ -1,12 +1,12 @@
+import Button from "@component/Button";
 import Checkbox from "@component/Checkbox";
 import Image from "@component/Image";
 import Input from "@component/Input";
 import Section from "@component/Section";
-import usePromise from "@lib/hooks/usePromise";
-import Button from "@component/Button";
 import { type Status, StatusDisplay } from "@component/StatusDisplay";
 import Typography from "@component/Typography";
 import { API_URL, type AuctionItem, type Product, type ProductImage, useAPI } from "@lib/api";
+import usePromise from "@lib/hooks/usePromise";
 import { Routes } from "@route/Routes";
 import { useId, useState } from "react";
 import styles from "./CreateAuction.module.scss";
@@ -212,7 +212,8 @@ export default function CreateAuctions() {
 						onChange={setStartingTime}
 					/>
 
-					<Button variant="contained" color="brand" onClick={submitAuction}>Create Auction</Button>{" "}
+					<Button variant="contained" color="brand" onClick={submitAuction}>Create Auction</Button>
+					{" "}
 				</Section>
 				<Typography heading={2}>
 					Selected Auction Item ID:
