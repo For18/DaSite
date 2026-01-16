@@ -3,6 +3,19 @@ import autoprefixer from "autoprefixer";
 import { optimizeCssModules } from "vite-plugin-optimize-css-modules";
 import { defineConfig } from "vite";
 
+function htmlDevElements() {
+	return {
+		name: "html-dev-elements",
+		transformIndexHtml(html: string, ctx) {
+			if (ctx?.server == null) { // Production
+				return html.replace(/<\s*vite-dev\s*>([\s\S]*?)<\s*\/\s*vite-dev\s*>/g, "");
+			} else { // Development
+				return html.replace(/<\s*vite-dev\s*>([\s\S]*?)<\s*\/\s*vite-dev\s*>/g, "$1");
+			}
+		}
+	}
+}
+
 export default defineConfig({
 	plugins: [
 		react({
@@ -11,16 +24,7 @@ export default defineConfig({
 			}
 		}),
 		optimizeCssModules(), // Minify css module class names (in prod)
-		{
-			name: "dev-elements",
-			transformIndexHtml(html: string, ctx) {
-				if (ctx?.server == null) { // Production
-					return html.replace(/<\s*vite-dev\s*>([\s\S]*?)<\s*\/\s*vite-dev\s*>/g, "");
-				} else { // Development
-					return html.replace(/<\s*vite-dev\s*>([\s\S]*?)<\s*\/\s*vite-dev\s*>/g, "$1");
-				}
-			}
-		}
+		htmlDevElements()
 	],
 	css: {
 		modules: {
