@@ -1,7 +1,7 @@
 import react from "@vitejs/plugin-react";
 import autoprefixer from "autoprefixer";
-import { optimizeCssModules } from "vite-plugin-optimize-css-modules";
 import { defineConfig } from "vite";
+import { optimizeCssModules } from "vite-plugin-optimize-css-modules";
 
 function htmlDevElements() {
 	return {
@@ -13,7 +13,7 @@ function htmlDevElements() {
 				return html.replace(/<\s*vite-dev\s*>([\s\S]*?)<\s*\/\s*vite-dev\s*>/g, "$1");
 			}
 		}
-	}
+	};
 }
 
 export default defineConfig({

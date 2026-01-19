@@ -1,5 +1,6 @@
 import Button from "@component/Button";
 import Input from "@component/Input";
+import { Status, StatusDisplay } from "@component/StatusDisplay";
 import Typography from "@component/Typography";
 import { API_URL } from "@lib/api";
 import useGoto from "@lib/hooks/useGoto";
@@ -7,7 +8,6 @@ import { Routes } from "@route/Routes";
 import { useEffect, useState } from "react";
 import { useRef } from "react";
 import styles from "../AuthForm.module.scss";
-import { Status, StatusDisplay } from "@component/StatusDisplay";
 
 async function register(email: string, password: string) {
 	const res = await fetch(API_URL + Routes.Identity.PostRegister, {
@@ -27,7 +27,7 @@ async function register(email: string, password: string) {
 	}
 
 	return { works: res.ok, httpStatus: res.status, data };
-};
+}
 
 export default function Registration() {
 	const [email, setEmail] = useState<string>("");
@@ -36,7 +36,7 @@ export default function Registration() {
 	const goto = useGoto();
 	const passwordRef = useRef<HTMLInputElement>(null);
 	const confirmPasswordRef = useRef<HTMLInputElement>(null);
-	const [status, setStatus] = useState<Status>({type: "none", label: ""});
+	const [status, setStatus] = useState<Status>({ type: "none", label: "" });
 
 	async function handleSubmit() {
 		if (password !== confirmPassword) {
