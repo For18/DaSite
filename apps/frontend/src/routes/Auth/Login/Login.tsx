@@ -6,7 +6,7 @@ import useGoto from "@lib/hooks/useGoto";
 import { Routes } from "@route/Routes";
 import { useEffect, useRef, useState } from "react";
 import styles from "../AuthForm.module.scss";
-import { Status, StatusDisplay } from "@/components/StatusDisplay";
+import { Status, StatusDisplay } from "@component/StatusDisplay";
 
 export default function Login() {
 	const [email, setEmail] = useState<string>("");
