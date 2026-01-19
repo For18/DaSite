@@ -7,6 +7,7 @@ import { Routes } from "@route/Routes";
 import { useEffect, useState } from "react";
 import { useRef } from "react";
 import styles from "../AuthForm.module.scss";
+import { Status, StatusDisplay } from "@component/StatusDisplay";
 
 export default function Registration() {
 	const [email, setEmail] = useState<string>("");
@@ -15,6 +16,7 @@ export default function Registration() {
 	const goto = useGoto();
 	const passwordRef = useRef<HTMLInputElement>(null);
 	const confirmPasswordRef = useRef<HTMLInputElement>(null);
+	const [status, setStatus] = useState<Status>({type: "none", label: ""});
 
 	const register = async (email: string, password: string) => {
 		const res = await fetch(API_URL + Routes.Identity.PostRegister, {
@@ -38,18 +40,39 @@ export default function Registration() {
 
 	async function handleSubmit() {
 		if (password !== confirmPassword) {
-			console.error("Password does not match confirm password");
+			setStatus({
+				type: "error",
+				label: "Password does not match confirm password"
+			});
 			return;
 		}
+
+		setStatus({
+			type: "progress",
+			label: "Registering"
+		});
 
 		const { works, httpStatus, data } = await register(email, password);
 
 		if (!works) {
-			console.error("Registration failed:", httpStatus, data);
+			if (httpStatus === 400) {
+				setStatus({
+					type: "error",
+					label: data.errors[Object.keys(data.errors)[0]]
+				});
+			} else {
+				setStatus({
+					type: "error",
+					label: `Registration failed: ${httpStatus}, ${data}`
+				});
+			}
 			return;
 		}
 
-		console.log("Registration successful:", httpStatus, data);
+		setStatus({
+			type: "success",
+			label: "Success!"
+		});
 		goto(Routes.Pages.Login);
 	}
 
@@ -70,6 +93,7 @@ export default function Registration() {
 						onChange={setConfirmPassword} onEnter={() => handleSubmit()} inputRef={confirmPasswordRef}/>
 					<Button onClick={handleSubmit}>Register</Button>
 					<Typography href={Routes.Pages.Login}>Already have an account?</Typography>
+					<StatusDisplay status={status}/>
 				</div>
 			</div>
 		</>
