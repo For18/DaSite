@@ -9,6 +9,26 @@ import { useRef } from "react";
 import styles from "../AuthForm.module.scss";
 import { Status, StatusDisplay } from "@component/StatusDisplay";
 
+async function register(email: string, password: string) {
+	const res = await fetch(API_URL + Routes.Identity.PostRegister, {
+		method: "POST",
+		credentials: "include",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({ email, password })
+	});
+
+	const text = await res.text();
+	let data;
+
+	try {
+		data = JSON.parse(text);
+	} catch {
+		data = text;
+	}
+
+	return { works: res.ok, httpStatus: res.status, data };
+};
+
 export default function Registration() {
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
@@ -17,26 +37,6 @@ export default function Registration() {
 	const passwordRef = useRef<HTMLInputElement>(null);
 	const confirmPasswordRef = useRef<HTMLInputElement>(null);
 	const [status, setStatus] = useState<Status>({type: "none", label: ""});
-
-	const register = async (email: string, password: string) => {
-		const res = await fetch(API_URL + Routes.Identity.PostRegister, {
-			method: "POST",
-			credentials: "include",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ email, password })
-		});
-
-		const text = await res.text();
-		let data;
-
-		try {
-			data = JSON.parse(text);
-		} catch {
-			data = text;
-		}
-
-		return { works: res.ok, httpStatus: res.status, data };
-	};
 
 	async function handleSubmit() {
 		if (password !== confirmPassword) {
