@@ -6,6 +6,7 @@ import useGoto from "@lib/hooks/useGoto";
 import { Routes } from "@route/Routes";
 import { useEffect, useRef, useState } from "react";
 import styles from "../AuthForm.module.scss";
+import { Status, StatusDisplay } from "@/components/StatusDisplay";
 
 export default function Login() {
 	const [email, setEmail] = useState<string>("");
@@ -13,17 +14,27 @@ export default function Login() {
 	const goto = useGoto();
 	const passwordRef = useRef<HTMLInputElement>(null);
 	const { login, user } = useAuth();
+	const [status, setStatus] = useState<Status>({type: "none", label: ""});
 
 	async function handleSubmit() {
-		await login(email, password);
-	}
-
-	useEffect(() => {
-		if (user) {
-			console.log("Login successful!");
+		setStatus({
+			type: "progress",
+			label: "Logging in"
+		});
+		const status: number = await login(email, password);
+		if (status === 401) {
+			setStatus({
+				type: "error",
+				label: "Incorrect email/password"
+			});
+		} else if (status === 200) {
+			setStatus({
+				type: "success",
+				label: "Success!"
+			})
 			goto(Routes.Pages.Home);
 		}
-	}, [user]);
+	}
 
 	useEffect(() => {
 		document.title = "For18 - Login";
@@ -41,6 +52,7 @@ export default function Login() {
 					<Button onClick={handleSubmit}>Login</Button>
 					<Typography href="/forgotpassword">Forgot password?</Typography>
 					<Typography href={Routes.Pages.Register}>Don't have an account yet?</Typography>
+					<StatusDisplay status={status}/>
 				</div>
 			</div>
 		</>
