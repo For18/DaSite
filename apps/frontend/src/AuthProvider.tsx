@@ -13,7 +13,7 @@ export interface AuthState {
 }
 
 export interface AuthFunctions {
-	login: (email: string, password: string) => Promise<void>;
+	login: (email: string, password: string) => Promise<number>;
 	logout: () => Promise<void>;
 }
 
@@ -35,7 +35,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	});
 
 	const fetchUserData = useCallback(() => {
-		Promise.all([
+		return Promise.all([
 			fetch(API_URL + Routes.User.GetCurrent, {
 				credentials: "include"
 			})
@@ -94,10 +94,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 				isLoading: false,
 				error: new Error(String(response.status))
 			});
-			return;
+			return response.status;
 		}
 
 		fetchUserData();
+		return response.status;
 	}, [fetchUserData]);
 	const logout = useCallback(async () => {
 		await fetch(API_URL + Routes.Identity.PostLogout, {
