@@ -2,16 +2,13 @@
 	padding: var(--spacing);
 	display: flex;
 	flex-direction: row;
-	justify-content: space-evenly;
+	justify-content: space-between;
 	align-items: center;
 	background-color: var(--color-background-secondary);
 	z-index: 1;
 }
 
-.profile-wrapper {
-	position: fixed;
-	right: 50px;
-}
+.profile-wrapper {}
 
 .profile {
 	border-radius: 50%;

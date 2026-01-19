@@ -27,6 +27,9 @@ export default function TopBar({
 
 	return (
 		<header className={styles.header}>
+			<div>
+
+			</div>
 			<nav>
 				<Stack direction="row">
 					{Object.entries(links).map(([name, path]) => (
